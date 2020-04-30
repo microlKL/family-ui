@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 function webpackCommonConfigCreator(options) {
 
@@ -34,7 +35,7 @@ function webpackCommonConfigCreator(options) {
                     test: /\.(js|jsx)$/,
                     // include: path.resolve(__dirname, "../src"),
                     // 用排除的方式，除了 /node_modules/ 都让 babel-loader 进行解析，这样一来就能解析引用的别的package中的组件了
-                    exclude: /node_modules/,
+                    // exclude: /node_modules/,
                     use: [
                         {
                             loader: "babel-loader",
@@ -45,27 +46,24 @@ function webpackCommonConfigCreator(options) {
                         }
                     ]
                 },
+                // {
+                //     test: /\.html$/,
+                //     use: [
+                //         {
+                //             loader: 'html-loader'
+                //         }
+                //     ]
+                // },
+                // {
+                //     test: /\.css$/,
+                //     use: [MiniCssExtractPlugin.loader, 'css-loader']
+                // },
                 {
                     // test: /\.css$/,
                     test: /\.(css|scss)$/,
-                    include: path.resolve(__dirname, '../src'),
-                    // use: ["style-loader", "css-loader"]
-                    // use: ["style-loader", "css-loader", "sass-loader"]
-                    // 配置css-module模式（样式模块化），这里的样式模块化只是动态生成内联样式，即f12可以看到再 <head>标签内有<style>xxx</style>
-                    // use: [
-                    //     "style-loader",
-                    //     {
-                    //         loader: "css-loader",
-                    //         options: {
-                    //             modules: {
-                    //                 mode: "local",
-                    //                 localIdentName: '[path][name]_[local]--[hash:base64:5]'
-                    //             },
-                    //             localsConvention: 'camelCase'
-                    //         }
-                    //     },
-                    //     "sass-loader"
-                    // ]
+                    // test: /\.scss$/,
+                    // include: path.resolve(__dirname, '../src'),
+                    exclude: /node_modules/,
                     // 进一步优化 配置css-module模式（样式模块化），将自动生成的样式抽离到单独的文件中
                     use: ExtractTextPlugin.extract({
                         fallback: "style-loader",
@@ -95,18 +93,38 @@ function webpackCommonConfigCreator(options) {
                         ]
                     })
                 },
-                // 为第三方包配置css解析，将样式表直接导出
                 {
-                    test: /\.(css|scss)$/,
-                    exclude: path.resolve(__dirname, '../src'),
+                    test: /\.less$/,
                     use: [
-                        "style-loader/url",
+                        { loader: 'style-loader' },
+                        { loader: 'css-loader' },
                         {
-                            loader: 'file-loader',
+                            loader: 'less-loader',
                             options: {
-                                name: "css/[name].css"
+                                // modifyVars: {
+                                //   'primary-color': '#263961',
+                                //   'link-color': '#263961'
+                                // },
+                                javascriptEnabled: true
                             }
                         }
+                    ]
+                },
+                // 为第三方包配置css解析，将样式表直接导出
+                {
+                    test: /\.(css|scss|less)$/,
+                    exclude: path.resolve(__dirname, '../src'),
+                    use: [
+                        "style-loader",
+                        "css-loader",
+                        "sass-loader",
+                        "less-loader"
+                        // {
+                        //     loader: 'file-loader',
+                        //     options: {
+                        //         name: "css/[name].css"
+                        //     }
+                        // }
                     ]
                 },
                 // 字体加载器 （前提：yarn add file-loader -D）
@@ -130,6 +148,18 @@ function webpackCommonConfigCreator(options) {
                     ]
                 },
             ]
+        },
+        // 后缀自动补全
+        resolve: {
+            // symlinks: false,
+            extensions: ['.js', '.jsx', '.png', '.svg'],
+            alias: {
+                src: path.resolve(__dirname, '../src'),
+                components: path.resolve(__dirname,'../src/components'),
+                routes: path.resolve(__dirname,'../src/routes'),
+                utils: path.resolve(__dirname, '../src/utils'),
+                api: path.resolve(__dirname,'../src/api')
+            }
         }
     }
 }
