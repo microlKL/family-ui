@@ -1,0 +1,32 @@
+
+# coverage
+/packages/**/coverage/
+
+# misc
+/packages/**/.DS_Store
+/packages/**/.env.local
+/packages/**/.env.development.local
+/packages/**/.env.test.local
+/packages/**/.env.production.local
+
+/packages/**/*.log
+node_modules/
+/packages/**/node_modules/
+/packages/**/screenshots/
+/__snapshots__/
+/packages/**/__snapshots__/
+/packages/**/dist/
+# storybook
+/packages/**/showcase/
+
+
+/packages/studio-taskbot/webpack/local.js
+/packages/studio-dialog-v2/wiki/obj/
+/packages/studio-cdu/wiki/obj/
+/packages/studio-modelingselfserve/wiki/obj/
+
+lerna-debug.log
+package-lock.json
+/.vscode
+/packages/**/screenshots/
+/.idea
