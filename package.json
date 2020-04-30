@@ -11,6 +11,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "commitizen": "^4.0.4",
+    "cz-lerna-changelog": "^2.0.2",
     "lerna": "^3.20.2"
   },
   "private": true,
