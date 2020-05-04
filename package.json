@@ -7,16 +7,23 @@
     "commit": "git-cz",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-lerna-changelog"
+    }
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "commitizen": "^4.0.4",
     "cz-lerna-changelog": "^2.0.2",
-    "lerna": "^3.20.2"
+    "lerna": "^3.20.2",
+    "mddir": "^1.1.1"
   },
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "fluent-ui-packages/*"
   ]
 }

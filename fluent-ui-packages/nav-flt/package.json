@@ -1,5 +1,5 @@
 {
-  "name": "@family-ui/ui-pivot",
+  "name": "@family-ui/nav-flt",
   "version": "0.0.0",
   "description": "> TODO: description",
   "author": "microler <3517340973@qq.com>",
@@ -7,20 +7,20 @@
   "license": "ISC",
   "main": "src/index.js",
   "directories": {
-    "lib": "lib",
+    "src": "src",
     "test": "__tests__"
   },
   "files": [
-    "lib"
+    "src"
   ],
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/starFromGithub/family-ui-webpack.git"
+  },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1"
-  },
-  "dependencies": {
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1"
   }
 }

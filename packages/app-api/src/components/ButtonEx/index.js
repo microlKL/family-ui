@@ -1,11 +1,11 @@
 import React from 'react';
 import {Button} from 'antd';
-import PivotEx from '@family-ui/ui-pivot';
+import NavFlt from '@family-ui/nav-flt';
 
 export default function ButtonEx(){
     return (
         <div>
-            <PivotEx />
+            <NavFlt />
             <Button type='danger'>ant button</Button>
         </div>
     )
