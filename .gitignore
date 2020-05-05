@@ -17,6 +17,19 @@ node_modules/
 /packages/**/__snapshots__/
 /packages/**/dist/
 /packages/**/build/
+# misc fluent-ui-packages
+/fluent-ui-packages/**/.DS_Store
+/fluent-ui-packages/**/.env.local
+/fluent-ui-packages/**/.env.development.local
+/fluent-ui-packages/**/.env.test.local
+/fluent-ui-packages/**/.env.production.local
+
+/fluent-ui-packages/**/*.log
+/fluent-ui-packages/**/node_modules/
+/fluent-ui-packages/**/screenshots/
+/fluent-ui-packages/**/__snapshots__/
+/fluent-ui-packages/**/build/
+
 # storybook
 /packages/**/showcase/
 
