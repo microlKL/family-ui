@@ -16,6 +16,7 @@ node_modules/
 /__snapshots__/
 /packages/**/__snapshots__/
 /packages/**/dist/
+/packages/**/build/
 # storybook
 /packages/**/showcase/
 
