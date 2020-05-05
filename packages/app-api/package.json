@@ -1,6 +1,6 @@
 {
   "name": "@family-ui/app-api",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "> TODO: description",
   "author": "microler <3517340973@qq.com>",
   "homepage": "",
@@ -48,7 +48,7 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
-    "@family-ui/nav-flt": "^0.0.0",
+    "@family-ui/nav-flt": "^0.0.1",
     "antd": "^4.2.0",
     "html": "^1.0.0",
     "html-loader": "^1.1.0",
