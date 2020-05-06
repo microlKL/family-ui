@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button} from 'antd';
-import NavFlt from '@family-ui/nav-flt';
+import NavFlt from '@family-ui/nav-flt/lib';
 
 export default function ButtonEx(){
     return (
