@@ -1,8 +1,7 @@
 {
   "name": "family-ui",
-  "version": "1.0.6",
+  "version": "1.0.82",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "commit": "git-cz",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,6 +11,10 @@
       "path": "./node_modules/cz-lerna-changelog"
     }
   },
+  "备注":"files 决定 npm publish 发布到 npm 仓库时输出的文件夹",
+  "files": [
+    "fluent-ui-packages"
+  ],
   "keywords": [],
   "author": "",
   "license": "MIT",
@@ -21,9 +24,14 @@
     "lerna": "^3.20.2",
     "mddir": "^1.1.1"
   },
-  "private": false,
+  "private": true,
   "workspaces": [
     "packages/*",
     "fluent-ui-packages/*"
-  ]
+  ],
+  "homepage":"",
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/starFromGithub/family-ui-webpack.git"
+  }
 }

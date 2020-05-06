@@ -1,6 +1,6 @@
 {
   "name": "@family-ui/nav-flt",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "> TODO: description",
   "author": "microler <3517340973@qq.com>",
   "homepage": "",
@@ -12,7 +12,6 @@
     "test": "__tests__"
   },
   "files": [
-    "src",
     "lib"
   ],
   "publishConfig": {
@@ -24,9 +23,7 @@
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1",
-    "build": "rollup -c rollup.config.js",
-    "build:prod": "NODE_ENV=production rollup -c",
-    "build:dev": "NODE_ENV=development rollup -c"
+    "build": "rollup -c rollup.config.js"
   },
   "dependencies": {
     "@babel/cli": "^7.8.4",

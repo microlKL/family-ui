@@ -7,8 +7,16 @@
     |-- yarn.lock
     |-- fluent-ui-packages
     |   |-- nav-flt
+    |       |-- .babelrc
+    |       |-- .eslintrc
     |       |-- package.json
     |       |-- README.md
+    |       |-- rollup.config.js
+    |       |-- doc
+    |       |   |-- STRUCTURE.md
+    |       |-- lib
+    |       |   |-- index.js
+    |       |   |-- index.js.map
     |       |-- src
     |       |   |-- index.js
     |       |-- __tests__
