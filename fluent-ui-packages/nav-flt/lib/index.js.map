@@ -1,0 +1,1 @@
+{"version":3,"file":"index.js","sources":["../src/index.js"],"sourcesContent":["import React from 'react'\n\nexport default function NavFlt(){\n    return (\n        <div>Nav flt</div>\n    )\n}\n"],"names":["NavFlt"],"mappings":";;;;;;;;AAEe,SAASA,MAAT,GAAiB;AAC5B,sBACI,2CADJ;AAGH;;;;"}
