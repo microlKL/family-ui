@@ -1,6 +1,6 @@
 {
   "name": "family-ui",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -14,7 +14,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "commitizen": "^4.0.4",
     "cz-lerna-changelog": "^2.0.2",
