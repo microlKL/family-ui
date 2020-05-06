@@ -1,17 +1,19 @@
 {
   "name": "@family-ui/nav-flt",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "> TODO: description",
   "author": "microler <3517340973@qq.com>",
   "homepage": "",
   "license": "MIT",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "directories": {
     "src": "src",
+    "lib": "lib",
     "test": "__tests__"
   },
   "files": [
-    "src"
+    "src",
+    "lib"
   ],
   "publishConfig": {
     "access": "public"
