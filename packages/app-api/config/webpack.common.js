@@ -12,8 +12,19 @@ function webpackCommonConfigCreator(options) {
         output: {
             // filename: "bundle.js",
             // 分配打包后的目录，放于js文件夹下
-            filename: "js/bundle.js",
-            path: path.resolve(__dirname, "../build")
+            // filename: "js/bundle.js",
+            // 对输出的 bundle.js 进行优化：分割输出，减小体积
+            // filename: "js/[name][hash].js", // 改在 webpack.prod.js 和 webpack.dev.js 中根据不同环境配置不同的hash值
+            path: path.resolve(__dirname, "../build"),
+            publicPath: "/"
+        },
+        // 对输出的 bundle.js 进行优化：分割输出，减小体积
+        optimization: {
+            splitChunks: {
+                chunks: "all",
+                minSize: 50000,
+                minChunks: 1,
+            }
         },
         plugins: [
             // new HtmlWebpackPlugin(),
@@ -143,6 +154,7 @@ function webpackCommonConfigCreator(options) {
                                 // name: '[hash].[ext]',
                                 // 分配打包后的目录，放于images文件夹下
                                 name: 'images/[hash].[ext]',
+                                publicPath: "/"
                             }
                         },
                     ]
@@ -155,10 +167,10 @@ function webpackCommonConfigCreator(options) {
             extensions: ['.js', '.jsx', '.png', '.svg'],
             alias: {
                 src: path.resolve(__dirname, '../src'),
-                components: path.resolve(__dirname,'../src/components'),
-                routes: path.resolve(__dirname,'../src/routes'),
+                components: path.resolve(__dirname, '../src/components'),
+                routes: path.resolve(__dirname, '../src/routes'),
                 utils: path.resolve(__dirname, '../src/utils'),
-                api: path.resolve(__dirname,'../src/api')
+                api: path.resolve(__dirname, '../src/api')
             }
         }
     }
