@@ -1,6 +1,6 @@
 {
   "name": "@family-ui/nav-flt",
-  "version": "0.0.8",
+  "version": "0.0.811",
   "description": "> TODO: description",
   "author": "microler <3517340973@qq.com>",
   "homepage": "",
@@ -23,7 +23,9 @@
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1",
-    "build": "rollup -c rollup.config.js"
+    "build": "rollup -c rollup.config.js",
+    "build:prod": "SET NODE_ENV=production rollup -c rollup.config.js",
+    "build:dev": "SET NODE_ENV=development rollup -c rollup.config.js"
   },
   "dependencies": {
     "@babel/cli": "^7.8.4",
@@ -32,15 +34,20 @@
     "@babel/polyfill": "^7.8.7",
     "@babel/preset-env": "^7.9.6",
     "@babel/preset-react": "^7.9.4",
+    "@fluentui/react": "^7.110.5",
     "babel-loader": "^8.1.0",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-flow": "^6.23.0",
     "cssnano": "^4.1.10",
+    "eslint-plugin-react": "^7.19.0",
+    "node-sass": "^4.14.1",
     "postcss-cssnext": "^3.1.0",
     "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",
     "postcss-nested": "^4.2.1",
     "postcss-url": "^8.0.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
     "rollup": "^2.7.6",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-clear": "^2.0.7",
@@ -56,7 +63,9 @@
     "rollup-plugin-react-svg": "^3.0.3",
     "rollup-plugin-replace": "^2.2.0",
     "rollup-plugin-sass": "^1.2.2",
+    "rollup-plugin-scss": "^2.4.0",
     "rollup-plugin-uglify": "^6.0.4",
-    "rollup-plugin-url": "^3.0.1"
+    "rollup-plugin-url": "^3.0.1",
+    "sass-loader": "^8.0.2"
   }
 }
