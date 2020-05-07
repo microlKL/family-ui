@@ -49,7 +49,7 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
-    "@family-ui/nav-flt": "^0.0.811",
+    "@family-ui/nav-flt": "^0.0.812",
     "@fluentui/react": "^7.110.5",
     "antd": "^4.2.0",
     "eslint-plugin-react": "^7.19.0",

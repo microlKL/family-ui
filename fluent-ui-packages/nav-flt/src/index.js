@@ -1,5 +1,7 @@
 import React from 'react'
 import { Nav } from 'office-ui-fabric-react/lib/Nav'
+import { initializeIcons } from '@uifabric/icons'
+initializeIcons()
 
 export default function NavFlt() {
     const navLinkGroups = [
