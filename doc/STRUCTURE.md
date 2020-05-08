@@ -9,6 +9,13 @@
 npx mddir
 ```
 
+* 工程可持续化部署  
+此工程部署利用了 netlify （https://app.netlify.com/） 实现的可持续化部署。  
+netlify 是依靠 github 等第三方代码库实现的可持续化部署功能，参考资料如下
+部署参考资料  
+（1）https://www.bookstack.cn/read/learnstorybook-react-zh/c3cf025a2098a79d.md  
+（2）https://www.jianshu.com/p/1d47bea6e728  
+
 ## 1、工程中所有依赖库说明
 * mddir ： 用于生成当前工程的目录结构,执行指令后，然后查看当前工程根目录下的 directoryList.md 文件即可  
 
