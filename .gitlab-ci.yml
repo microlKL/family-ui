@@ -12,7 +12,7 @@ jobdockerbuildprod:
     - yarn install
     - yarn build:api
     - rm -rf /home/web/*
-    - cp -r /packages/app-api/storybook-static/. /home/web/
+    - cp -r packages/app-api/storybook-static/. /home/web/
     - pwd
   tags:
     - gbr-fmui-prod
