@@ -1,13 +1,12 @@
 {
-  "name": "@family-ui/nav-flt",
-  "version": "0.0.812",
+  "name": "@family-ui/pivot-flt",
+  "version": "0.0.101",
   "description": "> TODO: description",
   "author": "microler <3517340973@qq.com>",
-  "homepage": "",
+  "homepage": "https://www.micking.top:10000/fluent-ui-packages/pivot-flt",
   "license": "MIT",
   "main": "lib/index.js",
   "directories": {
-    "src": "src",
     "lib": "lib",
     "test": "__tests__"
   },

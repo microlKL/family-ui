@@ -44,7 +44,7 @@ function webpackCommonConfigCreator(options) {
             rules: [
                 {
                     test: /\.(js|jsx)$/,
-                    include: path.resolve(__dirname, "../src"),
+                    // include: path.resolve(__dirname, "../src"),
                     // 用排除的方式，除了 /node_modules/ 都让 babel-loader 进行解析，这样一来就能解析引用的别的package中的组件了
                     // exclude: /node_modules/,
                     use: [

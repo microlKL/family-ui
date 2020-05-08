@@ -142,3 +142,27 @@ npm login
 ```shell
 npm publish
 ```
+
+## 工程中为 package 添加依赖
+
+* 在工程根目录下执行指令
+
+```shell
+// 为工程中所有 package 添加依赖包
+npx lerna add <第三方依赖包>
+// 比如
+npx lerna add styled-components
+```
+
+```shell
+// 指定为工程中某个 package（下面以 @family-ui/app-api 这个 package 为例） 添加第三方依赖包
+npx lerna add <第三方依赖包> --scope @family-ui/app-api
+// 比如
+npx lerna add @storybook/react --scope @family-ui/app-api
+```
+
+```shell
+// 工程内部 package 相互添加依赖
+// 比如 将 fluent-ui-packages 目录下的 @family-ui/nav-flt 作为依赖包，添加到 @family-ui/app-api 中
+npx lerna add @family-ui/nav-flt --scope @family-ui/app-api
+```

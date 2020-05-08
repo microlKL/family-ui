@@ -8,33 +8,80 @@ var React = require('react');
 var React__default = _interopDefault(React);
 var ReactDOM = require('react-dom');
 
-// A packages cache that makes sure that we don't inject the same packageName twice in the same bundle -
-// this cache is local to the module closure inside this bundle
-var packagesCache = {}; // Cache access to window to avoid IE11 memory leak.
+/*! *****************************************************************************
+Copyright (c) Microsoft Corporation. All rights reserved.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use
+this file except in compliance with the License. You may obtain a copy of the
+License at http://www.apache.org/licenses/LICENSE-2.0
 
-var _win = undefined;
+THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
+WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
+MERCHANTABLITY OR NON-INFRINGEMENT.
 
-try {
-  _win = window;
-} catch (e) {
-  /* no-op */
-}
+See the Apache Version 2.0 License for specific language governing permissions
+and limitations under the License.
+***************************************************************************** */
 
-function setVersion(packageName, packageVersion) {
-  if (typeof _win !== 'undefined') {
-    // tslint:disable-next-line:no-any
-    var packages = _win.__packages__ = _win.__packages__ || {}; // We allow either the global packages or local packages caches to invalidate so testing can
-    // just clear the global to set this state
+/* global Reflect, Promise */
+var extendStatics = function (d, b) {
+  extendStatics = Object.setPrototypeOf || {
+    __proto__: []
+  } instanceof Array && function (d, b) {
+    d.__proto__ = b;
+  } || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+  };
 
-    if (!packages[packageName] || !packagesCache[packageName]) {
-      packagesCache[packageName] = packageVersion;
-      var versions = packages[packageName] = packages[packageName] || [];
-      versions.push(packageVersion);
-    }
+  return extendStatics(d, b);
+};
+
+function __extends(d, b) {
+  extendStatics(d, b);
+
+  function __() {
+    this.constructor = d;
   }
-}
 
-setVersion('@uifabric/set-version', '6.0.0');
+  d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+}
+var __assign = function () {
+  __assign = Object.assign || function __assign(t) {
+    for (var s, i = 1, n = arguments.length; i < n; i++) {
+      s = arguments[i];
+
+      for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+    }
+
+    return t;
+  };
+
+  return __assign.apply(this, arguments);
+};
+function __rest(s, e) {
+  var t = {};
+
+  for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
+
+  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
+  }
+  return t;
+}
+function __decorate(decorators, target, key, desc) {
+  var c = arguments.length,
+      r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
+      d;
+  if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+  return c > 3 && r && Object.defineProperty(target, key, r), r;
+}
+function __spreadArrays() {
+  for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+
+  for (var r = Array(s), k = 0, i = 0; i < il; i++) for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++) r[k] = a[j];
+
+  return r;
+}
 
 var _window = undefined; // Note: Accessing "window" in IE11 is somewhat expensive, and calling "typeof window"
 // hits a memory leak, whereas aliasing it and calling "typeof _window" does not.
@@ -595,81 +642,6 @@ function () {
 
   return Async;
 }();
-
-/*! *****************************************************************************
-Copyright (c) Microsoft Corporation. All rights reserved.
-Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-this file except in compliance with the License. You may obtain a copy of the
-License at http://www.apache.org/licenses/LICENSE-2.0
-
-THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-MERCHANTABLITY OR NON-INFRINGEMENT.
-
-See the Apache Version 2.0 License for specific language governing permissions
-and limitations under the License.
-***************************************************************************** */
-
-/* global Reflect, Promise */
-var extendStatics = function (d, b) {
-  extendStatics = Object.setPrototypeOf || {
-    __proto__: []
-  } instanceof Array && function (d, b) {
-    d.__proto__ = b;
-  } || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-  };
-
-  return extendStatics(d, b);
-};
-
-function __extends(d, b) {
-  extendStatics(d, b);
-
-  function __() {
-    this.constructor = d;
-  }
-
-  d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-}
-var __assign = function () {
-  __assign = Object.assign || function __assign(t) {
-    for (var s, i = 1, n = arguments.length; i < n; i++) {
-      s = arguments[i];
-
-      for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
-    }
-
-    return t;
-  };
-
-  return __assign.apply(this, arguments);
-};
-function __rest(s, e) {
-  var t = {};
-
-  for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-
-  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
-  }
-  return t;
-}
-function __decorate(decorators, target, key, desc) {
-  var c = arguments.length,
-      r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
-      d;
-  if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-  return c > 3 && r && Object.defineProperty(target, key, r), r;
-}
-function __spreadArrays() {
-  for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-
-  for (var r = Array(s), k = 0, i = 0; i < il; i++) for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++) r[k] = a[j];
-
-  return r;
-}
 
 var InjectionMode = {
   /**
@@ -3502,45 +3474,6 @@ function memoizeFunction(cb, maxCacheSize, ignoreNullOrUndefinedResult) {
     return currentNode.value;
   };
 }
-/**
- * Creates a memoizer for a single-value function, backed by a WeakMap.
- * With a WeakMap, the memoized values are only kept as long as the source objects,
- * ensuring that there is no memory leak.
- *
- * This function assumes that the input values passed to the wrapped function will be
- * `function` or `object` types. To memoize functions which accept other inputs, use
- * `memoizeFunction`, which memoizes against arbitrary inputs using a lookup cache.
- *
- * @public
- */
-
-function createMemoizer(getValue) {
-  if (!_weakMap) {
-    // Without a `WeakMap` implementation, memoization is not possible.
-    return getValue;
-  }
-
-  var cache = new _weakMap();
-
-  function memoizedGetValue(input) {
-    if (!input || typeof input !== 'function' && typeof input !== 'object') {
-      // A WeakMap can only be used to test against reference values, i.e. 'function' and 'object'.
-      // All other inputs cannot be memoized against in this manner.
-      return getValue(input);
-    }
-
-    if (cache.has(input)) {
-      // tslint:disable-next-line:no-non-null-assertion
-      return cache.get(input);
-    }
-
-    var value = getValue(input);
-    cache.set(input, value);
-    return value;
-  }
-
-  return memoizedGetValue;
-}
 
 function _normalizeArg(val) {
   if (!val) {
@@ -3560,49 +3493,6 @@ function _createNode() {
   return {
     map: _weakMap ? new _weakMap() : null
   };
-}
-
-function createComposedComponent(outer) {
-  var Outer = outer;
-  var outerMemoizer = createMemoizer(function (inner) {
-    if (outer === inner) {
-      throw new Error('Attempted to compose a component with itself.');
-    }
-
-    var Inner = inner;
-    var innerMemoizer = createMemoizer(function (defaultRender) {
-      var InnerWithDefaultRender = function (innerProps) {
-        return React.createElement(Inner, __assign({}, innerProps, {
-          defaultRender: defaultRender
-        }));
-      };
-
-      return InnerWithDefaultRender;
-    });
-
-    var OuterWithDefaultRender = function (outerProps) {
-      var defaultRender = outerProps.defaultRender;
-      return React.createElement(Outer, __assign({}, outerProps, {
-        defaultRender: defaultRender ? innerMemoizer(defaultRender) : Inner
-      }));
-    };
-
-    return OuterWithDefaultRender;
-  });
-  return outerMemoizer;
-}
-
-var componentAsMemoizer = createMemoizer(createComposedComponent);
-/**
- * Composes two components which conform to the `IComponentAs` specification; that is, two
- * components which accept a `defaultRender` prop, which is a 'default' implementation of
- * a component which accepts the same overall props.
- *
- * @public
- */
-
-function composeComponentAs(outer, inner) {
-  return componentAsMemoizer(outer)(inner);
 }
 
 /**
@@ -4757,32 +4647,6 @@ function getNativeProps(props, allowedPropNames, excludedPropNames) {
   }, {}, props);
 }
 
-function createComposedRenderFunction(outer) {
-  var outerMemoizer = createMemoizer(function (inner) {
-    var innerMemoizer = createMemoizer(function (defaultRender) {
-      return function (innerProps) {
-        return inner(innerProps, defaultRender);
-      };
-    });
-    return function (outerProps, defaultRender) {
-      return outer(outerProps, defaultRender ? innerMemoizer(defaultRender) : inner);
-    };
-  });
-  return outerMemoizer;
-}
-
-var memoizer = createMemoizer(createComposedRenderFunction);
-/**
- * Composes two 'render functions' to produce a final render function that renders
- * the outer function, passing the inner function as 'default render'. The inner function
- * is then passed the original 'default render' prop.
- * @public
- */
-
-function composeRenderFunction(outer, inner) {
-  return memoizer(outer)(inner);
-}
-
 var DefaultFields = ['theme', 'styles'];
 /**
  * The styled HOC wrapper allows you to create a functional wrapper around a given component which will resolve
@@ -4897,314 +4761,44 @@ function styled(Component, baseStyles, getProps, customizable, pure) {
   return Wrapped;
 }
 
-/**
- * @deprecated Icon type is inferred based on presence of `IIconProps.imageProps`
- * {@docCategory Icon}
- */
-var IconType;
+var getClassNames = classNamesFunction({
+  // Label is used a lot by other components.
+  // It's likely to see expected cases which pass different className to the Label.
+  // Therefore setting a larger cache size.
+  cacheSize: 100
+});
 
-(function (IconType) {
-  /**
-   * Render using the fabric icon font.
-   * @deprecated Icon type is inferred based on presence of `IIconProps.imageProps`
-   */
-  IconType[IconType["default"] = 0] = "default";
-  /**
-   * Render using an image, where imageProps would be used.
-   * @deprecated Icon type is inferred based on presence of `IIconProps.imageProps`
-   */
-
-  IconType[IconType["image"] = 1] = "image";
-  /**
-   * Deprecated, use `default`.
-   * @deprecated Use `default`.
-   */
-
-  IconType[IconType["Default"] = 100000] = "Default";
-  /**
-   * Deprecated, use `image`.
-   * @deprecated Use `image`.
-   */
-
-  IconType[IconType["Image"] = 100001] = "Image";
-})(IconType || (IconType = {}));
-
-/**
- * The possible methods that can be used to fit the image.
- * {@docCategory Image}
- */
-var ImageFit;
-
-(function (ImageFit) {
-  /**
-   * The image is not scaled. The image is centered and cropped within the content box.
-   */
-  ImageFit[ImageFit["center"] = 0] = "center";
-  /**
-   * The image is scaled to maintain its aspect ratio while being fully contained within the frame. The image will
-   * be centered horizontally and vertically within the frame. The space in the top and bottom or in the sides of
-   * the frame will be empty depending on the difference in aspect ratio between the image and the frame.
-   */
-
-  ImageFit[ImageFit["contain"] = 1] = "contain";
-  /**
-   * The image is scaled to maintain its aspect ratio while filling the frame. Portions of the image will be cropped
-   * from the top and bottom, or the sides, depending on the difference in aspect ratio between the image and the frame.
-   */
-
-  ImageFit[ImageFit["cover"] = 2] = "cover";
-  /**
-   * Neither the image nor the frame are scaled. If their sizes do not match, the image will either be cropped or the
-   * frame will have empty space.
-   */
-
-  ImageFit[ImageFit["none"] = 3] = "none";
-  /**
-   * The image will be centered horizontally and vertically within the frame and maintains its aspect ratio. It will
-   * behave as ImageFit.center if the image's natural height or width is less than the Image frame's height or width,
-   * but if both natural height and width are larger than the frame it will behave as ImageFit.cover.
-   */
-
-  ImageFit[ImageFit["centerCover"] = 4] = "centerCover";
-  /**
-   * The image will be centered horizontally and vertically within the frame and maintains its aspect ratio. It will
-   * behave as ImageFit.center if the image's natural height and width is less than the Image frame's height and width,
-   * but if either natural height or width are larger than the frame it will behave as ImageFit.contain.
-   */
-
-  ImageFit[ImageFit["centerContain"] = 5] = "centerContain";
-})(ImageFit || (ImageFit = {}));
-/**
- * The cover style to be used on the image
- * {@docCategory Image}
- */
-
-
-var ImageCoverStyle;
-
-(function (ImageCoverStyle) {
-  /**
-   * The image will be shown at 100% height of container and the width will be scaled accordingly
-   */
-  ImageCoverStyle[ImageCoverStyle["landscape"] = 0] = "landscape";
-  /**
-   * The image will be shown at 100% width of container and the height will be scaled accordingly
-   */
-
-  ImageCoverStyle[ImageCoverStyle["portrait"] = 1] = "portrait";
-})(ImageCoverStyle || (ImageCoverStyle = {}));
-/**
- * {@docCategory Image}
- */
-
-
-var ImageLoadState;
-
-(function (ImageLoadState) {
-  /**
-   * The image has not yet been loaded, and there is no error yet.
-   */
-  ImageLoadState[ImageLoadState["notLoaded"] = 0] = "notLoaded";
-  /**
-   * The image has been loaded successfully.
-   */
-
-  ImageLoadState[ImageLoadState["loaded"] = 1] = "loaded";
-  /**
-   * An error has been encountered while loading the image.
-   */
-
-  ImageLoadState[ImageLoadState["error"] = 2] = "error";
-  /**
-   * Deprecated at v1.3.6, to replace the src in case of errors, use `onLoadingStateChange` instead
-   * and rerender the Image with a difference src.
-   * @deprecated Use `onLoadingStateChange` instead
-   * and rerender the Image with a difference src.
-   */
-
-  ImageLoadState[ImageLoadState["errorLoaded"] = 3] = "errorLoaded";
-})(ImageLoadState || (ImageLoadState = {}));
-
-var getClassNames = classNamesFunction();
-var KEY_PREFIX = 'fabricImage';
-
-var ImageBase =
+var LabelBase =
 /** @class */
 function (_super) {
-  __extends(ImageBase, _super);
+  __extends(LabelBase, _super);
 
-  function ImageBase(props) {
-    var _this = _super.call(this, props) || this; // Make an initial assumption about the image layout until we can
-    // check the rendered element. The value here only takes effect when
-    // shouldStartVisible is true.
+  function LabelBase() {
+    return _super !== null && _super.apply(this, arguments) || this;
+  }
 
-
-    _this._coverStyle = ImageCoverStyle.portrait;
-    _this._imageElement = React.createRef();
-    _this._frameElement = React.createRef();
-
-    _this._onImageLoaded = function (ev) {
-      var _a = _this.props,
-          src = _a.src,
-          onLoad = _a.onLoad;
-
-      if (onLoad) {
-        onLoad(ev);
-      }
-
-      _this._computeCoverStyle(_this.props);
-
-      if (src) {
-        _this.setState({
-          loadState: ImageLoadState.loaded
-        });
-      }
-    };
-
-    _this._onImageError = function (ev) {
-      if (_this.props.onError) {
-        _this.props.onError(ev);
-      }
-
-      _this.setState({
-        loadState: ImageLoadState.error
-      });
-    };
-
-    _this.state = {
-      loadState: ImageLoadState.notLoaded
-    };
-    return _this;
-  } // tslint:disable-next-line function-name
-
-
-  ImageBase.prototype.UNSAFE_componentWillReceiveProps = function (nextProps) {
-    if (nextProps.src !== this.props.src) {
-      this.setState({
-        loadState: ImageLoadState.notLoaded
-      });
-    } else if (this.state.loadState === ImageLoadState.loaded) {
-      this._computeCoverStyle(nextProps);
-    }
-  };
-
-  ImageBase.prototype.componentDidUpdate = function (prevProps, prevState) {
-    this._checkImageLoaded();
-
-    if (this.props.onLoadingStateChange && prevState.loadState !== this.state.loadState) {
-      this.props.onLoadingStateChange(this.state.loadState);
-    }
-  };
-
-  ImageBase.prototype.render = function () {
-    var imageProps = getNativeProps(this.props, imgProperties, ['width', 'height']);
+  LabelBase.prototype.render = function () {
     var _a = this.props,
-        src = _a.src,
-        alt = _a.alt,
-        width = _a.width,
-        height = _a.height,
-        shouldFadeIn = _a.shouldFadeIn,
-        shouldStartVisible = _a.shouldStartVisible,
+        _b = _a.as,
+        RootType = _b === void 0 ? 'label' : _b,
+        children = _a.children,
         className = _a.className,
-        imageFit = _a.imageFit,
-        role = _a.role,
-        maximizeFrame = _a.maximizeFrame,
+        disabled = _a.disabled,
         styles = _a.styles,
+        required = _a.required,
         theme = _a.theme;
-    var loadState = this.state.loadState;
-    var coverStyle = this.props.coverStyle !== undefined ? this.props.coverStyle : this._coverStyle;
     var classNames = getClassNames(styles, {
-      theme: theme,
       className: className,
-      width: width,
-      height: height,
-      maximizeFrame: maximizeFrame,
-      shouldFadeIn: shouldFadeIn,
-      shouldStartVisible: shouldStartVisible,
-      isLoaded: loadState === ImageLoadState.loaded || loadState === ImageLoadState.notLoaded && this.props.shouldStartVisible,
-      isLandscape: coverStyle === ImageCoverStyle.landscape,
-      isCenter: imageFit === ImageFit.center,
-      isCenterContain: imageFit === ImageFit.centerContain,
-      isCenterCover: imageFit === ImageFit.centerCover,
-      isContain: imageFit === ImageFit.contain,
-      isCover: imageFit === ImageFit.cover,
-      isNone: imageFit === ImageFit.none,
-      isError: loadState === ImageLoadState.error,
-      isNotImageFit: imageFit === undefined
-    }); // If image dimensions aren't specified, the natural size of the image is used.
-
-    return React.createElement("div", {
-      className: classNames.root,
-      style: {
-        width: width,
-        height: height
-      },
-      ref: this._frameElement
-    }, React.createElement("img", __assign({}, imageProps, {
-      onLoad: this._onImageLoaded,
-      onError: this._onImageError,
-      key: KEY_PREFIX + this.props.src || '',
-      className: classNames.image,
-      ref: this._imageElement,
-      src: src,
-      alt: alt,
-      role: role
-    })));
+      disabled: disabled,
+      required: required,
+      theme: theme
+    });
+    return React.createElement(RootType, __assign({}, getNativeProps(this.props, divProperties), {
+      className: classNames.root
+    }), children);
   };
 
-  ImageBase.prototype._checkImageLoaded = function () {
-    var src = this.props.src;
-    var loadState = this.state.loadState;
-
-    if (loadState === ImageLoadState.notLoaded) {
-      // testing if naturalWidth and naturalHeight are greater than zero is better than checking
-      // .complete, because .complete will also be set to true if the image breaks. However,
-      // for some browsers, SVG images do not have a naturalWidth or naturalHeight, so fall back
-      // to checking .complete for these images.
-      var isLoaded = this._imageElement.current ? src && this._imageElement.current.naturalWidth > 0 && this._imageElement.current.naturalHeight > 0 || this._imageElement.current.complete && ImageBase._svgRegex.test(src) : false;
-
-      if (isLoaded) {
-        this._computeCoverStyle(this.props);
-
-        this.setState({
-          loadState: ImageLoadState.loaded
-        });
-      }
-    }
-  };
-
-  ImageBase.prototype._computeCoverStyle = function (props) {
-    var imageFit = props.imageFit,
-        width = props.width,
-        height = props.height; // Do not compute cover style if it was already specified in props
-
-    if ((imageFit === ImageFit.cover || imageFit === ImageFit.contain || imageFit === ImageFit.centerContain || imageFit === ImageFit.centerCover) && this.props.coverStyle === undefined && this._imageElement.current && this._frameElement.current) {
-      // Determine the desired ratio using the width and height props.
-      // If those props aren't available, measure measure the frame.
-      var desiredRatio = void 0;
-
-      if (!!width && !!height && imageFit !== ImageFit.centerContain && imageFit !== ImageFit.centerCover) {
-        desiredRatio = width / height;
-      } else {
-        desiredRatio = this._frameElement.current.clientWidth / this._frameElement.current.clientHeight;
-      } // Examine the source image to determine its original ratio.
-
-
-      var naturalRatio = this._imageElement.current.naturalWidth / this._imageElement.current.naturalHeight; // Should we crop from the top or the sides?
-
-      if (naturalRatio > desiredRatio) {
-        this._coverStyle = ImageCoverStyle.landscape;
-      } else {
-        this._coverStyle = ImageCoverStyle.portrait;
-      }
-    }
-  };
-
-  ImageBase.defaultProps = {
-    shouldFadeIn: true
-  };
-  ImageBase._svgRegex = /\.svg$/i;
-  return ImageBase;
+  return LabelBase;
 }(React.Component);
 
 /**
@@ -5277,46 +4871,6 @@ var normalizeIconName = function (name) {
   return name.toLowerCase();
 };
 /**
- * Registers a given subset of icons.
- *
- * @param iconSubset - the icon subset definition.
- */
-
-
-function registerIcons(iconSubset, options) {
-  var subset = __assign(__assign({}, iconSubset), {
-    isRegistered: false,
-    className: undefined
-  });
-
-  var icons = iconSubset.icons; // Grab options, optionally mix user provided ones on top.
-
-  options = options ? __assign(__assign({}, _iconSettings.__options), options) : _iconSettings.__options;
-
-  for (var iconName in icons) {
-    if (icons.hasOwnProperty(iconName)) {
-      var code = icons[iconName];
-      var normalizedIconName = normalizeIconName(iconName);
-
-      if (_iconSettings[normalizedIconName]) {
-        _warnDuplicateIcon(iconName);
-      } else {
-        _iconSettings[normalizedIconName] = {
-          code: code,
-          subset: subset
-        };
-      }
-    }
-  }
-}
-/**
- * Remaps one icon name to another.
- */
-
-function registerIconAlias(iconName, mappedToName) {
-  _iconSettings.__remapped[normalizeIconName(iconName)] = normalizeIconName(mappedToName);
-}
-/**
  * Gets an icon definition. If an icon is requested but the subset has yet to be registered,
  * it will get registered immediately.
  *
@@ -5359,26 +4913,6 @@ function getIcon(name) {
   }
 
   return icon;
-}
-var _missingIcons = [];
-var _missingIconsTimer = undefined;
-
-function _warnDuplicateIcon(iconName) {
-  var options = _iconSettings.__options;
-  var warningDelay = 2000;
-  var maxIconsInMessage = 10;
-
-  if (!options.disableWarnings) {
-    _missingIcons.push(iconName);
-
-    if (_missingIconsTimer === undefined) {
-      _missingIconsTimer = setTimeout(function () {
-        warn("Some icons were re-registered. Applications should only call registerIcons for any given " + "icon once. Redefining what an icon is may have unintended consequences. Duplicates " + "include: \n" + _missingIcons.slice(0, maxIconsInMessage).join(', ') + (_missingIcons.length > maxIconsInMessage ? " (+ " + (_missingIcons.length - maxIconsInMessage) + " more)" : ''));
-        _missingIconsTimer = undefined;
-        _missingIcons = [];
-      }, warningDelay);
-    }
-  }
 }
 
 /* Register the keyframes */
@@ -5503,6 +5037,18 @@ var ROTATE_N90 = keyframes({
     transform: 'rotateZ(-90deg)'
   }
 });
+/**
+ * Exporting raw duraction values and easing functions to be used in custom animations
+ */
+
+var AnimationVariables = {
+  easeFunction1: EASING_FUNCTION_1,
+  easeFunction2: EASING_FUNCTION_2,
+  durationValue1: DURATION_1,
+  durationValue2: DURATION_2,
+  durationValue3: DURATION_3,
+  durationValue4: DURATION_4
+};
 /**
  * All Fabric standard animations, exposed as json objects referencing predefined
  * keyframes. These objects can be mixed in with other class definitions.
@@ -6163,23 +5709,6 @@ if (!Customizations.getSettings([ThemeSettingName]).theme) {
   Customizations.applySettings((_a$2 = {}, _a$2[ThemeSettingName] = _theme, _a$2));
 }
 /**
- * Gets the theme object
- * @param depComments - Whether to include deprecated tags as comments for deprecated slots.
- */
-
-
-function getTheme(depComments) {
-  if (depComments === void 0) {
-    depComments = false;
-  }
-
-  if (depComments === true) {
-    _theme = createTheme({}, depComments);
-  }
-
-  return _theme;
-}
-/**
  * Creates a custom theme definition which can be used with the Customizer.
  * @param theme - Partial theme object.
  * @param depComments - Whether to include deprecated tags as comments for deprecated slots.
@@ -6363,66 +5892,374 @@ function _fixDeprecatedSlots(s, depComments) {
   return s;
 }
 
+// This file mimics styles and mixins from _General.Mixins.scss
+var normalize = {
+  boxShadow: 'none',
+  margin: 0,
+  padding: 0,
+  boxSizing: 'border-box'
+};
+
 /**
  * {@docCategory AnimationClassNames}
  */
 
 var AnimationClassNames = buildClassMap(AnimationStyles);
 
-/**
- * {@docCategory FontClassNames}
- */
+var getStyles = function (props) {
+  var _a;
 
-var FontClassNames = buildClassMap(DefaultFontStyles);
+  var theme = props.theme,
+      className = props.className,
+      disabled = props.disabled,
+      required = props.required;
+  var semanticColors = theme.semanticColors; // Tokens
 
-var ColorClassNames = {};
-
-for (var colorName in DefaultPalette) {
-  if (DefaultPalette.hasOwnProperty(colorName)) {
-    // Foreground color
-    _defineGetter(ColorClassNames, colorName, '', false, 'color'); // Hover color
-
-
-    _defineGetter(ColorClassNames, colorName, 'Hover', true, 'color'); // Background color
-
-
-    _defineGetter(ColorClassNames, colorName, 'Background', false, 'background'); // Background hover
-
-
-    _defineGetter(ColorClassNames, colorName, 'BackgroundHover', true, 'background'); // Border color
-
-
-    _defineGetter(ColorClassNames, colorName, 'Border', false, 'borderColor'); // Border hover color
-
-
-    _defineGetter(ColorClassNames, colorName, 'BorderHover', true, 'borderColor');
-  }
-}
-/**
- * Defines a getter for the given class configuration.
- */
-
-
-function _defineGetter(obj, colorName, suffix, isHover, cssProperty) {
-  Object.defineProperty(obj, colorName + suffix, {
-    get: function () {
-      var _a; // tslint:disable-next-line:no-any
-
-
-      var style = (_a = {}, _a[cssProperty] = getTheme().palette[colorName], _a);
-      return mergeStyles(isHover ? {
-        selectors: {
-          ':hover': style
+  var labelFontWeight = FontWeights.semibold;
+  var labelColor = semanticColors.bodyText;
+  var labelDisabledColor = semanticColors.disabledBodyText;
+  var labelRequiredStarColor = semanticColors.errorText;
+  return {
+    root: ['ms-Label', theme.fonts.medium, {
+      fontWeight: labelFontWeight,
+      color: labelColor,
+      boxSizing: 'border-box',
+      boxShadow: 'none',
+      margin: 0,
+      display: 'block',
+      padding: '5px 0',
+      wordWrap: 'break-word',
+      overflowWrap: 'break-word'
+    }, disabled && {
+      color: labelDisabledColor,
+      selectors: (_a = {}, _a[HighContrastSelector] = {
+        color: 'GrayText'
+      }, _a)
+    }, required && {
+      selectors: {
+        '::after': {
+          content: "' *'",
+          color: labelRequiredStarColor,
+          paddingRight: 12
         }
-      } : style).toString();
-    },
-    enumerable: true,
-    configurable: true
-  });
-}
+      }
+    }, className]
+  };
+};
 
-// @uifabric/styling@7.12.3
-setVersion('@uifabric/styling', '7.12.3');
+var Label = styled(LabelBase, getStyles, undefined, {
+  scope: 'Label'
+});
+
+/**
+ * @deprecated Icon type is inferred based on presence of `IIconProps.imageProps`
+ * {@docCategory Icon}
+ */
+var IconType;
+
+(function (IconType) {
+  /**
+   * Render using the fabric icon font.
+   * @deprecated Icon type is inferred based on presence of `IIconProps.imageProps`
+   */
+  IconType[IconType["default"] = 0] = "default";
+  /**
+   * Render using an image, where imageProps would be used.
+   * @deprecated Icon type is inferred based on presence of `IIconProps.imageProps`
+   */
+
+  IconType[IconType["image"] = 1] = "image";
+  /**
+   * Deprecated, use `default`.
+   * @deprecated Use `default`.
+   */
+
+  IconType[IconType["Default"] = 100000] = "Default";
+  /**
+   * Deprecated, use `image`.
+   * @deprecated Use `image`.
+   */
+
+  IconType[IconType["Image"] = 100001] = "Image";
+})(IconType || (IconType = {}));
+
+/**
+ * The possible methods that can be used to fit the image.
+ * {@docCategory Image}
+ */
+var ImageFit;
+
+(function (ImageFit) {
+  /**
+   * The image is not scaled. The image is centered and cropped within the content box.
+   */
+  ImageFit[ImageFit["center"] = 0] = "center";
+  /**
+   * The image is scaled to maintain its aspect ratio while being fully contained within the frame. The image will
+   * be centered horizontally and vertically within the frame. The space in the top and bottom or in the sides of
+   * the frame will be empty depending on the difference in aspect ratio between the image and the frame.
+   */
+
+  ImageFit[ImageFit["contain"] = 1] = "contain";
+  /**
+   * The image is scaled to maintain its aspect ratio while filling the frame. Portions of the image will be cropped
+   * from the top and bottom, or the sides, depending on the difference in aspect ratio between the image and the frame.
+   */
+
+  ImageFit[ImageFit["cover"] = 2] = "cover";
+  /**
+   * Neither the image nor the frame are scaled. If their sizes do not match, the image will either be cropped or the
+   * frame will have empty space.
+   */
+
+  ImageFit[ImageFit["none"] = 3] = "none";
+  /**
+   * The image will be centered horizontally and vertically within the frame and maintains its aspect ratio. It will
+   * behave as ImageFit.center if the image's natural height or width is less than the Image frame's height or width,
+   * but if both natural height and width are larger than the frame it will behave as ImageFit.cover.
+   */
+
+  ImageFit[ImageFit["centerCover"] = 4] = "centerCover";
+  /**
+   * The image will be centered horizontally and vertically within the frame and maintains its aspect ratio. It will
+   * behave as ImageFit.center if the image's natural height and width is less than the Image frame's height and width,
+   * but if either natural height or width are larger than the frame it will behave as ImageFit.contain.
+   */
+
+  ImageFit[ImageFit["centerContain"] = 5] = "centerContain";
+})(ImageFit || (ImageFit = {}));
+/**
+ * The cover style to be used on the image
+ * {@docCategory Image}
+ */
+
+
+var ImageCoverStyle;
+
+(function (ImageCoverStyle) {
+  /**
+   * The image will be shown at 100% height of container and the width will be scaled accordingly
+   */
+  ImageCoverStyle[ImageCoverStyle["landscape"] = 0] = "landscape";
+  /**
+   * The image will be shown at 100% width of container and the height will be scaled accordingly
+   */
+
+  ImageCoverStyle[ImageCoverStyle["portrait"] = 1] = "portrait";
+})(ImageCoverStyle || (ImageCoverStyle = {}));
+/**
+ * {@docCategory Image}
+ */
+
+
+var ImageLoadState;
+
+(function (ImageLoadState) {
+  /**
+   * The image has not yet been loaded, and there is no error yet.
+   */
+  ImageLoadState[ImageLoadState["notLoaded"] = 0] = "notLoaded";
+  /**
+   * The image has been loaded successfully.
+   */
+
+  ImageLoadState[ImageLoadState["loaded"] = 1] = "loaded";
+  /**
+   * An error has been encountered while loading the image.
+   */
+
+  ImageLoadState[ImageLoadState["error"] = 2] = "error";
+  /**
+   * Deprecated at v1.3.6, to replace the src in case of errors, use `onLoadingStateChange` instead
+   * and rerender the Image with a difference src.
+   * @deprecated Use `onLoadingStateChange` instead
+   * and rerender the Image with a difference src.
+   */
+
+  ImageLoadState[ImageLoadState["errorLoaded"] = 3] = "errorLoaded";
+})(ImageLoadState || (ImageLoadState = {}));
+
+var getClassNames$1 = classNamesFunction();
+var KEY_PREFIX = 'fabricImage';
+
+var ImageBase =
+/** @class */
+function (_super) {
+  __extends(ImageBase, _super);
+
+  function ImageBase(props) {
+    var _this = _super.call(this, props) || this; // Make an initial assumption about the image layout until we can
+    // check the rendered element. The value here only takes effect when
+    // shouldStartVisible is true.
+
+
+    _this._coverStyle = ImageCoverStyle.portrait;
+    _this._imageElement = React.createRef();
+    _this._frameElement = React.createRef();
+
+    _this._onImageLoaded = function (ev) {
+      var _a = _this.props,
+          src = _a.src,
+          onLoad = _a.onLoad;
+
+      if (onLoad) {
+        onLoad(ev);
+      }
+
+      _this._computeCoverStyle(_this.props);
+
+      if (src) {
+        _this.setState({
+          loadState: ImageLoadState.loaded
+        });
+      }
+    };
+
+    _this._onImageError = function (ev) {
+      if (_this.props.onError) {
+        _this.props.onError(ev);
+      }
+
+      _this.setState({
+        loadState: ImageLoadState.error
+      });
+    };
+
+    _this.state = {
+      loadState: ImageLoadState.notLoaded
+    };
+    return _this;
+  } // tslint:disable-next-line function-name
+
+
+  ImageBase.prototype.UNSAFE_componentWillReceiveProps = function (nextProps) {
+    if (nextProps.src !== this.props.src) {
+      this.setState({
+        loadState: ImageLoadState.notLoaded
+      });
+    } else if (this.state.loadState === ImageLoadState.loaded) {
+      this._computeCoverStyle(nextProps);
+    }
+  };
+
+  ImageBase.prototype.componentDidUpdate = function (prevProps, prevState) {
+    this._checkImageLoaded();
+
+    if (this.props.onLoadingStateChange && prevState.loadState !== this.state.loadState) {
+      this.props.onLoadingStateChange(this.state.loadState);
+    }
+  };
+
+  ImageBase.prototype.render = function () {
+    var imageProps = getNativeProps(this.props, imgProperties, ['width', 'height']);
+    var _a = this.props,
+        src = _a.src,
+        alt = _a.alt,
+        width = _a.width,
+        height = _a.height,
+        shouldFadeIn = _a.shouldFadeIn,
+        shouldStartVisible = _a.shouldStartVisible,
+        className = _a.className,
+        imageFit = _a.imageFit,
+        role = _a.role,
+        maximizeFrame = _a.maximizeFrame,
+        styles = _a.styles,
+        theme = _a.theme;
+    var loadState = this.state.loadState;
+    var coverStyle = this.props.coverStyle !== undefined ? this.props.coverStyle : this._coverStyle;
+    var classNames = getClassNames$1(styles, {
+      theme: theme,
+      className: className,
+      width: width,
+      height: height,
+      maximizeFrame: maximizeFrame,
+      shouldFadeIn: shouldFadeIn,
+      shouldStartVisible: shouldStartVisible,
+      isLoaded: loadState === ImageLoadState.loaded || loadState === ImageLoadState.notLoaded && this.props.shouldStartVisible,
+      isLandscape: coverStyle === ImageCoverStyle.landscape,
+      isCenter: imageFit === ImageFit.center,
+      isCenterContain: imageFit === ImageFit.centerContain,
+      isCenterCover: imageFit === ImageFit.centerCover,
+      isContain: imageFit === ImageFit.contain,
+      isCover: imageFit === ImageFit.cover,
+      isNone: imageFit === ImageFit.none,
+      isError: loadState === ImageLoadState.error,
+      isNotImageFit: imageFit === undefined
+    }); // If image dimensions aren't specified, the natural size of the image is used.
+
+    return React.createElement("div", {
+      className: classNames.root,
+      style: {
+        width: width,
+        height: height
+      },
+      ref: this._frameElement
+    }, React.createElement("img", __assign({}, imageProps, {
+      onLoad: this._onImageLoaded,
+      onError: this._onImageError,
+      key: KEY_PREFIX + this.props.src || '',
+      className: classNames.image,
+      ref: this._imageElement,
+      src: src,
+      alt: alt,
+      role: role
+    })));
+  };
+
+  ImageBase.prototype._checkImageLoaded = function () {
+    var src = this.props.src;
+    var loadState = this.state.loadState;
+
+    if (loadState === ImageLoadState.notLoaded) {
+      // testing if naturalWidth and naturalHeight are greater than zero is better than checking
+      // .complete, because .complete will also be set to true if the image breaks. However,
+      // for some browsers, SVG images do not have a naturalWidth or naturalHeight, so fall back
+      // to checking .complete for these images.
+      var isLoaded = this._imageElement.current ? src && this._imageElement.current.naturalWidth > 0 && this._imageElement.current.naturalHeight > 0 || this._imageElement.current.complete && ImageBase._svgRegex.test(src) : false;
+
+      if (isLoaded) {
+        this._computeCoverStyle(this.props);
+
+        this.setState({
+          loadState: ImageLoadState.loaded
+        });
+      }
+    }
+  };
+
+  ImageBase.prototype._computeCoverStyle = function (props) {
+    var imageFit = props.imageFit,
+        width = props.width,
+        height = props.height; // Do not compute cover style if it was already specified in props
+
+    if ((imageFit === ImageFit.cover || imageFit === ImageFit.contain || imageFit === ImageFit.centerContain || imageFit === ImageFit.centerCover) && this.props.coverStyle === undefined && this._imageElement.current && this._frameElement.current) {
+      // Determine the desired ratio using the width and height props.
+      // If those props aren't available, measure measure the frame.
+      var desiredRatio = void 0;
+
+      if (!!width && !!height && imageFit !== ImageFit.centerContain && imageFit !== ImageFit.centerCover) {
+        desiredRatio = width / height;
+      } else {
+        desiredRatio = this._frameElement.current.clientWidth / this._frameElement.current.clientHeight;
+      } // Examine the source image to determine its original ratio.
+
+
+      var naturalRatio = this._imageElement.current.naturalWidth / this._imageElement.current.naturalHeight; // Should we crop from the top or the sides?
+
+      if (naturalRatio > desiredRatio) {
+        this._coverStyle = ImageCoverStyle.landscape;
+      } else {
+        this._coverStyle = ImageCoverStyle.portrait;
+      }
+    }
+  };
+
+  ImageBase.defaultProps = {
+    shouldFadeIn: true
+  };
+  ImageBase._svgRegex = /\.svg$/i;
+  return ImageBase;
+}(React.Component);
 
 var GlobalClassNames = {
   root: 'ms-Image',
@@ -6437,7 +6274,7 @@ var GlobalClassNames = {
   imageLandscape: 'ms-Image-image--landscape',
   imagePortrait: 'ms-Image-image--portrait'
 };
-var getStyles = function (props) {
+var getStyles$1 = function (props) {
   var className = props.className,
       width = props.width,
       height = props.height,
@@ -6518,7 +6355,7 @@ var getStyles = function (props) {
   };
 };
 
-var Image = styled(ImageBase, getStyles, undefined, {
+var Image = styled(ImageBase, getStyles$1, undefined, {
   scope: 'Image'
 }, true);
 
@@ -6538,7 +6375,7 @@ var classNames = mergeStyleSets({
 /** Class name used only in non-themeable Icon components */
 
 var MS_ICON = 'ms-Icon';
-var getStyles$1 = function (props) {
+var getStyles$2 = function (props) {
   var className = props.className,
       iconClassName = props.iconClassName,
       isPlaceholder = props.isPlaceholder,
@@ -6617,7 +6454,7 @@ var getFontIcon = memoizeFunction(function (iconName, className, ariaLabel) {
   });
 });
 
-var getClassNames$1 = classNamesFunction({
+var getClassNames$2 = classNamesFunction({
   // Icon is used a lot by other components.
   // It's likely to see expected cases which pass different className to the Icon.
   // Therefore setting a larger cache size.
@@ -6663,7 +6500,7 @@ function (_super) {
     var iconContent = getIconContent(iconName) || {};
     var iconClassName = iconContent.iconClassName,
         children = iconContent.children;
-    var classNames = getClassNames$1(styles, {
+    var classNames = getClassNames$2(styles, {
       theme: theme,
       className: className,
       iconClassName: iconClassName,
@@ -6702,7 +6539,7 @@ function (_super) {
  * {@docCategory Icon}
  */
 
-var Icon = styled(IconBase, getStyles$1, undefined, {
+var Icon = styled(IconBase, getStyles$2, undefined, {
   scope: 'Icon'
 }, true);
 
@@ -9193,7 +9030,7 @@ function defaultFocusRestorer(options) {
 
 var _a$4;
 var ANIMATIONS = (_a$4 = {}, _a$4[RectangleEdge.top] = AnimationClassNames.slideUpIn10, _a$4[RectangleEdge.bottom] = AnimationClassNames.slideDownIn10, _a$4[RectangleEdge.left] = AnimationClassNames.slideLeftIn10, _a$4[RectangleEdge.right] = AnimationClassNames.slideRightIn10, _a$4);
-var getClassNames$2 = classNamesFunction({
+var getClassNames$3 = classNamesFunction({
   disableCaching: true
 });
 var BEAK_ORIGIN_POSITION = {
@@ -9417,7 +9254,7 @@ function (_super) {
     var contentMaxHeight = calloutMaxHeight && getContentMaxHeight && calloutMaxHeight < getContentMaxHeight ? calloutMaxHeight : getContentMaxHeight;
     var overflowYHidden = hideOverflow;
     var beakVisible = isBeakVisible && !!target;
-    this._classNames = getClassNames$2(styles, {
+    this._classNames = getClassNames$3(styles, {
       theme: this.props.theme,
       className: className,
       overflowYHidden: overflowYHidden,
@@ -9738,7 +9575,7 @@ var GlobalClassNames$1 = {
   beakCurtain: 'ms-Callout-beakCurtain',
   calloutMain: 'ms-Callout-main'
 };
-var getStyles$2 = function (props) {
+var getStyles$3 = function (props) {
   var _a;
 
   var theme = props.theme,
@@ -9803,7 +9640,7 @@ var getStyles$2 = function (props) {
   };
 };
 
-var CalloutContent = styled(CalloutContentBase, getStyles$2, undefined, {
+var CalloutContent = styled(CalloutContentBase, getStyles$3, undefined, {
   scope: 'CalloutContent'
 });
 
@@ -9814,7 +9651,7 @@ var GlobalClassNames$2 = {
   root: 'ms-Fabric',
   bodyThemed: 'ms-Fabric-bodyThemed'
 };
-var getStyles$3 = function (props) {
+var getStyles$4 = function (props) {
   var theme = props.theme,
       className = props.className,
       applyTheme = props.applyTheme;
@@ -9838,7 +9675,7 @@ var getStyles$3 = function (props) {
   };
 };
 
-var getClassNames$3 = classNamesFunction();
+var getClassNames$4 = classNamesFunction();
 var getFabricTheme = memoizeFunction(function (theme, isRTL) {
   return createTheme(__assign(__assign({}, theme), {
     rtl: isRTL
@@ -9923,7 +9760,7 @@ function (_super) {
         className = _a.className,
         theme = _a.theme,
         applyTheme = _a.applyTheme;
-    var classNames = getClassNames$3(getStyles$3, {
+    var classNames = getClassNames$4(getStyles$4, {
       theme: theme,
       applyTheme: applyTheme,
       className: className
@@ -9950,7 +9787,7 @@ function (_super) {
   return FabricBase;
 }(React.Component);
 
-var Fabric = styled(FabricBase, getStyles$3, undefined, {
+var Fabric = styled(FabricBase, getStyles$4, undefined, {
   scope: 'Fabric'
 });
 
@@ -9998,7 +9835,7 @@ function getDefaultTarget() {
   return _defaultHostSelector;
 }
 
-var getClassNames$4 = classNamesFunction();
+var getClassNames$5 = classNamesFunction();
 
 var LayerBase =
 /** @class */
@@ -10124,7 +9961,7 @@ function (_super) {
         className = _a.className,
         styles = _a.styles,
         theme = _a.theme;
-    var classNames = getClassNames$4(styles, {
+    var classNames = getClassNames$5(styles, {
       theme: theme,
       className: className,
       isNotHost: !this.props.hostId
@@ -10187,7 +10024,7 @@ var GlobalClassNames$3 = {
   rootNoHost: 'ms-Layer--fixed',
   content: 'ms-Layer-content'
 };
-var getStyles$4 = function (props) {
+var getStyles$5 = function (props) {
   var className = props.className,
       isNotHost = props.isNotHost,
       theme = props.theme;
@@ -10208,7 +10045,7 @@ var getStyles$4 = function (props) {
   };
 };
 
-var Layer = styled(LayerBase, getStyles$4, undefined, {
+var Layer = styled(LayerBase, getStyles$5, undefined, {
   scope: 'Layer',
   fields: ['hostId', 'theme', 'styles']
 });
@@ -11416,7 +11253,7 @@ function (_super) {
   return ContextualMenuButton;
 }(ContextualMenuItemWrapper);
 
-var getStyles$5 = function (props) {
+var getStyles$6 = function (props) {
   // tslint:disable-next-line:deprecation
   var theme = props.theme,
       getClassNames = props.getClassNames,
@@ -11448,14 +11285,14 @@ var getStyles$5 = function (props) {
   };
 };
 
-var getClassNames$5 = classNamesFunction();
+var getClassNames$6 = classNamesFunction();
 var VerticalDividerBase = function (props) {
   // tslint:disable-next-line:deprecation
   var styles = props.styles,
       theme = props.theme,
       deprecatedGetClassNames = props.getClassNames,
       className = props.className;
-  var classNames = getClassNames$5(styles, {
+  var classNames = getClassNames$6(styles, {
     theme: theme,
     getClassNames: deprecatedGetClassNames,
     className: className
@@ -11467,7 +11304,7 @@ var VerticalDividerBase = function (props) {
   }));
 };
 
-var VerticalDivider = styled(VerticalDividerBase, getStyles$5, undefined, {
+var VerticalDivider = styled(VerticalDividerBase, getStyles$6, undefined, {
   scope: 'VerticalDivider'
 });
 
@@ -11783,7 +11620,7 @@ function (_super) {
   return ContextualMenuSplitButton;
 }(ContextualMenuItemWrapper);
 
-var getClassNames$6 = classNamesFunction();
+var getClassNames$7 = classNamesFunction();
 var getContextualMenuItemClassNames = classNamesFunction();
 function getSubmenuItems(item) {
   return item.subMenuProps ? item.subMenuProps.items : item.items;
@@ -12395,7 +12232,7 @@ function (_super) {
         focusZoneProps = _a.focusZoneProps,
         // tslint:disable-next-line:deprecation
     getMenuClassNames = _a.getMenuClassNames;
-    this._classNames = getMenuClassNames ? getMenuClassNames(theme, className) : getClassNames$6(styles, {
+    this._classNames = getMenuClassNames ? getMenuClassNames(theme, className) : getClassNames$7(styles, {
       theme: theme,
       className: className
     });
@@ -12938,7 +12775,7 @@ var GlobalClassNames$5 = {
   title: 'ms-ContextualMenu-title',
   isopen: 'is-open'
 };
-var getStyles$6 = function (props) {
+var getStyles$7 = function (props) {
   var className = props.className,
       theme = props.theme;
   var classNames = getGlobalClassNames(GlobalClassNames$5, theme);
@@ -13000,7 +12837,7 @@ function onRenderSubMenu(subMenuProps) {
   return React.createElement(LocalContextualMenu, __assign({}, subMenuProps));
 }
 
-LocalContextualMenu = styled(ContextualMenuBase, getStyles$6, function () {
+LocalContextualMenu = styled(ContextualMenuBase, getStyles$7, function () {
   return {
     onRenderSubMenu: onRenderSubMenu
   };
@@ -13058,7 +12895,7 @@ var getBaseButtonClassNames = memoizeFunction(function (theme, styles, className
   });
 });
 
-var getClassNames$7 = memoizeFunction(function (styles, disabled, expanded, checked, primaryDisabled) {
+var getClassNames$8 = memoizeFunction(function (styles, disabled, expanded, checked, primaryDisabled) {
   return {
     root: mergeStyles(styles.splitButtonMenuButton, expanded && [styles.splitButtonMenuButtonExpanded], disabled && [styles.splitButtonMenuButtonDisabled], checked && !disabled && [styles.splitButtonMenuButtonChecked]),
     splitButtonContainer: mergeStyles(styles.splitButtonContainer, !disabled && checked && [styles.splitButtonContainerChecked, {
@@ -13745,7 +13582,7 @@ function (_super) {
         primaryActionButtonProps = _a.primaryActionButtonProps;
     var keytipProps = this.props.keytipProps;
     var menuHidden = this.state.menuHidden;
-    var classNames = getSplitButtonClassNames ? getSplitButtonClassNames(!!disabled, !menuHidden, !!checked, !!allowDisabledFocus) : styles && getClassNames$7(styles, !!disabled, !menuHidden, !!checked, !!primaryDisabled);
+    var classNames = getSplitButtonClassNames ? getSplitButtonClassNames(!!disabled, !menuHidden, !!checked, !!allowDisabledFocus) : styles && getClassNames$8(styles, !!disabled, !menuHidden, !!checked, !!primaryDisabled);
     assign(buttonProps, {
       onClick: undefined,
       onPointerDown: undefined,
@@ -13934,7 +13771,7 @@ var iconStyle = function (fontSize) {
  */
 
 
-var getStyles$7 = memoizeFunction(function (theme) {
+var getStyles$8 = memoizeFunction(function (theme) {
   var _a;
 
   var semanticColors = theme.semanticColors,
@@ -14026,10 +13863,10 @@ var getStyles$7 = memoizeFunction(function (theme) {
 
 var DEFAULT_BUTTON_HEIGHT = '40px';
 var DEFAULT_PADDING = '0 4px';
-var getStyles$8 = memoizeFunction(function (theme, customStyles) {
+var getStyles$9 = memoizeFunction(function (theme, customStyles) {
   var _a;
 
-  var baseButtonStyles = getStyles$7(theme);
+  var baseButtonStyles = getStyles$8(theme);
   var actionButtonStyles = {
     root: {
       padding: DEFAULT_PADDING,
@@ -14106,7 +13943,7 @@ function (_super) {
         theme = _a.theme;
     return React.createElement(BaseButton, __assign({}, this.props, {
       variantClassName: "ms-Button--action ms-Button--command",
-      styles: getStyles$8(theme, styles),
+      styles: getStyles$9(theme, styles),
       onRenderDescription: nullRender
     }));
   };
@@ -14115,2955 +13952,609 @@ function (_super) {
   return ActionButton;
 }(React.Component);
 
-var GlobalClassNames$6 = {
-  root: 'ms-Nav',
-  linkText: 'ms-Nav-linkText',
-  compositeLink: 'ms-Nav-compositeLink',
-  link: 'ms-Nav-link',
-  chevronButton: 'ms-Nav-chevronButton',
-  chevronIcon: 'ms-Nav-chevron',
-  navItem: 'ms-Nav-navItem',
-  navItems: 'ms-Nav-navItems',
-  group: 'ms-Nav-group',
-  groupContent: 'ms-Nav-groupContent'
-};
-var buttonStyles = {
-  textContainer: {
-    overflow: 'hidden'
-  },
-  label: {
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
-    overflow: 'hidden'
-  }
-};
-var getStyles$9 = function (props) {
-  var _a;
+/**
+ * {@docCategory Button}
+ */
 
-  var className = props.className,
-      theme = props.theme,
-      isOnTop = props.isOnTop,
-      isExpanded = props.isExpanded,
-      isGroup = props.isGroup,
-      isLink = props.isLink,
-      isSelected = props.isSelected,
-      isDisabled = props.isDisabled,
-      isButtonEntry = props.isButtonEntry,
-      _b = props.navHeight,
-      navHeight = _b === void 0 ? 44 : _b,
-      position = props.position,
-      _c = props.leftPadding,
-      leftPadding = _c === void 0 ? 20 : _c,
-      _d = props.leftPaddingExpanded,
-      leftPaddingExpanded = _d === void 0 ? 28 : _d,
-      _e = props.rightPadding,
-      rightPadding = _e === void 0 ? 20 : _e;
-  var palette = theme.palette,
-      semanticColors = theme.semanticColors,
-      fonts = theme.fonts;
-  var classNames = getGlobalClassNames(GlobalClassNames$6, theme);
-  return {
-    root: [classNames.root, className, fonts.medium, {
-      overflowY: 'auto',
-      userSelect: 'none',
-      WebkitOverflowScrolling: 'touch'
-    }, isOnTop && [{
-      position: 'absolute'
-    }, AnimationClassNames.slideRightIn40]],
-    linkText: [classNames.linkText, {
-      margin: '0 4px',
-      overflow: 'hidden',
-      verticalAlign: 'middle',
-      textAlign: 'left',
-      textOverflow: 'ellipsis'
-    }],
-    compositeLink: [classNames.compositeLink, {
-      display: 'block',
-      position: 'relative',
-      color: semanticColors.bodyText
-    }, isExpanded && 'is-expanded', isSelected && 'is-selected', isDisabled && 'is-disabled', isDisabled && {
-      color: semanticColors.disabledText
-    }],
-    link: [classNames.link, getFocusStyle(theme), {
-      display: 'block',
-      position: 'relative',
-      height: navHeight,
-      width: '100%',
-      lineHeight: navHeight + "px",
-      textDecoration: 'none',
-      cursor: 'pointer',
-      textOverflow: 'ellipsis',
-      whiteSpace: 'nowrap',
-      overflow: 'hidden',
-      paddingLeft: leftPadding,
-      paddingRight: rightPadding,
-      color: semanticColors.bodyText,
-      selectors: (_a = {}, _a[HighContrastSelector] = {
-        borderColor: 'transparent',
-        selectors: {
-          ':focus': {
-            borderColor: 'WindowText'
-          }
-        }
-      }, _a)
-    }, !isDisabled && {
-      selectors: {
-        '.ms-Nav-compositeLink:hover &': {
-          backgroundColor: semanticColors.bodyBackgroundHovered
-        }
-      }
-    }, isSelected && {
-      color: semanticColors.bodyTextChecked,
-      fontWeight: FontWeights.semibold,
-      backgroundColor: semanticColors.bodyBackgroundChecked,
-      selectors: {
-        '&:after': {
-          borderLeft: "2px solid " + palette.themePrimary,
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0,
-          pointerEvents: 'none'
-        }
-      }
-    }, isDisabled && {
-      color: semanticColors.disabledText
-    }, isButtonEntry && {
-      color: palette.themePrimary
-    }],
-    chevronButton: [classNames.chevronButton, getFocusStyle(theme), fonts.small, {
-      display: 'block',
-      textAlign: 'left',
-      lineHeight: navHeight + "px",
-      margin: '5px 0',
-      padding: "0px, " + rightPadding + "px, 0px, " + leftPaddingExpanded + "px",
-      border: 'none',
-      textOverflow: 'ellipsis',
-      whiteSpace: 'nowrap',
-      overflow: 'hidden',
-      cursor: 'pointer',
-      color: semanticColors.bodyText,
-      backgroundColor: 'transparent',
-      selectors: {
-        '&:visited': {
-          color: semanticColors.bodyText
-        }
-      }
-    }, isGroup && {
-      fontSize: fonts.large.fontSize,
-      width: '100%',
-      height: navHeight,
-      borderBottom: "1px solid " + semanticColors.bodyDivider
-    }, isLink && {
-      display: 'block',
-      width: leftPaddingExpanded - 2,
-      height: navHeight - 2,
-      position: 'absolute',
-      top: '1px',
-      left: position + "px",
-      zIndex: ZIndexes.Nav,
-      padding: 0,
-      margin: 0
-    }, isSelected && {
-      color: palette.themePrimary,
-      backgroundColor: palette.neutralLighterAlt,
-      selectors: {
-        '&:after': {
-          borderLeft: "2px solid " + palette.themePrimary,
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0,
-          pointerEvents: 'none'
-        }
-      }
-    }],
-    chevronIcon: [classNames.chevronIcon, {
-      position: 'absolute',
-      left: '8px',
-      height: navHeight,
-      lineHeight: navHeight + "px",
-      fontSize: fonts.small.fontSize,
-      transition: 'transform .1s linear'
-    }, isExpanded && {
-      transform: 'rotate(-180deg)'
-    }, isLink && {
-      top: 0
-    }],
-    navItem: [classNames.navItem, {
-      padding: 0
-    }],
-    navItems: [classNames.navItems, {
-      listStyleType: 'none',
-      padding: 0,
-      margin: 0
-    }],
-    group: [classNames.group, isExpanded && 'is-expanded'],
-    groupContent: [classNames.groupContent, {
-      display: 'none',
-      marginBottom: '40px'
-    }, AnimationClassNames.slideDownIn20, isExpanded && {
-      display: 'block'
-    }]
-  };
-};
+var CommandButton = ActionButton;
 
-var _indentationSize = 14; // The number of pixels of left margin
+var COMPONENT_NAME$2 = 'PivotItem';
 
-var _baseIndent = 3; // global var used in _isLinkSelectedKey
-
-var _urlResolver;
-
-function isRelativeUrl(url) {
-  // A URL is relative if it has no protocol.
-  return !!url && !/^[a-z0-9+-.]+:\/\//i.test(url);
-}
-var getClassNames$8 = classNamesFunction();
-
-var NavBase =
+var PivotItem =
 /** @class */
 function (_super) {
-  __extends(NavBase, _super);
+  __extends(PivotItem, _super);
 
-  function NavBase(props) {
+  function PivotItem(props) {
+    var _this = _super.call(this, props) || this;
+
+    initializeComponentRef(_this);
+    warnDeprecations(COMPONENT_NAME$2, props, {
+      linkText: 'headerText'
+    });
+    return _this;
+  }
+
+  PivotItem.prototype.render = function () {
+    return React.createElement("div", __assign({}, getNativeProps(this.props, divProperties)), this.props.children);
+  };
+
+  return PivotItem;
+}(React.Component);
+
+/**
+ * {@docCategory Pivot}
+ */
+var PivotLinkFormat;
+
+(function (PivotLinkFormat) {
+  /**
+   * Display Pivot Links as links
+   */
+  PivotLinkFormat[PivotLinkFormat["links"] = 0] = "links";
+  /**
+   * Display Pivot Links as Tabs
+   */
+
+  PivotLinkFormat[PivotLinkFormat["tabs"] = 1] = "tabs";
+})(PivotLinkFormat || (PivotLinkFormat = {}));
+/**
+ * {@docCategory Pivot}
+ */
+
+
+var PivotLinkSize;
+
+(function (PivotLinkSize) {
+  /**
+   * Display Link using normal font size
+   */
+  PivotLinkSize[PivotLinkSize["normal"] = 0] = "normal";
+  /**
+   * Display links using large font size
+   */
+
+  PivotLinkSize[PivotLinkSize["large"] = 1] = "large";
+})(PivotLinkSize || (PivotLinkSize = {}));
+
+var getClassNames$9 = classNamesFunction();
+var PivotName = 'Pivot';
+/**
+ *  Usage:
+ *
+ *     <Pivot>
+ *       <PivotItem headerText="Foo">
+ *         <Label>Pivot #1</Label>
+ *       </PivotItem>
+ *       <PivotItem headerText="Bar">
+ *         <Label>Pivot #2</Label>
+ *       </PivotItem>
+ *       <PivotItem headerText="Bas">
+ *         <Label>Pivot #3</Label>
+ *       </PivotItem>
+ *     </Pivot>
+ */
+
+var PivotBase =
+/** @class */
+function (_super) {
+  __extends(PivotBase, _super);
+
+  function PivotBase(props) {
     var _this = _super.call(this, props) || this;
 
     _this._focusZone = React.createRef();
 
-    _this._onRenderLink = function (link) {
-      var _a = _this.props,
-          styles = _a.styles,
-          groups = _a.groups,
-          theme = _a.theme;
-      var classNames = getClassNames$8(styles, {
-        theme: theme,
-        groups: groups
-      });
-      return React.createElement("div", {
-        className: classNames.linkText
-      }, link.name);
+    _this._renderPivotLink = function (linkCollection, link, selectedKey) {
+      var itemKey = link.itemKey,
+          headerButtonProps = link.headerButtonProps;
+      var tabId = linkCollection.keyToTabIdMapping[itemKey];
+      var onRenderItemLink = link.onRenderItemLink;
+      var linkContent;
+      var isSelected = selectedKey === itemKey;
+
+      if (onRenderItemLink) {
+        linkContent = onRenderItemLink(link, _this._renderLinkContent);
+      } else {
+        linkContent = _this._renderLinkContent(link);
+      }
+
+      var contentString = link.headerText || '';
+      contentString += link.itemCount ? ' (' + link.itemCount + ')' : ''; // Adding space supplementary for icon
+
+      contentString += link.itemIcon ? ' xx' : '';
+      return React.createElement(CommandButton, __assign({}, headerButtonProps, {
+        id: tabId,
+        key: itemKey,
+        className: isSelected ? _this._classNames.linkIsSelected : _this._classNames.link,
+        onClick: _this._onLinkClick.bind(_this, itemKey),
+        onKeyPress: _this._onKeyPress.bind(_this, itemKey),
+        ariaLabel: link.ariaLabel,
+        role: "tab",
+        "aria-selected": isSelected,
+        name: link.headerText,
+        keytipProps: link.keytipProps,
+        "data-content": contentString
+      }), linkContent);
     };
 
-    _this._renderGroup = function (group, groupIndex) {
-      var _a = _this.props,
-          styles = _a.styles,
-          groups = _a.groups,
-          theme = _a.theme,
-          _b = _a.onRenderGroupHeader,
-          onRenderGroupHeader = _b === void 0 ? _this._renderGroupHeader : _b;
-      var classNames = getClassNames$8(styles, {
-        theme: theme,
-        isGroup: true,
-        isExpanded: _this._isGroupExpanded(group),
-        groups: groups
-      });
-      return React.createElement("div", {
-        key: groupIndex,
-        className: classNames.group
-      }, group.name ? onRenderGroupHeader(group, _this._renderGroupHeader) : null, React.createElement("div", {
-        className: classNames.groupContent
-      }, _this._renderLinks(group.links, 0
-      /* nestingLevel */
-      )));
-    };
-
-    _this._renderGroupHeader = function (group) {
-      // tslint:disable-next-line:deprecation
-      var _a = _this.props,
-          styles = _a.styles,
-          groups = _a.groups,
-          theme = _a.theme,
-          expandButtonAriaLabel = _a.expandButtonAriaLabel;
-      var classNames = getClassNames$8(styles, {
-        theme: theme,
-        isGroup: true,
-        isExpanded: _this._isGroupExpanded(group),
-        groups: groups
-      });
-
-      var isExpanded = _this._isGroupExpanded(group);
-
-      var label = (isExpanded ? group.collapseAriaLabel : group.expandAriaLabel) || expandButtonAriaLabel;
-      return React.createElement("button", {
-        className: classNames.chevronButton,
-        onClick: _this._onGroupHeaderClicked.bind(_this, group),
-        "aria-label": label,
-        "aria-expanded": isExpanded
+    _this._renderLinkContent = function (link) {
+      var itemCount = link.itemCount,
+          itemIcon = link.itemIcon,
+          headerText = link.headerText;
+      var classNames = _this._classNames;
+      return React.createElement("span", {
+        className: classNames.linkContent
+      }, itemIcon !== undefined && React.createElement("span", {
+        className: classNames.icon
       }, React.createElement(Icon, {
-        className: classNames.chevronIcon,
-        iconName: "ChevronDown"
-      }), group.name);
+        iconName: itemIcon
+      })), headerText !== undefined && React.createElement("span", {
+        className: classNames.text
+      }, " ", link.headerText), itemCount !== undefined && React.createElement("span", {
+        className: classNames.count
+      }, " (", itemCount, ")"));
     };
 
     initializeComponentRef(_this);
+
+    {
+      warnDeprecations(PivotName, props, {
+        initialSelectedKey: 'defaultSelectedKey',
+        initialSelectedIndex: 'defaultSelectedIndex'
+      });
+    }
+
+    _this._pivotId = getId(PivotName);
+
+    var links = _this._getPivotLinks(props).links; // tslint:disable-next-line:deprecation
+
+
+    var _a = props.defaultSelectedKey,
+        defaultSelectedKey = _a === void 0 ? props.initialSelectedKey : _a,
+        _b = props.defaultSelectedIndex,
+        defaultSelectedIndex = _b === void 0 ? props.initialSelectedIndex : _b;
+    var selectedKey;
+
+    if (defaultSelectedKey) {
+      selectedKey = defaultSelectedKey;
+    } else if (typeof defaultSelectedIndex === 'number') {
+      selectedKey = links[defaultSelectedIndex].itemKey;
+    } else if (links.length) {
+      selectedKey = links[0].itemKey;
+    }
+
     _this.state = {
-      isGroupCollapsed: {},
-      isLinkExpandStateChanged: false,
-      selectedKey: props.initialSelectedKey || props.selectedKey
+      selectedKey: selectedKey
     };
     return _this;
   }
-
-  NavBase.prototype.render = function () {
-    var _a = this.props,
-        styles = _a.styles,
-        groups = _a.groups,
-        className = _a.className,
-        isOnTop = _a.isOnTop,
-        theme = _a.theme;
-
-    if (!groups) {
-      return null;
-    }
-
-    var groupElements = groups.map(this._renderGroup);
-    var classNames = getClassNames$8(styles, {
-      theme: theme,
-      className: className,
-      isOnTop: isOnTop,
-      groups: groups
-    });
-    return React.createElement(FocusZone, {
-      direction: FocusZoneDirection.vertical,
-      componentRef: this._focusZone
-    }, React.createElement("nav", {
-      role: "navigation",
-      className: classNames.root,
-      "aria-label": this.props.ariaLabel
-    }, groupElements));
-  };
-
-  Object.defineProperty(NavBase.prototype, "selectedKey", {
-    get: function () {
-      return this.state.selectedKey;
-    },
-    enumerable: true,
-    configurable: true
-  });
   /**
-   * Sets focus to the first tabbable item in the zone.
-   * @param forceIntoFirstElement - If true, focus will be forced into the first element, even
-   * if focus is already in the focus zone.
-   * @returns True if focus could be set to an active element, false if no operation was taken.
+   * Sets focus to the first pivot tab.
    */
 
-  NavBase.prototype.focus = function (forceIntoFirstElement) {
-    if (forceIntoFirstElement === void 0) {
-      forceIntoFirstElement = false;
+
+  PivotBase.prototype.focus = function () {
+    if (this._focusZone.current) {
+      this._focusZone.current.focus();
+    }
+  };
+
+  PivotBase.prototype.render = function () {
+    var linkCollection = this._getPivotLinks(this.props);
+
+    var selectedKey = this._getSelectedKey(linkCollection);
+
+    var divProps = getNativeProps(this.props, divProperties);
+    this._classNames = this._getClassNames(this.props);
+    return React.createElement("div", __assign({
+      role: "toolbar"
+    }, divProps), this._renderPivotLinks(linkCollection, selectedKey), selectedKey && this._renderPivotItem(linkCollection, selectedKey));
+  };
+
+  PivotBase.prototype._getSelectedKey = function (linkCollection) {
+    var propsSelectedKey = this.props.selectedKey;
+
+    if (this._isKeyValid(linkCollection, propsSelectedKey) || propsSelectedKey === null) {
+      return propsSelectedKey;
     }
 
-    if (this._focusZone && this._focusZone.current) {
-      return this._focusZone.current.focus(forceIntoFirstElement);
+    var stateSelectedKey = this.state.selectedKey;
+
+    if (this._isKeyValid(linkCollection, stateSelectedKey)) {
+      return stateSelectedKey;
     }
 
-    return false;
-  };
-
-  NavBase.prototype._renderNavLink = function (link, linkIndex, nestingLevel) {
-    var _a = this.props,
-        styles = _a.styles,
-        groups = _a.groups,
-        theme = _a.theme;
-    var isLinkWithIcon = link.icon || link.iconProps;
-
-    var isSelectedLink = this._isLinkSelected(link);
-
-    var _b = link.ariaCurrent,
-        ariaCurrent = _b === void 0 ? 'page' : _b;
-    var classNames = getClassNames$8(styles, {
-      theme: theme,
-      isSelected: isSelectedLink,
-      isDisabled: link.disabled,
-      isButtonEntry: link.onClick && !link.forceAnchor,
-      leftPadding: _indentationSize * nestingLevel + _baseIndent + (isLinkWithIcon ? 0 : 24),
-      groups: groups
-    }); // Prevent hijacking of the parent window if link.target is defined
-
-    var rel = link.url && link.target && !isRelativeUrl(link.url) ? 'noopener noreferrer' : undefined;
-    var LinkAs = this.props.linkAs ? composeComponentAs(this.props.linkAs, ActionButton) : ActionButton;
-    var onRenderLink = this.props.onRenderLink ? composeRenderFunction(this.props.onRenderLink, this._onRenderLink) : this._onRenderLink;
-    return React.createElement(LinkAs, {
-      className: classNames.link,
-      styles: buttonStyles,
-      href: link.url || (link.forceAnchor ? '#' : undefined),
-      iconProps: link.iconProps || {
-        iconName: link.icon
-      },
-      onClick: link.onClick ? this._onNavButtonLinkClicked.bind(this, link) : this._onNavAnchorLinkClicked.bind(this, link),
-      title: link.title !== undefined ? link.title : link.name,
-      target: link.target,
-      rel: rel,
-      disabled: link.disabled,
-      "aria-current": isSelectedLink ? ariaCurrent : undefined,
-      "aria-label": link.ariaLabel ? link.ariaLabel : undefined,
-      link: link
-    }, onRenderLink(link));
-  };
-
-  NavBase.prototype._renderCompositeLink = function (link, linkIndex, nestingLevel) {
-    var divProps = __assign({}, getNativeProps(link, divProperties, ['onClick'])); // tslint:disable-next-line:deprecation
-
-
-    var _a = this.props,
-        expandButtonAriaLabel = _a.expandButtonAriaLabel,
-        styles = _a.styles,
-        groups = _a.groups,
-        theme = _a.theme;
-    var classNames = getClassNames$8(styles, {
-      theme: theme,
-      isExpanded: !!link.isExpanded,
-      isSelected: this._isLinkSelected(link),
-      isLink: true,
-      isDisabled: link.disabled,
-      position: _indentationSize * nestingLevel + 1,
-      groups: groups
-    });
-    var finalExpandBtnAriaLabel = '';
-
-    if (link.links && link.links.length > 0) {
-      if (link.collapseAriaLabel || link.expandAriaLabel) {
-        finalExpandBtnAriaLabel = link.isExpanded ? link.collapseAriaLabel : link.expandAriaLabel;
-      } else {
-        // TODO remove when `expandButtonAriaLabel` is removed. This is not an ideal concatenation for localization.
-        finalExpandBtnAriaLabel = expandButtonAriaLabel ? link.name + " " + expandButtonAriaLabel : link.name;
-      }
+    if (linkCollection.links.length) {
+      return linkCollection.links[0].itemKey;
     }
 
-    return React.createElement("div", __assign({}, divProps, {
-      key: link.key || linkIndex,
-      className: classNames.compositeLink
-    }), link.links && link.links.length > 0 ? React.createElement("button", {
-      className: classNames.chevronButton,
-      onClick: this._onLinkExpandClicked.bind(this, link),
-      "aria-label": finalExpandBtnAriaLabel,
-      "aria-expanded": link.isExpanded ? 'true' : 'false'
-    }, React.createElement(Icon, {
-      className: classNames.chevronIcon,
-      iconName: "ChevronDown"
-    })) : null, this._renderNavLink(link, linkIndex, nestingLevel));
+    return undefined;
   };
+  /**
+   * Renders the set of links to route between pivots
+   */
 
-  NavBase.prototype._renderLink = function (link, linkIndex, nestingLevel) {
-    var _a = this.props,
-        styles = _a.styles,
-        groups = _a.groups,
-        theme = _a.theme;
-    var classNames = getClassNames$8(styles, {
-      theme: theme,
-      groups: groups
-    });
-    return React.createElement("li", {
-      key: link.key || linkIndex,
-      role: "listitem",
-      className: classNames.navItem
-    }, this._renderCompositeLink(link, linkIndex, nestingLevel), link.isExpanded ? this._renderLinks(link.links, ++nestingLevel) : null);
-  };
 
-  NavBase.prototype._renderLinks = function (links, nestingLevel) {
+  PivotBase.prototype._renderPivotLinks = function (linkCollection, selectedKey) {
     var _this = this;
 
-    if (!links || !links.length) {
+    var items = linkCollection.links.map(function (l) {
+      return _this._renderPivotLink(linkCollection, l, selectedKey);
+    });
+    return React.createElement(FocusZone, {
+      className: this._classNames.root,
+      role: "tablist",
+      componentRef: this._focusZone,
+      direction: FocusZoneDirection.horizontal
+    }, items);
+  };
+  /**
+   * Renders the current Pivot Item
+   */
+
+
+  PivotBase.prototype._renderPivotItem = function (linkCollection, itemKey) {
+    if (this.props.headersOnly || !itemKey) {
       return null;
     }
 
-    var linkElements = links.map(function (link, linkIndex) {
-      return _this._renderLink(link, linkIndex, nestingLevel);
+    var index = linkCollection.keyToIndexMapping[itemKey];
+    var selectedTabId = linkCollection.keyToTabIdMapping[itemKey];
+    return React.createElement("div", {
+      role: "tabpanel",
+      "aria-labelledby": selectedTabId,
+      className: this._classNames.itemContainer
+    }, React.Children.toArray(this.props.children)[index]);
+  };
+  /**
+   * Gets the set of PivotLinks as array of IPivotItemProps
+   * The set of Links is determined by child components of type PivotItem
+   */
+
+
+  PivotBase.prototype._getPivotLinks = function (props) {
+    var _this = this;
+
+    var result = {
+      links: [],
+      keyToIndexMapping: {},
+      keyToTabIdMapping: {}
+    };
+    React.Children.map(React.Children.toArray(props.children), function (child, index) {
+      if (_isPivotItem(child)) {
+        var pivotItem = child;
+
+        var _a = pivotItem.props,
+            linkText = _a.linkText,
+            pivotItemProps = __rest(_a, ["linkText"]);
+
+        var itemKey = pivotItem.props.itemKey || index.toString();
+        result.links.push(__assign(__assign({
+          // Use linkText (deprecated) if headerText is not provided
+          headerText: linkText
+        }, pivotItemProps), {
+          itemKey: itemKey
+        }));
+        result.keyToIndexMapping[itemKey] = index;
+        result.keyToTabIdMapping[itemKey] = _this._getTabId(itemKey, index);
+      } else {
+        warn('The children of a Pivot component must be of type PivotItem to be rendered.');
+      }
     });
-    var _a = this.props,
-        styles = _a.styles,
-        groups = _a.groups,
-        theme = _a.theme;
-    var classNames = getClassNames$8(styles, {
-      theme: theme,
-      groups: groups
-    });
-    return React.createElement("ul", {
-      role: "list",
-      className: classNames.navItems
-    }, linkElements);
+    return result;
   };
+  /**
+   * Generates the Id for the tab button.
+   */
 
-  NavBase.prototype._onGroupHeaderClicked = function (group, ev) {
-    if (group.onHeaderClick) {
-      group.onHeaderClick(ev, this._isGroupExpanded(group));
+
+  PivotBase.prototype._getTabId = function (itemKey, index) {
+    if (this.props.getTabId) {
+      return this.props.getTabId(itemKey, index);
     }
 
-    this._toggleCollapsed(group);
+    return this._pivotId + ("-Tab" + index);
+  };
+  /**
+   * whether the key exists in the pivot items.
+   */
 
+
+  PivotBase.prototype._isKeyValid = function (linkCollection, itemKey) {
+    return itemKey !== undefined && itemKey !== null && linkCollection.keyToIndexMapping[itemKey] !== undefined;
+  };
+  /**
+   * Handles the onClick event on PivotLinks
+   */
+
+
+  PivotBase.prototype._onLinkClick = function (itemKey, ev) {
     ev.preventDefault();
-    ev.stopPropagation();
+
+    this._updateSelectedItem(itemKey, ev);
   };
+  /**
+   * Handle the onKeyPress event on the PivotLinks
+   */
 
-  NavBase.prototype._onLinkExpandClicked = function (link, ev) {
-    var onLinkExpandClick = this.props.onLinkExpandClick;
 
-    if (onLinkExpandClick) {
-      onLinkExpandClick(ev, link);
-    }
-
-    if (!ev.defaultPrevented) {
-      link.isExpanded = !link.isExpanded;
-      this.setState({
-        isLinkExpandStateChanged: true
-      });
-    }
-
-    ev.preventDefault();
-    ev.stopPropagation();
-  };
-
-  NavBase.prototype._preventBounce = function (link, ev) {
-    if (!link.url && link.forceAnchor) {
+  PivotBase.prototype._onKeyPress = function (itemKey, ev) {
+    if (ev.which === KeyCodes.enter) {
       ev.preventDefault();
+
+      this._updateSelectedItem(itemKey);
+    }
+  };
+  /**
+   * Updates the state with the new selected index
+   */
+
+
+  PivotBase.prototype._updateSelectedItem = function (itemKey, ev) {
+    this.setState({
+      selectedKey: itemKey
+    });
+
+    var linkCollection = this._getPivotLinks(this.props);
+
+    if (this.props.onLinkClick && linkCollection.keyToIndexMapping[itemKey] >= 0) {
+      var index = linkCollection.keyToIndexMapping[itemKey]; // React.Element<any> cannot directly convert to PivotItem.
+
+      var item = React.Children.toArray(this.props.children)[index];
+
+      if (_isPivotItem(item)) {
+        this.props.onLinkClick(item, ev);
+      }
     }
   };
 
-  NavBase.prototype._onNavAnchorLinkClicked = function (link, ev) {
-    // If the href is "#" we should call preventDefault to prevent scrolling to the top of the page
-    this._preventBounce(link, ev);
-
-    if (this.props.onLinkClick) {
-      this.props.onLinkClick(ev, link);
-    }
-
-    if (!link.url && link.links && link.links.length > 0) {
-      this._onLinkExpandClicked(link, ev);
-    }
-
-    this.setState({
-      selectedKey: link.key
+  PivotBase.prototype._getClassNames = function (props) {
+    var theme = props.theme;
+    var rootIsLarge = props.linkSize === PivotLinkSize.large;
+    var rootIsTabs = props.linkFormat === PivotLinkFormat.tabs;
+    return getClassNames$9(props.styles, {
+      theme: theme,
+      rootIsLarge: rootIsLarge,
+      rootIsTabs: rootIsTabs
     });
   };
 
-  NavBase.prototype._onNavButtonLinkClicked = function (link, ev) {
-    // If the href is "#" we should call preventDefault to prevent scrolling to the top of the page
-    this._preventBounce(link, ev);
-
-    if (link.onClick) {
-      link.onClick(ev, link);
-    }
-
-    if (!link.url && link.links && link.links.length > 0) {
-      this._onLinkExpandClicked(link, ev);
-    }
-
-    this.setState({
-      selectedKey: link.key
-    });
-  };
-
-  NavBase.prototype._isLinkSelected = function (link) {
-    // if caller passes in selectedKey, use it as first choice or
-    // if current state.selectedKey (from addressbar) is match to the link or
-    // check if URL is matching location.href (if link.url exists)
-    if (this.props.selectedKey !== undefined) {
-      return link.key === this.props.selectedKey;
-    } else if (this.state.selectedKey !== undefined) {
-      return link.key === this.state.selectedKey;
-    } else if (typeof getWindow() === 'undefined' || !link.url) {
-      // resolve is not supported for ssr
-      return false;
-    } else {
-      // If selectedKey is undefined in props and state, then check URL
-      _urlResolver = _urlResolver || document.createElement('a');
-      _urlResolver.href = link.url || '';
-      var target = _urlResolver.href;
-
-      if (location.href === target) {
-        return true;
-      } // If selectedKey is not defined in state, then check URL to determine link selected status
-
-
-      if (location.protocol + '//' + location.host + location.pathname === target) {
-        return true;
-      }
-
-      if (location.hash) {
-        // Match the hash to the url.
-        if (location.hash === link.url) {
-          return true;
-        } // Match a rebased url. (e.g. #foo becomes http://hostname/foo)
-
-
-        _urlResolver.href = location.hash.substring(1);
-        return _urlResolver.href === target;
-      }
-    }
-
-    return false;
-  };
-
-  NavBase.prototype._isGroupExpanded = function (group) {
-    if (group.name && this.state.isGroupCollapsed.hasOwnProperty(group.name)) {
-      return !this.state.isGroupCollapsed[group.name];
-    }
-
-    if (group.collapseByDefault !== undefined) {
-      return !group.collapseByDefault;
-    }
-
-    return true;
-  };
-
-  NavBase.prototype._toggleCollapsed = function (group) {
-    var _a;
-
-    if (group.name) {
-      var newGroupCollapsed = __assign(__assign({}, this.state.isGroupCollapsed), (_a = {}, _a[group.name] = this._isGroupExpanded(group), _a));
-
-      this.setState({
-        isGroupCollapsed: newGroupCollapsed
-      });
-    }
-  };
-
-  NavBase.defaultProps = {
-    groups: null
-  };
-  return NavBase;
+  return PivotBase;
 }(React.Component);
 
-var Nav = styled(NavBase, getStyles$9, undefined, {
-  scope: 'Nav'
-});
-
-// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
-function initializeIcons(baseUrl, options) {
-  if (baseUrl === void 0) {
-    baseUrl = '';
-  }
-
-  var subset = {
-    style: {
-      MozOsxFontSmoothing: 'grayscale',
-      WebkitFontSmoothing: 'antialiased',
-      fontStyle: 'normal',
-      fontWeight: 'normal',
-      speak: 'none'
-    },
-    fontFace: {
-      fontFamily: "\"FabricMDL2Icons\"",
-      src: "url('" + baseUrl + "fabric-icons-a13498cf.woff') format('woff')"
-    },
-    icons: {
-      GlobalNavButton: '\uE700',
-      ChevronDown: '\uE70D',
-      ChevronUp: '\uE70E',
-      Edit: '\uE70F',
-      Add: '\uE710',
-      Cancel: '\uE711',
-      More: '\uE712',
-      Settings: '\uE713',
-      Mail: '\uE715',
-      Filter: '\uE71C',
-      Search: '\uE721',
-      Share: '\uE72D',
-      BlockedSite: '\uE72F',
-      FavoriteStar: '\uE734',
-      FavoriteStarFill: '\uE735',
-      CheckMark: '\uE73E',
-      Delete: '\uE74D',
-      ChevronLeft: '\uE76B',
-      ChevronRight: '\uE76C',
-      Calendar: '\uE787',
-      Megaphone: '\uE789',
-      Undo: '\uE7A7',
-      Flag: '\uE7C1',
-      Page: '\uE7C3',
-      Pinned: '\uE840',
-      View: '\uE890',
-      Clear: '\uE894',
-      Download: '\uE896',
-      Upload: '\uE898',
-      Folder: '\uE8B7',
-      Sort: '\uE8CB',
-      AlignRight: '\uE8E2',
-      AlignLeft: '\uE8E4',
-      Tag: '\uE8EC',
-      AddFriend: '\uE8FA',
-      Info: '\uE946',
-      SortLines: '\uE9D0',
-      List: '\uEA37',
-      CircleRing: '\uEA3A',
-      Heart: '\uEB51',
-      HeartFill: '\uEB52',
-      Tiles: '\uECA5',
-      Embed: '\uECCE',
-      Glimmer: '\uECF4',
-      Ascending: '\uEDC0',
-      Descending: '\uEDC1',
-      SortUp: '\uEE68',
-      SortDown: '\uEE69',
-      SyncToPC: '\uEE6E',
-      LargeGrid: '\uEECB',
-      SkypeCheck: '\uEF80',
-      SkypeClock: '\uEF81',
-      SkypeMinus: '\uEF82',
-      ClearFilter: '\uEF8F',
-      Flow: '\uEF90',
-      StatusCircleCheckmark: '\uF13E',
-      MoreVertical: '\uF2BC'
-    }
-  };
-  registerIcons(subset, options);
+function _isPivotItem(item) {
+  // In theory, we should be able to just check item.type === PivotItem.
+  // However, under certain unclear circumstances (see https://github.com/microsoft/fluentui/issues/10785),
+  // the object identity is different despite the function implementation being the same.
+  return !!item && typeof item === 'object' && !!item.type && item.type.name === PivotItem.name;
 }
 
-// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
-function initializeIcons$1(baseUrl, options) {
-  if (baseUrl === void 0) {
-    baseUrl = '';
-  }
-
-  var subset = {
-    style: {
-      MozOsxFontSmoothing: 'grayscale',
-      WebkitFontSmoothing: 'antialiased',
-      fontStyle: 'normal',
-      fontWeight: 'normal',
-      speak: 'none'
-    },
-    fontFace: {
-      fontFamily: "\"FabricMDL2Icons-0\"",
-      src: "url('" + baseUrl + "fabric-icons-0-467ee27f.woff') format('woff')"
-    },
-    icons: {
-      'PageLink': '\uE302',
-      'CommentSolid': '\uE30E',
-      'ChangeEntitlements': '\uE310',
-      'Installation': '\uE311',
-      'WebAppBuilderModule': '\uE313',
-      'WebAppBuilderFragment': '\uE314',
-      'WebAppBuilderSlot': '\uE315',
-      'BullseyeTargetEdit': '\uE319',
-      'WebAppBuilderFragmentCreate': '\uE31B',
-      'PageData': '\uE31C',
-      'PageHeaderEdit': '\uE31D',
-      'ProductList': '\uE31E',
-      'UnpublishContent': '\uE31F',
-      'DependencyAdd': '\uE344',
-      'DependencyRemove': '\uE345',
-      'EntitlementPolicy': '\uE346',
-      'EntitlementRedemption': '\uE347',
-      'SchoolDataSyncLogo': '\uE34C',
-      'PinSolid12': '\uE352',
-      'PinSolidOff12': '\uE353',
-      'AddLink': '\uE35E',
-      'SharepointAppIcon16': '\uE365',
-      'DataflowsLink': '\uE366',
-      'TimePicker': '\uE367',
-      'UserWarning': '\uE368',
-      'ComplianceAudit': '\uE369',
-      'InternetSharing': '\uE704',
-      'Brightness': '\uE706',
-      'MapPin': '\uE707',
-      'Airplane': '\uE709',
-      'Tablet': '\uE70A',
-      'QuickNote': '\uE70B',
-      'Video': '\uE714',
-      'People': '\uE716',
-      'Phone': '\uE717',
-      'Pin': '\uE718',
-      'Shop': '\uE719',
-      'Stop': '\uE71A',
-      'Link': '\uE71B',
-      'AllApps': '\uE71D',
-      'Zoom': '\uE71E',
-      'ZoomOut': '\uE71F',
-      'Microphone': '\uE720',
-      'Camera': '\uE722',
-      'Attach': '\uE723',
-      'Send': '\uE724',
-      'FavoriteList': '\uE728',
-      'PageSolid': '\uE729',
-      'Forward': '\uE72A',
-      'Back': '\uE72B',
-      'Refresh': '\uE72C',
-      'Lock': '\uE72E',
-      'ReportHacked': '\uE730',
-      'EMI': '\uE731',
-      'MiniLink': '\uE732',
-      'Blocked': '\uE733',
-      'ReadingMode': '\uE736',
-      'Favicon': '\uE737',
-      'Remove': '\uE738',
-      'Checkbox': '\uE739',
-      'CheckboxComposite': '\uE73A',
-      'CheckboxFill': '\uE73B',
-      'CheckboxIndeterminate': '\uE73C',
-      'CheckboxCompositeReversed': '\uE73D',
-      'BackToWindow': '\uE73F',
-      'FullScreen': '\uE740',
-      'Print': '\uE749',
-      'Up': '\uE74A',
-      'Down': '\uE74B',
-      'OEM': '\uE74C',
-      'Save': '\uE74E',
-      'ReturnKey': '\uE751',
-      'Cloud': '\uE753',
-      'Flashlight': '\uE754',
-      'CommandPrompt': '\uE756',
-      'Sad': '\uE757',
-      'RealEstate': '\uE758',
-      'SIPMove': '\uE759',
-      'EraseTool': '\uE75C',
-      'GripperTool': '\uE75E',
-      'Dialpad': '\uE75F',
-      'PageLeft': '\uE760',
-      'PageRight': '\uE761',
-      'MultiSelect': '\uE762',
-      'KeyboardClassic': '\uE765',
-      'Play': '\uE768',
-      'Pause': '\uE769',
-      'InkingTool': '\uE76D',
-      'Emoji2': '\uE76E',
-      'GripperBarHorizontal': '\uE76F',
-      'System': '\uE770',
-      'Personalize': '\uE771',
-      'SearchAndApps': '\uE773',
-      'Globe': '\uE774',
-      'EaseOfAccess': '\uE776',
-      'ContactInfo': '\uE779',
-      'Unpin': '\uE77A',
-      'Contact': '\uE77B',
-      'Memo': '\uE77C',
-      'IncomingCall': '\uE77E'
-    }
-  };
-  registerIcons(subset, options);
-}
-
-// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
-function initializeIcons$2(baseUrl, options) {
-  if (baseUrl === void 0) {
-    baseUrl = '';
-  }
-
-  var subset = {
-    style: {
-      MozOsxFontSmoothing: 'grayscale',
-      WebkitFontSmoothing: 'antialiased',
-      fontStyle: 'normal',
-      fontWeight: 'normal',
-      speak: 'none'
-    },
-    fontFace: {
-      fontFamily: "\"FabricMDL2Icons-1\"",
-      src: "url('" + baseUrl + "fabric-icons-1-4d521695.woff') format('woff')"
-    },
-    icons: {
-      'Paste': '\uE77F',
-      'WindowsLogo': '\uE782',
-      'Error': '\uE783',
-      'GripperBarVertical': '\uE784',
-      'Unlock': '\uE785',
-      'Slideshow': '\uE786',
-      'Trim': '\uE78A',
-      'AutoEnhanceOn': '\uE78D',
-      'AutoEnhanceOff': '\uE78E',
-      'Color': '\uE790',
-      'SaveAs': '\uE792',
-      'Light': '\uE793',
-      'Filters': '\uE795',
-      'AspectRatio': '\uE799',
-      'Contrast': '\uE7A1',
-      'Redo': '\uE7A6',
-      'Crop': '\uE7A8',
-      'PhotoCollection': '\uE7AA',
-      'Album': '\uE7AB',
-      'Rotate': '\uE7AD',
-      'PanoIndicator': '\uE7B0',
-      'Translate': '\uE7B2',
-      'RedEye': '\uE7B3',
-      'ViewOriginal': '\uE7B4',
-      'ThumbnailView': '\uE7B6',
-      'Package': '\uE7B8',
-      'Telemarketer': '\uE7B9',
-      'Warning': '\uE7BA',
-      'Financial': '\uE7BB',
-      'Education': '\uE7BE',
-      'ShoppingCart': '\uE7BF',
-      'Train': '\uE7C0',
-      'Move': '\uE7C2',
-      'TouchPointer': '\uE7C9',
-      'Merge': '\uE7D5',
-      'TurnRight': '\uE7DB',
-      'Ferry': '\uE7E3',
-      'Highlight': '\uE7E6',
-      'PowerButton': '\uE7E8',
-      'Tab': '\uE7E9',
-      'Admin': '\uE7EF',
-      'TVMonitor': '\uE7F4',
-      'Speakers': '\uE7F5',
-      'Game': '\uE7FC',
-      'HorizontalTabKey': '\uE7FD',
-      'UnstackSelected': '\uE7FE',
-      'StackIndicator': '\uE7FF',
-      'Nav2DMapView': '\uE800',
-      'StreetsideSplitMinimize': '\uE802',
-      'Car': '\uE804',
-      'Bus': '\uE806',
-      'EatDrink': '\uE807',
-      'SeeDo': '\uE808',
-      'LocationCircle': '\uE80E',
-      'Home': '\uE80F',
-      'SwitcherStartEnd': '\uE810',
-      'ParkingLocation': '\uE811',
-      'IncidentTriangle': '\uE814',
-      'Touch': '\uE815',
-      'MapDirections': '\uE816',
-      'CaretHollow': '\uE817',
-      'CaretSolid': '\uE818',
-      'History': '\uE81C',
-      'Location': '\uE81D',
-      'MapLayers': '\uE81E',
-      'SearchNearby': '\uE820',
-      'Work': '\uE821',
-      'Recent': '\uE823',
-      'Hotel': '\uE824',
-      'Bank': '\uE825',
-      'LocationDot': '\uE827',
-      'Dictionary': '\uE82D',
-      'ChromeBack': '\uE830',
-      'FolderOpen': '\uE838',
-      'PinnedFill': '\uE842',
-      'RevToggleKey': '\uE845',
-      'USB': '\uE88E',
-      'Previous': '\uE892',
-      'Next': '\uE893',
-      'Sync': '\uE895',
-      'Help': '\uE897',
-      'Emoji': '\uE899',
-      'MailForward': '\uE89C',
-      'ClosePane': '\uE89F',
-      'OpenPane': '\uE8A0',
-      'PreviewLink': '\uE8A1',
-      'ZoomIn': '\uE8A3',
-      'Bookmarks': '\uE8A4',
-      'Document': '\uE8A5',
-      'ProtectedDocument': '\uE8A6',
-      'OpenInNewWindow': '\uE8A7',
-      'MailFill': '\uE8A8',
-      'ViewAll': '\uE8A9',
-      'Switch': '\uE8AB',
-      'Rename': '\uE8AC',
-      'Go': '\uE8AD',
-      'Remote': '\uE8AF',
-      'SelectAll': '\uE8B3',
-      'Orientation': '\uE8B4',
-      'Import': '\uE8B5'
-    }
-  };
-  registerIcons(subset, options);
-}
-
-// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
-function initializeIcons$3(baseUrl, options) {
-  if (baseUrl === void 0) {
-    baseUrl = '';
-  }
-
-  var subset = {
-    style: {
-      MozOsxFontSmoothing: 'grayscale',
-      WebkitFontSmoothing: 'antialiased',
-      fontStyle: 'normal',
-      fontWeight: 'normal',
-      speak: 'none'
-    },
-    fontFace: {
-      fontFamily: "\"FabricMDL2Icons-2\"",
-      src: "url('" + baseUrl + "fabric-icons-2-63c99abf.woff') format('woff')"
-    },
-    icons: {
-      'Picture': '\uE8B9',
-      'ChromeClose': '\uE8BB',
-      'ShowResults': '\uE8BC',
-      'Message': '\uE8BD',
-      'CalendarDay': '\uE8BF',
-      'CalendarWeek': '\uE8C0',
-      'MailReplyAll': '\uE8C2',
-      'Read': '\uE8C3',
-      'Cut': '\uE8C6',
-      'PaymentCard': '\uE8C7',
-      'Copy': '\uE8C8',
-      'Important': '\uE8C9',
-      'MailReply': '\uE8CA',
-      'GotoToday': '\uE8D1',
-      'Font': '\uE8D2',
-      'FontColor': '\uE8D3',
-      'FolderFill': '\uE8D5',
-      'Permissions': '\uE8D7',
-      'DisableUpdates': '\uE8D8',
-      'Unfavorite': '\uE8D9',
-      'Italic': '\uE8DB',
-      'Underline': '\uE8DC',
-      'Bold': '\uE8DD',
-      'MoveToFolder': '\uE8DE',
-      'Dislike': '\uE8E0',
-      'Like': '\uE8E1',
-      'AlignCenter': '\uE8E3',
-      'OpenFile': '\uE8E5',
-      'ClearSelection': '\uE8E6',
-      'FontDecrease': '\uE8E7',
-      'FontIncrease': '\uE8E8',
-      'FontSize': '\uE8E9',
-      'CellPhone': '\uE8EA',
-      'RepeatOne': '\uE8ED',
-      'RepeatAll': '\uE8EE',
-      'Calculator': '\uE8EF',
-      'Library': '\uE8F1',
-      'PostUpdate': '\uE8F3',
-      'NewFolder': '\uE8F4',
-      'CalendarReply': '\uE8F5',
-      'UnsyncFolder': '\uE8F6',
-      'SyncFolder': '\uE8F7',
-      'BlockContact': '\uE8F8',
-      'Accept': '\uE8FB',
-      'BulletedList': '\uE8FD',
-      'Preview': '\uE8FF',
-      'News': '\uE900',
-      'Chat': '\uE901',
-      'Group': '\uE902',
-      'World': '\uE909',
-      'Comment': '\uE90A',
-      'DockLeft': '\uE90C',
-      'DockRight': '\uE90D',
-      'Repair': '\uE90F',
-      'Accounts': '\uE910',
-      'Street': '\uE913',
-      'RadioBullet': '\uE915',
-      'Stopwatch': '\uE916',
-      'Clock': '\uE917',
-      'WorldClock': '\uE918',
-      'AlarmClock': '\uE919',
-      'Photo': '\uE91B',
-      'ActionCenter': '\uE91C',
-      'Hospital': '\uE91D',
-      'Timer': '\uE91E',
-      'FullCircleMask': '\uE91F',
-      'LocationFill': '\uE920',
-      'ChromeMinimize': '\uE921',
-      'ChromeRestore': '\uE923',
-      'Annotation': '\uE924',
-      'Fingerprint': '\uE928',
-      'Handwriting': '\uE929',
-      'ChromeFullScreen': '\uE92D',
-      'Completed': '\uE930',
-      'Label': '\uE932',
-      'FlickDown': '\uE935',
-      'FlickUp': '\uE936',
-      'FlickLeft': '\uE937',
-      'FlickRight': '\uE938',
-      'MiniExpand': '\uE93A',
-      'MiniContract': '\uE93B',
-      'Streaming': '\uE93E',
-      'MusicInCollection': '\uE940',
-      'OneDriveLogo': '\uE941',
-      'CompassNW': '\uE942',
-      'Code': '\uE943',
-      'LightningBolt': '\uE945',
-      'CalculatorMultiply': '\uE947',
-      'CalculatorAddition': '\uE948',
-      'CalculatorSubtract': '\uE949',
-      'CalculatorPercentage': '\uE94C',
-      'CalculatorEqualTo': '\uE94E',
-      'PrintfaxPrinterFile': '\uE956',
-      'StorageOptical': '\uE958',
-      'Communications': '\uE95A',
-      'Headset': '\uE95B',
-      'Health': '\uE95E',
-      'Webcam2': '\uE960',
-      'FrontCamera': '\uE96B',
-      'ChevronUpSmall': '\uE96D'
-    }
-  };
-  registerIcons(subset, options);
-}
-
-// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
-function initializeIcons$4(baseUrl, options) {
-  if (baseUrl === void 0) {
-    baseUrl = '';
-  }
-
-  var subset = {
-    style: {
-      MozOsxFontSmoothing: 'grayscale',
-      WebkitFontSmoothing: 'antialiased',
-      fontStyle: 'normal',
-      fontWeight: 'normal',
-      speak: 'none'
-    },
-    fontFace: {
-      fontFamily: "\"FabricMDL2Icons-3\"",
-      src: "url('" + baseUrl + "fabric-icons-3-089e217a.woff') format('woff')"
-    },
-    icons: {
-      'ChevronDownSmall': '\uE96E',
-      'ChevronLeftSmall': '\uE96F',
-      'ChevronRightSmall': '\uE970',
-      'ChevronUpMed': '\uE971',
-      'ChevronDownMed': '\uE972',
-      'ChevronLeftMed': '\uE973',
-      'ChevronRightMed': '\uE974',
-      'Devices2': '\uE975',
-      'PC1': '\uE977',
-      'PresenceChickletVideo': '\uE979',
-      'Reply': '\uE97A',
-      'HalfAlpha': '\uE97E',
-      'ConstructionCone': '\uE98F',
-      'DoubleChevronLeftMed': '\uE991',
-      'Volume0': '\uE992',
-      'Volume1': '\uE993',
-      'Volume2': '\uE994',
-      'Volume3': '\uE995',
-      'Chart': '\uE999',
-      'Robot': '\uE99A',
-      'Manufacturing': '\uE99C',
-      'LockSolid': '\uE9A2',
-      'FitPage': '\uE9A6',
-      'FitWidth': '\uE9A7',
-      'BidiLtr': '\uE9AA',
-      'BidiRtl': '\uE9AB',
-      'RightDoubleQuote': '\uE9B1',
-      'Sunny': '\uE9BD',
-      'CloudWeather': '\uE9BE',
-      'Cloudy': '\uE9BF',
-      'PartlyCloudyDay': '\uE9C0',
-      'PartlyCloudyNight': '\uE9C1',
-      'ClearNight': '\uE9C2',
-      'RainShowersDay': '\uE9C3',
-      'Rain': '\uE9C4',
-      'Thunderstorms': '\uE9C6',
-      'RainSnow': '\uE9C7',
-      'Snow': '\uE9C8',
-      'BlowingSnow': '\uE9C9',
-      'Frigid': '\uE9CA',
-      'Fog': '\uE9CB',
-      'Squalls': '\uE9CC',
-      'Duststorm': '\uE9CD',
-      'Unknown': '\uE9CE',
-      'Precipitation': '\uE9CF',
-      'Ribbon': '\uE9D1',
-      'AreaChart': '\uE9D2',
-      'Assign': '\uE9D3',
-      'FlowChart': '\uE9D4',
-      'CheckList': '\uE9D5',
-      'Diagnostic': '\uE9D9',
-      'Generate': '\uE9DA',
-      'LineChart': '\uE9E6',
-      'Equalizer': '\uE9E9',
-      'BarChartHorizontal': '\uE9EB',
-      'BarChartVertical': '\uE9EC',
-      'Freezing': '\uE9EF',
-      'FunnelChart': '\uE9F1',
-      'Processing': '\uE9F5',
-      'Quantity': '\uE9F8',
-      'ReportDocument': '\uE9F9',
-      'StackColumnChart': '\uE9FC',
-      'SnowShowerDay': '\uE9FD',
-      'HailDay': '\uEA00',
-      'WorkFlow': '\uEA01',
-      'HourGlass': '\uEA03',
-      'StoreLogoMed20': '\uEA04',
-      'TimeSheet': '\uEA05',
-      'TriangleSolid': '\uEA08',
-      'UpgradeAnalysis': '\uEA0B',
-      'VideoSolid': '\uEA0C',
-      'RainShowersNight': '\uEA0F',
-      'SnowShowerNight': '\uEA11',
-      'Teamwork': '\uEA12',
-      'HailNight': '\uEA13',
-      'PeopleAdd': '\uEA15',
-      'Glasses': '\uEA16',
-      'DateTime2': '\uEA17',
-      'Shield': '\uEA18',
-      'Header1': '\uEA19',
-      'PageAdd': '\uEA1A',
-      'NumberedList': '\uEA1C',
-      'PowerBILogo': '\uEA1E',
-      'Info2': '\uEA1F',
-      'MusicInCollectionFill': '\uEA36',
-      'Asterisk': '\uEA38',
-      'ErrorBadge': '\uEA39',
-      'CircleFill': '\uEA3B',
-      'Record2': '\uEA3F',
-      'AllAppsMirrored': '\uEA40',
-      'BookmarksMirrored': '\uEA41',
-      'BulletedListMirrored': '\uEA42',
-      'CaretHollowMirrored': '\uEA45',
-      'CaretSolidMirrored': '\uEA46',
-      'ChromeBackMirrored': '\uEA47',
-      'ClearSelectionMirrored': '\uEA48',
-      'ClosePaneMirrored': '\uEA49',
-      'DockLeftMirrored': '\uEA4C',
-      'DoubleChevronLeftMedMirrored': '\uEA4D',
-      'GoMirrored': '\uEA4F'
-    }
-  };
-  registerIcons(subset, options);
-}
-
-// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
-function initializeIcons$5(baseUrl, options) {
-  if (baseUrl === void 0) {
-    baseUrl = '';
-  }
-
-  var subset = {
-    style: {
-      MozOsxFontSmoothing: 'grayscale',
-      WebkitFontSmoothing: 'antialiased',
-      fontStyle: 'normal',
-      fontWeight: 'normal',
-      speak: 'none'
-    },
-    fontFace: {
-      fontFamily: "\"FabricMDL2Icons-4\"",
-      src: "url('" + baseUrl + "fabric-icons-4-a656cc0a.woff') format('woff')"
-    },
-    icons: {
-      'HelpMirrored': '\uEA51',
-      'ImportMirrored': '\uEA52',
-      'ImportAllMirrored': '\uEA53',
-      'ListMirrored': '\uEA55',
-      'MailForwardMirrored': '\uEA56',
-      'MailReplyMirrored': '\uEA57',
-      'MailReplyAllMirrored': '\uEA58',
-      'MiniContractMirrored': '\uEA59',
-      'MiniExpandMirrored': '\uEA5A',
-      'OpenPaneMirrored': '\uEA5B',
-      'ParkingLocationMirrored': '\uEA5E',
-      'SendMirrored': '\uEA63',
-      'ShowResultsMirrored': '\uEA65',
-      'ThumbnailViewMirrored': '\uEA67',
-      'Media': '\uEA69',
-      'Devices3': '\uEA6C',
-      'Focus': '\uEA6F',
-      'VideoLightOff': '\uEA74',
-      'Lightbulb': '\uEA80',
-      'StatusTriangle': '\uEA82',
-      'VolumeDisabled': '\uEA85',
-      'Puzzle': '\uEA86',
-      'EmojiNeutral': '\uEA87',
-      'EmojiDisappointed': '\uEA88',
-      'HomeSolid': '\uEA8A',
-      'Ringer': '\uEA8F',
-      'PDF': '\uEA90',
-      'HeartBroken': '\uEA92',
-      'StoreLogo16': '\uEA96',
-      'MultiSelectMirrored': '\uEA98',
-      'Broom': '\uEA99',
-      'AddToShoppingList': '\uEA9A',
-      'Cocktails': '\uEA9D',
-      'Wines': '\uEABF',
-      'Articles': '\uEAC1',
-      'Cycling': '\uEAC7',
-      'DietPlanNotebook': '\uEAC8',
-      'Pill': '\uEACB',
-      'ExerciseTracker': '\uEACC',
-      'HandsFree': '\uEAD0',
-      'Medical': '\uEAD4',
-      'Running': '\uEADA',
-      'Weights': '\uEADB',
-      'Trackers': '\uEADF',
-      'AddNotes': '\uEAE3',
-      'AllCurrency': '\uEAE4',
-      'BarChart4': '\uEAE7',
-      'CirclePlus': '\uEAEE',
-      'Coffee': '\uEAEF',
-      'Cotton': '\uEAF3',
-      'Market': '\uEAFC',
-      'Money': '\uEAFD',
-      'PieDouble': '\uEB04',
-      'PieSingle': '\uEB05',
-      'RemoveFilter': '\uEB08',
-      'Savings': '\uEB0B',
-      'Sell': '\uEB0C',
-      'StockDown': '\uEB0F',
-      'StockUp': '\uEB11',
-      'Lamp': '\uEB19',
-      'Source': '\uEB1B',
-      'MSNVideos': '\uEB1C',
-      'Cricket': '\uEB1E',
-      'Golf': '\uEB1F',
-      'Baseball': '\uEB20',
-      'Soccer': '\uEB21',
-      'MoreSports': '\uEB22',
-      'AutoRacing': '\uEB24',
-      'CollegeHoops': '\uEB25',
-      'CollegeFootball': '\uEB26',
-      'ProFootball': '\uEB27',
-      'ProHockey': '\uEB28',
-      'Rugby': '\uEB2D',
-      'SubstitutionsIn': '\uEB31',
-      'Tennis': '\uEB33',
-      'Arrivals': '\uEB34',
-      'Design': '\uEB3C',
-      'Website': '\uEB41',
-      'Drop': '\uEB42',
-      'HistoricalWeather': '\uEB43',
-      'SkiResorts': '\uEB45',
-      'Snowflake': '\uEB46',
-      'BusSolid': '\uEB47',
-      'FerrySolid': '\uEB48',
-      'AirplaneSolid': '\uEB4C',
-      'TrainSolid': '\uEB4D',
-      'Ticket': '\uEB54',
-      'WifiWarning4': '\uEB63',
-      'Devices4': '\uEB66',
-      'AzureLogo': '\uEB6A',
-      'BingLogo': '\uEB6B',
-      'MSNLogo': '\uEB6C',
-      'OutlookLogoInverse': '\uEB6D',
-      'OfficeLogo': '\uEB6E',
-      'SkypeLogo': '\uEB6F',
-      'Door': '\uEB75',
-      'EditMirrored': '\uEB7E',
-      'GiftCard': '\uEB8E',
-      'DoubleBookmark': '\uEB8F',
-      'StatusErrorFull': '\uEB90'
-    }
-  };
-  registerIcons(subset, options);
-}
-
-// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
-function initializeIcons$6(baseUrl, options) {
-  if (baseUrl === void 0) {
-    baseUrl = '';
-  }
-
-  var subset = {
-    style: {
-      MozOsxFontSmoothing: 'grayscale',
-      WebkitFontSmoothing: 'antialiased',
-      fontStyle: 'normal',
-      fontWeight: 'normal',
-      speak: 'none'
-    },
-    fontFace: {
-      fontFamily: "\"FabricMDL2Icons-5\"",
-      src: "url('" + baseUrl + "fabric-icons-5-f95ba260.woff') format('woff')"
-    },
-    icons: {
-      'Certificate': '\uEB95',
-      'FastForward': '\uEB9D',
-      'Rewind': '\uEB9E',
-      'Photo2': '\uEB9F',
-      'OpenSource': '\uEBC2',
-      'Movers': '\uEBCD',
-      'CloudDownload': '\uEBD3',
-      'Family': '\uEBDA',
-      'WindDirection': '\uEBE6',
-      'Bug': '\uEBE8',
-      'SiteScan': '\uEBEC',
-      'BrowserScreenShot': '\uEBED',
-      'F12DevTools': '\uEBEE',
-      'CSS': '\uEBEF',
-      'JS': '\uEBF0',
-      'DeliveryTruck': '\uEBF4',
-      'ReminderPerson': '\uEBF7',
-      'ReminderGroup': '\uEBF8',
-      'ReminderTime': '\uEBF9',
-      'TabletMode': '\uEBFC',
-      'Umbrella': '\uEC04',
-      'NetworkTower': '\uEC05',
-      'CityNext': '\uEC06',
-      'CityNext2': '\uEC07',
-      'Section': '\uEC0C',
-      'OneNoteLogoInverse': '\uEC0D',
-      'ToggleFilled': '\uEC11',
-      'ToggleBorder': '\uEC12',
-      'SliderThumb': '\uEC13',
-      'ToggleThumb': '\uEC14',
-      'Documentation': '\uEC17',
-      'Badge': '\uEC1B',
-      'Giftbox': '\uEC1F',
-      'VisualStudioLogo': '\uEC22',
-      'HomeGroup': '\uEC26',
-      'ExcelLogoInverse': '\uEC28',
-      'WordLogoInverse': '\uEC29',
-      'PowerPointLogoInverse': '\uEC2A',
-      'Cafe': '\uEC32',
-      'SpeedHigh': '\uEC4A',
-      'Commitments': '\uEC4D',
-      'ThisPC': '\uEC4E',
-      'MusicNote': '\uEC4F',
-      'MicOff': '\uEC54',
-      'PlaybackRate1x': '\uEC57',
-      'EdgeLogo': '\uEC60',
-      'CompletedSolid': '\uEC61',
-      'AlbumRemove': '\uEC62',
-      'MessageFill': '\uEC70',
-      'TabletSelected': '\uEC74',
-      'MobileSelected': '\uEC75',
-      'LaptopSelected': '\uEC76',
-      'TVMonitorSelected': '\uEC77',
-      'DeveloperTools': '\uEC7A',
-      'Shapes': '\uEC7C',
-      'InsertTextBox': '\uEC7D',
-      'LowerBrightness': '\uEC8A',
-      'WebComponents': '\uEC8B',
-      'OfflineStorage': '\uEC8C',
-      'DOM': '\uEC8D',
-      'CloudUpload': '\uEC8E',
-      'ScrollUpDown': '\uEC8F',
-      'DateTime': '\uEC92',
-      'Event': '\uECA3',
-      'Cake': '\uECA4',
-      'Org': '\uECA6',
-      'PartyLeader': '\uECA7',
-      'DRM': '\uECA8',
-      'CloudAdd': '\uECA9',
-      'AppIconDefault': '\uECAA',
-      'Photo2Add': '\uECAB',
-      'Photo2Remove': '\uECAC',
-      'Calories': '\uECAD',
-      'POI': '\uECAF',
-      'AddTo': '\uECC8',
-      'RadioBtnOff': '\uECCA',
-      'RadioBtnOn': '\uECCB',
-      'ExploreContent': '\uECCD',
-      'Product': '\uECDC',
-      'ProgressLoopInner': '\uECDE',
-      'ProgressLoopOuter': '\uECDF',
-      'Blocked2': '\uECE4',
-      'FangBody': '\uECEB',
-      'Toolbox': '\uECED',
-      'PageHeader': '\uECEE',
-      'ChatInviteFriend': '\uECFE',
-      'Brush': '\uECFF',
-      'Shirt': '\uED00',
-      'Crown': '\uED01',
-      'Diamond': '\uED02',
-      'ScaleUp': '\uED09',
-      'QRCode': '\uED14',
-      'Feedback': '\uED15',
-      'SharepointLogoInverse': '\uED18',
-      'YammerLogo': '\uED19',
-      'Hide': '\uED1A',
-      'Uneditable': '\uED1D',
-      'ReturnToSession': '\uED24',
-      'OpenFolderHorizontal': '\uED25',
-      'CalendarMirrored': '\uED28'
-    }
-  };
-  registerIcons(subset, options);
-}
-
-// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
-function initializeIcons$7(baseUrl, options) {
-  if (baseUrl === void 0) {
-    baseUrl = '';
-  }
-
-  var subset = {
-    style: {
-      MozOsxFontSmoothing: 'grayscale',
-      WebkitFontSmoothing: 'antialiased',
-      fontStyle: 'normal',
-      fontWeight: 'normal',
-      speak: 'none'
-    },
-    fontFace: {
-      fontFamily: "\"FabricMDL2Icons-6\"",
-      src: "url('" + baseUrl + "fabric-icons-6-ef6fd590.woff') format('woff')"
-    },
-    icons: {
-      'SwayLogoInverse': '\uED29',
-      'OutOfOffice': '\uED34',
-      'Trophy': '\uED3F',
-      'ReopenPages': '\uED50',
-      'EmojiTabSymbols': '\uED58',
-      'AADLogo': '\uED68',
-      'AccessLogo': '\uED69',
-      'AdminALogoInverse32': '\uED6A',
-      'AdminCLogoInverse32': '\uED6B',
-      'AdminDLogoInverse32': '\uED6C',
-      'AdminELogoInverse32': '\uED6D',
-      'AdminLLogoInverse32': '\uED6E',
-      'AdminMLogoInverse32': '\uED6F',
-      'AdminOLogoInverse32': '\uED70',
-      'AdminPLogoInverse32': '\uED71',
-      'AdminSLogoInverse32': '\uED72',
-      'AdminYLogoInverse32': '\uED73',
-      'DelveLogoInverse': '\uED76',
-      'ExchangeLogoInverse': '\uED78',
-      'LyncLogo': '\uED79',
-      'OfficeVideoLogoInverse': '\uED7A',
-      'SocialListeningLogo': '\uED7C',
-      'VisioLogoInverse': '\uED7D',
-      'Balloons': '\uED7E',
-      'Cat': '\uED7F',
-      'MailAlert': '\uED80',
-      'MailCheck': '\uED81',
-      'MailLowImportance': '\uED82',
-      'MailPause': '\uED83',
-      'MailRepeat': '\uED84',
-      'SecurityGroup': '\uED85',
-      'Table': '\uED86',
-      'VoicemailForward': '\uED87',
-      'VoicemailReply': '\uED88',
-      'Waffle': '\uED89',
-      'RemoveEvent': '\uED8A',
-      'EventInfo': '\uED8B',
-      'ForwardEvent': '\uED8C',
-      'WipePhone': '\uED8D',
-      'AddOnlineMeeting': '\uED8E',
-      'JoinOnlineMeeting': '\uED8F',
-      'RemoveLink': '\uED90',
-      'PeopleBlock': '\uED91',
-      'PeopleRepeat': '\uED92',
-      'PeopleAlert': '\uED93',
-      'PeoplePause': '\uED94',
-      'TransferCall': '\uED95',
-      'AddPhone': '\uED96',
-      'UnknownCall': '\uED97',
-      'NoteReply': '\uED98',
-      'NoteForward': '\uED99',
-      'NotePinned': '\uED9A',
-      'RemoveOccurrence': '\uED9B',
-      'Timeline': '\uED9C',
-      'EditNote': '\uED9D',
-      'CircleHalfFull': '\uED9E',
-      'Room': '\uED9F',
-      'Unsubscribe': '\uEDA0',
-      'Subscribe': '\uEDA1',
-      'HardDrive': '\uEDA2',
-      'RecurringTask': '\uEDB2',
-      'TaskManager': '\uEDB7',
-      'TaskManagerMirrored': '\uEDB8',
-      'Combine': '\uEDBB',
-      'Split': '\uEDBC',
-      'DoubleChevronUp': '\uEDBD',
-      'DoubleChevronLeft': '\uEDBE',
-      'DoubleChevronRight': '\uEDBF',
-      'TextBox': '\uEDC2',
-      'TextField': '\uEDC3',
-      'NumberField': '\uEDC4',
-      'Dropdown': '\uEDC5',
-      'PenWorkspace': '\uEDC6',
-      'BookingsLogo': '\uEDC7',
-      'ClassNotebookLogoInverse': '\uEDC8',
-      'DelveAnalyticsLogo': '\uEDCA',
-      'DocsLogoInverse': '\uEDCB',
-      'Dynamics365Logo': '\uEDCC',
-      'DynamicSMBLogo': '\uEDCD',
-      'OfficeAssistantLogo': '\uEDCE',
-      'OfficeStoreLogo': '\uEDCF',
-      'OneNoteEduLogoInverse': '\uEDD0',
-      'PlannerLogo': '\uEDD1',
-      'PowerApps': '\uEDD2',
-      'Suitcase': '\uEDD3',
-      'ProjectLogoInverse': '\uEDD4',
-      'CaretLeft8': '\uEDD5',
-      'CaretRight8': '\uEDD6',
-      'CaretUp8': '\uEDD7',
-      'CaretDown8': '\uEDD8',
-      'CaretLeftSolid8': '\uEDD9',
-      'CaretRightSolid8': '\uEDDA',
-      'CaretUpSolid8': '\uEDDB',
-      'CaretDownSolid8': '\uEDDC',
-      'ClearFormatting': '\uEDDD',
-      'Superscript': '\uEDDE',
-      'Subscript': '\uEDDF',
-      'Strikethrough': '\uEDE0',
-      'Export': '\uEDE1',
-      'ExportMirrored': '\uEDE2'
-    }
-  };
-  registerIcons(subset, options);
-}
-
-// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
-function initializeIcons$8(baseUrl, options) {
-  if (baseUrl === void 0) {
-    baseUrl = '';
-  }
-
-  var subset = {
-    style: {
-      MozOsxFontSmoothing: 'grayscale',
-      WebkitFontSmoothing: 'antialiased',
-      fontStyle: 'normal',
-      fontWeight: 'normal',
-      speak: 'none'
-    },
-    fontFace: {
-      fontFamily: "\"FabricMDL2Icons-7\"",
-      src: "url('" + baseUrl + "fabric-icons-7-2b97bb99.woff') format('woff')"
-    },
-    icons: {
-      'SingleBookmark': '\uEDFF',
-      'SingleBookmarkSolid': '\uEE00',
-      'DoubleChevronDown': '\uEE04',
-      'FollowUser': '\uEE05',
-      'ReplyAll': '\uEE0A',
-      'WorkforceManagement': '\uEE0F',
-      'RecruitmentManagement': '\uEE12',
-      'Questionnaire': '\uEE19',
-      'ManagerSelfService': '\uEE23',
-      'ProductionFloorManagement': '\uEE29',
-      'ProductRelease': '\uEE2E',
-      'ProductVariant': '\uEE30',
-      'ReplyMirrored': '\uEE35',
-      'ReplyAllMirrored': '\uEE36',
-      'Medal': '\uEE38',
-      'AddGroup': '\uEE3D',
-      'QuestionnaireMirrored': '\uEE4B',
-      'CloudImportExport': '\uEE55',
-      'TemporaryUser': '\uEE58',
-      'CaretSolid16': '\uEE62',
-      'GroupedDescending': '\uEE66',
-      'GroupedAscending': '\uEE67',
-      'AwayStatus': '\uEE6A',
-      'MyMoviesTV': '\uEE6C',
-      'GenericScan': '\uEE6F',
-      'AustralianRules': '\uEE70',
-      'WifiEthernet': '\uEE77',
-      'TrackersMirrored': '\uEE92',
-      'DateTimeMirrored': '\uEE93',
-      'StopSolid': '\uEE95',
-      'DoubleChevronUp12': '\uEE96',
-      'DoubleChevronDown12': '\uEE97',
-      'DoubleChevronLeft12': '\uEE98',
-      'DoubleChevronRight12': '\uEE99',
-      'CalendarAgenda': '\uEE9A',
-      'ConnectVirtualMachine': '\uEE9D',
-      'AddEvent': '\uEEB5',
-      'AssetLibrary': '\uEEB6',
-      'DataConnectionLibrary': '\uEEB7',
-      'DocLibrary': '\uEEB8',
-      'FormLibrary': '\uEEB9',
-      'FormLibraryMirrored': '\uEEBA',
-      'ReportLibrary': '\uEEBB',
-      'ReportLibraryMirrored': '\uEEBC',
-      'ContactCard': '\uEEBD',
-      'CustomList': '\uEEBE',
-      'CustomListMirrored': '\uEEBF',
-      'IssueTracking': '\uEEC0',
-      'IssueTrackingMirrored': '\uEEC1',
-      'PictureLibrary': '\uEEC2',
-      'OfficeAddinsLogo': '\uEEC7',
-      'OfflineOneDriveParachute': '\uEEC8',
-      'OfflineOneDriveParachuteDisabled': '\uEEC9',
-      'TriangleSolidUp12': '\uEECC',
-      'TriangleSolidDown12': '\uEECD',
-      'TriangleSolidLeft12': '\uEECE',
-      'TriangleSolidRight12': '\uEECF',
-      'TriangleUp12': '\uEED0',
-      'TriangleDown12': '\uEED1',
-      'TriangleLeft12': '\uEED2',
-      'TriangleRight12': '\uEED3',
-      'ArrowUpRight8': '\uEED4',
-      'ArrowDownRight8': '\uEED5',
-      'DocumentSet': '\uEED6',
-      'GoToDashboard': '\uEEED',
-      'DelveAnalytics': '\uEEEE',
-      'ArrowUpRightMirrored8': '\uEEEF',
-      'ArrowDownRightMirrored8': '\uEEF0',
-      'CompanyDirectory': '\uEF0D',
-      'OpenEnrollment': '\uEF1C',
-      'CompanyDirectoryMirrored': '\uEF2B',
-      'OneDriveAdd': '\uEF32',
-      'ProfileSearch': '\uEF35',
-      'Header2': '\uEF36',
-      'Header3': '\uEF37',
-      'Header4': '\uEF38',
-      'RingerSolid': '\uEF3A',
-      'Eyedropper': '\uEF3C',
-      'MarketDown': '\uEF42',
-      'CalendarWorkWeek': '\uEF51',
-      'SidePanel': '\uEF52',
-      'GlobeFavorite': '\uEF53',
-      'CaretTopLeftSolid8': '\uEF54',
-      'CaretTopRightSolid8': '\uEF55',
-      'ViewAll2': '\uEF56',
-      'DocumentReply': '\uEF57',
-      'PlayerSettings': '\uEF58',
-      'ReceiptForward': '\uEF59',
-      'ReceiptReply': '\uEF5A',
-      'ReceiptCheck': '\uEF5B',
-      'Fax': '\uEF5C',
-      'RecurringEvent': '\uEF5D',
-      'ReplyAlt': '\uEF5E',
-      'ReplyAllAlt': '\uEF5F',
-      'EditStyle': '\uEF60',
-      'EditMail': '\uEF61',
-      'Lifesaver': '\uEF62',
-      'LifesaverLock': '\uEF63',
-      'InboxCheck': '\uEF64',
-      'FolderSearch': '\uEF65'
-    }
-  };
-  registerIcons(subset, options);
-}
-
-// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
-function initializeIcons$9(baseUrl, options) {
-  if (baseUrl === void 0) {
-    baseUrl = '';
-  }
-
-  var subset = {
-    style: {
-      MozOsxFontSmoothing: 'grayscale',
-      WebkitFontSmoothing: 'antialiased',
-      fontStyle: 'normal',
-      fontWeight: 'normal',
-      speak: 'none'
-    },
-    fontFace: {
-      fontFamily: "\"FabricMDL2Icons-8\"",
-      src: "url('" + baseUrl + "fabric-icons-8-6fdf1528.woff') format('woff')"
-    },
-    icons: {
-      'CollapseMenu': '\uEF66',
-      'ExpandMenu': '\uEF67',
-      'Boards': '\uEF68',
-      'SunAdd': '\uEF69',
-      'SunQuestionMark': '\uEF6A',
-      'LandscapeOrientation': '\uEF6B',
-      'DocumentSearch': '\uEF6C',
-      'PublicCalendar': '\uEF6D',
-      'PublicContactCard': '\uEF6E',
-      'PublicEmail': '\uEF6F',
-      'PublicFolder': '\uEF70',
-      'WordDocument': '\uEF71',
-      'PowerPointDocument': '\uEF72',
-      'ExcelDocument': '\uEF73',
-      'GroupedList': '\uEF74',
-      'ClassroomLogo': '\uEF75',
-      'Sections': '\uEF76',
-      'EditPhoto': '\uEF77',
-      'Starburst': '\uEF78',
-      'ShareiOS': '\uEF79',
-      'AirTickets': '\uEF7A',
-      'PencilReply': '\uEF7B',
-      'Tiles2': '\uEF7C',
-      'SkypeCircleCheck': '\uEF7D',
-      'SkypeCircleClock': '\uEF7E',
-      'SkypeCircleMinus': '\uEF7F',
-      'SkypeMessage': '\uEF83',
-      'ClosedCaption': '\uEF84',
-      'ATPLogo': '\uEF85',
-      'OfficeFormsLogoInverse': '\uEF86',
-      'RecycleBin': '\uEF87',
-      'EmptyRecycleBin': '\uEF88',
-      'Hide2': '\uEF89',
-      'Breadcrumb': '\uEF8C',
-      'BirthdayCake': '\uEF8D',
-      'TimeEntry': '\uEF95',
-      'CRMProcesses': '\uEFB1',
-      'PageEdit': '\uEFB6',
-      'PageArrowRight': '\uEFB8',
-      'PageRemove': '\uEFBA',
-      'Database': '\uEFC7',
-      'DataManagementSettings': '\uEFC8',
-      'CRMServices': '\uEFD2',
-      'EditContact': '\uEFD3',
-      'ConnectContacts': '\uEFD4',
-      'AppIconDefaultAdd': '\uEFDA',
-      'AppIconDefaultList': '\uEFDE',
-      'ActivateOrders': '\uEFE0',
-      'DeactivateOrders': '\uEFE1',
-      'ProductCatalog': '\uEFE8',
-      'ScatterChart': '\uEFEB',
-      'AccountActivity': '\uEFF4',
-      'DocumentManagement': '\uEFFC',
-      'CRMReport': '\uEFFE',
-      'KnowledgeArticle': '\uF000',
-      'Relationship': '\uF003',
-      'HomeVerify': '\uF00E',
-      'ZipFolder': '\uF012',
-      'SurveyQuestions': '\uF01B',
-      'TextDocument': '\uF029',
-      'TextDocumentShared': '\uF02B',
-      'PageCheckedOut': '\uF02C',
-      'PageShared': '\uF02D',
-      'SaveAndClose': '\uF038',
-      'Script': '\uF03A',
-      'Archive': '\uF03F',
-      'ActivityFeed': '\uF056',
-      'Compare': '\uF057',
-      'EventDate': '\uF059',
-      'ArrowUpRight': '\uF069',
-      'CaretRight': '\uF06B',
-      'SetAction': '\uF071',
-      'ChatBot': '\uF08B',
-      'CaretSolidLeft': '\uF08D',
-      'CaretSolidDown': '\uF08E',
-      'CaretSolidRight': '\uF08F',
-      'CaretSolidUp': '\uF090',
-      'PowerAppsLogo': '\uF091',
-      'PowerApps2Logo': '\uF092',
-      'SearchIssue': '\uF09A',
-      'SearchIssueMirrored': '\uF09B',
-      'FabricAssetLibrary': '\uF09C',
-      'FabricDataConnectionLibrary': '\uF09D',
-      'FabricDocLibrary': '\uF09E',
-      'FabricFormLibrary': '\uF09F',
-      'FabricFormLibraryMirrored': '\uF0A0',
-      'FabricReportLibrary': '\uF0A1',
-      'FabricReportLibraryMirrored': '\uF0A2',
-      'FabricPublicFolder': '\uF0A3',
-      'FabricFolderSearch': '\uF0A4',
-      'FabricMovetoFolder': '\uF0A5',
-      'FabricUnsyncFolder': '\uF0A6',
-      'FabricSyncFolder': '\uF0A7',
-      'FabricOpenFolderHorizontal': '\uF0A8',
-      'FabricFolder': '\uF0A9',
-      'FabricFolderFill': '\uF0AA',
-      'FabricNewFolder': '\uF0AB',
-      'FabricPictureLibrary': '\uF0AC',
-      'PhotoVideoMedia': '\uF0B1',
-      'AddFavorite': '\uF0C8'
-    }
-  };
-  registerIcons(subset, options);
-}
-
-// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
-function initializeIcons$a(baseUrl, options) {
-  if (baseUrl === void 0) {
-    baseUrl = '';
-  }
-
-  var subset = {
-    style: {
-      MozOsxFontSmoothing: 'grayscale',
-      WebkitFontSmoothing: 'antialiased',
-      fontStyle: 'normal',
-      fontWeight: 'normal',
-      speak: 'none'
-    },
-    fontFace: {
-      fontFamily: "\"FabricMDL2Icons-9\"",
-      src: "url('" + baseUrl + "fabric-icons-9-c6162b42.woff') format('woff')"
-    },
-    icons: {
-      'AddFavoriteFill': '\uF0C9',
-      'BufferTimeBefore': '\uF0CF',
-      'BufferTimeAfter': '\uF0D0',
-      'BufferTimeBoth': '\uF0D1',
-      'PublishContent': '\uF0D4',
-      'ClipboardList': '\uF0E3',
-      'ClipboardListMirrored': '\uF0E4',
-      'CannedChat': '\uF0F2',
-      'SkypeForBusinessLogo': '\uF0FC',
-      'TabCenter': '\uF100',
-      'PageCheckedin': '\uF104',
-      'PageList': '\uF106',
-      'ReadOutLoud': '\uF112',
-      'CaretBottomLeftSolid8': '\uF121',
-      'CaretBottomRightSolid8': '\uF122',
-      'FolderHorizontal': '\uF12B',
-      'MicrosoftStaffhubLogo': '\uF130',
-      'GiftboxOpen': '\uF133',
-      'StatusCircleOuter': '\uF136',
-      'StatusCircleInner': '\uF137',
-      'StatusCircleRing': '\uF138',
-      'StatusTriangleOuter': '\uF139',
-      'StatusTriangleInner': '\uF13A',
-      'StatusTriangleExclamation': '\uF13B',
-      'StatusCircleExclamation': '\uF13C',
-      'StatusCircleErrorX': '\uF13D',
-      'StatusCircleInfo': '\uF13F',
-      'StatusCircleBlock': '\uF140',
-      'StatusCircleBlock2': '\uF141',
-      'StatusCircleQuestionMark': '\uF142',
-      'StatusCircleSync': '\uF143',
-      'Toll': '\uF160',
-      'ExploreContentSingle': '\uF164',
-      'CollapseContent': '\uF165',
-      'CollapseContentSingle': '\uF166',
-      'InfoSolid': '\uF167',
-      'GroupList': '\uF168',
-      'ProgressRingDots': '\uF16A',
-      'CaloriesAdd': '\uF172',
-      'BranchFork': '\uF173',
-      'MuteChat': '\uF17A',
-      'AddHome': '\uF17B',
-      'AddWork': '\uF17C',
-      'MobileReport': '\uF18A',
-      'ScaleVolume': '\uF18C',
-      'HardDriveGroup': '\uF18F',
-      'FastMode': '\uF19A',
-      'ToggleLeft': '\uF19E',
-      'ToggleRight': '\uF19F',
-      'TriangleShape': '\uF1A7',
-      'RectangleShape': '\uF1A9',
-      'CubeShape': '\uF1AA',
-      'Trophy2': '\uF1AE',
-      'BucketColor': '\uF1B6',
-      'BucketColorFill': '\uF1B7',
-      'Taskboard': '\uF1C2',
-      'SingleColumn': '\uF1D3',
-      'DoubleColumn': '\uF1D4',
-      'TripleColumn': '\uF1D5',
-      'ColumnLeftTwoThirds': '\uF1D6',
-      'ColumnRightTwoThirds': '\uF1D7',
-      'AccessLogoFill': '\uF1DB',
-      'AnalyticsLogo': '\uF1DE',
-      'AnalyticsQuery': '\uF1DF',
-      'NewAnalyticsQuery': '\uF1E0',
-      'AnalyticsReport': '\uF1E1',
-      'WordLogo': '\uF1E3',
-      'WordLogoFill': '\uF1E4',
-      'ExcelLogo': '\uF1E5',
-      'ExcelLogoFill': '\uF1E6',
-      'OneNoteLogo': '\uF1E7',
-      'OneNoteLogoFill': '\uF1E8',
-      'OutlookLogo': '\uF1E9',
-      'OutlookLogoFill': '\uF1EA',
-      'PowerPointLogo': '\uF1EB',
-      'PowerPointLogoFill': '\uF1EC',
-      'PublisherLogo': '\uF1ED',
-      'PublisherLogoFill': '\uF1EE',
-      'ScheduleEventAction': '\uF1EF',
-      'FlameSolid': '\uF1F3',
-      'ServerProcesses': '\uF1FE',
-      'Server': '\uF201',
-      'SaveAll': '\uF203',
-      'LinkedInLogo': '\uF20A',
-      'Decimals': '\uF218',
-      'SidePanelMirrored': '\uF221',
-      'ProtectRestrict': '\uF22A',
-      'Blog': '\uF22B',
-      'UnknownMirrored': '\uF22E',
-      'PublicContactCardMirrored': '\uF230',
-      'GridViewSmall': '\uF232',
-      'GridViewMedium': '\uF233',
-      'GridViewLarge': '\uF234',
-      'Step': '\uF241',
-      'StepInsert': '\uF242',
-      'StepShared': '\uF243',
-      'StepSharedAdd': '\uF244',
-      'StepSharedInsert': '\uF245',
-      'ViewDashboard': '\uF246',
-      'ViewList': '\uF247'
-    }
-  };
-  registerIcons(subset, options);
-}
-
-// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
-function initializeIcons$b(baseUrl, options) {
-  if (baseUrl === void 0) {
-    baseUrl = '';
-  }
-
-  var subset = {
-    style: {
-      MozOsxFontSmoothing: 'grayscale',
-      WebkitFontSmoothing: 'antialiased',
-      fontStyle: 'normal',
-      fontWeight: 'normal',
-      speak: 'none'
-    },
-    fontFace: {
-      fontFamily: "\"FabricMDL2Icons-10\"",
-      src: "url('" + baseUrl + "fabric-icons-10-c4ded8e4.woff') format('woff')"
-    },
-    icons: {
-      'ViewListGroup': '\uF248',
-      'ViewListTree': '\uF249',
-      'TriggerAuto': '\uF24A',
-      'TriggerUser': '\uF24B',
-      'PivotChart': '\uF24C',
-      'StackedBarChart': '\uF24D',
-      'StackedLineChart': '\uF24E',
-      'BuildQueue': '\uF24F',
-      'BuildQueueNew': '\uF250',
-      'UserFollowed': '\uF25C',
-      'ContactLink': '\uF25F',
-      'Stack': '\uF26F',
-      'Bullseye': '\uF272',
-      'VennDiagram': '\uF273',
-      'FiveTileGrid': '\uF274',
-      'FocalPoint': '\uF277',
-      'Insert': '\uF278',
-      'RingerRemove': '\uF279',
-      'TeamsLogoInverse': '\uF27A',
-      'TeamsLogo': '\uF27B',
-      'TeamsLogoFill': '\uF27C',
-      'SkypeForBusinessLogoFill': '\uF27D',
-      'SharepointLogo': '\uF27E',
-      'SharepointLogoFill': '\uF27F',
-      'DelveLogo': '\uF280',
-      'DelveLogoFill': '\uF281',
-      'OfficeVideoLogo': '\uF282',
-      'OfficeVideoLogoFill': '\uF283',
-      'ExchangeLogo': '\uF284',
-      'ExchangeLogoFill': '\uF285',
-      'Signin': '\uF286',
-      'DocumentApproval': '\uF28B',
-      'CloneToDesktop': '\uF28C',
-      'InstallToDrive': '\uF28D',
-      'Blur': '\uF28E',
-      'Build': '\uF28F',
-      'ProcessMetaTask': '\uF290',
-      'BranchFork2': '\uF291',
-      'BranchLocked': '\uF292',
-      'BranchCommit': '\uF293',
-      'BranchCompare': '\uF294',
-      'BranchMerge': '\uF295',
-      'BranchPullRequest': '\uF296',
-      'BranchSearch': '\uF297',
-      'BranchShelveset': '\uF298',
-      'RawSource': '\uF299',
-      'MergeDuplicate': '\uF29A',
-      'RowsGroup': '\uF29B',
-      'RowsChild': '\uF29C',
-      'Deploy': '\uF29D',
-      'Redeploy': '\uF29E',
-      'ServerEnviroment': '\uF29F',
-      'VisioDiagram': '\uF2A0',
-      'HighlightMappedShapes': '\uF2A1',
-      'TextCallout': '\uF2A2',
-      'IconSetsFlag': '\uF2A4',
-      'VisioLogo': '\uF2A7',
-      'VisioLogoFill': '\uF2A8',
-      'VisioDocument': '\uF2A9',
-      'TimelineProgress': '\uF2AA',
-      'TimelineDelivery': '\uF2AB',
-      'Backlog': '\uF2AC',
-      'TeamFavorite': '\uF2AD',
-      'TaskGroup': '\uF2AE',
-      'TaskGroupMirrored': '\uF2AF',
-      'ScopeTemplate': '\uF2B0',
-      'AssessmentGroupTemplate': '\uF2B1',
-      'NewTeamProject': '\uF2B2',
-      'CommentAdd': '\uF2B3',
-      'CommentNext': '\uF2B4',
-      'CommentPrevious': '\uF2B5',
-      'ShopServer': '\uF2B6',
-      'LocaleLanguage': '\uF2B7',
-      'QueryList': '\uF2B8',
-      'UserSync': '\uF2B9',
-      'UserPause': '\uF2BA',
-      'StreamingOff': '\uF2BB',
-      'ArrowTallUpLeft': '\uF2BD',
-      'ArrowTallUpRight': '\uF2BE',
-      'ArrowTallDownLeft': '\uF2BF',
-      'ArrowTallDownRight': '\uF2C0',
-      'FieldEmpty': '\uF2C1',
-      'FieldFilled': '\uF2C2',
-      'FieldChanged': '\uF2C3',
-      'FieldNotChanged': '\uF2C4',
-      'RingerOff': '\uF2C5',
-      'PlayResume': '\uF2C6',
-      'BulletedList2': '\uF2C7',
-      'BulletedList2Mirrored': '\uF2C8',
-      'ImageCrosshair': '\uF2C9',
-      'GitGraph': '\uF2CA',
-      'Repo': '\uF2CB',
-      'RepoSolid': '\uF2CC',
-      'FolderQuery': '\uF2CD',
-      'FolderList': '\uF2CE',
-      'FolderListMirrored': '\uF2CF',
-      'LocationOutline': '\uF2D0',
-      'POISolid': '\uF2D1',
-      'CalculatorNotEqualTo': '\uF2D2',
-      'BoxSubtractSolid': '\uF2D3'
-    }
-  };
-  registerIcons(subset, options);
-}
-
-// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
-function initializeIcons$c(baseUrl, options) {
-  if (baseUrl === void 0) {
-    baseUrl = '';
-  }
-
-  var subset = {
-    style: {
-      MozOsxFontSmoothing: 'grayscale',
-      WebkitFontSmoothing: 'antialiased',
-      fontStyle: 'normal',
-      fontWeight: 'normal',
-      speak: 'none'
-    },
-    fontFace: {
-      fontFamily: "\"FabricMDL2Icons-11\"",
-      src: "url('" + baseUrl + "fabric-icons-11-2a8393d6.woff') format('woff')"
-    },
-    icons: {
-      'BoxAdditionSolid': '\uF2D4',
-      'BoxMultiplySolid': '\uF2D5',
-      'BoxPlaySolid': '\uF2D6',
-      'BoxCheckmarkSolid': '\uF2D7',
-      'CirclePauseSolid': '\uF2D8',
-      'CirclePause': '\uF2D9',
-      'MSNVideosSolid': '\uF2DA',
-      'CircleStopSolid': '\uF2DB',
-      'CircleStop': '\uF2DC',
-      'NavigateBack': '\uF2DD',
-      'NavigateBackMirrored': '\uF2DE',
-      'NavigateForward': '\uF2DF',
-      'NavigateForwardMirrored': '\uF2E0',
-      'UnknownSolid': '\uF2E1',
-      'UnknownMirroredSolid': '\uF2E2',
-      'CircleAddition': '\uF2E3',
-      'CircleAdditionSolid': '\uF2E4',
-      'FilePDB': '\uF2E5',
-      'FileTemplate': '\uF2E6',
-      'FileSQL': '\uF2E7',
-      'FileJAVA': '\uF2E8',
-      'FileASPX': '\uF2E9',
-      'FileCSS': '\uF2EA',
-      'FileSass': '\uF2EB',
-      'FileLess': '\uF2EC',
-      'FileHTML': '\uF2ED',
-      'JavaScriptLanguage': '\uF2EE',
-      'CSharpLanguage': '\uF2EF',
-      'CSharp': '\uF2F0',
-      'VisualBasicLanguage': '\uF2F1',
-      'VB': '\uF2F2',
-      'CPlusPlusLanguage': '\uF2F3',
-      'CPlusPlus': '\uF2F4',
-      'FSharpLanguage': '\uF2F5',
-      'FSharp': '\uF2F6',
-      'TypeScriptLanguage': '\uF2F7',
-      'PythonLanguage': '\uF2F8',
-      'PY': '\uF2F9',
-      'CoffeeScript': '\uF2FA',
-      'MarkDownLanguage': '\uF2FB',
-      'FullWidth': '\uF2FE',
-      'FullWidthEdit': '\uF2FF',
-      'Plug': '\uF300',
-      'PlugSolid': '\uF301',
-      'PlugConnected': '\uF302',
-      'PlugDisconnected': '\uF303',
-      'UnlockSolid': '\uF304',
-      'Variable': '\uF305',
-      'Parameter': '\uF306',
-      'CommentUrgent': '\uF307',
-      'Storyboard': '\uF308',
-      'DiffInline': '\uF309',
-      'DiffSideBySide': '\uF30A',
-      'ImageDiff': '\uF30B',
-      'ImagePixel': '\uF30C',
-      'FileBug': '\uF30D',
-      'FileCode': '\uF30E',
-      'FileComment': '\uF30F',
-      'BusinessHoursSign': '\uF310',
-      'FileImage': '\uF311',
-      'FileSymlink': '\uF312',
-      'AutoFillTemplate': '\uF313',
-      'WorkItem': '\uF314',
-      'WorkItemBug': '\uF315',
-      'LogRemove': '\uF316',
-      'ColumnOptions': '\uF317',
-      'Packages': '\uF318',
-      'BuildIssue': '\uF319',
-      'AssessmentGroup': '\uF31A',
-      'VariableGroup': '\uF31B',
-      'FullHistory': '\uF31C',
-      'Wheelchair': '\uF31F',
-      'SingleColumnEdit': '\uF321',
-      'DoubleColumnEdit': '\uF322',
-      'TripleColumnEdit': '\uF323',
-      'ColumnLeftTwoThirdsEdit': '\uF324',
-      'ColumnRightTwoThirdsEdit': '\uF325',
-      'StreamLogo': '\uF329',
-      'PassiveAuthentication': '\uF32A',
-      'AlertSolid': '\uF331',
-      'MegaphoneSolid': '\uF332',
-      'TaskSolid': '\uF333',
-      'ConfigurationSolid': '\uF334',
-      'BugSolid': '\uF335',
-      'CrownSolid': '\uF336',
-      'Trophy2Solid': '\uF337',
-      'QuickNoteSolid': '\uF338',
-      'ConstructionConeSolid': '\uF339',
-      'PageListSolid': '\uF33A',
-      'PageListMirroredSolid': '\uF33B',
-      'StarburstSolid': '\uF33C',
-      'ReadingModeSolid': '\uF33D',
-      'SadSolid': '\uF33E',
-      'HealthSolid': '\uF33F',
-      'ShieldSolid': '\uF340',
-      'GiftBoxSolid': '\uF341',
-      'ShoppingCartSolid': '\uF342',
-      'MailSolid': '\uF343',
-      'ChatSolid': '\uF344',
-      'RibbonSolid': '\uF345'
-    }
-  };
-  registerIcons(subset, options);
-}
-
-// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
-function initializeIcons$d(baseUrl, options) {
-  if (baseUrl === void 0) {
-    baseUrl = '';
-  }
-
-  var subset = {
-    style: {
-      MozOsxFontSmoothing: 'grayscale',
-      WebkitFontSmoothing: 'antialiased',
-      fontStyle: 'normal',
-      fontWeight: 'normal',
-      speak: 'none'
-    },
-    fontFace: {
-      fontFamily: "\"FabricMDL2Icons-12\"",
-      src: "url('" + baseUrl + "fabric-icons-12-7e945a1e.woff') format('woff')"
-    },
-    icons: {
-      'FinancialSolid': '\uF346',
-      'FinancialMirroredSolid': '\uF347',
-      'HeadsetSolid': '\uF348',
-      'PermissionsSolid': '\uF349',
-      'ParkingSolid': '\uF34A',
-      'ParkingMirroredSolid': '\uF34B',
-      'DiamondSolid': '\uF34C',
-      'AsteriskSolid': '\uF34D',
-      'OfflineStorageSolid': '\uF34E',
-      'BankSolid': '\uF34F',
-      'DecisionSolid': '\uF350',
-      'Parachute': '\uF351',
-      'ParachuteSolid': '\uF352',
-      'FiltersSolid': '\uF353',
-      'ColorSolid': '\uF354',
-      'ReviewSolid': '\uF355',
-      'ReviewRequestSolid': '\uF356',
-      'ReviewRequestMirroredSolid': '\uF357',
-      'ReviewResponseSolid': '\uF358',
-      'FeedbackRequestSolid': '\uF359',
-      'FeedbackRequestMirroredSolid': '\uF35A',
-      'FeedbackResponseSolid': '\uF35B',
-      'WorkItemBar': '\uF35C',
-      'WorkItemBarSolid': '\uF35D',
-      'Separator': '\uF35E',
-      'NavigateExternalInline': '\uF35F',
-      'PlanView': '\uF360',
-      'TimelineMatrixView': '\uF361',
-      'EngineeringGroup': '\uF362',
-      'ProjectCollection': '\uF363',
-      'CaretBottomRightCenter8': '\uF364',
-      'CaretBottomLeftCenter8': '\uF365',
-      'CaretTopRightCenter8': '\uF366',
-      'CaretTopLeftCenter8': '\uF367',
-      'DonutChart': '\uF368',
-      'ChevronUnfold10': '\uF369',
-      'ChevronFold10': '\uF36A',
-      'DoubleChevronDown8': '\uF36B',
-      'DoubleChevronUp8': '\uF36C',
-      'DoubleChevronLeft8': '\uF36D',
-      'DoubleChevronRight8': '\uF36E',
-      'ChevronDownEnd6': '\uF36F',
-      'ChevronUpEnd6': '\uF370',
-      'ChevronLeftEnd6': '\uF371',
-      'ChevronRightEnd6': '\uF372',
-      'ContextMenu': '\uF37C',
-      'AzureAPIManagement': '\uF37F',
-      'AzureServiceEndpoint': '\uF380',
-      'VSTSLogo': '\uF381',
-      'VSTSAltLogo1': '\uF382',
-      'VSTSAltLogo2': '\uF383',
-      'FileTypeSolution': '\uF387',
-      'WordLogoInverse16': '\uF390',
-      'WordLogo16': '\uF391',
-      'WordLogoFill16': '\uF392',
-      'PowerPointLogoInverse16': '\uF393',
-      'PowerPointLogo16': '\uF394',
-      'PowerPointLogoFill16': '\uF395',
-      'ExcelLogoInverse16': '\uF396',
-      'ExcelLogo16': '\uF397',
-      'ExcelLogoFill16': '\uF398',
-      'OneNoteLogoInverse16': '\uF399',
-      'OneNoteLogo16': '\uF39A',
-      'OneNoteLogoFill16': '\uF39B',
-      'OutlookLogoInverse16': '\uF39C',
-      'OutlookLogo16': '\uF39D',
-      'OutlookLogoFill16': '\uF39E',
-      'PublisherLogoInverse16': '\uF39F',
-      'PublisherLogo16': '\uF3A0',
-      'PublisherLogoFill16': '\uF3A1',
-      'VisioLogoInverse16': '\uF3A2',
-      'VisioLogo16': '\uF3A3',
-      'VisioLogoFill16': '\uF3A4',
-      'TestBeaker': '\uF3A5',
-      'TestBeakerSolid': '\uF3A6',
-      'TestExploreSolid': '\uF3A7',
-      'TestAutoSolid': '\uF3A8',
-      'TestUserSolid': '\uF3A9',
-      'TestImpactSolid': '\uF3AA',
-      'TestPlan': '\uF3AB',
-      'TestStep': '\uF3AC',
-      'TestParameter': '\uF3AD',
-      'TestSuite': '\uF3AE',
-      'TestCase': '\uF3AF',
-      'Sprint': '\uF3B0',
-      'SignOut': '\uF3B1',
-      'TriggerApproval': '\uF3B2',
-      'Rocket': '\uF3B3',
-      'AzureKeyVault': '\uF3B4',
-      'Onboarding': '\uF3BA',
-      'Transition': '\uF3BC',
-      'LikeSolid': '\uF3BF',
-      'DislikeSolid': '\uF3C0',
-      'CRMCustomerInsightsApp': '\uF3C8',
-      'EditCreate': '\uF3C9',
-      'PlayReverseResume': '\uF3E4',
-      'PlayReverse': '\uF3E5',
-      'SearchData': '\uF3F1',
-      'UnSetColor': '\uF3F9',
-      'DeclineCall': '\uF405'
-    }
-  };
-  registerIcons(subset, options);
-}
-
-// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
-function initializeIcons$e(baseUrl, options) {
-  if (baseUrl === void 0) {
-    baseUrl = '';
-  }
-
-  var subset = {
-    style: {
-      MozOsxFontSmoothing: 'grayscale',
-      WebkitFontSmoothing: 'antialiased',
-      fontStyle: 'normal',
-      fontWeight: 'normal',
-      speak: 'none'
-    },
-    fontFace: {
-      fontFamily: "\"FabricMDL2Icons-13\"",
-      src: "url('" + baseUrl + "fabric-icons-13-c3989a02.woff') format('woff')"
-    },
-    icons: {
-      'RectangularClipping': '\uF407',
-      'TeamsLogo16': '\uF40A',
-      'TeamsLogoFill16': '\uF40B',
-      'Spacer': '\uF40D',
-      'SkypeLogo16': '\uF40E',
-      'SkypeForBusinessLogo16': '\uF40F',
-      'SkypeForBusinessLogoFill16': '\uF410',
-      'FilterSolid': '\uF412',
-      'MailUndelivered': '\uF415',
-      'MailTentative': '\uF416',
-      'MailTentativeMirrored': '\uF417',
-      'MailReminder': '\uF418',
-      'ReceiptUndelivered': '\uF419',
-      'ReceiptTentative': '\uF41A',
-      'ReceiptTentativeMirrored': '\uF41B',
-      'Inbox': '\uF41C',
-      'IRMReply': '\uF41D',
-      'IRMReplyMirrored': '\uF41E',
-      'IRMForward': '\uF41F',
-      'IRMForwardMirrored': '\uF420',
-      'VoicemailIRM': '\uF421',
-      'EventAccepted': '\uF422',
-      'EventTentative': '\uF423',
-      'EventTentativeMirrored': '\uF424',
-      'EventDeclined': '\uF425',
-      'IDBadge': '\uF427',
-      'BackgroundColor': '\uF42B',
-      'OfficeFormsLogoInverse16': '\uF433',
-      'OfficeFormsLogo': '\uF434',
-      'OfficeFormsLogoFill': '\uF435',
-      'OfficeFormsLogo16': '\uF436',
-      'OfficeFormsLogoFill16': '\uF437',
-      'OfficeFormsLogoInverse24': '\uF43A',
-      'OfficeFormsLogo24': '\uF43B',
-      'OfficeFormsLogoFill24': '\uF43C',
-      'PageLock': '\uF43F',
-      'NotExecuted': '\uF440',
-      'NotImpactedSolid': '\uF441',
-      'FieldReadOnly': '\uF442',
-      'FieldRequired': '\uF443',
-      'BacklogBoard': '\uF444',
-      'ExternalBuild': '\uF445',
-      'ExternalTFVC': '\uF446',
-      'ExternalXAML': '\uF447',
-      'IssueSolid': '\uF448',
-      'DefectSolid': '\uF449',
-      'LadybugSolid': '\uF44A',
-      'NugetLogo': '\uF44C',
-      'TFVCLogo': '\uF44D',
-      'ProjectLogo32': '\uF47E',
-      'ProjectLogoFill32': '\uF47F',
-      'ProjectLogo16': '\uF480',
-      'ProjectLogoFill16': '\uF481',
-      'SwayLogo32': '\uF482',
-      'SwayLogoFill32': '\uF483',
-      'SwayLogo16': '\uF484',
-      'SwayLogoFill16': '\uF485',
-      'ClassNotebookLogo32': '\uF486',
-      'ClassNotebookLogoFill32': '\uF487',
-      'ClassNotebookLogo16': '\uF488',
-      'ClassNotebookLogoFill16': '\uF489',
-      'ClassNotebookLogoInverse32': '\uF48A',
-      'ClassNotebookLogoInverse16': '\uF48B',
-      'StaffNotebookLogo32': '\uF48C',
-      'StaffNotebookLogoFill32': '\uF48D',
-      'StaffNotebookLogo16': '\uF48E',
-      'StaffNotebookLogoFill16': '\uF48F',
-      'StaffNotebookLogoInverted32': '\uF490',
-      'StaffNotebookLogoInverted16': '\uF491',
-      'KaizalaLogo': '\uF492',
-      'TaskLogo': '\uF493',
-      'ProtectionCenterLogo32': '\uF494',
-      'GallatinLogo': '\uF496',
-      'Globe2': '\uF49A',
-      'Guitar': '\uF49B',
-      'Breakfast': '\uF49C',
-      'Brunch': '\uF49D',
-      'BeerMug': '\uF49E',
-      'Vacation': '\uF49F',
-      'Teeth': '\uF4A0',
-      'Taxi': '\uF4A1',
-      'Chopsticks': '\uF4A2',
-      'SyncOccurence': '\uF4A3',
-      'UnsyncOccurence': '\uF4A4',
-      'GIF': '\uF4A9',
-      'PrimaryCalendar': '\uF4AE',
-      'SearchCalendar': '\uF4AF',
-      'VideoOff': '\uF4B0',
-      'MicrosoftFlowLogo': '\uF4B1',
-      'BusinessCenterLogo': '\uF4B2',
-      'ToDoLogoBottom': '\uF4B3',
-      'ToDoLogoTop': '\uF4B4',
-      'EditSolid12': '\uF4B5',
-      'EditSolidMirrored12': '\uF4B6',
-      'UneditableSolid12': '\uF4B7',
-      'UneditableSolidMirrored12': '\uF4B8',
-      'UneditableMirrored': '\uF4B9',
-      'AdminALogo32': '\uF4BA',
-      'AdminALogoFill32': '\uF4BB',
-      'ToDoLogoInverse': '\uF4BC'
-    }
-  };
-  registerIcons(subset, options);
-}
-
-// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
-function initializeIcons$f(baseUrl, options) {
-  if (baseUrl === void 0) {
-    baseUrl = '';
-  }
-
-  var subset = {
-    style: {
-      MozOsxFontSmoothing: 'grayscale',
-      WebkitFontSmoothing: 'antialiased',
-      fontStyle: 'normal',
-      fontWeight: 'normal',
-      speak: 'none'
-    },
-    fontFace: {
-      fontFamily: "\"FabricMDL2Icons-14\"",
-      src: "url('" + baseUrl + "fabric-icons-14-5cf58db8.woff') format('woff')"
-    },
-    icons: {
-      'Snooze': '\uF4BD',
-      'WaffleOffice365': '\uF4E0',
-      'ImageSearch': '\uF4E8',
-      'NewsSearch': '\uF4E9',
-      'VideoSearch': '\uF4EA',
-      'R': '\uF4EB',
-      'FontColorA': '\uF4EC',
-      'FontColorSwatch': '\uF4ED',
-      'LightWeight': '\uF4EE',
-      'NormalWeight': '\uF4EF',
-      'SemiboldWeight': '\uF4F0',
-      'GroupObject': '\uF4F1',
-      'UngroupObject': '\uF4F2',
-      'AlignHorizontalLeft': '\uF4F3',
-      'AlignHorizontalCenter': '\uF4F4',
-      'AlignHorizontalRight': '\uF4F5',
-      'AlignVerticalTop': '\uF4F6',
-      'AlignVerticalCenter': '\uF4F7',
-      'AlignVerticalBottom': '\uF4F8',
-      'HorizontalDistributeCenter': '\uF4F9',
-      'VerticalDistributeCenter': '\uF4FA',
-      'Ellipse': '\uF4FB',
-      'Line': '\uF4FC',
-      'Octagon': '\uF4FD',
-      'Hexagon': '\uF4FE',
-      'Pentagon': '\uF4FF',
-      'RightTriangle': '\uF500',
-      'HalfCircle': '\uF501',
-      'QuarterCircle': '\uF502',
-      'ThreeQuarterCircle': '\uF503',
-      '6PointStar': '\uF504',
-      '12PointStar': '\uF505',
-      'ArrangeBringToFront': '\uF506',
-      'ArrangeSendToBack': '\uF507',
-      'ArrangeSendBackward': '\uF508',
-      'ArrangeBringForward': '\uF509',
-      'BorderDash': '\uF50A',
-      'BorderDot': '\uF50B',
-      'LineStyle': '\uF50C',
-      'LineThickness': '\uF50D',
-      'WindowEdit': '\uF50E',
-      'HintText': '\uF50F',
-      'MediaAdd': '\uF510',
-      'AnchorLock': '\uF511',
-      'AutoHeight': '\uF512',
-      'ChartSeries': '\uF513',
-      'ChartXAngle': '\uF514',
-      'ChartYAngle': '\uF515',
-      'Combobox': '\uF516',
-      'LineSpacing': '\uF517',
-      'Padding': '\uF518',
-      'PaddingTop': '\uF519',
-      'PaddingBottom': '\uF51A',
-      'PaddingLeft': '\uF51B',
-      'PaddingRight': '\uF51C',
-      'NavigationFlipper': '\uF51D',
-      'AlignJustify': '\uF51E',
-      'TextOverflow': '\uF51F',
-      'VisualsFolder': '\uF520',
-      'VisualsStore': '\uF521',
-      'PictureCenter': '\uF522',
-      'PictureFill': '\uF523',
-      'PicturePosition': '\uF524',
-      'PictureStretch': '\uF525',
-      'PictureTile': '\uF526',
-      'Slider': '\uF527',
-      'SliderHandleSize': '\uF528',
-      'DefaultRatio': '\uF529',
-      'NumberSequence': '\uF52A',
-      'GUID': '\uF52B',
-      'ReportAdd': '\uF52C',
-      'DashboardAdd': '\uF52D',
-      'MapPinSolid': '\uF52E',
-      'WebPublish': '\uF52F',
-      'PieSingleSolid': '\uF530',
-      'BlockedSolid': '\uF531',
-      'DrillDown': '\uF532',
-      'DrillDownSolid': '\uF533',
-      'DrillExpand': '\uF534',
-      'DrillShow': '\uF535',
-      'SpecialEvent': '\uF536',
-      'OneDriveFolder16': '\uF53B',
-      'FunctionalManagerDashboard': '\uF542',
-      'BIDashboard': '\uF543',
-      'CodeEdit': '\uF544',
-      'RenewalCurrent': '\uF545',
-      'RenewalFuture': '\uF546',
-      'SplitObject': '\uF547',
-      'BulkUpload': '\uF548',
-      'DownloadDocument': '\uF549',
-      'GreetingCard': '\uF54B',
-      'Flower': '\uF54E',
-      'WaitlistConfirm': '\uF550',
-      'WaitlistConfirmMirrored': '\uF551',
-      'LaptopSecure': '\uF552',
-      'DragObject': '\uF553',
-      'EntryView': '\uF554',
-      'EntryDecline': '\uF555',
-      'ContactCardSettings': '\uF556',
-      'ContactCardSettingsMirrored': '\uF557'
-    }
-  };
-  registerIcons(subset, options);
-}
-
-// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
-function initializeIcons$g(baseUrl, options) {
-  if (baseUrl === void 0) {
-    baseUrl = '';
-  }
-
-  var subset = {
-    style: {
-      MozOsxFontSmoothing: 'grayscale',
-      WebkitFontSmoothing: 'antialiased',
-      fontStyle: 'normal',
-      fontWeight: 'normal',
-      speak: 'none'
-    },
-    fontFace: {
-      fontFamily: "\"FabricMDL2Icons-15\"",
-      src: "url('" + baseUrl + "fabric-icons-15-3807251b.woff') format('woff')"
-    },
-    icons: {
-      'CalendarSettings': '\uF558',
-      'CalendarSettingsMirrored': '\uF559',
-      'HardDriveLock': '\uF55A',
-      'HardDriveUnlock': '\uF55B',
-      'AccountManagement': '\uF55C',
-      'ReportWarning': '\uF569',
-      'TransitionPop': '\uF5B2',
-      'TransitionPush': '\uF5B3',
-      'TransitionEffect': '\uF5B4',
-      'LookupEntities': '\uF5B5',
-      'ExploreData': '\uF5B6',
-      'AddBookmark': '\uF5B7',
-      'SearchBookmark': '\uF5B8',
-      'DrillThrough': '\uF5B9',
-      'MasterDatabase': '\uF5BA',
-      'CertifiedDatabase': '\uF5BB',
-      'MaximumValue': '\uF5BC',
-      'MinimumValue': '\uF5BD',
-      'VisualStudioIDELogo32': '\uF5D0',
-      'PasteAsText': '\uF5D5',
-      'PasteAsCode': '\uF5D6',
-      'BrowserTab': '\uF5D7',
-      'BrowserTabScreenshot': '\uF5D8',
-      'DesktopScreenshot': '\uF5D9',
-      'FileYML': '\uF5DA',
-      'ClipboardSolid': '\uF5DC',
-      'FabricUserFolder': '\uF5E5',
-      'FabricNetworkFolder': '\uF5E6',
-      'BullseyeTarget': '\uF5F0',
-      'AnalyticsView': '\uF5F1',
-      'Video360Generic': '\uF609',
-      'Untag': '\uF60B',
-      'Leave': '\uF627',
-      'Trending12': '\uF62D',
-      'Blocked12': '\uF62E',
-      'Warning12': '\uF62F',
-      'CheckedOutByOther12': '\uF630',
-      'CheckedOutByYou12': '\uF631',
-      'CircleShapeSolid': '\uF63C',
-      'SquareShapeSolid': '\uF63D',
-      'TriangleShapeSolid': '\uF63E',
-      'DropShapeSolid': '\uF63F',
-      'RectangleShapeSolid': '\uF640',
-      'ZoomToFit': '\uF649',
-      'InsertColumnsLeft': '\uF64A',
-      'InsertColumnsRight': '\uF64B',
-      'InsertRowsAbove': '\uF64C',
-      'InsertRowsBelow': '\uF64D',
-      'DeleteColumns': '\uF64E',
-      'DeleteRows': '\uF64F',
-      'DeleteRowsMirrored': '\uF650',
-      'DeleteTable': '\uF651',
-      'AccountBrowser': '\uF652',
-      'VersionControlPush': '\uF664',
-      'StackedColumnChart2': '\uF666',
-      'TripleColumnWide': '\uF66E',
-      'QuadColumn': '\uF66F',
-      'WhiteBoardApp16': '\uF673',
-      'WhiteBoardApp32': '\uF674',
-      'PinnedSolid': '\uF676',
-      'InsertSignatureLine': '\uF677',
-      'ArrangeByFrom': '\uF678',
-      'Phishing': '\uF679',
-      'CreateMailRule': '\uF67A',
-      'PublishCourse': '\uF699',
-      'DictionaryRemove': '\uF69A',
-      'UserRemove': '\uF69B',
-      'UserEvent': '\uF69C',
-      'Encryption': '\uF69D',
-      'PasswordField': '\uF6AA',
-      'OpenInNewTab': '\uF6AB',
-      'Hide3': '\uF6AC',
-      'VerifiedBrandSolid': '\uF6AD',
-      'MarkAsProtected': '\uF6AE',
-      'AuthenticatorApp': '\uF6B1',
-      'WebTemplate': '\uF6B2',
-      'DefenderTVM': '\uF6B3',
-      'MedalSolid': '\uF6B9',
-      'D365TalentLearn': '\uF6BB',
-      'D365TalentInsight': '\uF6BC',
-      'D365TalentHRCore': '\uF6BD',
-      'BacklogList': '\uF6BF',
-      'ButtonControl': '\uF6C0',
-      'TableGroup': '\uF6D9',
-      'MountainClimbing': '\uF6DB',
-      'TagUnknown': '\uF6DF',
-      'TagUnknownMirror': '\uF6E0',
-      'TagUnknown12': '\uF6E1',
-      'TagUnknown12Mirror': '\uF6E2',
-      'Link12': '\uF6E3',
-      'Presentation': '\uF6E4',
-      'Presentation12': '\uF6E5',
-      'Lock12': '\uF6E6',
-      'BuildDefinition': '\uF6E9',
-      'ReleaseDefinition': '\uF6EA',
-      'SaveTemplate': '\uF6EC',
-      'UserGauge': '\uF6ED',
-      'BlockedSiteSolid12': '\uF70A',
-      'TagSolid': '\uF70E',
-      'OfficeChat': '\uF70F'
-    }
-  };
-  registerIcons(subset, options);
-}
-
-// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
-function initializeIcons$h(baseUrl, options) {
-  if (baseUrl === void 0) {
-    baseUrl = '';
-  }
-
-  var subset = {
-    style: {
-      MozOsxFontSmoothing: 'grayscale',
-      WebkitFontSmoothing: 'antialiased',
-      fontStyle: 'normal',
-      fontWeight: 'normal',
-      speak: 'none'
-    },
-    fontFace: {
-      fontFamily: "\"FabricMDL2Icons-16\"",
-      src: "url('" + baseUrl + "fabric-icons-16-9cf93f3b.woff') format('woff')"
-    },
-    icons: {
-      'OfficeChatSolid': '\uF710',
-      'MailSchedule': '\uF72E',
-      'WarningSolid': '\uF736',
-      'Blocked2Solid': '\uF737',
-      'SkypeCircleArrow': '\uF747',
-      'SkypeArrow': '\uF748',
-      'SyncStatus': '\uF751',
-      'SyncStatusSolid': '\uF752',
-      'ProjectDocument': '\uF759',
-      'ToDoLogoOutline': '\uF75B',
-      'VisioOnlineLogoFill32': '\uF75F',
-      'VisioOnlineLogo32': '\uF760',
-      'VisioOnlineLogoCloud32': '\uF761',
-      'VisioDiagramSync': '\uF762',
-      'Event12': '\uF763',
-      'EventDateMissed12': '\uF764',
-      'UserOptional': '\uF767',
-      'ResponsesMenu': '\uF768',
-      'DoubleDownArrow': '\uF769',
-      'DistributeDown': '\uF76A',
-      'BookmarkReport': '\uF76B',
-      'FilterSettings': '\uF76C',
-      'GripperDotsVertical': '\uF772',
-      'MailAttached': '\uF774',
-      'AddIn': '\uF775',
-      'LinkedDatabase': '\uF779',
-      'TableLink': '\uF77A',
-      'PromotedDatabase': '\uF77D',
-      'BarChartVerticalFilter': '\uF77E',
-      'BarChartVerticalFilterSolid': '\uF77F',
-      'MicOff2': '\uF781',
-      'MicrosoftTranslatorLogo': '\uF782',
-      'ShowTimeAs': '\uF787',
-      'FileRequest': '\uF789',
-      'WorkItemAlert': '\uF78F',
-      'PowerBILogo16': '\uF790',
-      'PowerBILogoBackplate16': '\uF791',
-      'BulletedListText': '\uF792',
-      'BulletedListBullet': '\uF793',
-      'BulletedListTextMirrored': '\uF794',
-      'BulletedListBulletMirrored': '\uF795',
-      'NumberedListText': '\uF796',
-      'NumberedListNumber': '\uF797',
-      'NumberedListTextMirrored': '\uF798',
-      'NumberedListNumberMirrored': '\uF799',
-      'RemoveLinkChain': '\uF79A',
-      'RemoveLinkX': '\uF79B',
-      'FabricTextHighlight': '\uF79C',
-      'ClearFormattingA': '\uF79D',
-      'ClearFormattingEraser': '\uF79E',
-      'Photo2Fill': '\uF79F',
-      'IncreaseIndentText': '\uF7A0',
-      'IncreaseIndentArrow': '\uF7A1',
-      'DecreaseIndentText': '\uF7A2',
-      'DecreaseIndentArrow': '\uF7A3',
-      'IncreaseIndentTextMirrored': '\uF7A4',
-      'IncreaseIndentArrowMirrored': '\uF7A5',
-      'DecreaseIndentTextMirrored': '\uF7A6',
-      'DecreaseIndentArrowMirrored': '\uF7A7',
-      'CheckListText': '\uF7A8',
-      'CheckListCheck': '\uF7A9',
-      'CheckListTextMirrored': '\uF7AA',
-      'CheckListCheckMirrored': '\uF7AB',
-      'NumberSymbol': '\uF7AC',
-      'Coupon': '\uF7BC',
-      'VerifiedBrand': '\uF7BD',
-      'ReleaseGate': '\uF7BE',
-      'ReleaseGateCheck': '\uF7BF',
-      'ReleaseGateError': '\uF7C0',
-      'M365InvoicingLogo': '\uF7C1',
-      'RemoveFromShoppingList': '\uF7D5',
-      'ShieldAlert': '\uF7D7',
-      'FabricTextHighlightComposite': '\uF7DA',
-      'Dataflows': '\uF7DD',
-      'GenericScanFilled': '\uF7DE',
-      'DiagnosticDataBarTooltip': '\uF7DF',
-      'SaveToMobile': '\uF7E0',
-      'Orientation2': '\uF7E1',
-      'ScreenCast': '\uF7E2',
-      'ShowGrid': '\uF7E3',
-      'SnapToGrid': '\uF7E4',
-      'ContactList': '\uF7E5',
-      'NewMail': '\uF7EA',
-      'EyeShadow': '\uF7EB',
-      'FabricFolderConfirm': '\uF7FF',
-      'InformationBarriers': '\uF803',
-      'CommentActive': '\uF804',
-      'ColumnVerticalSectionEdit': '\uF806',
-      'WavingHand': '\uF807',
-      'ShakeDevice': '\uF80A',
-      'SmartGlassRemote': '\uF80B',
-      'Rotate90Clockwise': '\uF80D',
-      'Rotate90CounterClockwise': '\uF80E',
-      'CampaignTemplate': '\uF811',
-      'ChartTemplate': '\uF812',
-      'PageListFilter': '\uF813',
-      'SecondaryNav': '\uF814',
-      'ColumnVerticalSection': '\uF81E',
-      'SkypeCircleSlash': '\uF825',
-      'SkypeSlash': '\uF826'
-    }
-  };
-  registerIcons(subset, options);
-}
-
-// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
-function initializeIcons$i(baseUrl, options) {
-  if (baseUrl === void 0) {
-    baseUrl = '';
-  }
-
-  var subset = {
-    style: {
-      MozOsxFontSmoothing: 'grayscale',
-      WebkitFontSmoothing: 'antialiased',
-      fontStyle: 'normal',
-      fontWeight: 'normal',
-      speak: 'none'
-    },
-    fontFace: {
-      fontFamily: "\"FabricMDL2Icons-17\"",
-      src: "url('" + baseUrl + "fabric-icons-17-0c4ed701.woff') format('woff')"
-    },
-    icons: {
-      'CustomizeToolbar': '\uF828',
-      'DuplicateRow': '\uF82A',
-      'RemoveFromTrash': '\uF82B',
-      'MailOptions': '\uF82C',
-      'Childof': '\uF82D',
-      'Footer': '\uF82E',
-      'Header': '\uF82F',
-      'BarChartVerticalFill': '\uF830',
-      'StackedColumnChart2Fill': '\uF831',
-      'PlainText': '\uF834',
-      'AccessibiltyChecker': '\uF835',
-      'DatabaseSync': '\uF842',
-      'ReservationOrders': '\uF845',
-      'TabOneColumn': '\uF849',
-      'TabTwoColumn': '\uF84A',
-      'TabThreeColumn': '\uF84B',
-      'BulletedTreeList': '\uF84C',
-      'MicrosoftTranslatorLogoGreen': '\uF852',
-      'MicrosoftTranslatorLogoBlue': '\uF853',
-      'InternalInvestigation': '\uF854',
-      'AddReaction': '\uF85D',
-      'ContactHeart': '\uF862',
-      'VisuallyImpaired': '\uF866',
-      'EventToDoLogo': '\uF869',
-      'Variable2': '\uF86D',
-      'ModelingView': '\uF871',
-      'DisconnectVirtualMachine': '\uF873',
-      'ReportLock': '\uF875',
-      'Uneditable2': '\uF876',
-      'Uneditable2Mirrored': '\uF877',
-      'BarChartVerticalEdit': '\uF89D',
-      'GlobalNavButtonActive': '\uF89F',
-      'PollResults': '\uF8A0',
-      'Rerun': '\uF8A1',
-      'QandA': '\uF8A2',
-      'QandAMirror': '\uF8A3',
-      'BookAnswers': '\uF8A4',
-      'AlertSettings': '\uF8B6',
-      'TrimStart': '\uF8BB',
-      'TrimEnd': '\uF8BC',
-      'TableComputed': '\uF8F5',
-      'DecreaseIndentLegacy': '\uE290',
-      'IncreaseIndentLegacy': '\uE291',
-      'SizeLegacy': '\uE2B2'
-    }
-  };
-  registerIcons(subset, options);
-}
-
-var registerIconAliases = function () {
-  registerIconAlias('trash', 'delete');
-  registerIconAlias('onedrive', 'onedrivelogo');
-  registerIconAlias('alertsolid12', 'eventdatemissed12');
-  registerIconAlias('sixpointstar', '6pointstar');
-  registerIconAlias('twelvepointstar', '12pointstar');
-  registerIconAlias('toggleon', 'toggleleft');
-  registerIconAlias('toggleoff', 'toggleright');
+var globalClassNames = {
+  count: 'ms-Pivot-count',
+  icon: 'ms-Pivot-icon',
+  linkIsSelected: 'is-selected',
+  link: 'ms-Pivot-link',
+  linkContent: 'ms-Pivot-linkContent',
+  root: 'ms-Pivot',
+  rootIsLarge: 'ms-Pivot--large',
+  rootIsTabs: 'ms-Pivot--tabs',
+  text: 'ms-Pivot-text'
 };
 
-// @uifabric/icons@7.3.36
-setVersion('@uifabric/icons', '7.3.36');
+var linkStyles = function (props) {
+  var _a, _b;
 
-var DEFAULT_BASE_URL = 'https://spoprod-a.akamaihd.net/files/fabric/assets/icons/';
-function initializeIcons$j(baseUrl, options) {
-  if (baseUrl === void 0) {
-    baseUrl = DEFAULT_BASE_URL;
+  var rootIsLarge = props.rootIsLarge,
+      rootIsTabs = props.rootIsTabs;
+  var _c = props.theme,
+      semanticColors = _c.semanticColors,
+      fonts = _c.fonts;
+  return [fonts.medium, {
+    color: semanticColors.actionLink,
+    display: 'inline-block',
+    lineHeight: 44,
+    height: 44,
+    marginRight: 8,
+    padding: '0 8px',
+    textAlign: 'center',
+    position: 'relative',
+    backgroundColor: 'transparent',
+    border: 0,
+    borderRadius: 0,
+    selectors: (_a = {
+      ':before': {
+        backgroundColor: 'transparent',
+        bottom: 0,
+        content: '""',
+        height: 2,
+        left: 8,
+        position: 'absolute',
+        right: 8,
+        transition: "left " + AnimationVariables.durationValue2 + " " + AnimationVariables.easeFunction2 + ",\n                      right " + AnimationVariables.durationValue2 + " " + AnimationVariables.easeFunction2
+      },
+      ':after': {
+        color: 'transparent',
+        content: 'attr(data-content)',
+        display: 'block',
+        fontWeight: FontWeights.bold,
+        height: 1,
+        overflow: 'hidden',
+        visibility: 'hidden'
+      },
+      ':hover': {
+        backgroundColor: semanticColors.buttonBackgroundHovered,
+        color: semanticColors.buttonTextHovered,
+        cursor: 'pointer'
+      },
+      ':active': {
+        backgroundColor: semanticColors.buttonBackgroundPressed,
+        color: semanticColors.buttonTextHovered
+      },
+      ':focus': {
+        outline: 'none'
+      }
+    }, _a["." + IsFocusVisibleClassName + " &:focus"] = {
+      outline: "1px solid " + semanticColors.focusBorder
+    }, _a["." + IsFocusVisibleClassName + " &:focus:after"] = {
+      content: 'attr(data-content)',
+      position: 'relative',
+      border: 0
+    }, _a)
+  }, rootIsLarge && {
+    fontSize: fonts.large.fontSize
+  }, rootIsTabs && [{
+    marginRight: 0,
+    height: 44,
+    lineHeight: 44,
+    backgroundColor: semanticColors.buttonBackground,
+    padding: '0 10px',
+    verticalAlign: 'top',
+    selectors: (_b = {
+      ':focus': {
+        outlineOffset: '-1px'
+      }
+    }, _b["." + IsFocusVisibleClassName + " &:focus::before"] = {
+      height: 'auto',
+      background: 'transparent',
+      transition: 'none'
+    }, _b)
+  }]];
+};
+
+var getStyles$a = function (props) {
+  var _a, _b, _c;
+
+  var className = props.className,
+      rootIsLarge = props.rootIsLarge,
+      rootIsTabs = props.rootIsTabs,
+      theme = props.theme;
+  var semanticColors = theme.semanticColors,
+      fonts = theme.fonts;
+  var classNames = getGlobalClassNames(globalClassNames, theme);
+  return {
+    root: [classNames.root, fonts.medium, normalize, {
+      position: 'relative',
+      color: semanticColors.link,
+      whiteSpace: 'nowrap'
+    }, rootIsLarge && classNames.rootIsLarge, rootIsTabs && classNames.rootIsTabs, className],
+    link: __spreadArrays([classNames.link], linkStyles(props), [rootIsTabs && {
+      selectors: {
+        '&:hover, &:focus': {
+          color: semanticColors.buttonTextCheckedHovered
+        },
+        '&:active, &:hover': {
+          color: semanticColors.primaryButtonText,
+          backgroundColor: semanticColors.primaryButtonBackground
+        }
+      }
+    }]),
+    linkIsSelected: __spreadArrays([classNames.link, classNames.linkIsSelected], linkStyles(props), [{
+      fontWeight: FontWeights.semibold,
+      selectors: (_a = {
+        ':before': {
+          backgroundColor: semanticColors.inputBackgroundChecked,
+          selectors: (_b = {}, _b[HighContrastSelector] = {
+            backgroundColor: 'Highlight'
+          }, _b)
+        },
+        ':hover::before': {
+          left: 0,
+          right: 0
+        }
+      }, _a[HighContrastSelector] = {
+        color: 'Highlight'
+      }, _a)
+    }, rootIsTabs && {
+      backgroundColor: semanticColors.primaryButtonBackground,
+      color: semanticColors.primaryButtonText,
+      fontWeight: FontWeights.regular,
+      selectors: (_c = {
+        ':before': {
+          backgroundColor: 'transparent',
+          transition: 'none',
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          content: '""',
+          height: 'auto'
+        },
+        ':hover': {
+          backgroundColor: semanticColors.primaryButtonBackgroundHovered,
+          color: semanticColors.primaryButtonText
+        },
+        '&:active': {
+          backgroundColor: semanticColors.primaryButtonBackgroundPressed,
+          color: semanticColors.primaryButtonText
+        }
+      }, _c[HighContrastSelector] = {
+        fontWeight: FontWeights.semibold,
+        color: 'HighlightText',
+        background: 'Highlight',
+        MsHighContrastAdjust: 'none'
+      }, _c)
+    }]),
+    linkContent: [classNames.linkContent, {
+      flex: '0 1 100%',
+      selectors: {
+        '& > * ': {
+          marginLeft: 4
+        },
+        '& > *:first-child': {
+          marginLeft: 0
+        }
+      }
+    }],
+    text: [classNames.text, {
+      display: 'inline-block',
+      verticalAlign: 'top'
+    }],
+    count: [classNames.count, {
+      display: 'inline-block',
+      verticalAlign: 'top'
+    }],
+    icon: classNames.icon
+  };
+};
+
+/**
+ * The Pivot control and related tabs pattern are used for navigating frequently accessed,
+ * distinct content categories. Pivots allow for navigation between two or more content
+ * views and relies on text headers to articulate the different sections of content.
+ */
+
+var Pivot = styled(PivotBase, getStyles$a, undefined, {
+  scope: 'Pivot'
+});
+
+var labelStyles = {
+  root: {
+    marginTop: 10
   }
-
-  [initializeIcons, initializeIcons$1, initializeIcons$2, initializeIcons$3, initializeIcons$4, initializeIcons$5, initializeIcons$6, initializeIcons$7, initializeIcons$8, initializeIcons$9, initializeIcons$a, initializeIcons$b, initializeIcons$c, initializeIcons$d, initializeIcons$e, initializeIcons$f, initializeIcons$g, initializeIcons$h, initializeIcons$i].forEach(function (initialize) {
-    return initialize(baseUrl, options);
-  });
-  registerIconAliases();
+};
+function PivotFlt() {
+  return /*#__PURE__*/React__default.createElement(Pivot, {
+    "aria-label": "Basic Pivot Example"
+  }, /*#__PURE__*/React__default.createElement(PivotItem, {
+    headerText: "My Files",
+    headerButtonProps: {
+      'data-order': 1,
+      'data-title': 'My Files Title'
+    }
+  }, /*#__PURE__*/React__default.createElement(Label, {
+    styles: labelStyles
+  }, "Pivot #1")), /*#__PURE__*/React__default.createElement(PivotItem, {
+    headerText: "Recent"
+  }, /*#__PURE__*/React__default.createElement(Label, {
+    styles: labelStyles
+  }, "Pivot #2")), /*#__PURE__*/React__default.createElement(PivotItem, {
+    headerText: "Shared with me"
+  }, /*#__PURE__*/React__default.createElement(Label, {
+    styles: labelStyles
+  }, "Pivot #3")));
 }
 
-initializeIcons$j();
-function NavFlt() {
-  var navLinkGroups = [{
-    links: [{
-      name: 'Parent link 1',
-      url: 'http://example.com',
-      target: '_blank',
-      expandAriaLabel: 'Expand Parent link 1',
-      collapseAriaLabel: 'Collapse Parent link 1',
-      links: [{
-        name: 'Child link 1',
-        url: 'http://example.com',
-        target: '_blank'
-      }, {
-        name: 'Child link 2',
-        url: 'http://example.com',
-        target: '_blank',
-        expandAriaLabel: 'Expand Child link 2',
-        collapseAriaLabel: 'Collapse Child link 2',
-        links: [{
-          name: '3rd level link 1',
-          url: 'http://example.com',
-          target: '_blank'
-        }, {
-          name: '3rd level link 2',
-          url: 'http://example.com',
-          target: '_blank'
-        }]
-      }, {
-        name: 'Child link 3',
-        url: 'http://example.com',
-        target: '_blank'
-      }]
-    }, {
-      name: 'Parent link 2',
-      url: 'http://example.com',
-      target: '_blank',
-      expandAriaLabel: 'Expand Parent link 2',
-      collapseAriaLabel: 'Collapse Parent link 2',
-      links: [{
-        name: 'Child link 4',
-        url: 'http://example.com',
-        target: '_blank'
-      }]
-    }]
-  }];
-  return /*#__PURE__*/React__default.createElement(React__default.Fragment, null, /*#__PURE__*/React__default.createElement(Nav, {
-    ariaLabel: "Nav example with nested links",
-    groups: navLinkGroups
-  }));
-}
-
-exports.default = NavFlt;
+exports.default = PivotFlt;
 //# sourceMappingURL=index.js.map
