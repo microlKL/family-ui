@@ -6,7 +6,7 @@
 ### 【API 首页】
 
 * 【流动站点】(国内服务器部署，很快，但是云服务器要花钱租的，有时会因为个人财力不足，一段时间内租不起服务器，或者正在找较便宜的服务器，而暂时没法提供国内站点)：  
-https://wwww.micking.top:9595
+https://www.micking.top:9595/
 * 【永久站点】(Netlify 部署，虽然永久免费，但是国外站点，你懂的，特别慢)：  
 https://pedantic-mirzakhani-f9bb7c.netlify.app/  
 
