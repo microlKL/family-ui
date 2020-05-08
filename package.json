@@ -1,6 +1,6 @@
 {
   "name": "family-ui",
-  "version": "1.0.861",
+  "version": "1.0.862",
   "description": "",
   "scripts": {
     "commit": "git-cz",
