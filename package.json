@@ -4,6 +4,8 @@
   "description": "",
   "scripts": {
     "commit": "git-cz",
+    "start:api": "yarn workspace @family-ui/app-api start",
+    "build:api": "yarn workspace @family-ui/app-api build:storybook",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "config": {

@@ -1,0 +1,18 @@
+stages:
+  - build
+# 在docker的gitlab-runner容器中构建（发布环境）
+jobdockerbuildprod:
+  only:
+    - prod
+  stage: build
+  script:
+    - pwd
+    - node --version
+    - yarn --version
+    - yarn install
+    - yarn build:api
+    - rm -rf /home/web/*
+    - cp -r /packages/app-api/storybook-static/. /home/web/
+    - pwd
+  tags:
+    - study_prod
