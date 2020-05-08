@@ -17,6 +17,7 @@ node_modules/
 /packages/**/__snapshots__/
 /packages/**/dist/
 /packages/**/build/
+/packages/**/storybook-static/
 # misc fluent-ui-packages
 /fluent-ui-packages/**/.DS_Store
 /fluent-ui-packages/**/.env.local

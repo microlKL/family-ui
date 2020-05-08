@@ -20,6 +20,7 @@
     "start": "node ./scripts/start.js",
     "build": "node ./scripts/build.js",
     "storybook": "start-storybook -p 3001 -c .storybook",
+    "build:storybook": "build-storybook -c .storybook",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "devDependencies": {
