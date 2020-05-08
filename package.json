@@ -1,6 +1,6 @@
 {
   "name": "family-ui",
-  "version": "1.0.86",
+  "version": "1.0.861",
   "description": "",
   "scripts": {
     "commit": "git-cz",
@@ -29,7 +29,7 @@
     "packages/*",
     "fluent-ui-packages/*"
   ],
-  "homepage":"https://www.micking.top:10000",
+  "homepage":"https://pedantic-mirzakhani-f9bb7c.netlify.app/",
   "repository": {
     "type": "git",
     "url": "https://gitee.com/starFromGithub/family-ui-webpack.git"
