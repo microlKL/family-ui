@@ -24,7 +24,7 @@
     "lerna": "^3.20.2",
     "mddir": "^1.1.1"
   },
-  "private": false,
+  "private": true,
   "workspaces": [
     "packages/*",
     "fluent-ui-packages/*"
