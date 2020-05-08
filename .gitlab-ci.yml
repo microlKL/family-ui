@@ -3,7 +3,7 @@ stages:
 # 在docker的gitlab-runner容器中构建（发布环境）
 jobdockerbuildprod:
   only:
-    - prod
+    - master
   stage: build
   script:
     - pwd
@@ -15,4 +15,4 @@ jobdockerbuildprod:
     - cp -r /packages/app-api/storybook-static/. /home/web/
     - pwd
   tags:
-    - study_prod
+    - gbr-fmui-prod
