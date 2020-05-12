@@ -19,7 +19,7 @@ jobdockerbuildprod:
   tags:
     - gbr-fmui-prod
 # 在docker的gitlab-runner容器中构建（发布环境 - test 测试）
-jobdockerbuildprod:
+jobdockertestprod:
   only:
     - master
   stage: test
@@ -31,7 +31,7 @@ jobdockerbuildprod:
   tags:
     - gbr-fmui-prod
 # 在docker的gitlab-runner容器中构建（发布环境 - deploy 部署上线）
-jobdockerbuildprod:
+jobdockerdeployprod:
   only:
     - master
   stage: deploy
