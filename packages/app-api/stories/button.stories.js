@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withInfo } from '@storybook/addon-info';
 import { Button } from '@storybook/react/demo'; // 这里引入你想展示的组件
-import button from './doc/button.md'
+import button from './doc/button.md';
 
 // storiesOf('Button', module)
 //   .add('基本用法',
