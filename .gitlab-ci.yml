@@ -1,6 +1,8 @@
 stages:
   - build
-# 在docker的gitlab-runner容器中构建（发布环境）
+  - test
+  - deploy
+# 在docker的gitlab-runner容器中构建（发布环境 -  build 构建）
 jobdockerbuildprod:
   only:
     - master
@@ -16,13 +18,23 @@ jobdockerbuildprod:
     - pwd
   tags:
     - gbr-fmui-prod
-stages:
-  - build
-# 在docker的gitlab-runner容器中构建（发布环境）
-jobdockertestprod:
+# 在docker的gitlab-runner容器中构建（发布环境 - test 测试）
+jobdockerbuildprod:
   only:
     - master
   stage: test
+  script:
+    - pwd
+    - node --version
+    - yarn --version
+    - pwd
+  tags:
+    - gbr-fmui-prod
+# 在docker的gitlab-runner容器中构建（发布环境 - deploy 部署上线）
+jobdockerbuildprod:
+  only:
+    - master
+  stage: deploy
   script:
     - pwd
     - node --version
