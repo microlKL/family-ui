@@ -1,10 +1,11 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withInfo } from '@storybook/addon-info';
-import { Button } from '@storybook/react/demo'; // 这里引入你想展示的组件
-import button from './doc/button.md'
+import { action } from '@storybook/addon-actions';
 import PivotFlt from '@family-ui/pivot-flt/src';
 import PivotFltMd from './doc/PivotFlt.md'
+
+import { setConsoleOptions } from '@storybook/addon-console';
 
 // storiesOf('Button', module)
 //   .add('基本用法',

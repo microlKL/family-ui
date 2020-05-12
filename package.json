@@ -5,7 +5,7 @@
   "scripts": {
     "commit": "git-cz",
     "push:prod": "git push -u origin master",
-    "start:api": "yarn workspace @family-ui/app-api start",
+    "start:api": "yarn workspace @family-ui/app-api storybook",
     "build:api": "yarn workspace @family-ui/app-api build:storybook",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
