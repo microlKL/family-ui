@@ -16,3 +16,17 @@ jobdockerbuildprod:
     - pwd
   tags:
     - gbr-fmui-prod
+stages:
+  - build
+# 在docker的gitlab-runner容器中构建（发布环境）
+jobdockertestprod:
+  only:
+    - master
+  stage: test
+  script:
+    - pwd
+    - node --version
+    - yarn --version
+    - pwd
+  tags:
+    - gbr-fmui-prod

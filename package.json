@@ -7,6 +7,7 @@
     "push:prod": "git push -u origin master",
     "start:api": "yarn workspace @family-ui/app-api storybook",
     "build:api": "yarn workspace @family-ui/app-api build:storybook",
+    "start:study": "yarn workspace @family-ui/app-study storybook",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "config": {
