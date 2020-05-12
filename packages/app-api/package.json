@@ -13,6 +13,25 @@
   "files": [
     "lib"
   ],
+  "jest": {
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}",
+      "!**/coverage/**",
+      "!**/dist/**",
+      "!**/store.js",
+      "!**/provider.jsx",
+      "!**/index.js",
+      "!**/webpack.config.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 95,
+        "functions": 95,
+        "lines": 95,
+        "statements": 95
+      }
+    }
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -21,7 +40,7 @@
     "build": "node ./scripts/build.js",
     "storybook": "start-storybook -p 3001 -c .storybook",
     "build:storybook": "build-storybook -c .storybook",
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "test": "jest --colors --coverage"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
@@ -51,8 +70,10 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@family-ui/nav-flt": "^0.0.812",
     "@family-ui/pivot-flt": "^0.0.101",
+    "@family-ui/table-flt": "^0.0.101",
     "@fluentui/react": "^7.110.5",
     "@storybook/addon-a11y": "^5.3.18",
     "@storybook/addon-actions": "^5.3.18",
@@ -64,17 +85,25 @@
     "@storybook/addon-viewport": "^5.3.18",
     "@storybook/addons": "^5.3.18",
     "@storybook/react": "^5.3.18",
+    "@uifabric/example-data": "^7.0.14",
     "antd": "^4.2.0",
     "babel-eslint": "^10.1.0",
+    "babel-jest": "^26.0.1",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
     "eslint-plugin-react": "^7.19.0",
     "html": "^1.0.0",
     "html-loader": "^1.1.0",
+    "jest": "^26.0.1",
     "less": "^3.11.1",
     "less-loader": "^6.0.0",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
+    "react-addons-test-utils": "^15.6.2",
     "react-dom": "^16.13.1",
+    "react-test-renderer": "^16.13.1",
     "sass-loader": "^8.0.2",
+    "storybook-addon-smart-knobs": "^6.0.2",
     "style-loader": "^1.2.1",
     "styled-components": "^5.1.0"
   }

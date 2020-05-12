@@ -5,11 +5,11 @@ const path = require('path');
 module.exports = {
     addons: [
         '@storybook/addon-knobs/register',
-        '@storybook/addon-actions/register',
-        '@storybook/addon-storysource',
-        '@storybook/addon-viewport/register',
-        '@storybook/addon-backgrounds/register',
-        '@storybook/addon-a11y/register',
+        // '@storybook/addon-actions/register',
+        // '@storybook/addon-storysource',
+        // '@storybook/addon-viewport/register',
+        // '@storybook/addon-backgrounds/register',
+        // '@storybook/addon-a11y/register',
         // '@storybook/addon-links/register'
     ],
     webpackFinal: async (config, { configType }) => {
@@ -27,8 +27,9 @@ module.exports = {
                 {
                     loader: "babel-loader",
                     options: {
-                        presets: ['@babel/preset-react'],
-                        plugins: ["react-hot-loader/babel"]
+                        presets: ["@babel/preset-react"],
+                        plugins: ["react-hot-loader/babel",
+                        "@babel/plugin-proposal-class-properties"]
                     }
                 }
             ]

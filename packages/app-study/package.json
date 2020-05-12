@@ -64,6 +64,7 @@
     "@storybook/addon-viewport": "^5.3.18",
     "@storybook/addons": "^5.3.18",
     "@storybook/react": "^5.3.18",
+    "@uifabric/example-data": "^7.0.14",
     "antd": "^4.2.0",
     "babel-eslint": "^10.1.0",
     "eslint-plugin-react": "^7.19.0",

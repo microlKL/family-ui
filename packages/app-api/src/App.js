@@ -4,7 +4,6 @@ import {hot} from 'react-hot-loader/root';
 // import './app.scss';
 import styles from './app.scss';
 import smile from './assets/images/smile.png'
-import ButtonEx from './components/ButtonEx'
 
 function App() {
 
@@ -17,7 +16,6 @@ function App() {
         <div className={styles.app} onClick={_onClick}>
             hello react
             <img src={smile} alt='smile'/>
-            <ButtonEx />
         </div>
     )
 }
