@@ -1,5 +1,5 @@
 import React from 'react';
-import TableFltApi from '../../src/components/TableFltApi';
+import Links from '../../src/components/TableFltApi';
 import { shallow } from '../enzyme';
 
 
@@ -7,9 +7,9 @@ describe('Links component test', () => {
 
   it('render links', () => {
     const wrapper = shallow(
-      <TableFltApi />
+      <Links />
     );
-    expect(wrapper);
+    expect(wrapper.find('li').length).toBe(3);
   });
 
 })
