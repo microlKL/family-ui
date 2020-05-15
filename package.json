@@ -8,14 +8,17 @@
     "start:api": "yarn workspace @family-ui/app-api storybook",
     "build:api": "yarn workspace @family-ui/app-api build:storybook",
     "start:study": "yarn workspace @family-ui/app-study storybook",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test:coverage": "yarn jest --coverage",
+    "test:api": "yarn workspace @family-ui/app-api test",
+    "test:table": "yarn workspace @family-ui/table-flt test:karma"
   },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-lerna-changelog"
     }
   },
-  "备注":"files 决定 npm publish 发布到 npm 仓库时输出的文件夹",
+  "备注": "files 决定 npm publish 发布到 npm 仓库时输出的文件夹",
   "files": [
     "fluent-ui-packages"
   ],
@@ -33,7 +36,7 @@
     "packages/*",
     "fluent-ui-packages/*"
   ],
-  "homepage":"https://pedantic-mirzakhani-f9bb7c.netlify.app/",
+  "homepage": "https://pedantic-mirzakhani-f9bb7c.netlify.app/",
   "repository": {
     "type": "git",
     "url": "https://gitee.com/starFromGithub/family-ui-webpack.git"

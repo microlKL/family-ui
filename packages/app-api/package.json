@@ -13,25 +13,6 @@
   "files": [
     "lib"
   ],
-  "jest": {
-    "collectCoverageFrom": [
-      "**/*.{js,jsx}",
-      "!**/coverage/**",
-      "!**/dist/**",
-      "!**/store.js",
-      "!**/provider.jsx",
-      "!**/index.js",
-      "!**/webpack.config.js"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "branches": 95,
-        "functions": 95,
-        "lines": 95,
-        "statements": 95
-      }
-    }
-  },
   "publishConfig": {
     "access": "public"
   },
@@ -40,7 +21,7 @@
     "build": "node ./scripts/build.js",
     "storybook": "start-storybook -p 3001 -c .storybook",
     "build:storybook": "build-storybook -c .storybook",
-    "test": "jest --colors --coverage"
+    "test": "karma start ./test/karma.conf.js --log-level debug"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
@@ -51,11 +32,11 @@
     "babel-loader": "^8.1.0",
     "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.5.3",
+    "enzyme-to-json": "^3.4.4",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
     "file-loader": "^6.0.0",
     "html-webpack-plugin": "^4.2.1",
     "mini-css-extract-plugin": "^0.9.0",
-    "node-sass": "^4.14.0",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
     "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",
@@ -71,6 +52,7 @@
   },
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-decorators": "^7.8.3",
     "@family-ui/nav-flt": "^0.0.812",
     "@family-ui/pivot-flt": "^0.0.101",
     "@family-ui/table-flt": "^0.0.101",
@@ -89,22 +71,42 @@
     "antd": "^4.2.0",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^26.0.1",
+    "babel-plugin-import": "^1.13.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "eslint-plugin-react": "^7.19.0",
     "html": "^1.0.0",
     "html-loader": "^1.1.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jasmine-core": "^3.5.0",
+    "jasmine-enzyme": "^7.1.2",
     "jest": "^26.0.1",
+    "jest-puppeteer": "^4.4.0",
+    "karma": "^5.0.5",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-jasmine": "^3.1.1",
+    "karma-phantomjs-launcher": "^1.0.4",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-spec-reporter": "^0.0.32",
+    "karma-webpack": "^4.0.2",
     "less": "^3.11.1",
     "less-loader": "^6.0.0",
     "node-sass": "^4.14.1",
+    "phantomjs-polyfill": "^0.0.2",
+    "phantomjs-prebuilt": "^2.1.16",
+    "puppeteer": "^3.0.4",
     "react": "^16.13.1",
     "react-addons-test-utils": "^15.6.2",
     "react-dom": "^16.13.1",
     "react-test-renderer": "^16.13.1",
+    "redux-mock-store": "^1.5.4",
     "sass-loader": "^8.0.2",
+    "stealthy-require": "^1.1.1",
     "storybook-addon-smart-knobs": "^6.0.2",
     "style-loader": "^1.2.1",
-    "styled-components": "^5.1.0"
+    "styled-components": "^5.1.0",
+    "weak-napi": "^2.0.1"
   }
 }

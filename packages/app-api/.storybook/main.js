@@ -3,15 +3,15 @@ const path = require('path');
 
 // Export a function. Accept the base config as the only param.
 module.exports = {
-    addons: [
-        '@storybook/addon-knobs/register',
-        // '@storybook/addon-actions/register',
-        // '@storybook/addon-storysource',
-        // '@storybook/addon-viewport/register',
-        // '@storybook/addon-backgrounds/register',
-        // '@storybook/addon-a11y/register',
-        // '@storybook/addon-links/register'
-    ],
+    // addons: [
+    //     // '@storybook/addon-knobs/register',
+    //     // '@storybook/addon-actions/register',
+    //     // '@storybook/addon-storysource',
+    //     // '@storybook/addon-viewport/register',
+    //     // '@storybook/addon-backgrounds/register',
+    //     // '@storybook/addon-a11y/register',
+    //     // '@storybook/addon-links/register'
+    // ],
     webpackFinal: async (config, { configType }) => {
         // `configType` has a value of 'DEVELOPMENT' or 'PRODUCTION'
         // You can change the configuration based on that.
