@@ -6,6 +6,7 @@
     "commit": "git-cz",
     "push:prod": "git push -u origin master",
     "start:api": "yarn workspace @family-ui/app-api storybook",
+    "build-react:api": "yarn workspace @family-ui/app-api build",
     "build:api": "yarn workspace @family-ui/app-api build:storybook",
     "start:study": "yarn workspace @family-ui/app-study storybook",
     "test:api": "yarn workspace @family-ui/app-api test"

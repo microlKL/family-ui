@@ -16,6 +16,13 @@ prodBuild:
     - pwd
   tags:
     - gbr-fmui-prod
+  artifacts:
+    paths:
+      - node_modules/
+      - fluent-ui-packages/table-flt/node_modules/
+      - fluent-ui-packages/table-flt/lib/
+      - packages/app-api/node_modules/
+      - packages/app-api/storybook-static/
 # 在docker的gitlab-runner容器中构建（发布环境 - test 测试）
 prodTest1:
   only:
@@ -25,11 +32,11 @@ prodTest1:
     - pwd
     - node --version
     - yarn --version
-    - yarn install
-    - yarn test:api
     - pwd
   tags:
     - gbr-fmui-prod
+  dependencies:
+    - prodBuild
 prodTest2:
   only:
     - master
@@ -38,11 +45,11 @@ prodTest2:
     - pwd
     - node --version
     - yarn --version
-    - yarn install
-    - yarn test:api
     - pwd
   tags:
     - gbr-fmui-prod
+  dependencies:
+    - prodBuild
 # 在docker的gitlab-runner容器中构建（发布环境 - deploy 部署上线）
 prodDeploy:
   only:
@@ -52,10 +59,10 @@ prodDeploy:
     - pwd
     - node --version
     - yarn --version
-    - yarn install
-    - yarn build:api
     - rm -rf /home/web/*
     - cp -r packages/app-api/storybook-static/. /home/web/
     - pwd
   tags:
     - gbr-fmui-prod
+  dependencies:
+    - prodBuild

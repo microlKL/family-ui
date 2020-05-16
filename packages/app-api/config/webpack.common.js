@@ -2,13 +2,21 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+// const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 function webpackCommonConfigCreator(options) {
 
     return {
         mode: options.mode, // 开发模式
         entry: "./src/index.js",
+        externals: {
+            "react": "react",
+            "react-dom": "react-dom",
+            // "lodash": "lodash",
+            "antd": "antd",
+            "@fluentui/react": "@fluentui/react",
+            "styled-components": "styled-components"
+        },
         output: {
             // filename: "bundle.js",
             // 分配打包后的目录，放于js文件夹下

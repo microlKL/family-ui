@@ -18,6 +18,14 @@ module.exports = {
         // 'PRODUCTION' is used when building the static version of storybook.
 
         // Make whatever fine-grained changes you need
+        config.externals = {
+            "react": "react",
+            "react-dom": "react-dom",
+            // "lodash": "lodash",
+            "antd": "antd",
+            "@fluentui/react": "@fluentui/react",
+            "styled-components": "styled-components"
+        }
         config.module.rules.push({
             test: /\.(js|jsx)$/,
             // include: path.resolve(__dirname, "../src"),
@@ -29,7 +37,7 @@ module.exports = {
                     options: {
                         presets: ["@babel/preset-react"],
                         plugins: ["react-hot-loader/babel",
-                        "@babel/plugin-proposal-class-properties"]
+                            "@babel/plugin-proposal-class-properties"]
                     }
                 }
             ]
