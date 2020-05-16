@@ -23,6 +23,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
     "commitizen": "^4.0.4",
     "cz-lerna-changelog": "^2.0.2",
     "lerna": "^3.20.2",

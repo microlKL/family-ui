@@ -47,6 +47,21 @@ function _createClass(Constructor, protoProps, staticProps) {
   return Constructor;
 }
 
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
 function _extends() {
   _extends = Object.assign || function (target) {
     for (var i = 1; i < arguments.length; i++) {
@@ -19813,7 +19828,7 @@ var TableFlt = /*#__PURE__*/function (_React$Component) {
 
     _this = _super.call(this, props);
 
-    _this._onRenderRow = function (rowProps) {
+    _defineProperty(_assertThisInitialized(_this), "_onRenderRow", function (rowProps) {
       var rowPropParams = {
         // rowNormalBgColor 行背景色
         rowNormalBgColor: _this.props.rowNormalBgColor,
@@ -19840,9 +19855,9 @@ var TableFlt = /*#__PURE__*/function (_React$Component) {
         // }}
 
       })));
-    };
+    });
 
-    _this._onColumnClick = function (event, column) {
+    _defineProperty(_assertThisInitialized(_this), "_onColumnClick", function (event, column) {
       var columns = _this.state.columns;
       var sortedItems = _this.state.sortedItems;
       var isSortedDescending = column.isSortedDescending; // If we've sorted this column, flip it.
@@ -19866,7 +19881,7 @@ var TableFlt = /*#__PURE__*/function (_React$Component) {
           return col;
         })
       });
-    };
+    });
 
     var items = createListItems(500);
     _this.state = {
