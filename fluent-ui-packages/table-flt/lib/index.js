@@ -7,6 +7,153 @@ function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'defau
 var React = require('react');
 var React__default = _interopDefault(React);
 var ReactDOM = require('react-dom');
+var styled$1 = _interopDefault(require('styled-components'));
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];
+    descriptor.enumerable = descriptor.enumerable || false;
+    descriptor.configurable = true;
+    if ("value" in descriptor) descriptor.writable = true;
+    Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+  if (staticProps) _defineProperties(Constructor, staticProps);
+  return Constructor;
+}
+
+function _defineProperty(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+function _extends() {
+  _extends = Object.assign || function (target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+
+    return target;
+  };
+
+  return _extends.apply(this, arguments);
+}
+
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError("Super expression must either be null or a function");
+  }
+
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      writable: true,
+      configurable: true
+    }
+  });
+  if (superClass) _setPrototypeOf(subClass, superClass);
+}
+
+function _getPrototypeOf(o) {
+  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
+    return o.__proto__ || Object.getPrototypeOf(o);
+  };
+  return _getPrototypeOf(o);
+}
+
+function _setPrototypeOf(o, p) {
+  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+    o.__proto__ = p;
+    return o;
+  };
+
+  return _setPrototypeOf(o, p);
+}
+
+function _isNativeReflectConstruct() {
+  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+  if (Reflect.construct.sham) return false;
+  if (typeof Proxy === "function") return true;
+
+  try {
+    Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function _assertThisInitialized(self) {
+  if (self === void 0) {
+    throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+  }
+
+  return self;
+}
+
+function _possibleConstructorReturn(self, call) {
+  if (call && (typeof call === "object" || typeof call === "function")) {
+    return call;
+  }
+
+  return _assertThisInitialized(self);
+}
+
+function _createSuper(Derived) {
+  var hasNativeReflectConstruct = _isNativeReflectConstruct();
+
+  return function () {
+    var Super = _getPrototypeOf(Derived),
+        result;
+
+    if (hasNativeReflectConstruct) {
+      var NewTarget = _getPrototypeOf(this).constructor;
+
+      result = Reflect.construct(Super, arguments, NewTarget);
+    } else {
+      result = Super.apply(this, arguments);
+    }
+
+    return _possibleConstructorReturn(this, result);
+  };
+}
+
+function _taggedTemplateLiteral(strings, raw) {
+  if (!raw) {
+    raw = strings.slice(0);
+  }
+
+  return Object.freeze(Object.defineProperties(strings, {
+    raw: {
+      value: Object.freeze(raw)
+    }
+  }));
+}
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved.
@@ -82,566 +229,6 @@ function __spreadArrays() {
 
   return r;
 }
-
-var _window = undefined; // Note: Accessing "window" in IE11 is somewhat expensive, and calling "typeof window"
-// hits a memory leak, whereas aliasing it and calling "typeof _window" does not.
-// Caching the window value at the file scope lets us minimize the impact.
-
-try {
-  _window = window;
-} catch (e) {}
-/* no-op */
-
-/**
- * Helper to get the window object. The helper will make sure to use a cached variable
- * of "window", to avoid overhead and memory leaks in IE11. Note that in popup scenarios the
- * window object won't match the "global" window object, and for these scenarios, you should
- * pass in an element hosted within the popup.
- *
- * @public
- */
-
-
-function getWindow(rootElement) {
-  if ( typeof _window === 'undefined') {
-    return undefined;
-  } else {
-    var el = rootElement;
-    return el && el.ownerDocument && el.ownerDocument.defaultView ? el.ownerDocument.defaultView : _window;
-  }
-}
-
-/**
- * Bugs often appear in async code when stuff gets disposed, but async operations don't get canceled.
- * This Async helper class solves these issues by tying async code to the lifetime of a disposable object.
- *
- * Usage: Anything class extending from BaseModel can access this helper via this.async. Otherwise create a
- * new instance of the class and remember to call dispose() during your code's dispose handler.
- *
- * @public
- */
-
-var Async =
-/** @class */
-function () {
-  // tslint:disable-next-line:no-any
-  function Async(parent, onError) {
-    this._timeoutIds = null;
-    this._immediateIds = null;
-    this._intervalIds = null;
-    this._animationFrameIds = null;
-    this._isDisposed = false;
-    this._parent = parent || null;
-    this._onErrorHandler = onError;
-
-    this._noop = function () {
-      /* do nothing */
-    };
-  }
-  /**
-   * Dispose function, clears all async operations.
-   */
-
-
-  Async.prototype.dispose = function () {
-    var id;
-    this._isDisposed = true;
-    this._parent = null; // Clear timeouts.
-
-    if (this._timeoutIds) {
-      for (id in this._timeoutIds) {
-        if (this._timeoutIds.hasOwnProperty(id)) {
-          this.clearTimeout(parseInt(id, 10));
-        }
-      }
-
-      this._timeoutIds = null;
-    } // Clear immediates.
-
-
-    if (this._immediateIds) {
-      for (id in this._immediateIds) {
-        if (this._immediateIds.hasOwnProperty(id)) {
-          this.clearImmediate(parseInt(id, 10));
-        }
-      }
-
-      this._immediateIds = null;
-    } // Clear intervals.
-
-
-    if (this._intervalIds) {
-      for (id in this._intervalIds) {
-        if (this._intervalIds.hasOwnProperty(id)) {
-          this.clearInterval(parseInt(id, 10));
-        }
-      }
-
-      this._intervalIds = null;
-    } // Clear animation frames.
-
-
-    if (this._animationFrameIds) {
-      for (id in this._animationFrameIds) {
-        if (this._animationFrameIds.hasOwnProperty(id)) {
-          this.cancelAnimationFrame(parseInt(id, 10));
-        }
-      }
-
-      this._animationFrameIds = null;
-    }
-  };
-  /**
-   * SetTimeout override, which will auto cancel the timeout during dispose.
-   * @param callback - Callback to execute.
-   * @param duration - Duration in milliseconds.
-   * @returns The setTimeout id.
-   */
-
-
-  Async.prototype.setTimeout = function (callback, duration) {
-    var _this = this;
-
-    var timeoutId = 0;
-
-    if (!this._isDisposed) {
-      if (!this._timeoutIds) {
-        this._timeoutIds = {};
-      }
-      /* tslint:disable:ban-native-functions */
-
-
-      timeoutId = setTimeout(function () {
-        // Time to execute the timeout, enqueue it as a foreground task to be executed.
-        try {
-          // Now delete the record and call the callback.
-          if (_this._timeoutIds) {
-            delete _this._timeoutIds[timeoutId];
-          }
-
-          callback.apply(_this._parent);
-        } catch (e) {
-          if (_this._onErrorHandler) {
-            _this._onErrorHandler(e);
-          }
-        }
-      }, duration);
-      /* tslint:enable:ban-native-functions */
-
-      this._timeoutIds[timeoutId] = true;
-    }
-
-    return timeoutId;
-  };
-  /**
-   * Clears the timeout.
-   * @param id - Id to cancel.
-   */
-
-
-  Async.prototype.clearTimeout = function (id) {
-    if (this._timeoutIds && this._timeoutIds[id]) {
-      /* tslint:disable:ban-native-functions */
-      clearTimeout(id);
-      delete this._timeoutIds[id];
-      /* tslint:enable:ban-native-functions */
-    }
-  };
-  /**
-   * SetImmediate override, which will auto cancel the immediate during dispose.
-   * @param callback - Callback to execute.
-   * @param targetElement - Optional target element to use for identifying the correct window.
-   * @returns The setTimeout id.
-   */
-
-
-  Async.prototype.setImmediate = function (callback, targetElement) {
-    var _this = this;
-
-    var immediateId = 0;
-    var win = getWindow(targetElement);
-
-    if (!this._isDisposed) {
-      if (!this._immediateIds) {
-        this._immediateIds = {};
-      }
-      /* tslint:disable:ban-native-functions */
-
-
-      var setImmediateCallback = function () {
-        // Time to execute the timeout, enqueue it as a foreground task to be executed.
-        try {
-          // Now delete the record and call the callback.
-          if (_this._immediateIds) {
-            delete _this._immediateIds[immediateId];
-          }
-
-          callback.apply(_this._parent);
-        } catch (e) {
-          _this._logError(e);
-        }
-      };
-
-      immediateId = win.setTimeout(setImmediateCallback, 0);
-      /* tslint:enable:ban-native-functions */
-
-      this._immediateIds[immediateId] = true;
-    }
-
-    return immediateId;
-  };
-  /**
-   * Clears the immediate.
-   * @param id - Id to cancel.
-   * @param targetElement - Optional target element to use for identifying the correct window.
-   */
-
-
-  Async.prototype.clearImmediate = function (id, targetElement) {
-    var win = getWindow(targetElement);
-
-    if (this._immediateIds && this._immediateIds[id]) {
-      /* tslint:disable:ban-native-functions */
-      win.clearTimeout(id);
-      delete this._immediateIds[id];
-      /* tslint:enable:ban-native-functions */
-    }
-  };
-  /**
-   * SetInterval override, which will auto cancel the timeout during dispose.
-   * @param callback - Callback to execute.
-   * @param duration - Duration in milliseconds.
-   * @returns The setTimeout id.
-   */
-
-
-  Async.prototype.setInterval = function (callback, duration) {
-    var _this = this;
-
-    var intervalId = 0;
-
-    if (!this._isDisposed) {
-      if (!this._intervalIds) {
-        this._intervalIds = {};
-      }
-      /* tslint:disable:ban-native-functions */
-
-
-      intervalId = setInterval(function () {
-        // Time to execute the interval callback, enqueue it as a foreground task to be executed.
-        try {
-          callback.apply(_this._parent);
-        } catch (e) {
-          _this._logError(e);
-        }
-      }, duration);
-      /* tslint:enable:ban-native-functions */
-
-      this._intervalIds[intervalId] = true;
-    }
-
-    return intervalId;
-  };
-  /**
-   * Clears the interval.
-   * @param id - Id to cancel.
-   */
-
-
-  Async.prototype.clearInterval = function (id) {
-    if (this._intervalIds && this._intervalIds[id]) {
-      /* tslint:disable:ban-native-functions */
-      clearInterval(id);
-      delete this._intervalIds[id];
-      /* tslint:enable:ban-native-functions */
-    }
-  };
-  /**
-   * Creates a function that, when executed, will only call the func function at most once per
-   * every wait milliseconds. Provide an options object to indicate that func should be invoked
-   * on the leading and/or trailing edge of the wait timeout. Subsequent calls to the throttled
-   * function will return the result of the last func call.
-   *
-   * Note: If leading and trailing options are true func will be called on the trailing edge of
-   * the timeout only if the throttled function is invoked more than once during the wait timeout.
-   *
-   * @param func - The function to throttle.
-   * @param wait - The number of milliseconds to throttle executions to. Defaults to 0.
-   * @param options - The options object.
-   * @returns The new throttled function.
-   */
-
-
-  Async.prototype.throttle = function (func, wait, options) {
-    var _this = this;
-
-    if (this._isDisposed) {
-      return this._noop;
-    }
-
-    var waitMS = wait || 0;
-    var leading = true;
-    var trailing = true;
-    var lastExecuteTime = 0;
-    var lastResult; // tslint:disable-next-line:no-any
-
-    var lastArgs;
-    var timeoutId = null;
-
-    if (options && typeof options.leading === 'boolean') {
-      leading = options.leading;
-    }
-
-    if (options && typeof options.trailing === 'boolean') {
-      trailing = options.trailing;
-    }
-
-    var callback = function (userCall) {
-      var now = new Date().getTime();
-      var delta = now - lastExecuteTime;
-      var waitLength = leading ? waitMS - delta : waitMS;
-
-      if (delta >= waitMS && (!userCall || leading)) {
-        lastExecuteTime = now;
-
-        if (timeoutId) {
-          _this.clearTimeout(timeoutId);
-
-          timeoutId = null;
-        }
-
-        lastResult = func.apply(_this._parent, lastArgs);
-      } else if (timeoutId === null && trailing) {
-        timeoutId = _this.setTimeout(callback, waitLength);
-      }
-
-      return lastResult;
-    }; // tslint:disable-next-line:no-any
-
-
-    var resultFunction = function () {
-      var args = [];
-
-      for (var _i = 0; _i < arguments.length; _i++) {
-        args[_i] = arguments[_i];
-      }
-
-      lastArgs = args;
-      return callback(true);
-    };
-
-    return resultFunction;
-  };
-  /**
-   * Creates a function that will delay the execution of func until after wait milliseconds have
-   * elapsed since the last time it was invoked. Provide an options object to indicate that func
-   * should be invoked on the leading and/or trailing edge of the wait timeout. Subsequent calls
-   * to the debounced function will return the result of the last func call.
-   *
-   * Note: If leading and trailing options are true func will be called on the trailing edge of
-   * the timeout only if the debounced function is invoked more than once during the wait
-   * timeout.
-   *
-   * @param func - The function to debounce.
-   * @param wait - The number of milliseconds to delay.
-   * @param options - The options object.
-   * @returns The new debounced function.
-   */
-
-
-  Async.prototype.debounce = function (func, wait, options) {
-    var _this = this;
-
-    if (this._isDisposed) {
-      var noOpFunction = function () {
-        /** Do nothing */
-      };
-
-      noOpFunction.cancel = function () {
-        return;
-      };
-      /* tslint:disable:no-any */
-
-
-      noOpFunction.flush = function () {
-        return null;
-      };
-      /* tslint:enable:no-any */
-
-
-      noOpFunction.pending = function () {
-        return false;
-      };
-
-      return noOpFunction;
-    }
-
-    var waitMS = wait || 0;
-    var leading = false;
-    var trailing = true;
-    var maxWait = null;
-    var lastCallTime = 0;
-    var lastExecuteTime = new Date().getTime();
-    var lastResult; // tslint:disable-next-line:no-any
-
-    var lastArgs;
-    var timeoutId = null;
-
-    if (options && typeof options.leading === 'boolean') {
-      leading = options.leading;
-    }
-
-    if (options && typeof options.trailing === 'boolean') {
-      trailing = options.trailing;
-    }
-
-    if (options && typeof options.maxWait === 'number' && !isNaN(options.maxWait)) {
-      maxWait = options.maxWait;
-    }
-
-    var markExecuted = function (time) {
-      if (timeoutId) {
-        _this.clearTimeout(timeoutId);
-
-        timeoutId = null;
-      }
-
-      lastExecuteTime = time;
-    };
-
-    var invokeFunction = function (time) {
-      markExecuted(time);
-      lastResult = func.apply(_this._parent, lastArgs);
-    };
-
-    var callback = function (userCall) {
-      var now = new Date().getTime();
-      var executeImmediately = false;
-
-      if (userCall) {
-        if (leading && now - lastCallTime >= waitMS) {
-          executeImmediately = true;
-        }
-
-        lastCallTime = now;
-      }
-
-      var delta = now - lastCallTime;
-      var waitLength = waitMS - delta;
-      var maxWaitDelta = now - lastExecuteTime;
-      var maxWaitExpired = false;
-
-      if (maxWait !== null) {
-        // maxWait only matters when there is a pending callback
-        if (maxWaitDelta >= maxWait && timeoutId) {
-          maxWaitExpired = true;
-        } else {
-          waitLength = Math.min(waitLength, maxWait - maxWaitDelta);
-        }
-      }
-
-      if (delta >= waitMS || maxWaitExpired || executeImmediately) {
-        invokeFunction(now);
-      } else if ((timeoutId === null || !userCall) && trailing) {
-        timeoutId = _this.setTimeout(callback, waitLength);
-      }
-
-      return lastResult;
-    };
-
-    var pending = function () {
-      return !!timeoutId;
-    };
-
-    var cancel = function () {
-      if (pending()) {
-        // Mark the debounced function as having executed
-        markExecuted(new Date().getTime());
-      }
-    };
-
-    var flush = function () {
-      if (pending()) {
-        invokeFunction(new Date().getTime());
-      }
-
-      return lastResult;
-    }; // tslint:disable-next-line:no-any
-
-
-    var resultFunction = function () {
-      var args = [];
-
-      for (var _i = 0; _i < arguments.length; _i++) {
-        args[_i] = arguments[_i];
-      }
-
-      lastArgs = args;
-      return callback(true);
-    };
-
-    resultFunction.cancel = cancel;
-    resultFunction.flush = flush;
-    resultFunction.pending = pending;
-    return resultFunction;
-  };
-
-  Async.prototype.requestAnimationFrame = function (callback, targetElement) {
-    var _this = this;
-
-    var animationFrameId = 0;
-    var win = getWindow(targetElement);
-
-    if (!this._isDisposed) {
-      if (!this._animationFrameIds) {
-        this._animationFrameIds = {};
-      }
-      /* tslint:disable:ban-native-functions */
-
-
-      var animationFrameCallback = function () {
-        try {
-          // Now delete the record and call the callback.
-          if (_this._animationFrameIds) {
-            delete _this._animationFrameIds[animationFrameId];
-          }
-
-          callback.apply(_this._parent);
-        } catch (e) {
-          _this._logError(e);
-        }
-      };
-
-      animationFrameId = win.requestAnimationFrame ? win.requestAnimationFrame(animationFrameCallback) : win.setTimeout(animationFrameCallback, 0);
-      /* tslint:enable:ban-native-functions */
-
-      this._animationFrameIds[animationFrameId] = true;
-    }
-
-    return animationFrameId;
-  };
-
-  Async.prototype.cancelAnimationFrame = function (id, targetElement) {
-    var win = getWindow(targetElement);
-
-    if (this._animationFrameIds && this._animationFrameIds[id]) {
-      /* tslint:disable:ban-native-functions */
-      win.cancelAnimationFrame ? win.cancelAnimationFrame(id) : win.clearTimeout(id);
-      /* tslint:enable:ban-native-functions */
-
-      delete this._animationFrameIds[id];
-    }
-  }; // tslint:disable-next-line:no-any
-
-
-  Async.prototype._logError = function (e) {
-    if (this._onErrorHandler) {
-      this._onErrorHandler(e);
-    }
-  };
-
-  return Async;
-}();
 
 var InjectionMode = {
   /**
@@ -1712,6 +1299,629 @@ function keyframes(timeline) {
   return name;
 }
 
+// A packages cache that makes sure that we don't inject the same packageName twice in the same bundle -
+// this cache is local to the module closure inside this bundle
+var packagesCache = {}; // Cache access to window to avoid IE11 memory leak.
+
+var _win = undefined;
+
+try {
+  _win = window;
+} catch (e) {
+  /* no-op */
+}
+
+function setVersion(packageName, packageVersion) {
+  if (typeof _win !== 'undefined') {
+    // tslint:disable-next-line:no-any
+    var packages = _win.__packages__ = _win.__packages__ || {}; // We allow either the global packages or local packages caches to invalidate so testing can
+    // just clear the global to set this state
+
+    if (!packages[packageName] || !packagesCache[packageName]) {
+      packagesCache[packageName] = packageVersion;
+      var versions = packages[packageName] = packages[packageName] || [];
+      versions.push(packageVersion);
+    }
+  }
+}
+
+setVersion('@uifabric/set-version', '6.0.0');
+
+/**
+ * Builds a class names object from a given map.
+ *
+ * @param styles - Map of unprocessed styles.
+ * @returns Map of property name to class name.
+ */
+
+function buildClassMap(styles) {
+  var classes = {};
+
+  var _loop_1 = function (styleName) {
+    if (styles.hasOwnProperty(styleName)) {
+      var className_1;
+      Object.defineProperty(classes, styleName, {
+        get: function () {
+          if (className_1 === undefined) {
+            // tslint:disable-next-line:no-any
+            className_1 = mergeStyles(styles[styleName]).toString();
+          }
+
+          return className_1;
+        },
+        enumerable: true,
+        configurable: true
+      });
+    }
+  };
+
+  for (var styleName in styles) {
+    _loop_1(styleName);
+  }
+
+  return classes;
+}
+
+var _window = undefined; // Note: Accessing "window" in IE11 is somewhat expensive, and calling "typeof window"
+// hits a memory leak, whereas aliasing it and calling "typeof _window" does not.
+// Caching the window value at the file scope lets us minimize the impact.
+
+try {
+  _window = window;
+} catch (e) {}
+/* no-op */
+
+/**
+ * Helper to get the window object. The helper will make sure to use a cached variable
+ * of "window", to avoid overhead and memory leaks in IE11. Note that in popup scenarios the
+ * window object won't match the "global" window object, and for these scenarios, you should
+ * pass in an element hosted within the popup.
+ *
+ * @public
+ */
+
+
+function getWindow(rootElement) {
+  if ( typeof _window === 'undefined') {
+    return undefined;
+  } else {
+    var el = rootElement;
+    return el && el.ownerDocument && el.ownerDocument.defaultView ? el.ownerDocument.defaultView : _window;
+  }
+}
+
+/**
+ * Bugs often appear in async code when stuff gets disposed, but async operations don't get canceled.
+ * This Async helper class solves these issues by tying async code to the lifetime of a disposable object.
+ *
+ * Usage: Anything class extending from BaseModel can access this helper via this.async. Otherwise create a
+ * new instance of the class and remember to call dispose() during your code's dispose handler.
+ *
+ * @public
+ */
+
+var Async =
+/** @class */
+function () {
+  // tslint:disable-next-line:no-any
+  function Async(parent, onError) {
+    this._timeoutIds = null;
+    this._immediateIds = null;
+    this._intervalIds = null;
+    this._animationFrameIds = null;
+    this._isDisposed = false;
+    this._parent = parent || null;
+    this._onErrorHandler = onError;
+
+    this._noop = function () {
+      /* do nothing */
+    };
+  }
+  /**
+   * Dispose function, clears all async operations.
+   */
+
+
+  Async.prototype.dispose = function () {
+    var id;
+    this._isDisposed = true;
+    this._parent = null; // Clear timeouts.
+
+    if (this._timeoutIds) {
+      for (id in this._timeoutIds) {
+        if (this._timeoutIds.hasOwnProperty(id)) {
+          this.clearTimeout(parseInt(id, 10));
+        }
+      }
+
+      this._timeoutIds = null;
+    } // Clear immediates.
+
+
+    if (this._immediateIds) {
+      for (id in this._immediateIds) {
+        if (this._immediateIds.hasOwnProperty(id)) {
+          this.clearImmediate(parseInt(id, 10));
+        }
+      }
+
+      this._immediateIds = null;
+    } // Clear intervals.
+
+
+    if (this._intervalIds) {
+      for (id in this._intervalIds) {
+        if (this._intervalIds.hasOwnProperty(id)) {
+          this.clearInterval(parseInt(id, 10));
+        }
+      }
+
+      this._intervalIds = null;
+    } // Clear animation frames.
+
+
+    if (this._animationFrameIds) {
+      for (id in this._animationFrameIds) {
+        if (this._animationFrameIds.hasOwnProperty(id)) {
+          this.cancelAnimationFrame(parseInt(id, 10));
+        }
+      }
+
+      this._animationFrameIds = null;
+    }
+  };
+  /**
+   * SetTimeout override, which will auto cancel the timeout during dispose.
+   * @param callback - Callback to execute.
+   * @param duration - Duration in milliseconds.
+   * @returns The setTimeout id.
+   */
+
+
+  Async.prototype.setTimeout = function (callback, duration) {
+    var _this = this;
+
+    var timeoutId = 0;
+
+    if (!this._isDisposed) {
+      if (!this._timeoutIds) {
+        this._timeoutIds = {};
+      }
+      /* tslint:disable:ban-native-functions */
+
+
+      timeoutId = setTimeout(function () {
+        // Time to execute the timeout, enqueue it as a foreground task to be executed.
+        try {
+          // Now delete the record and call the callback.
+          if (_this._timeoutIds) {
+            delete _this._timeoutIds[timeoutId];
+          }
+
+          callback.apply(_this._parent);
+        } catch (e) {
+          if (_this._onErrorHandler) {
+            _this._onErrorHandler(e);
+          }
+        }
+      }, duration);
+      /* tslint:enable:ban-native-functions */
+
+      this._timeoutIds[timeoutId] = true;
+    }
+
+    return timeoutId;
+  };
+  /**
+   * Clears the timeout.
+   * @param id - Id to cancel.
+   */
+
+
+  Async.prototype.clearTimeout = function (id) {
+    if (this._timeoutIds && this._timeoutIds[id]) {
+      /* tslint:disable:ban-native-functions */
+      clearTimeout(id);
+      delete this._timeoutIds[id];
+      /* tslint:enable:ban-native-functions */
+    }
+  };
+  /**
+   * SetImmediate override, which will auto cancel the immediate during dispose.
+   * @param callback - Callback to execute.
+   * @param targetElement - Optional target element to use for identifying the correct window.
+   * @returns The setTimeout id.
+   */
+
+
+  Async.prototype.setImmediate = function (callback, targetElement) {
+    var _this = this;
+
+    var immediateId = 0;
+    var win = getWindow(targetElement);
+
+    if (!this._isDisposed) {
+      if (!this._immediateIds) {
+        this._immediateIds = {};
+      }
+      /* tslint:disable:ban-native-functions */
+
+
+      var setImmediateCallback = function () {
+        // Time to execute the timeout, enqueue it as a foreground task to be executed.
+        try {
+          // Now delete the record and call the callback.
+          if (_this._immediateIds) {
+            delete _this._immediateIds[immediateId];
+          }
+
+          callback.apply(_this._parent);
+        } catch (e) {
+          _this._logError(e);
+        }
+      };
+
+      immediateId = win.setTimeout(setImmediateCallback, 0);
+      /* tslint:enable:ban-native-functions */
+
+      this._immediateIds[immediateId] = true;
+    }
+
+    return immediateId;
+  };
+  /**
+   * Clears the immediate.
+   * @param id - Id to cancel.
+   * @param targetElement - Optional target element to use for identifying the correct window.
+   */
+
+
+  Async.prototype.clearImmediate = function (id, targetElement) {
+    var win = getWindow(targetElement);
+
+    if (this._immediateIds && this._immediateIds[id]) {
+      /* tslint:disable:ban-native-functions */
+      win.clearTimeout(id);
+      delete this._immediateIds[id];
+      /* tslint:enable:ban-native-functions */
+    }
+  };
+  /**
+   * SetInterval override, which will auto cancel the timeout during dispose.
+   * @param callback - Callback to execute.
+   * @param duration - Duration in milliseconds.
+   * @returns The setTimeout id.
+   */
+
+
+  Async.prototype.setInterval = function (callback, duration) {
+    var _this = this;
+
+    var intervalId = 0;
+
+    if (!this._isDisposed) {
+      if (!this._intervalIds) {
+        this._intervalIds = {};
+      }
+      /* tslint:disable:ban-native-functions */
+
+
+      intervalId = setInterval(function () {
+        // Time to execute the interval callback, enqueue it as a foreground task to be executed.
+        try {
+          callback.apply(_this._parent);
+        } catch (e) {
+          _this._logError(e);
+        }
+      }, duration);
+      /* tslint:enable:ban-native-functions */
+
+      this._intervalIds[intervalId] = true;
+    }
+
+    return intervalId;
+  };
+  /**
+   * Clears the interval.
+   * @param id - Id to cancel.
+   */
+
+
+  Async.prototype.clearInterval = function (id) {
+    if (this._intervalIds && this._intervalIds[id]) {
+      /* tslint:disable:ban-native-functions */
+      clearInterval(id);
+      delete this._intervalIds[id];
+      /* tslint:enable:ban-native-functions */
+    }
+  };
+  /**
+   * Creates a function that, when executed, will only call the func function at most once per
+   * every wait milliseconds. Provide an options object to indicate that func should be invoked
+   * on the leading and/or trailing edge of the wait timeout. Subsequent calls to the throttled
+   * function will return the result of the last func call.
+   *
+   * Note: If leading and trailing options are true func will be called on the trailing edge of
+   * the timeout only if the throttled function is invoked more than once during the wait timeout.
+   *
+   * @param func - The function to throttle.
+   * @param wait - The number of milliseconds to throttle executions to. Defaults to 0.
+   * @param options - The options object.
+   * @returns The new throttled function.
+   */
+
+
+  Async.prototype.throttle = function (func, wait, options) {
+    var _this = this;
+
+    if (this._isDisposed) {
+      return this._noop;
+    }
+
+    var waitMS = wait || 0;
+    var leading = true;
+    var trailing = true;
+    var lastExecuteTime = 0;
+    var lastResult; // tslint:disable-next-line:no-any
+
+    var lastArgs;
+    var timeoutId = null;
+
+    if (options && typeof options.leading === 'boolean') {
+      leading = options.leading;
+    }
+
+    if (options && typeof options.trailing === 'boolean') {
+      trailing = options.trailing;
+    }
+
+    var callback = function (userCall) {
+      var now = new Date().getTime();
+      var delta = now - lastExecuteTime;
+      var waitLength = leading ? waitMS - delta : waitMS;
+
+      if (delta >= waitMS && (!userCall || leading)) {
+        lastExecuteTime = now;
+
+        if (timeoutId) {
+          _this.clearTimeout(timeoutId);
+
+          timeoutId = null;
+        }
+
+        lastResult = func.apply(_this._parent, lastArgs);
+      } else if (timeoutId === null && trailing) {
+        timeoutId = _this.setTimeout(callback, waitLength);
+      }
+
+      return lastResult;
+    }; // tslint:disable-next-line:no-any
+
+
+    var resultFunction = function () {
+      var args = [];
+
+      for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i] = arguments[_i];
+      }
+
+      lastArgs = args;
+      return callback(true);
+    };
+
+    return resultFunction;
+  };
+  /**
+   * Creates a function that will delay the execution of func until after wait milliseconds have
+   * elapsed since the last time it was invoked. Provide an options object to indicate that func
+   * should be invoked on the leading and/or trailing edge of the wait timeout. Subsequent calls
+   * to the debounced function will return the result of the last func call.
+   *
+   * Note: If leading and trailing options are true func will be called on the trailing edge of
+   * the timeout only if the debounced function is invoked more than once during the wait
+   * timeout.
+   *
+   * @param func - The function to debounce.
+   * @param wait - The number of milliseconds to delay.
+   * @param options - The options object.
+   * @returns The new debounced function.
+   */
+
+
+  Async.prototype.debounce = function (func, wait, options) {
+    var _this = this;
+
+    if (this._isDisposed) {
+      var noOpFunction = function () {
+        /** Do nothing */
+      };
+
+      noOpFunction.cancel = function () {
+        return;
+      };
+      /* tslint:disable:no-any */
+
+
+      noOpFunction.flush = function () {
+        return null;
+      };
+      /* tslint:enable:no-any */
+
+
+      noOpFunction.pending = function () {
+        return false;
+      };
+
+      return noOpFunction;
+    }
+
+    var waitMS = wait || 0;
+    var leading = false;
+    var trailing = true;
+    var maxWait = null;
+    var lastCallTime = 0;
+    var lastExecuteTime = new Date().getTime();
+    var lastResult; // tslint:disable-next-line:no-any
+
+    var lastArgs;
+    var timeoutId = null;
+
+    if (options && typeof options.leading === 'boolean') {
+      leading = options.leading;
+    }
+
+    if (options && typeof options.trailing === 'boolean') {
+      trailing = options.trailing;
+    }
+
+    if (options && typeof options.maxWait === 'number' && !isNaN(options.maxWait)) {
+      maxWait = options.maxWait;
+    }
+
+    var markExecuted = function (time) {
+      if (timeoutId) {
+        _this.clearTimeout(timeoutId);
+
+        timeoutId = null;
+      }
+
+      lastExecuteTime = time;
+    };
+
+    var invokeFunction = function (time) {
+      markExecuted(time);
+      lastResult = func.apply(_this._parent, lastArgs);
+    };
+
+    var callback = function (userCall) {
+      var now = new Date().getTime();
+      var executeImmediately = false;
+
+      if (userCall) {
+        if (leading && now - lastCallTime >= waitMS) {
+          executeImmediately = true;
+        }
+
+        lastCallTime = now;
+      }
+
+      var delta = now - lastCallTime;
+      var waitLength = waitMS - delta;
+      var maxWaitDelta = now - lastExecuteTime;
+      var maxWaitExpired = false;
+
+      if (maxWait !== null) {
+        // maxWait only matters when there is a pending callback
+        if (maxWaitDelta >= maxWait && timeoutId) {
+          maxWaitExpired = true;
+        } else {
+          waitLength = Math.min(waitLength, maxWait - maxWaitDelta);
+        }
+      }
+
+      if (delta >= waitMS || maxWaitExpired || executeImmediately) {
+        invokeFunction(now);
+      } else if ((timeoutId === null || !userCall) && trailing) {
+        timeoutId = _this.setTimeout(callback, waitLength);
+      }
+
+      return lastResult;
+    };
+
+    var pending = function () {
+      return !!timeoutId;
+    };
+
+    var cancel = function () {
+      if (pending()) {
+        // Mark the debounced function as having executed
+        markExecuted(new Date().getTime());
+      }
+    };
+
+    var flush = function () {
+      if (pending()) {
+        invokeFunction(new Date().getTime());
+      }
+
+      return lastResult;
+    }; // tslint:disable-next-line:no-any
+
+
+    var resultFunction = function () {
+      var args = [];
+
+      for (var _i = 0; _i < arguments.length; _i++) {
+        args[_i] = arguments[_i];
+      }
+
+      lastArgs = args;
+      return callback(true);
+    };
+
+    resultFunction.cancel = cancel;
+    resultFunction.flush = flush;
+    resultFunction.pending = pending;
+    return resultFunction;
+  };
+
+  Async.prototype.requestAnimationFrame = function (callback, targetElement) {
+    var _this = this;
+
+    var animationFrameId = 0;
+    var win = getWindow(targetElement);
+
+    if (!this._isDisposed) {
+      if (!this._animationFrameIds) {
+        this._animationFrameIds = {};
+      }
+      /* tslint:disable:ban-native-functions */
+
+
+      var animationFrameCallback = function () {
+        try {
+          // Now delete the record and call the callback.
+          if (_this._animationFrameIds) {
+            delete _this._animationFrameIds[animationFrameId];
+          }
+
+          callback.apply(_this._parent);
+        } catch (e) {
+          _this._logError(e);
+        }
+      };
+
+      animationFrameId = win.requestAnimationFrame ? win.requestAnimationFrame(animationFrameCallback) : win.setTimeout(animationFrameCallback, 0);
+      /* tslint:enable:ban-native-functions */
+
+      this._animationFrameIds[animationFrameId] = true;
+    }
+
+    return animationFrameId;
+  };
+
+  Async.prototype.cancelAnimationFrame = function (id, targetElement) {
+    var win = getWindow(targetElement);
+
+    if (this._animationFrameIds && this._animationFrameIds[id]) {
+      /* tslint:disable:ban-native-functions */
+      win.cancelAnimationFrame ? win.cancelAnimationFrame(id) : win.clearTimeout(id);
+      /* tslint:enable:ban-native-functions */
+
+      delete this._animationFrameIds[id];
+    }
+  }; // tslint:disable-next-line:no-any
+
+
+  Async.prototype._logError = function (e) {
+    if (this._onErrorHandler) {
+      this._onErrorHandler(e);
+    }
+  };
+
+  return Async;
+}();
+
 var CURRENT_ID_PROPERTY = '__currentId__';
 var DEFAULT_ID_STRING = 'id__'; // tslint:disable-next-line:no-any
 
@@ -2151,7 +2361,6 @@ function getDocument(rootElement) {
   }
 }
 
-var _scrollbarWidth;
 var DisabledScrollClassName = mergeStyles({
   overflow: 'hidden !important'
 });
@@ -2164,29 +2373,6 @@ var DisabledScrollClassName = mergeStyles({
  */
 
 var DATA_IS_SCROLLABLE_ATTRIBUTE = 'data-is-scrollable';
-/**
- * Calculates the width of a scrollbar for the browser/os.
- *
- * @public
- */
-
-function getScrollbarWidth() {
-  if (_scrollbarWidth === undefined) {
-    var scrollDiv = document.createElement('div');
-    scrollDiv.style.setProperty('width', '100px');
-    scrollDiv.style.setProperty('height', '100px');
-    scrollDiv.style.setProperty('overflow', 'scroll');
-    scrollDiv.style.setProperty('position', 'absolute');
-    scrollDiv.style.setProperty('top', '-9999px');
-    document.body.appendChild(scrollDiv); // Get the scrollbar width
-
-    _scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth; // Delete the DIV
-
-    document.body.removeChild(scrollDiv);
-  }
-
-  return _scrollbarWidth;
-}
 /**
  * Traverses up the DOM for the element with the data-is-scrollable=true attribute, or returns
  * document.body.
@@ -2232,6 +2418,32 @@ function findScrollableParent(startingElement) {
 }
 
 /**
+ * Helper to get bounding client rect. Passing in window will get the window size.
+ *
+ * @public
+ */
+function getRect(element) {
+  var rect;
+
+  if (element) {
+    if (element === window) {
+      rect = {
+        left: 0,
+        top: 0,
+        width: window.innerWidth,
+        height: window.innerHeight,
+        right: window.innerWidth,
+        bottom: window.innerHeight
+      };
+    } else if (element.getBoundingClientRect) {
+      rect = element.getBoundingClientRect();
+    }
+  }
+
+  return rect;
+}
+
+/**
  * Sends a warning to console, if the api is present.
  *
  * @public
@@ -2241,52 +2453,6 @@ function findScrollableParent(startingElement) {
 function warn(message) {
   if (console && console.warn) {
     console.warn(message);
-  }
-}
-
-/**
- * Warns when props are required if a condition is met.
- *
- * @public
- * @param componentName - The name of the component being used.
- * @param props - The props passed into the component.
- * @param requiredProps - The name of the props that are required when the condition is met.
- * @param conditionalPropName - The name of the prop that the condition is based on.
- * @param condition - Whether the condition is met.
- */
-
-function warnConditionallyRequiredProps(componentName, props, requiredProps, conditionalPropName, condition) {
-  if (condition === true && "production " !== 'production') {
-    for (var _i = 0, requiredProps_1 = requiredProps; _i < requiredProps_1.length; _i++) {
-      var requiredPropName = requiredProps_1[_i];
-
-      if (!(requiredPropName in props)) {
-        warn(componentName + " property '" + requiredPropName + "' is required when '" + conditionalPropName + "' is used.'");
-      }
-    }
-  }
-}
-
-/**
- * Warns when two props which are mutually exclusive are both being used.
- *
- * @public
- * @param componentName - The name of the component being used.
- * @param props - The props passed into the component.
- * @param exclusiveMap - A map where the key is a parameter, and the value is the other parameter.
- */
-
-function warnMutuallyExclusive(componentName, props, exclusiveMap) {
-  {
-    for (var propName in exclusiveMap) {
-      if (props && props[propName] !== undefined) {
-        var propInExclusiveMapValue = exclusiveMap[propName];
-
-        if (propInExclusiveMapValue && props[propInExclusiveMapValue] !== undefined) {
-          warn(componentName + " property '" + propName + "' is mutually exclusive with '" + exclusiveMap[propName] + "'. " + "Use one or the other.");
-        }
-      }
-    }
   }
 }
 
@@ -2318,277 +2484,54 @@ function warnDeprecations(componentName, props, deprecationMap) {
 }
 
 /**
- * BaseComponent class, which provides basic helpers for all components.
+ * Utility component for delaying the render of a child component after a given delay. This component
+ * requires a single child component; don't pass in many components. Wrap multiple components in a DIV
+ * if necessary.
  *
  * @public
- * {@docCategory BaseComponent}
- *
- * @deprecated Do not use. We are moving away from class component.
+ * {@docCategory DelayedRender}
  */
 
-var BaseComponent =
+var DelayedRender =
 /** @class */
 function (_super) {
-  __extends(BaseComponent, _super); // tslint:enable:variable-name
+  __extends(DelayedRender, _super);
 
-  /**
-   * BaseComponent constructor
-   * @param props - The props for the component.
-   * @param context - The context for the component.
-   */
-  // tslint:disable-next-line:no-any
+  function DelayedRender(props) {
+    var _this = _super.call(this, props) || this;
 
-
-  function BaseComponent(props, context) {
-    var _this = _super.call(this, props, context) || this; // tslint:disable-next-line:deprecation
-
-
-    _makeAllSafe(_this, BaseComponent.prototype, ['componentDidMount', 'shouldComponentUpdate', 'getSnapshotBeforeUpdate', 'render', 'componentDidUpdate', 'componentWillUnmount']);
-
+    _this.state = {
+      isRendered: false
+    };
     return _this;
   }
-  /**
-   * When the component receives props, make sure the componentRef is updated.
-   */
 
-
-  BaseComponent.prototype.componentDidUpdate = function (prevProps, prevState) {
-    this._updateComponentRef(prevProps, this.props);
-  };
-  /**
-   * When the component has mounted, update the componentRef.
-   */
-
-
-  BaseComponent.prototype.componentDidMount = function () {
-    this._setComponentRef(this.props.componentRef, this);
-  };
-  /**
-   * If we have disposables, dispose them automatically on unmount.
-   */
-
-
-  BaseComponent.prototype.componentWillUnmount = function () {
-    this._setComponentRef(this.props.componentRef, null);
-
-    if (this.__disposables) {
-      for (var i = 0, len = this._disposables.length; i < len; i++) {
-        var disposable = this.__disposables[i];
-
-        if (disposable.dispose) {
-          disposable.dispose();
-        }
-      }
-
-      this.__disposables = null;
-    }
-  };
-
-  Object.defineProperty(BaseComponent.prototype, "className", {
-    /**
-     * Gets the object's class name.
-     */
-    get: function () {
-      if (!this.__className) {
-        var funcNameRegex = /function (.{1,})\(/;
-        var results = funcNameRegex.exec(this.constructor.toString());
-        this.__className = results && results.length > 1 ? results[1] : '';
-      }
-
-      return this.__className;
-    },
-    enumerable: true,
-    configurable: true
-  });
-  Object.defineProperty(BaseComponent.prototype, "_disposables", {
-    /**
-     * Allows subclasses to push things to this._disposables to be auto disposed.
-     */
-    get: function () {
-      if (!this.__disposables) {
-        this.__disposables = [];
-      }
-
-      return this.__disposables;
-    },
-    enumerable: true,
-    configurable: true
-  });
-  Object.defineProperty(BaseComponent.prototype, "_async", {
-    /**
-     * Gets the async instance associated with the component, created on demand. The async instance gives
-     * subclasses a way to execute setTimeout/setInterval async calls safely, where the callbacks
-     * will be cleared/ignored automatically after unmounting. The helpers within the async object also
-     * preserve the this pointer so that you don't need to "bind" the callbacks.
-     */
-    get: function () {
-      if (!this.__async) {
-        this.__async = new Async(this);
-
-        this._disposables.push(this.__async);
-      }
-
-      return this.__async;
-    },
-    enumerable: true,
-    configurable: true
-  });
-  Object.defineProperty(BaseComponent.prototype, "_events", {
-    /**
-     * Gets the event group instance assocaited with the component, created on demand. The event instance
-     * provides on/off methods for listening to DOM (or regular javascript object) events. The event callbacks
-     * will be automatically disconnected after unmounting. The helpers within the events object also
-     * preserve the this reference so that you don't need to "bind" the callbacks.
-     */
-    get: function () {
-      if (!this.__events) {
-        this.__events = new EventGroup(this);
-
-        this._disposables.push(this.__events);
-      }
-
-      return this.__events;
-    },
-    enumerable: true,
-    configurable: true
-  });
-  /**
-   * Helper to return a memoized ref resolver function.
-   * @param refName - Name of the member to assign the ref to.
-   * @returns A function instance keyed from the given refname.
-   * @deprecated Use `createRef` from React.createRef.
-   */
-
-  BaseComponent.prototype._resolveRef = function (refName) {
+  DelayedRender.prototype.componentDidMount = function () {
     var _this = this;
 
-    if (!this.__resolves) {
-      this.__resolves = {};
-    }
-
-    if (!this.__resolves[refName]) {
-      // tslint:disable-next-line:no-any
-      this.__resolves[refName] = function (ref) {
-        // tslint:disable-next-line:no-any
-        return _this[refName] = ref;
-      };
-    }
-
-    return this.__resolves[refName];
-  };
-  /**
-   * Updates the componentRef (by calling it with "this" when necessary.)
-   */
-
-
-  BaseComponent.prototype._updateComponentRef = function (currentProps, newProps) {
-    if (newProps === void 0) {
-      newProps = {};
-    } // currentProps *should* always be defined, but verify that just in case a subclass is manually
-    // calling a lifecycle method with no parameters (which has happened) or other odd usage.
-
-
-    if (currentProps && newProps && currentProps.componentRef !== newProps.componentRef) {
-      this._setComponentRef(currentProps.componentRef, null);
-
-      this._setComponentRef(newProps.componentRef, this);
-    }
-  };
-  /**
-   * Warns when a deprecated props are being used.
-   *
-   * @param deprecationMap - The map of deprecations, where key is the prop name and the value is
-   * either null or a replacement prop name.
-   */
-
-
-  BaseComponent.prototype._warnDeprecations = function (deprecationMap) {
-    warnDeprecations(this.className, this.props, deprecationMap);
-  };
-  /**
-   * Warns when props which are mutually exclusive with each other are both used.
-   *
-   * @param mutuallyExclusiveMap - The map of mutually exclusive props.
-   */
-
-
-  BaseComponent.prototype._warnMutuallyExclusive = function (mutuallyExclusiveMap) {
-    warnMutuallyExclusive(this.className, this.props, mutuallyExclusiveMap);
-  };
-  /**
-   * Warns when props are required if a condition is met.
-   *
-   * @param requiredProps - The name of the props that are required when the condition is met.
-   * @param conditionalPropName - The name of the prop that the condition is based on.
-   * @param condition - Whether the condition is met.
-   */
-
-
-  BaseComponent.prototype._warnConditionallyRequiredProps = function (requiredProps, conditionalPropName, condition) {
-    warnConditionallyRequiredProps(this.className, this.props, requiredProps, conditionalPropName, condition);
+    var delay = this.props.delay;
+    this._timeoutId = window.setTimeout(function () {
+      _this.setState({
+        isRendered: true
+      });
+    }, delay);
   };
 
-  BaseComponent.prototype._setComponentRef = function (ref, value) {
-    if (!this._skipComponentRefResolution && ref) {
-      if (typeof ref === 'function') {
-        ref(value);
-      }
-
-      if (typeof ref === 'object') {
-        // tslint:disable:no-any
-        ref.current = value;
-      }
+  DelayedRender.prototype.componentWillUnmount = function () {
+    if (this._timeoutId) {
+      clearTimeout(this._timeoutId);
     }
   };
 
-  return BaseComponent;
+  DelayedRender.prototype.render = function () {
+    return this.state.isRendered ? React.Children.only(this.props.children) : null;
+  };
+
+  DelayedRender.defaultProps = {
+    delay: 0
+  };
+  return DelayedRender;
 }(React.Component);
-/**
- * Helper to override a given method with a wrapper method that can try/catch the original, but also
- * ensures that the BaseComponent's methods are called before the subclass's. This ensures that
- * componentWillUnmount in the base is called and that things in the _disposables array are disposed.
- */
-// tslint:disable-next-line:deprecation
-
-function _makeAllSafe(obj, prototype, methodNames) {
-  for (var i = 0, len = methodNames.length; i < len; i++) {
-    _makeSafe(obj, prototype, methodNames[i]);
-  }
-} // tslint:disable-next-line:deprecation
-
-
-function _makeSafe(obj, prototype, methodName) {
-  // tslint:disable:no-any
-  var classMethod = obj[methodName];
-  var prototypeMethod = prototype[methodName]; // tslint:enable:no-any
-
-  if (classMethod || prototypeMethod) {
-    // tslint:disable-next-line:no-any
-    obj[methodName] = function () {
-      var retVal;
-
-      if (prototypeMethod) {
-        retVal = prototypeMethod.apply(this, arguments);
-      }
-
-      if (classMethod !== prototypeMethod) {
-        retVal = classMethod.apply(this, arguments);
-      }
-
-      return retVal;
-    };
-  }
-}
-/**
- * Simple constant function for returning null, used to render empty templates in JSX.
- *
- * @public
- */
-
-
-function nullRender() {
-  return null;
-}
 
 /**
  * Storing global state in local module variables has issues when more than one copy
@@ -2801,71 +2744,6 @@ var KeyCodes = {
   singleQuote: 222
 };
 
-/**
- * Rectangle helper class.
- *
- * @public
- * {@docCategory Rectangle}
- */
-var Rectangle =
-/** @class */
-function () {
-  function Rectangle(left, right, top, bottom) {
-    if (left === void 0) {
-      left = 0;
-    }
-
-    if (right === void 0) {
-      right = 0;
-    }
-
-    if (top === void 0) {
-      top = 0;
-    }
-
-    if (bottom === void 0) {
-      bottom = 0;
-    }
-
-    this.top = top;
-    this.bottom = bottom;
-    this.left = left;
-    this.right = right;
-  }
-
-  Object.defineProperty(Rectangle.prototype, "width", {
-    /**
-     * Calculated automatically by subtracting the right from left
-     */
-    get: function () {
-      return this.right - this.left;
-    },
-    enumerable: true,
-    configurable: true
-  });
-  Object.defineProperty(Rectangle.prototype, "height", {
-    /**
-     * Calculated automatically by subtracting the bottom from top.
-     */
-    get: function () {
-      return this.bottom - this.top;
-    },
-    enumerable: true,
-    configurable: true
-  });
-  /**
-   * Tests if another rect is approximately equal to this rect (within 4 decimal places.)
-   */
-
-  Rectangle.prototype.equals = function (rect) {
-    // Fixing to 4 decimal places because it allows enough precision and will handle cases when something
-    // should be rounded, like .999999 should round to 1.
-    return parseFloat(this.top.toFixed(4)) === parseFloat(rect.top.toFixed(4)) && parseFloat(this.bottom.toFixed(4)) === parseFloat(rect.bottom.toFixed(4)) && parseFloat(this.left.toFixed(4)) === parseFloat(rect.left.toFixed(4)) && parseFloat(this.right.toFixed(4)) === parseFloat(rect.right.toFixed(4));
-  };
-
-  return Rectangle;
-}();
-
 // tslint:disable:no-any
 
 /**
@@ -2923,6 +2801,18 @@ function mergeAriaAttributeValues() {
  * @param array - Array to search.
  * @param cb - Callback which returns true on matches.
  */
+function findIndex(array, cb) {
+  var index = -1;
+
+  for (var i = 0; array && i < array.length; i++) {
+    if (cb(array[i], i)) {
+      index = i;
+      break;
+    }
+  }
+
+  return index;
+}
 /**
  * Given an array, this function returns a new array where an element has been inserted at the given index.
  * @param array - The array to operate on
@@ -3022,6 +2912,25 @@ function setRTL$1(isRTL, persistSetting) {
 
   _isRTL = isRTL;
   setRTL(_isRTL);
+}
+/**
+ * Returns the given key, but flips right/left arrows if necessary.
+ */
+
+function getRTLSafeKeyCode(key, theme) {
+  if (theme === void 0) {
+    theme = {};
+  }
+
+  if (getRTL$1(theme)) {
+    if (key === KeyCodes.left) {
+      key = KeyCodes.right;
+    } else if (key === KeyCodes.right) {
+      key = KeyCodes.left;
+    }
+  }
+
+  return key;
 }
 
 /**
@@ -3129,13 +3038,6 @@ function elementContainsAttribute(element, attribute) {
     return testElement.hasAttribute(attribute);
   });
   return elementMatch && elementMatch.getAttribute(attribute);
-}
-
-function on(element, eventName, callback, options) {
-  element.addEventListener(eventName, callback, options);
-  return function () {
-    return element.removeEventListener(eventName, callback, options);
-  };
 }
 
 var DATA_PORTAL_ATTRIBUTE = 'data-portal-element';
@@ -3473,6 +3375,45 @@ function memoizeFunction(cb, maxCacheSize, ignoreNullOrUndefinedResult) {
 
     return currentNode.value;
   };
+}
+/**
+ * Creates a memoizer for a single-value function, backed by a WeakMap.
+ * With a WeakMap, the memoized values are only kept as long as the source objects,
+ * ensuring that there is no memory leak.
+ *
+ * This function assumes that the input values passed to the wrapped function will be
+ * `function` or `object` types. To memoize functions which accept other inputs, use
+ * `memoizeFunction`, which memoizes against arbitrary inputs using a lookup cache.
+ *
+ * @public
+ */
+
+function createMemoizer(getValue) {
+  if (!_weakMap) {
+    // Without a `WeakMap` implementation, memoization is not possible.
+    return getValue;
+  }
+
+  var cache = new _weakMap();
+
+  function memoizedGetValue(input) {
+    if (!input || typeof input !== 'function' && typeof input !== 'object') {
+      // A WeakMap can only be used to test against reference values, i.e. 'function' and 'object'.
+      // All other inputs cannot be memoized against in this manner.
+      return getValue(input);
+    }
+
+    if (cache.has(input)) {
+      // tslint:disable-next-line:no-non-null-assertion
+      return cache.get(input);
+    }
+
+    var value = getValue(input);
+    cache.set(input, value);
+    return value;
+  }
+
+  return memoizedGetValue;
 }
 
 function _normalizeArg(val) {
@@ -3886,54 +3827,6 @@ var IS_VISIBLE_ATTRIBUTE = 'data-is-visible';
 var FOCUSZONE_ID_ATTRIBUTE = 'data-focuszone-id';
 var FOCUSZONE_SUB_ATTRIBUTE = 'data-is-sub-focuszone';
 /**
- * Gets the first focusable element.
- *
- * @public
- */
-
-function getFirstFocusable(rootElement, currentElement, includeElementsInFocusZones) {
-  return getNextElement(rootElement, currentElement, true
-  /*checkNode*/
-  , false
-  /*suppressParentTraversal*/
-  , false
-  /*suppressChildTraversal*/
-  , includeElementsInFocusZones);
-}
-/**
- * Gets the last focusable element.
- *
- * @public
- */
-
-function getLastFocusable(rootElement, currentElement, includeElementsInFocusZones) {
-  return getPreviousElement(rootElement, currentElement, true
-  /*checkNode*/
-  , false
-  /*suppressParentTraversal*/
-  , true
-  /*traverseChildren*/
-  , includeElementsInFocusZones);
-}
-/**
- * Attempts to focus the first focusable element that is a child or child's child of the rootElement.
- *
- * @public
- * @param rootElement - Element to start the search for a focusable child.
- * @returns True if focus was set, false if it was not.
- */
-
-function focusFirstChild(rootElement) {
-  var element = getNextElement(rootElement, rootElement, true, false, false, true);
-
-  if (element) {
-    focusAsync(element);
-    return true;
-  }
-
-  return false;
-}
-/**
  * Traverse to find the previous element.
  * If tabbable is true, the element must have tabIndex != -1.
  *
@@ -4113,22 +4006,6 @@ function isElementFocusSubZone(element) {
   return !!(element && element.getAttribute && element.getAttribute(FOCUSZONE_SUB_ATTRIBUTE) === 'true');
 }
 /**
- * Determines if an element, or any of its children, contain focus.
- *
- * @public
- */
-
-function doesElementContainFocus(element) {
-  var document = getDocument(element);
-  var currentActiveElement = document && document.activeElement;
-
-  if (currentActiveElement && elementContains(element, currentActiveElement)) {
-    return true;
-  }
-
-  return false;
-}
-/**
  * Determines if an, or any of its ancestors, sepcificies that it doesn't want focus to wrap
  * @param element - element to start searching from
  * @param noWrapDataAttribute - the no wrap data attribute to match (either)
@@ -4137,35 +4014,6 @@ function doesElementContainFocus(element) {
 
 function shouldWrapFocus(element, noWrapDataAttribute) {
   return elementContainsAttribute(element, noWrapDataAttribute) === 'true' ? false : true;
-}
-var targetToFocusOnNextRepaint = undefined;
-/**
- * Sets focus to an element asynchronously. The focus will be set at the next browser repaint,
- * meaning it won't cause any extra recalculations. If more than one focusAsync is called during one frame,
- * only the latest called focusAsync element will actually be focused
- * @param element - The element to focus
- */
-
-function focusAsync(element) {
-  if (element) {
-    // An element was already queued to be focused, so replace that one with the new element
-    if (targetToFocusOnNextRepaint) {
-      targetToFocusOnNextRepaint = element;
-      return;
-    }
-
-    targetToFocusOnNextRepaint = element;
-    var win = getWindow(element);
-
-    if (win) {
-      // element.focus() is a no-op if the element is no longer in the DOM, meaning this is always safe
-      win.requestAnimationFrame(function () {
-        targetToFocusOnNextRepaint && targetToFocusOnNextRepaint.focus(); // We are done focusing for this frame, so reset the queued focus element
-
-        targetToFocusOnNextRepaint = undefined;
-      });
-    }
-  }
 }
 /**
  * Finds the closest focusable element via an index path from a parent. See
@@ -4545,34 +4393,6 @@ function _merge(target, source, circularReferences) {
 }
 
 /**
- * Returns true if and only if the user is on a iOS device.
- * Used to determine whether iOS-specific behavior should be applied.
- */
-var isIOS = function () {
-  if (!window || !window.navigator || !window.navigator.userAgent) {
-    return false;
-  }
-
-  return /iPad|iPhone|iPod/i.test(window.navigator.userAgent);
-};
-
-var isMacResult;
-/**
- * Returns true if the user is on a Mac. Caches the result value.
- * @param reset - Reset the cached result value (mainly for testing).
- */
-
-function isMac(reset) {
-  if (typeof isMacResult === 'undefined' || reset) {
-    var win = getWindow();
-    var userAgent = win && win.navigator.userAgent;
-    isMacResult = !!userAgent && userAgent.indexOf('Macintosh') !== -1;
-  }
-
-  return !!isMacResult;
-}
-
-/**
  * An array of events that are allowed on every html element type.
  *
  * @public
@@ -4593,20 +4413,6 @@ var baseElementProperties = ['accessKey', 'children', 'className', 'contentEdita
  */
 
 var htmlElementProperties = baseElementProperties.concat(baseElementEvents);
-/**
- * An array of A tag properties and events.
- *
- * @public
- */
-
-var anchorProperties = htmlElementProperties.concat(['download', 'href', 'hrefLang', 'media', 'rel', 'target', 'type']);
-/**
- * An array of BUTTON tag properties and events.
- *
- * @public
- */
-
-var buttonProperties = htmlElementProperties.concat(['autoFocus', 'disabled', 'form', 'formAction', 'formEncType', 'formMethod', 'formNoValidate', 'formTarget', 'type', 'value']);
 /**
  * An array of IMAGE tag properties and events.
  *
@@ -4645,6 +4451,514 @@ function getNativeProps(props, allowedPropNames, excludedPropNames) {
   return filteredAssign(function (propName) {
     return (!excludedPropNames || excludedPropNames.indexOf(propName) < 0) && (propName.indexOf('data-') === 0 || propName.indexOf('aria-') === 0 || allowedPropNames.indexOf(propName) >= 0);
   }, {}, props);
+}
+
+function createComposedRenderFunction(outer) {
+  var outerMemoizer = createMemoizer(function (inner) {
+    var innerMemoizer = createMemoizer(function (defaultRender) {
+      return function (innerProps) {
+        return inner(innerProps, defaultRender);
+      };
+    });
+    return function (outerProps, defaultRender) {
+      return outer(outerProps, defaultRender ? innerMemoizer(defaultRender) : inner);
+    };
+  });
+  return outerMemoizer;
+}
+
+var memoizer = createMemoizer(createComposedRenderFunction);
+/**
+ * Composes two 'render functions' to produce a final render function that renders
+ * the outer function, passing the inner function as 'default render'. The inner function
+ * is then passed the original 'default render' prop.
+ * @public
+ */
+
+function composeRenderFunction(outer, inner) {
+  return memoizer(outer)(inner);
+}
+
+var SELECTION_CHANGE = 'change';
+/**
+ * {@docCategory Selection}
+ */
+
+var SelectionMode;
+
+(function (SelectionMode) {
+  SelectionMode[SelectionMode["none"] = 0] = "none";
+  SelectionMode[SelectionMode["single"] = 1] = "single";
+  SelectionMode[SelectionMode["multiple"] = 2] = "multiple";
+})(SelectionMode || (SelectionMode = {}));
+/**
+ * {@docCategory Selection}
+ */
+
+
+var SelectionDirection;
+
+(function (SelectionDirection) {
+  SelectionDirection[SelectionDirection["horizontal"] = 0] = "horizontal";
+  SelectionDirection[SelectionDirection["vertical"] = 1] = "vertical";
+})(SelectionDirection || (SelectionDirection = {}));
+
+/**
+ * {@docCategory Selection}
+ */
+
+var Selection =
+/** @class */
+function () {
+  /**
+   * Create a new Selection. If `TItem` does not have a `key` property, you must provide an options
+   * object with a `getKey` implementation. Providing options is optional otherwise.
+   * (At most one `options` object is accepted.)
+   */
+  function Selection() {
+    var options = []; // Otherwise, arguments require options with `getKey`.
+
+    for (var _i = 0 // Otherwise, arguments require options with `getKey`.
+    ; _i < arguments.length // Otherwise, arguments require options with `getKey`.
+    ; _i++ // Otherwise, arguments require options with `getKey`.
+    ) {
+      options[_i] = arguments[_i]; // Otherwise, arguments require options with `getKey`.
+    }
+
+    var _a = options[0] || {},
+        onSelectionChanged = _a.onSelectionChanged,
+        getKey = _a.getKey,
+        _b = _a.canSelectItem,
+        canSelectItem = _b === void 0 ? function () {
+      return true;
+    } : _b,
+        _c = _a.selectionMode,
+        selectionMode = _c === void 0 ? SelectionMode.multiple : _c;
+
+    this.mode = selectionMode;
+    this._getKey = getKey || defaultGetKey;
+    this._changeEventSuppressionCount = 0;
+    this._exemptedCount = 0;
+    this._anchoredIndex = 0;
+    this._unselectableCount = 0;
+    this._onSelectionChanged = onSelectionChanged;
+    this._canSelectItem = canSelectItem;
+    this._isModal = false;
+    this.setItems([], true);
+    this.count = this.getSelectedCount();
+  }
+
+  Selection.prototype.canSelectItem = function (item, index) {
+    if (typeof index === 'number' && index < 0) {
+      return false;
+    }
+
+    return this._canSelectItem(item, index);
+  };
+
+  Selection.prototype.getKey = function (item, index) {
+    var key = this._getKey(item, index);
+
+    return typeof key === 'number' || key ? "" + key : '';
+  };
+
+  Selection.prototype.setChangeEvents = function (isEnabled, suppressChange) {
+    this._changeEventSuppressionCount += isEnabled ? -1 : 1;
+
+    if (this._changeEventSuppressionCount === 0 && this._hasChanged) {
+      this._hasChanged = false;
+
+      if (!suppressChange) {
+        this._change();
+      }
+    }
+  };
+
+  Selection.prototype.isModal = function () {
+    return this._isModal;
+  };
+
+  Selection.prototype.setModal = function (isModal) {
+    if (this._isModal !== isModal) {
+      this.setChangeEvents(false);
+      this._isModal = isModal;
+
+      if (!isModal) {
+        this.setAllSelected(false);
+      }
+
+      this._change();
+
+      this.setChangeEvents(true);
+    }
+  };
+  /**
+   * Selection needs the items, call this method to set them. If the set
+   * of items is the same, this will re-evaluate selection and index maps.
+   * Otherwise, shouldClear should be set to true, so that selection is
+   * cleared.
+   */
+
+
+  Selection.prototype.setItems = function (items, shouldClear) {
+    if (shouldClear === void 0) {
+      shouldClear = true;
+    }
+
+    var newKeyToIndexMap = {};
+    var newUnselectableIndices = {};
+    var hasSelectionChanged = false;
+    this.setChangeEvents(false); // Reset the unselectable count.
+
+    this._unselectableCount = 0; // Build lookup table for quick selection evaluation.
+
+    for (var i = 0; i < items.length; i++) {
+      var item = items[i];
+
+      if (item) {
+        var key = this.getKey(item, i);
+
+        if (key) {
+          newKeyToIndexMap[key] = i;
+        }
+      }
+
+      newUnselectableIndices[i] = item && !this.canSelectItem(item);
+
+      if (newUnselectableIndices[i]) {
+        this._unselectableCount++;
+      }
+    }
+
+    if (shouldClear || items.length === 0) {
+      this._setAllSelected(false, true);
+    } // Check the exemption list for discrepencies.
+
+
+    var newExemptedIndicies = {};
+    var newExemptedCount = 0;
+
+    for (var indexProperty in this._exemptedIndices) {
+      if (this._exemptedIndices.hasOwnProperty(indexProperty)) {
+        var index = Number(indexProperty);
+        var item = this._items[index];
+        var exemptKey = item ? this.getKey(item, Number(index)) : undefined;
+        var newIndex = exemptKey ? newKeyToIndexMap[exemptKey] : index;
+
+        if (newIndex === undefined) {
+          // The item has likely been replaced or removed.
+          hasSelectionChanged = true;
+        } else {
+          // We know the new index of the item. update the existing exemption table.
+          newExemptedIndicies[newIndex] = true;
+          newExemptedCount++;
+          hasSelectionChanged = hasSelectionChanged || newIndex !== index;
+        }
+      }
+    }
+
+    if (this._items && this._exemptedCount === 0 && items.length !== this._items.length && this._isAllSelected) {
+      // If everything was selected but the number of items has changed, selection has changed.
+      hasSelectionChanged = true;
+    }
+
+    this._exemptedIndices = newExemptedIndicies;
+    this._exemptedCount = newExemptedCount;
+    this._keyToIndexMap = newKeyToIndexMap;
+    this._unselectableIndices = newUnselectableIndices;
+    this._items = items;
+    this._selectedItems = null;
+
+    if (hasSelectionChanged) {
+      this._updateCount();
+
+      this._change();
+    }
+
+    this.setChangeEvents(true);
+  };
+
+  Selection.prototype.getItems = function () {
+    return this._items;
+  };
+
+  Selection.prototype.getSelection = function () {
+    if (!this._selectedItems) {
+      this._selectedItems = [];
+      var items = this._items;
+
+      if (items) {
+        for (var i = 0; i < items.length; i++) {
+          if (this.isIndexSelected(i)) {
+            this._selectedItems.push(items[i]);
+          }
+        }
+      }
+    }
+
+    return this._selectedItems;
+  };
+
+  Selection.prototype.getSelectedCount = function () {
+    return this._isAllSelected ? this._items.length - this._exemptedCount - this._unselectableCount : this._exemptedCount;
+  };
+
+  Selection.prototype.getSelectedIndices = function () {
+    if (!this._selectedIndices) {
+      this._selectedIndices = [];
+      var items = this._items;
+
+      if (items) {
+        for (var i = 0; i < items.length; i++) {
+          if (this.isIndexSelected(i)) {
+            this._selectedIndices.push(i);
+          }
+        }
+      }
+    }
+
+    return this._selectedIndices;
+  };
+
+  Selection.prototype.isRangeSelected = function (fromIndex, count) {
+    if (count === 0) {
+      return false;
+    }
+
+    var endIndex = fromIndex + count;
+
+    for (var i = fromIndex; i < endIndex; i++) {
+      if (!this.isIndexSelected(i)) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
+  Selection.prototype.isAllSelected = function () {
+    var selectableCount = this._items.length - this._unselectableCount; // In single mode, we can only have a max of 1 item.
+
+    if (this.mode === SelectionMode.single) {
+      selectableCount = Math.min(selectableCount, 1);
+    }
+
+    return this.count > 0 && this._isAllSelected && this._exemptedCount === 0 || !this._isAllSelected && this._exemptedCount === selectableCount && selectableCount > 0;
+  };
+
+  Selection.prototype.isKeySelected = function (key) {
+    var index = this._keyToIndexMap[key];
+    return this.isIndexSelected(index);
+  };
+
+  Selection.prototype.isIndexSelected = function (index) {
+    return !!(this.count > 0 && this._isAllSelected && !this._exemptedIndices[index] && !this._unselectableIndices[index] || !this._isAllSelected && this._exemptedIndices[index]);
+  };
+
+  Selection.prototype.setAllSelected = function (isAllSelected) {
+    if (isAllSelected && this.mode !== SelectionMode.multiple) {
+      return;
+    }
+
+    var selectableCount = this._items ? this._items.length - this._unselectableCount : 0;
+    this.setChangeEvents(false);
+
+    if (selectableCount > 0 && (this._exemptedCount > 0 || isAllSelected !== this._isAllSelected)) {
+      this._exemptedIndices = {};
+
+      if (isAllSelected !== this._isAllSelected || this._exemptedCount > 0) {
+        this._exemptedCount = 0;
+        this._isAllSelected = isAllSelected;
+
+        this._change();
+      }
+
+      this._updateCount();
+    }
+
+    this.setChangeEvents(true);
+  };
+
+  Selection.prototype.setKeySelected = function (key, isSelected, shouldAnchor) {
+    var index = this._keyToIndexMap[key];
+
+    if (index >= 0) {
+      this.setIndexSelected(index, isSelected, shouldAnchor);
+    }
+  };
+
+  Selection.prototype.setIndexSelected = function (index, isSelected, shouldAnchor) {
+    if (this.mode === SelectionMode.none) {
+      return;
+    } // Clamp the index.
+
+
+    index = Math.min(Math.max(0, index), this._items.length - 1); // No-op on out of bounds selections.
+
+    if (index < 0 || index >= this._items.length) {
+      return;
+    }
+
+    this.setChangeEvents(false);
+    var isExempt = this._exemptedIndices[index];
+    var canSelect = !this._unselectableIndices[index];
+
+    if (canSelect) {
+      if (isSelected && this.mode === SelectionMode.single) {
+        // If this is single-select, the previous selection should be removed.
+        this._setAllSelected(false, true);
+      } // Determine if we need to remove the exemption.
+
+
+      if (isExempt && (isSelected && this._isAllSelected || !isSelected && !this._isAllSelected)) {
+        delete this._exemptedIndices[index];
+        this._exemptedCount--;
+      } // Determine if we need to add the exemption.
+
+
+      if (!isExempt && (isSelected && !this._isAllSelected || !isSelected && this._isAllSelected)) {
+        this._exemptedIndices[index] = true;
+        this._exemptedCount++;
+      }
+
+      if (shouldAnchor) {
+        this._anchoredIndex = index;
+      }
+    }
+
+    this._updateCount();
+
+    this.setChangeEvents(true);
+  };
+
+  Selection.prototype.selectToKey = function (key, clearSelection) {
+    this.selectToIndex(this._keyToIndexMap[key], clearSelection);
+  };
+
+  Selection.prototype.selectToIndex = function (index, clearSelection) {
+    if (this.mode === SelectionMode.none) {
+      return;
+    }
+
+    if (this.mode === SelectionMode.single) {
+      this.setIndexSelected(index, true, true);
+      return;
+    }
+
+    var anchorIndex = this._anchoredIndex || 0;
+    var startIndex = Math.min(index, anchorIndex);
+    var endIndex = Math.max(index, anchorIndex);
+    this.setChangeEvents(false);
+
+    if (clearSelection) {
+      this._setAllSelected(false, true);
+    }
+
+    for (; startIndex <= endIndex; startIndex++) {
+      this.setIndexSelected(startIndex, true, false);
+    }
+
+    this.setChangeEvents(true);
+  };
+
+  Selection.prototype.toggleAllSelected = function () {
+    this.setAllSelected(!this.isAllSelected());
+  };
+
+  Selection.prototype.toggleKeySelected = function (key) {
+    this.setKeySelected(key, !this.isKeySelected(key), true);
+  };
+
+  Selection.prototype.toggleIndexSelected = function (index) {
+    this.setIndexSelected(index, !this.isIndexSelected(index), true);
+  };
+
+  Selection.prototype.toggleRangeSelected = function (fromIndex, count) {
+    if (this.mode === SelectionMode.none) {
+      return;
+    }
+
+    var isRangeSelected = this.isRangeSelected(fromIndex, count);
+    var endIndex = fromIndex + count;
+
+    if (this.mode === SelectionMode.single && count > 1) {
+      return;
+    }
+
+    this.setChangeEvents(false);
+
+    for (var i = fromIndex; i < endIndex; i++) {
+      this.setIndexSelected(i, !isRangeSelected, false);
+    }
+
+    this.setChangeEvents(true);
+  };
+
+  Selection.prototype._updateCount = function (preserveModalState) {
+    if (preserveModalState === void 0) {
+      preserveModalState = false;
+    }
+
+    var count = this.getSelectedCount();
+
+    if (count !== this.count) {
+      this.count = count;
+
+      this._change();
+    }
+
+    if (!this.count && !preserveModalState) {
+      this.setModal(false);
+    }
+  };
+
+  Selection.prototype._setAllSelected = function (isAllSelected, preserveModalState) {
+    if (preserveModalState === void 0) {
+      preserveModalState = false;
+    }
+
+    if (isAllSelected && this.mode !== SelectionMode.multiple) {
+      return;
+    }
+
+    var selectableCount = this._items ? this._items.length - this._unselectableCount : 0;
+    this.setChangeEvents(false);
+
+    if (selectableCount > 0 && (this._exemptedCount > 0 || isAllSelected !== this._isAllSelected)) {
+      this._exemptedIndices = {};
+
+      if (isAllSelected !== this._isAllSelected || this._exemptedCount > 0) {
+        this._exemptedCount = 0;
+        this._isAllSelected = isAllSelected;
+
+        this._change();
+      }
+
+      this._updateCount(preserveModalState);
+    }
+
+    this.setChangeEvents(true);
+  };
+
+  Selection.prototype._change = function () {
+    if (this._changeEventSuppressionCount === 0) {
+      this._selectedItems = null;
+      this._selectedIndices = undefined;
+      EventGroup.raise(this, SELECTION_CHANGE);
+
+      if (this._onSelectionChanged) {
+        this._onSelectionChanged();
+      }
+    } else {
+      this._hasChanged = true;
+    }
+  };
+
+  return Selection;
+}();
+
+function defaultGetKey(item, index) {
+  return item && item.key ? item.key : "" + index;
 }
 
 var DefaultFields = ['theme', 'styles'];
@@ -4761,81 +5075,6 @@ function styled(Component, baseStyles, getProps, customizable, pure) {
   return Wrapped;
 }
 
-var getClassNames = classNamesFunction({
-  // Label is used a lot by other components.
-  // It's likely to see expected cases which pass different className to the Label.
-  // Therefore setting a larger cache size.
-  cacheSize: 100
-});
-
-var LabelBase =
-/** @class */
-function (_super) {
-  __extends(LabelBase, _super);
-
-  function LabelBase() {
-    return _super !== null && _super.apply(this, arguments) || this;
-  }
-
-  LabelBase.prototype.render = function () {
-    var _a = this.props,
-        _b = _a.as,
-        RootType = _b === void 0 ? 'label' : _b,
-        children = _a.children,
-        className = _a.className,
-        disabled = _a.disabled,
-        styles = _a.styles,
-        required = _a.required,
-        theme = _a.theme;
-    var classNames = getClassNames(styles, {
-      className: className,
-      disabled: disabled,
-      required: required,
-      theme: theme
-    });
-    return React.createElement(RootType, __assign({}, getNativeProps(this.props, divProperties), {
-      className: classNames.root
-    }), children);
-  };
-
-  return LabelBase;
-}(React.Component);
-
-/**
- * Builds a class names object from a given map.
- *
- * @param styles - Map of unprocessed styles.
- * @returns Map of property name to class name.
- */
-
-function buildClassMap(styles) {
-  var classes = {};
-
-  var _loop_1 = function (styleName) {
-    if (styles.hasOwnProperty(styleName)) {
-      var className_1;
-      Object.defineProperty(classes, styleName, {
-        get: function () {
-          if (className_1 === undefined) {
-            // tslint:disable-next-line:no-any
-            className_1 = mergeStyles(styles[styleName]).toString();
-          }
-
-          return className_1;
-        },
-        enumerable: true,
-        configurable: true
-      });
-    }
-  };
-
-  for (var styleName in styles) {
-    _loop_1(styleName);
-  }
-
-  return classes;
-}
-
 var ICON_SETTING_NAME = 'icons';
 
 var _iconSettings = GlobalSettings.getValue(ICON_SETTING_NAME, {
@@ -4870,6 +5109,46 @@ if (stylesheet$3 && stylesheet$3.onReset) {
 var normalizeIconName = function (name) {
   return name.toLowerCase();
 };
+/**
+ * Registers a given subset of icons.
+ *
+ * @param iconSubset - the icon subset definition.
+ */
+
+
+function registerIcons(iconSubset, options) {
+  var subset = __assign(__assign({}, iconSubset), {
+    isRegistered: false,
+    className: undefined
+  });
+
+  var icons = iconSubset.icons; // Grab options, optionally mix user provided ones on top.
+
+  options = options ? __assign(__assign({}, _iconSettings.__options), options) : _iconSettings.__options;
+
+  for (var iconName in icons) {
+    if (icons.hasOwnProperty(iconName)) {
+      var code = icons[iconName];
+      var normalizedIconName = normalizeIconName(iconName);
+
+      if (_iconSettings[normalizedIconName]) {
+        _warnDuplicateIcon(iconName);
+      } else {
+        _iconSettings[normalizedIconName] = {
+          code: code,
+          subset: subset
+        };
+      }
+    }
+  }
+}
+/**
+ * Remaps one icon name to another.
+ */
+
+function registerIconAlias(iconName, mappedToName) {
+  _iconSettings.__remapped[normalizeIconName(iconName)] = normalizeIconName(mappedToName);
+}
 /**
  * Gets an icon definition. If an icon is requested but the subset has yet to be registered,
  * it will get registered immediately.
@@ -4913,6 +5192,26 @@ function getIcon(name) {
   }
 
   return icon;
+}
+var _missingIcons = [];
+var _missingIconsTimer = undefined;
+
+function _warnDuplicateIcon(iconName) {
+  var options = _iconSettings.__options;
+  var warningDelay = 2000;
+  var maxIconsInMessage = 10;
+
+  if (!options.disableWarnings) {
+    _missingIcons.push(iconName);
+
+    if (_missingIconsTimer === undefined) {
+      _missingIconsTimer = setTimeout(function () {
+        warn("Some icons were re-registered. Applications should only call registerIcons for any given " + "icon once. Redefining what an icon is may have unintended consequences. Duplicates " + "include: \n" + _missingIcons.slice(0, maxIconsInMessage).join(', ') + (_missingIcons.length > maxIconsInMessage ? " (+ " + (_missingIcons.length - maxIconsInMessage) + " more)" : ''));
+        _missingIconsTimer = undefined;
+        _missingIcons = [];
+      }, warningDelay);
+    }
+  }
 }
 
 /* Register the keyframes */
@@ -5465,11 +5764,8 @@ function _getFontBaseUrl() {
 registerDefaultFontFaces(_getFontBaseUrl());
 
 var HighContrastSelector = '@media screen and (-ms-high-contrast: active)';
-var ScreenWidthMinLarge = 640;
-var ScreenWidthMaxMedium = ScreenWidthMinLarge - 1;
-function getScreenSelector(min, max) {
-  return "@media only screen and (min-width: " + min + "px) and (max-width: " + max + "px)";
-}
+var HighContrastSelectorWhite = '@media screen and (-ms-high-contrast: black-on-white)';
+var HighContrastSelectorBlack = '@media screen and (-ms-high-contrast: white-on-black)';
 
 var ZIndexes;
 
@@ -5709,6 +6005,23 @@ if (!Customizations.getSettings([ThemeSettingName]).theme) {
   Customizations.applySettings((_a$2 = {}, _a$2[ThemeSettingName] = _theme, _a$2));
 }
 /**
+ * Gets the theme object
+ * @param depComments - Whether to include deprecated tags as comments for deprecated slots.
+ */
+
+
+function getTheme(depComments) {
+  if (depComments === void 0) {
+    depComments = false;
+  }
+
+  if (depComments === true) {
+    _theme = createTheme({}, depComments);
+  }
+
+  return _theme;
+}
+/**
  * Creates a custom theme definition which can be used with the Customizer.
  * @param theme - Partial theme object.
  * @param depComments - Whether to include deprecated tags as comments for deprecated slots.
@@ -5892,96 +6205,3614 @@ function _fixDeprecatedSlots(s, depComments) {
   return s;
 }
 
-// This file mimics styles and mixins from _General.Mixins.scss
-var normalize = {
-  boxShadow: 'none',
-  margin: 0,
-  padding: 0,
-  boxSizing: 'border-box'
-};
-
 /**
  * {@docCategory AnimationClassNames}
  */
 
 var AnimationClassNames = buildClassMap(AnimationStyles);
 
-var getStyles = function (props) {
-  var _a;
+/**
+ * {@docCategory FontClassNames}
+ */
 
-  var theme = props.theme,
-      className = props.className,
-      disabled = props.disabled,
-      required = props.required;
+var FontClassNames = buildClassMap(DefaultFontStyles);
+
+var ColorClassNames = {};
+
+for (var colorName in DefaultPalette) {
+  if (DefaultPalette.hasOwnProperty(colorName)) {
+    // Foreground color
+    _defineGetter(ColorClassNames, colorName, '', false, 'color'); // Hover color
+
+
+    _defineGetter(ColorClassNames, colorName, 'Hover', true, 'color'); // Background color
+
+
+    _defineGetter(ColorClassNames, colorName, 'Background', false, 'background'); // Background hover
+
+
+    _defineGetter(ColorClassNames, colorName, 'BackgroundHover', true, 'background'); // Border color
+
+
+    _defineGetter(ColorClassNames, colorName, 'Border', false, 'borderColor'); // Border hover color
+
+
+    _defineGetter(ColorClassNames, colorName, 'BorderHover', true, 'borderColor');
+  }
+}
+/**
+ * Defines a getter for the given class configuration.
+ */
+
+
+function _defineGetter(obj, colorName, suffix, isHover, cssProperty) {
+  Object.defineProperty(obj, colorName + suffix, {
+    get: function () {
+      var _a; // tslint:disable-next-line:no-any
+
+
+      var style = (_a = {}, _a[cssProperty] = getTheme().palette[colorName], _a);
+      return mergeStyles(isHover ? {
+        selectors: {
+          ':hover': style
+        }
+      } : style).toString();
+    },
+    enumerable: true,
+    configurable: true
+  });
+}
+
+// @uifabric/styling@7.12.3
+setVersion('@uifabric/styling', '7.12.3');
+
+// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
+function initializeIcons(baseUrl, options) {
+  if (baseUrl === void 0) {
+    baseUrl = '';
+  }
+
+  var subset = {
+    style: {
+      MozOsxFontSmoothing: 'grayscale',
+      WebkitFontSmoothing: 'antialiased',
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+      speak: 'none'
+    },
+    fontFace: {
+      fontFamily: "\"FabricMDL2Icons\"",
+      src: "url('" + baseUrl + "fabric-icons-a13498cf.woff') format('woff')"
+    },
+    icons: {
+      GlobalNavButton: '\uE700',
+      ChevronDown: '\uE70D',
+      ChevronUp: '\uE70E',
+      Edit: '\uE70F',
+      Add: '\uE710',
+      Cancel: '\uE711',
+      More: '\uE712',
+      Settings: '\uE713',
+      Mail: '\uE715',
+      Filter: '\uE71C',
+      Search: '\uE721',
+      Share: '\uE72D',
+      BlockedSite: '\uE72F',
+      FavoriteStar: '\uE734',
+      FavoriteStarFill: '\uE735',
+      CheckMark: '\uE73E',
+      Delete: '\uE74D',
+      ChevronLeft: '\uE76B',
+      ChevronRight: '\uE76C',
+      Calendar: '\uE787',
+      Megaphone: '\uE789',
+      Undo: '\uE7A7',
+      Flag: '\uE7C1',
+      Page: '\uE7C3',
+      Pinned: '\uE840',
+      View: '\uE890',
+      Clear: '\uE894',
+      Download: '\uE896',
+      Upload: '\uE898',
+      Folder: '\uE8B7',
+      Sort: '\uE8CB',
+      AlignRight: '\uE8E2',
+      AlignLeft: '\uE8E4',
+      Tag: '\uE8EC',
+      AddFriend: '\uE8FA',
+      Info: '\uE946',
+      SortLines: '\uE9D0',
+      List: '\uEA37',
+      CircleRing: '\uEA3A',
+      Heart: '\uEB51',
+      HeartFill: '\uEB52',
+      Tiles: '\uECA5',
+      Embed: '\uECCE',
+      Glimmer: '\uECF4',
+      Ascending: '\uEDC0',
+      Descending: '\uEDC1',
+      SortUp: '\uEE68',
+      SortDown: '\uEE69',
+      SyncToPC: '\uEE6E',
+      LargeGrid: '\uEECB',
+      SkypeCheck: '\uEF80',
+      SkypeClock: '\uEF81',
+      SkypeMinus: '\uEF82',
+      ClearFilter: '\uEF8F',
+      Flow: '\uEF90',
+      StatusCircleCheckmark: '\uF13E',
+      MoreVertical: '\uF2BC'
+    }
+  };
+  registerIcons(subset, options);
+}
+
+// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
+function initializeIcons$1(baseUrl, options) {
+  if (baseUrl === void 0) {
+    baseUrl = '';
+  }
+
+  var subset = {
+    style: {
+      MozOsxFontSmoothing: 'grayscale',
+      WebkitFontSmoothing: 'antialiased',
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+      speak: 'none'
+    },
+    fontFace: {
+      fontFamily: "\"FabricMDL2Icons-0\"",
+      src: "url('" + baseUrl + "fabric-icons-0-467ee27f.woff') format('woff')"
+    },
+    icons: {
+      'PageLink': '\uE302',
+      'CommentSolid': '\uE30E',
+      'ChangeEntitlements': '\uE310',
+      'Installation': '\uE311',
+      'WebAppBuilderModule': '\uE313',
+      'WebAppBuilderFragment': '\uE314',
+      'WebAppBuilderSlot': '\uE315',
+      'BullseyeTargetEdit': '\uE319',
+      'WebAppBuilderFragmentCreate': '\uE31B',
+      'PageData': '\uE31C',
+      'PageHeaderEdit': '\uE31D',
+      'ProductList': '\uE31E',
+      'UnpublishContent': '\uE31F',
+      'DependencyAdd': '\uE344',
+      'DependencyRemove': '\uE345',
+      'EntitlementPolicy': '\uE346',
+      'EntitlementRedemption': '\uE347',
+      'SchoolDataSyncLogo': '\uE34C',
+      'PinSolid12': '\uE352',
+      'PinSolidOff12': '\uE353',
+      'AddLink': '\uE35E',
+      'SharepointAppIcon16': '\uE365',
+      'DataflowsLink': '\uE366',
+      'TimePicker': '\uE367',
+      'UserWarning': '\uE368',
+      'ComplianceAudit': '\uE369',
+      'InternetSharing': '\uE704',
+      'Brightness': '\uE706',
+      'MapPin': '\uE707',
+      'Airplane': '\uE709',
+      'Tablet': '\uE70A',
+      'QuickNote': '\uE70B',
+      'Video': '\uE714',
+      'People': '\uE716',
+      'Phone': '\uE717',
+      'Pin': '\uE718',
+      'Shop': '\uE719',
+      'Stop': '\uE71A',
+      'Link': '\uE71B',
+      'AllApps': '\uE71D',
+      'Zoom': '\uE71E',
+      'ZoomOut': '\uE71F',
+      'Microphone': '\uE720',
+      'Camera': '\uE722',
+      'Attach': '\uE723',
+      'Send': '\uE724',
+      'FavoriteList': '\uE728',
+      'PageSolid': '\uE729',
+      'Forward': '\uE72A',
+      'Back': '\uE72B',
+      'Refresh': '\uE72C',
+      'Lock': '\uE72E',
+      'ReportHacked': '\uE730',
+      'EMI': '\uE731',
+      'MiniLink': '\uE732',
+      'Blocked': '\uE733',
+      'ReadingMode': '\uE736',
+      'Favicon': '\uE737',
+      'Remove': '\uE738',
+      'Checkbox': '\uE739',
+      'CheckboxComposite': '\uE73A',
+      'CheckboxFill': '\uE73B',
+      'CheckboxIndeterminate': '\uE73C',
+      'CheckboxCompositeReversed': '\uE73D',
+      'BackToWindow': '\uE73F',
+      'FullScreen': '\uE740',
+      'Print': '\uE749',
+      'Up': '\uE74A',
+      'Down': '\uE74B',
+      'OEM': '\uE74C',
+      'Save': '\uE74E',
+      'ReturnKey': '\uE751',
+      'Cloud': '\uE753',
+      'Flashlight': '\uE754',
+      'CommandPrompt': '\uE756',
+      'Sad': '\uE757',
+      'RealEstate': '\uE758',
+      'SIPMove': '\uE759',
+      'EraseTool': '\uE75C',
+      'GripperTool': '\uE75E',
+      'Dialpad': '\uE75F',
+      'PageLeft': '\uE760',
+      'PageRight': '\uE761',
+      'MultiSelect': '\uE762',
+      'KeyboardClassic': '\uE765',
+      'Play': '\uE768',
+      'Pause': '\uE769',
+      'InkingTool': '\uE76D',
+      'Emoji2': '\uE76E',
+      'GripperBarHorizontal': '\uE76F',
+      'System': '\uE770',
+      'Personalize': '\uE771',
+      'SearchAndApps': '\uE773',
+      'Globe': '\uE774',
+      'EaseOfAccess': '\uE776',
+      'ContactInfo': '\uE779',
+      'Unpin': '\uE77A',
+      'Contact': '\uE77B',
+      'Memo': '\uE77C',
+      'IncomingCall': '\uE77E'
+    }
+  };
+  registerIcons(subset, options);
+}
+
+// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
+function initializeIcons$2(baseUrl, options) {
+  if (baseUrl === void 0) {
+    baseUrl = '';
+  }
+
+  var subset = {
+    style: {
+      MozOsxFontSmoothing: 'grayscale',
+      WebkitFontSmoothing: 'antialiased',
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+      speak: 'none'
+    },
+    fontFace: {
+      fontFamily: "\"FabricMDL2Icons-1\"",
+      src: "url('" + baseUrl + "fabric-icons-1-4d521695.woff') format('woff')"
+    },
+    icons: {
+      'Paste': '\uE77F',
+      'WindowsLogo': '\uE782',
+      'Error': '\uE783',
+      'GripperBarVertical': '\uE784',
+      'Unlock': '\uE785',
+      'Slideshow': '\uE786',
+      'Trim': '\uE78A',
+      'AutoEnhanceOn': '\uE78D',
+      'AutoEnhanceOff': '\uE78E',
+      'Color': '\uE790',
+      'SaveAs': '\uE792',
+      'Light': '\uE793',
+      'Filters': '\uE795',
+      'AspectRatio': '\uE799',
+      'Contrast': '\uE7A1',
+      'Redo': '\uE7A6',
+      'Crop': '\uE7A8',
+      'PhotoCollection': '\uE7AA',
+      'Album': '\uE7AB',
+      'Rotate': '\uE7AD',
+      'PanoIndicator': '\uE7B0',
+      'Translate': '\uE7B2',
+      'RedEye': '\uE7B3',
+      'ViewOriginal': '\uE7B4',
+      'ThumbnailView': '\uE7B6',
+      'Package': '\uE7B8',
+      'Telemarketer': '\uE7B9',
+      'Warning': '\uE7BA',
+      'Financial': '\uE7BB',
+      'Education': '\uE7BE',
+      'ShoppingCart': '\uE7BF',
+      'Train': '\uE7C0',
+      'Move': '\uE7C2',
+      'TouchPointer': '\uE7C9',
+      'Merge': '\uE7D5',
+      'TurnRight': '\uE7DB',
+      'Ferry': '\uE7E3',
+      'Highlight': '\uE7E6',
+      'PowerButton': '\uE7E8',
+      'Tab': '\uE7E9',
+      'Admin': '\uE7EF',
+      'TVMonitor': '\uE7F4',
+      'Speakers': '\uE7F5',
+      'Game': '\uE7FC',
+      'HorizontalTabKey': '\uE7FD',
+      'UnstackSelected': '\uE7FE',
+      'StackIndicator': '\uE7FF',
+      'Nav2DMapView': '\uE800',
+      'StreetsideSplitMinimize': '\uE802',
+      'Car': '\uE804',
+      'Bus': '\uE806',
+      'EatDrink': '\uE807',
+      'SeeDo': '\uE808',
+      'LocationCircle': '\uE80E',
+      'Home': '\uE80F',
+      'SwitcherStartEnd': '\uE810',
+      'ParkingLocation': '\uE811',
+      'IncidentTriangle': '\uE814',
+      'Touch': '\uE815',
+      'MapDirections': '\uE816',
+      'CaretHollow': '\uE817',
+      'CaretSolid': '\uE818',
+      'History': '\uE81C',
+      'Location': '\uE81D',
+      'MapLayers': '\uE81E',
+      'SearchNearby': '\uE820',
+      'Work': '\uE821',
+      'Recent': '\uE823',
+      'Hotel': '\uE824',
+      'Bank': '\uE825',
+      'LocationDot': '\uE827',
+      'Dictionary': '\uE82D',
+      'ChromeBack': '\uE830',
+      'FolderOpen': '\uE838',
+      'PinnedFill': '\uE842',
+      'RevToggleKey': '\uE845',
+      'USB': '\uE88E',
+      'Previous': '\uE892',
+      'Next': '\uE893',
+      'Sync': '\uE895',
+      'Help': '\uE897',
+      'Emoji': '\uE899',
+      'MailForward': '\uE89C',
+      'ClosePane': '\uE89F',
+      'OpenPane': '\uE8A0',
+      'PreviewLink': '\uE8A1',
+      'ZoomIn': '\uE8A3',
+      'Bookmarks': '\uE8A4',
+      'Document': '\uE8A5',
+      'ProtectedDocument': '\uE8A6',
+      'OpenInNewWindow': '\uE8A7',
+      'MailFill': '\uE8A8',
+      'ViewAll': '\uE8A9',
+      'Switch': '\uE8AB',
+      'Rename': '\uE8AC',
+      'Go': '\uE8AD',
+      'Remote': '\uE8AF',
+      'SelectAll': '\uE8B3',
+      'Orientation': '\uE8B4',
+      'Import': '\uE8B5'
+    }
+  };
+  registerIcons(subset, options);
+}
+
+// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
+function initializeIcons$3(baseUrl, options) {
+  if (baseUrl === void 0) {
+    baseUrl = '';
+  }
+
+  var subset = {
+    style: {
+      MozOsxFontSmoothing: 'grayscale',
+      WebkitFontSmoothing: 'antialiased',
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+      speak: 'none'
+    },
+    fontFace: {
+      fontFamily: "\"FabricMDL2Icons-2\"",
+      src: "url('" + baseUrl + "fabric-icons-2-63c99abf.woff') format('woff')"
+    },
+    icons: {
+      'Picture': '\uE8B9',
+      'ChromeClose': '\uE8BB',
+      'ShowResults': '\uE8BC',
+      'Message': '\uE8BD',
+      'CalendarDay': '\uE8BF',
+      'CalendarWeek': '\uE8C0',
+      'MailReplyAll': '\uE8C2',
+      'Read': '\uE8C3',
+      'Cut': '\uE8C6',
+      'PaymentCard': '\uE8C7',
+      'Copy': '\uE8C8',
+      'Important': '\uE8C9',
+      'MailReply': '\uE8CA',
+      'GotoToday': '\uE8D1',
+      'Font': '\uE8D2',
+      'FontColor': '\uE8D3',
+      'FolderFill': '\uE8D5',
+      'Permissions': '\uE8D7',
+      'DisableUpdates': '\uE8D8',
+      'Unfavorite': '\uE8D9',
+      'Italic': '\uE8DB',
+      'Underline': '\uE8DC',
+      'Bold': '\uE8DD',
+      'MoveToFolder': '\uE8DE',
+      'Dislike': '\uE8E0',
+      'Like': '\uE8E1',
+      'AlignCenter': '\uE8E3',
+      'OpenFile': '\uE8E5',
+      'ClearSelection': '\uE8E6',
+      'FontDecrease': '\uE8E7',
+      'FontIncrease': '\uE8E8',
+      'FontSize': '\uE8E9',
+      'CellPhone': '\uE8EA',
+      'RepeatOne': '\uE8ED',
+      'RepeatAll': '\uE8EE',
+      'Calculator': '\uE8EF',
+      'Library': '\uE8F1',
+      'PostUpdate': '\uE8F3',
+      'NewFolder': '\uE8F4',
+      'CalendarReply': '\uE8F5',
+      'UnsyncFolder': '\uE8F6',
+      'SyncFolder': '\uE8F7',
+      'BlockContact': '\uE8F8',
+      'Accept': '\uE8FB',
+      'BulletedList': '\uE8FD',
+      'Preview': '\uE8FF',
+      'News': '\uE900',
+      'Chat': '\uE901',
+      'Group': '\uE902',
+      'World': '\uE909',
+      'Comment': '\uE90A',
+      'DockLeft': '\uE90C',
+      'DockRight': '\uE90D',
+      'Repair': '\uE90F',
+      'Accounts': '\uE910',
+      'Street': '\uE913',
+      'RadioBullet': '\uE915',
+      'Stopwatch': '\uE916',
+      'Clock': '\uE917',
+      'WorldClock': '\uE918',
+      'AlarmClock': '\uE919',
+      'Photo': '\uE91B',
+      'ActionCenter': '\uE91C',
+      'Hospital': '\uE91D',
+      'Timer': '\uE91E',
+      'FullCircleMask': '\uE91F',
+      'LocationFill': '\uE920',
+      'ChromeMinimize': '\uE921',
+      'ChromeRestore': '\uE923',
+      'Annotation': '\uE924',
+      'Fingerprint': '\uE928',
+      'Handwriting': '\uE929',
+      'ChromeFullScreen': '\uE92D',
+      'Completed': '\uE930',
+      'Label': '\uE932',
+      'FlickDown': '\uE935',
+      'FlickUp': '\uE936',
+      'FlickLeft': '\uE937',
+      'FlickRight': '\uE938',
+      'MiniExpand': '\uE93A',
+      'MiniContract': '\uE93B',
+      'Streaming': '\uE93E',
+      'MusicInCollection': '\uE940',
+      'OneDriveLogo': '\uE941',
+      'CompassNW': '\uE942',
+      'Code': '\uE943',
+      'LightningBolt': '\uE945',
+      'CalculatorMultiply': '\uE947',
+      'CalculatorAddition': '\uE948',
+      'CalculatorSubtract': '\uE949',
+      'CalculatorPercentage': '\uE94C',
+      'CalculatorEqualTo': '\uE94E',
+      'PrintfaxPrinterFile': '\uE956',
+      'StorageOptical': '\uE958',
+      'Communications': '\uE95A',
+      'Headset': '\uE95B',
+      'Health': '\uE95E',
+      'Webcam2': '\uE960',
+      'FrontCamera': '\uE96B',
+      'ChevronUpSmall': '\uE96D'
+    }
+  };
+  registerIcons(subset, options);
+}
+
+// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
+function initializeIcons$4(baseUrl, options) {
+  if (baseUrl === void 0) {
+    baseUrl = '';
+  }
+
+  var subset = {
+    style: {
+      MozOsxFontSmoothing: 'grayscale',
+      WebkitFontSmoothing: 'antialiased',
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+      speak: 'none'
+    },
+    fontFace: {
+      fontFamily: "\"FabricMDL2Icons-3\"",
+      src: "url('" + baseUrl + "fabric-icons-3-089e217a.woff') format('woff')"
+    },
+    icons: {
+      'ChevronDownSmall': '\uE96E',
+      'ChevronLeftSmall': '\uE96F',
+      'ChevronRightSmall': '\uE970',
+      'ChevronUpMed': '\uE971',
+      'ChevronDownMed': '\uE972',
+      'ChevronLeftMed': '\uE973',
+      'ChevronRightMed': '\uE974',
+      'Devices2': '\uE975',
+      'PC1': '\uE977',
+      'PresenceChickletVideo': '\uE979',
+      'Reply': '\uE97A',
+      'HalfAlpha': '\uE97E',
+      'ConstructionCone': '\uE98F',
+      'DoubleChevronLeftMed': '\uE991',
+      'Volume0': '\uE992',
+      'Volume1': '\uE993',
+      'Volume2': '\uE994',
+      'Volume3': '\uE995',
+      'Chart': '\uE999',
+      'Robot': '\uE99A',
+      'Manufacturing': '\uE99C',
+      'LockSolid': '\uE9A2',
+      'FitPage': '\uE9A6',
+      'FitWidth': '\uE9A7',
+      'BidiLtr': '\uE9AA',
+      'BidiRtl': '\uE9AB',
+      'RightDoubleQuote': '\uE9B1',
+      'Sunny': '\uE9BD',
+      'CloudWeather': '\uE9BE',
+      'Cloudy': '\uE9BF',
+      'PartlyCloudyDay': '\uE9C0',
+      'PartlyCloudyNight': '\uE9C1',
+      'ClearNight': '\uE9C2',
+      'RainShowersDay': '\uE9C3',
+      'Rain': '\uE9C4',
+      'Thunderstorms': '\uE9C6',
+      'RainSnow': '\uE9C7',
+      'Snow': '\uE9C8',
+      'BlowingSnow': '\uE9C9',
+      'Frigid': '\uE9CA',
+      'Fog': '\uE9CB',
+      'Squalls': '\uE9CC',
+      'Duststorm': '\uE9CD',
+      'Unknown': '\uE9CE',
+      'Precipitation': '\uE9CF',
+      'Ribbon': '\uE9D1',
+      'AreaChart': '\uE9D2',
+      'Assign': '\uE9D3',
+      'FlowChart': '\uE9D4',
+      'CheckList': '\uE9D5',
+      'Diagnostic': '\uE9D9',
+      'Generate': '\uE9DA',
+      'LineChart': '\uE9E6',
+      'Equalizer': '\uE9E9',
+      'BarChartHorizontal': '\uE9EB',
+      'BarChartVertical': '\uE9EC',
+      'Freezing': '\uE9EF',
+      'FunnelChart': '\uE9F1',
+      'Processing': '\uE9F5',
+      'Quantity': '\uE9F8',
+      'ReportDocument': '\uE9F9',
+      'StackColumnChart': '\uE9FC',
+      'SnowShowerDay': '\uE9FD',
+      'HailDay': '\uEA00',
+      'WorkFlow': '\uEA01',
+      'HourGlass': '\uEA03',
+      'StoreLogoMed20': '\uEA04',
+      'TimeSheet': '\uEA05',
+      'TriangleSolid': '\uEA08',
+      'UpgradeAnalysis': '\uEA0B',
+      'VideoSolid': '\uEA0C',
+      'RainShowersNight': '\uEA0F',
+      'SnowShowerNight': '\uEA11',
+      'Teamwork': '\uEA12',
+      'HailNight': '\uEA13',
+      'PeopleAdd': '\uEA15',
+      'Glasses': '\uEA16',
+      'DateTime2': '\uEA17',
+      'Shield': '\uEA18',
+      'Header1': '\uEA19',
+      'PageAdd': '\uEA1A',
+      'NumberedList': '\uEA1C',
+      'PowerBILogo': '\uEA1E',
+      'Info2': '\uEA1F',
+      'MusicInCollectionFill': '\uEA36',
+      'Asterisk': '\uEA38',
+      'ErrorBadge': '\uEA39',
+      'CircleFill': '\uEA3B',
+      'Record2': '\uEA3F',
+      'AllAppsMirrored': '\uEA40',
+      'BookmarksMirrored': '\uEA41',
+      'BulletedListMirrored': '\uEA42',
+      'CaretHollowMirrored': '\uEA45',
+      'CaretSolidMirrored': '\uEA46',
+      'ChromeBackMirrored': '\uEA47',
+      'ClearSelectionMirrored': '\uEA48',
+      'ClosePaneMirrored': '\uEA49',
+      'DockLeftMirrored': '\uEA4C',
+      'DoubleChevronLeftMedMirrored': '\uEA4D',
+      'GoMirrored': '\uEA4F'
+    }
+  };
+  registerIcons(subset, options);
+}
+
+// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
+function initializeIcons$5(baseUrl, options) {
+  if (baseUrl === void 0) {
+    baseUrl = '';
+  }
+
+  var subset = {
+    style: {
+      MozOsxFontSmoothing: 'grayscale',
+      WebkitFontSmoothing: 'antialiased',
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+      speak: 'none'
+    },
+    fontFace: {
+      fontFamily: "\"FabricMDL2Icons-4\"",
+      src: "url('" + baseUrl + "fabric-icons-4-a656cc0a.woff') format('woff')"
+    },
+    icons: {
+      'HelpMirrored': '\uEA51',
+      'ImportMirrored': '\uEA52',
+      'ImportAllMirrored': '\uEA53',
+      'ListMirrored': '\uEA55',
+      'MailForwardMirrored': '\uEA56',
+      'MailReplyMirrored': '\uEA57',
+      'MailReplyAllMirrored': '\uEA58',
+      'MiniContractMirrored': '\uEA59',
+      'MiniExpandMirrored': '\uEA5A',
+      'OpenPaneMirrored': '\uEA5B',
+      'ParkingLocationMirrored': '\uEA5E',
+      'SendMirrored': '\uEA63',
+      'ShowResultsMirrored': '\uEA65',
+      'ThumbnailViewMirrored': '\uEA67',
+      'Media': '\uEA69',
+      'Devices3': '\uEA6C',
+      'Focus': '\uEA6F',
+      'VideoLightOff': '\uEA74',
+      'Lightbulb': '\uEA80',
+      'StatusTriangle': '\uEA82',
+      'VolumeDisabled': '\uEA85',
+      'Puzzle': '\uEA86',
+      'EmojiNeutral': '\uEA87',
+      'EmojiDisappointed': '\uEA88',
+      'HomeSolid': '\uEA8A',
+      'Ringer': '\uEA8F',
+      'PDF': '\uEA90',
+      'HeartBroken': '\uEA92',
+      'StoreLogo16': '\uEA96',
+      'MultiSelectMirrored': '\uEA98',
+      'Broom': '\uEA99',
+      'AddToShoppingList': '\uEA9A',
+      'Cocktails': '\uEA9D',
+      'Wines': '\uEABF',
+      'Articles': '\uEAC1',
+      'Cycling': '\uEAC7',
+      'DietPlanNotebook': '\uEAC8',
+      'Pill': '\uEACB',
+      'ExerciseTracker': '\uEACC',
+      'HandsFree': '\uEAD0',
+      'Medical': '\uEAD4',
+      'Running': '\uEADA',
+      'Weights': '\uEADB',
+      'Trackers': '\uEADF',
+      'AddNotes': '\uEAE3',
+      'AllCurrency': '\uEAE4',
+      'BarChart4': '\uEAE7',
+      'CirclePlus': '\uEAEE',
+      'Coffee': '\uEAEF',
+      'Cotton': '\uEAF3',
+      'Market': '\uEAFC',
+      'Money': '\uEAFD',
+      'PieDouble': '\uEB04',
+      'PieSingle': '\uEB05',
+      'RemoveFilter': '\uEB08',
+      'Savings': '\uEB0B',
+      'Sell': '\uEB0C',
+      'StockDown': '\uEB0F',
+      'StockUp': '\uEB11',
+      'Lamp': '\uEB19',
+      'Source': '\uEB1B',
+      'MSNVideos': '\uEB1C',
+      'Cricket': '\uEB1E',
+      'Golf': '\uEB1F',
+      'Baseball': '\uEB20',
+      'Soccer': '\uEB21',
+      'MoreSports': '\uEB22',
+      'AutoRacing': '\uEB24',
+      'CollegeHoops': '\uEB25',
+      'CollegeFootball': '\uEB26',
+      'ProFootball': '\uEB27',
+      'ProHockey': '\uEB28',
+      'Rugby': '\uEB2D',
+      'SubstitutionsIn': '\uEB31',
+      'Tennis': '\uEB33',
+      'Arrivals': '\uEB34',
+      'Design': '\uEB3C',
+      'Website': '\uEB41',
+      'Drop': '\uEB42',
+      'HistoricalWeather': '\uEB43',
+      'SkiResorts': '\uEB45',
+      'Snowflake': '\uEB46',
+      'BusSolid': '\uEB47',
+      'FerrySolid': '\uEB48',
+      'AirplaneSolid': '\uEB4C',
+      'TrainSolid': '\uEB4D',
+      'Ticket': '\uEB54',
+      'WifiWarning4': '\uEB63',
+      'Devices4': '\uEB66',
+      'AzureLogo': '\uEB6A',
+      'BingLogo': '\uEB6B',
+      'MSNLogo': '\uEB6C',
+      'OutlookLogoInverse': '\uEB6D',
+      'OfficeLogo': '\uEB6E',
+      'SkypeLogo': '\uEB6F',
+      'Door': '\uEB75',
+      'EditMirrored': '\uEB7E',
+      'GiftCard': '\uEB8E',
+      'DoubleBookmark': '\uEB8F',
+      'StatusErrorFull': '\uEB90'
+    }
+  };
+  registerIcons(subset, options);
+}
+
+// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
+function initializeIcons$6(baseUrl, options) {
+  if (baseUrl === void 0) {
+    baseUrl = '';
+  }
+
+  var subset = {
+    style: {
+      MozOsxFontSmoothing: 'grayscale',
+      WebkitFontSmoothing: 'antialiased',
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+      speak: 'none'
+    },
+    fontFace: {
+      fontFamily: "\"FabricMDL2Icons-5\"",
+      src: "url('" + baseUrl + "fabric-icons-5-f95ba260.woff') format('woff')"
+    },
+    icons: {
+      'Certificate': '\uEB95',
+      'FastForward': '\uEB9D',
+      'Rewind': '\uEB9E',
+      'Photo2': '\uEB9F',
+      'OpenSource': '\uEBC2',
+      'Movers': '\uEBCD',
+      'CloudDownload': '\uEBD3',
+      'Family': '\uEBDA',
+      'WindDirection': '\uEBE6',
+      'Bug': '\uEBE8',
+      'SiteScan': '\uEBEC',
+      'BrowserScreenShot': '\uEBED',
+      'F12DevTools': '\uEBEE',
+      'CSS': '\uEBEF',
+      'JS': '\uEBF0',
+      'DeliveryTruck': '\uEBF4',
+      'ReminderPerson': '\uEBF7',
+      'ReminderGroup': '\uEBF8',
+      'ReminderTime': '\uEBF9',
+      'TabletMode': '\uEBFC',
+      'Umbrella': '\uEC04',
+      'NetworkTower': '\uEC05',
+      'CityNext': '\uEC06',
+      'CityNext2': '\uEC07',
+      'Section': '\uEC0C',
+      'OneNoteLogoInverse': '\uEC0D',
+      'ToggleFilled': '\uEC11',
+      'ToggleBorder': '\uEC12',
+      'SliderThumb': '\uEC13',
+      'ToggleThumb': '\uEC14',
+      'Documentation': '\uEC17',
+      'Badge': '\uEC1B',
+      'Giftbox': '\uEC1F',
+      'VisualStudioLogo': '\uEC22',
+      'HomeGroup': '\uEC26',
+      'ExcelLogoInverse': '\uEC28',
+      'WordLogoInverse': '\uEC29',
+      'PowerPointLogoInverse': '\uEC2A',
+      'Cafe': '\uEC32',
+      'SpeedHigh': '\uEC4A',
+      'Commitments': '\uEC4D',
+      'ThisPC': '\uEC4E',
+      'MusicNote': '\uEC4F',
+      'MicOff': '\uEC54',
+      'PlaybackRate1x': '\uEC57',
+      'EdgeLogo': '\uEC60',
+      'CompletedSolid': '\uEC61',
+      'AlbumRemove': '\uEC62',
+      'MessageFill': '\uEC70',
+      'TabletSelected': '\uEC74',
+      'MobileSelected': '\uEC75',
+      'LaptopSelected': '\uEC76',
+      'TVMonitorSelected': '\uEC77',
+      'DeveloperTools': '\uEC7A',
+      'Shapes': '\uEC7C',
+      'InsertTextBox': '\uEC7D',
+      'LowerBrightness': '\uEC8A',
+      'WebComponents': '\uEC8B',
+      'OfflineStorage': '\uEC8C',
+      'DOM': '\uEC8D',
+      'CloudUpload': '\uEC8E',
+      'ScrollUpDown': '\uEC8F',
+      'DateTime': '\uEC92',
+      'Event': '\uECA3',
+      'Cake': '\uECA4',
+      'Org': '\uECA6',
+      'PartyLeader': '\uECA7',
+      'DRM': '\uECA8',
+      'CloudAdd': '\uECA9',
+      'AppIconDefault': '\uECAA',
+      'Photo2Add': '\uECAB',
+      'Photo2Remove': '\uECAC',
+      'Calories': '\uECAD',
+      'POI': '\uECAF',
+      'AddTo': '\uECC8',
+      'RadioBtnOff': '\uECCA',
+      'RadioBtnOn': '\uECCB',
+      'ExploreContent': '\uECCD',
+      'Product': '\uECDC',
+      'ProgressLoopInner': '\uECDE',
+      'ProgressLoopOuter': '\uECDF',
+      'Blocked2': '\uECE4',
+      'FangBody': '\uECEB',
+      'Toolbox': '\uECED',
+      'PageHeader': '\uECEE',
+      'ChatInviteFriend': '\uECFE',
+      'Brush': '\uECFF',
+      'Shirt': '\uED00',
+      'Crown': '\uED01',
+      'Diamond': '\uED02',
+      'ScaleUp': '\uED09',
+      'QRCode': '\uED14',
+      'Feedback': '\uED15',
+      'SharepointLogoInverse': '\uED18',
+      'YammerLogo': '\uED19',
+      'Hide': '\uED1A',
+      'Uneditable': '\uED1D',
+      'ReturnToSession': '\uED24',
+      'OpenFolderHorizontal': '\uED25',
+      'CalendarMirrored': '\uED28'
+    }
+  };
+  registerIcons(subset, options);
+}
+
+// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
+function initializeIcons$7(baseUrl, options) {
+  if (baseUrl === void 0) {
+    baseUrl = '';
+  }
+
+  var subset = {
+    style: {
+      MozOsxFontSmoothing: 'grayscale',
+      WebkitFontSmoothing: 'antialiased',
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+      speak: 'none'
+    },
+    fontFace: {
+      fontFamily: "\"FabricMDL2Icons-6\"",
+      src: "url('" + baseUrl + "fabric-icons-6-ef6fd590.woff') format('woff')"
+    },
+    icons: {
+      'SwayLogoInverse': '\uED29',
+      'OutOfOffice': '\uED34',
+      'Trophy': '\uED3F',
+      'ReopenPages': '\uED50',
+      'EmojiTabSymbols': '\uED58',
+      'AADLogo': '\uED68',
+      'AccessLogo': '\uED69',
+      'AdminALogoInverse32': '\uED6A',
+      'AdminCLogoInverse32': '\uED6B',
+      'AdminDLogoInverse32': '\uED6C',
+      'AdminELogoInverse32': '\uED6D',
+      'AdminLLogoInverse32': '\uED6E',
+      'AdminMLogoInverse32': '\uED6F',
+      'AdminOLogoInverse32': '\uED70',
+      'AdminPLogoInverse32': '\uED71',
+      'AdminSLogoInverse32': '\uED72',
+      'AdminYLogoInverse32': '\uED73',
+      'DelveLogoInverse': '\uED76',
+      'ExchangeLogoInverse': '\uED78',
+      'LyncLogo': '\uED79',
+      'OfficeVideoLogoInverse': '\uED7A',
+      'SocialListeningLogo': '\uED7C',
+      'VisioLogoInverse': '\uED7D',
+      'Balloons': '\uED7E',
+      'Cat': '\uED7F',
+      'MailAlert': '\uED80',
+      'MailCheck': '\uED81',
+      'MailLowImportance': '\uED82',
+      'MailPause': '\uED83',
+      'MailRepeat': '\uED84',
+      'SecurityGroup': '\uED85',
+      'Table': '\uED86',
+      'VoicemailForward': '\uED87',
+      'VoicemailReply': '\uED88',
+      'Waffle': '\uED89',
+      'RemoveEvent': '\uED8A',
+      'EventInfo': '\uED8B',
+      'ForwardEvent': '\uED8C',
+      'WipePhone': '\uED8D',
+      'AddOnlineMeeting': '\uED8E',
+      'JoinOnlineMeeting': '\uED8F',
+      'RemoveLink': '\uED90',
+      'PeopleBlock': '\uED91',
+      'PeopleRepeat': '\uED92',
+      'PeopleAlert': '\uED93',
+      'PeoplePause': '\uED94',
+      'TransferCall': '\uED95',
+      'AddPhone': '\uED96',
+      'UnknownCall': '\uED97',
+      'NoteReply': '\uED98',
+      'NoteForward': '\uED99',
+      'NotePinned': '\uED9A',
+      'RemoveOccurrence': '\uED9B',
+      'Timeline': '\uED9C',
+      'EditNote': '\uED9D',
+      'CircleHalfFull': '\uED9E',
+      'Room': '\uED9F',
+      'Unsubscribe': '\uEDA0',
+      'Subscribe': '\uEDA1',
+      'HardDrive': '\uEDA2',
+      'RecurringTask': '\uEDB2',
+      'TaskManager': '\uEDB7',
+      'TaskManagerMirrored': '\uEDB8',
+      'Combine': '\uEDBB',
+      'Split': '\uEDBC',
+      'DoubleChevronUp': '\uEDBD',
+      'DoubleChevronLeft': '\uEDBE',
+      'DoubleChevronRight': '\uEDBF',
+      'TextBox': '\uEDC2',
+      'TextField': '\uEDC3',
+      'NumberField': '\uEDC4',
+      'Dropdown': '\uEDC5',
+      'PenWorkspace': '\uEDC6',
+      'BookingsLogo': '\uEDC7',
+      'ClassNotebookLogoInverse': '\uEDC8',
+      'DelveAnalyticsLogo': '\uEDCA',
+      'DocsLogoInverse': '\uEDCB',
+      'Dynamics365Logo': '\uEDCC',
+      'DynamicSMBLogo': '\uEDCD',
+      'OfficeAssistantLogo': '\uEDCE',
+      'OfficeStoreLogo': '\uEDCF',
+      'OneNoteEduLogoInverse': '\uEDD0',
+      'PlannerLogo': '\uEDD1',
+      'PowerApps': '\uEDD2',
+      'Suitcase': '\uEDD3',
+      'ProjectLogoInverse': '\uEDD4',
+      'CaretLeft8': '\uEDD5',
+      'CaretRight8': '\uEDD6',
+      'CaretUp8': '\uEDD7',
+      'CaretDown8': '\uEDD8',
+      'CaretLeftSolid8': '\uEDD9',
+      'CaretRightSolid8': '\uEDDA',
+      'CaretUpSolid8': '\uEDDB',
+      'CaretDownSolid8': '\uEDDC',
+      'ClearFormatting': '\uEDDD',
+      'Superscript': '\uEDDE',
+      'Subscript': '\uEDDF',
+      'Strikethrough': '\uEDE0',
+      'Export': '\uEDE1',
+      'ExportMirrored': '\uEDE2'
+    }
+  };
+  registerIcons(subset, options);
+}
+
+// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
+function initializeIcons$8(baseUrl, options) {
+  if (baseUrl === void 0) {
+    baseUrl = '';
+  }
+
+  var subset = {
+    style: {
+      MozOsxFontSmoothing: 'grayscale',
+      WebkitFontSmoothing: 'antialiased',
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+      speak: 'none'
+    },
+    fontFace: {
+      fontFamily: "\"FabricMDL2Icons-7\"",
+      src: "url('" + baseUrl + "fabric-icons-7-2b97bb99.woff') format('woff')"
+    },
+    icons: {
+      'SingleBookmark': '\uEDFF',
+      'SingleBookmarkSolid': '\uEE00',
+      'DoubleChevronDown': '\uEE04',
+      'FollowUser': '\uEE05',
+      'ReplyAll': '\uEE0A',
+      'WorkforceManagement': '\uEE0F',
+      'RecruitmentManagement': '\uEE12',
+      'Questionnaire': '\uEE19',
+      'ManagerSelfService': '\uEE23',
+      'ProductionFloorManagement': '\uEE29',
+      'ProductRelease': '\uEE2E',
+      'ProductVariant': '\uEE30',
+      'ReplyMirrored': '\uEE35',
+      'ReplyAllMirrored': '\uEE36',
+      'Medal': '\uEE38',
+      'AddGroup': '\uEE3D',
+      'QuestionnaireMirrored': '\uEE4B',
+      'CloudImportExport': '\uEE55',
+      'TemporaryUser': '\uEE58',
+      'CaretSolid16': '\uEE62',
+      'GroupedDescending': '\uEE66',
+      'GroupedAscending': '\uEE67',
+      'AwayStatus': '\uEE6A',
+      'MyMoviesTV': '\uEE6C',
+      'GenericScan': '\uEE6F',
+      'AustralianRules': '\uEE70',
+      'WifiEthernet': '\uEE77',
+      'TrackersMirrored': '\uEE92',
+      'DateTimeMirrored': '\uEE93',
+      'StopSolid': '\uEE95',
+      'DoubleChevronUp12': '\uEE96',
+      'DoubleChevronDown12': '\uEE97',
+      'DoubleChevronLeft12': '\uEE98',
+      'DoubleChevronRight12': '\uEE99',
+      'CalendarAgenda': '\uEE9A',
+      'ConnectVirtualMachine': '\uEE9D',
+      'AddEvent': '\uEEB5',
+      'AssetLibrary': '\uEEB6',
+      'DataConnectionLibrary': '\uEEB7',
+      'DocLibrary': '\uEEB8',
+      'FormLibrary': '\uEEB9',
+      'FormLibraryMirrored': '\uEEBA',
+      'ReportLibrary': '\uEEBB',
+      'ReportLibraryMirrored': '\uEEBC',
+      'ContactCard': '\uEEBD',
+      'CustomList': '\uEEBE',
+      'CustomListMirrored': '\uEEBF',
+      'IssueTracking': '\uEEC0',
+      'IssueTrackingMirrored': '\uEEC1',
+      'PictureLibrary': '\uEEC2',
+      'OfficeAddinsLogo': '\uEEC7',
+      'OfflineOneDriveParachute': '\uEEC8',
+      'OfflineOneDriveParachuteDisabled': '\uEEC9',
+      'TriangleSolidUp12': '\uEECC',
+      'TriangleSolidDown12': '\uEECD',
+      'TriangleSolidLeft12': '\uEECE',
+      'TriangleSolidRight12': '\uEECF',
+      'TriangleUp12': '\uEED0',
+      'TriangleDown12': '\uEED1',
+      'TriangleLeft12': '\uEED2',
+      'TriangleRight12': '\uEED3',
+      'ArrowUpRight8': '\uEED4',
+      'ArrowDownRight8': '\uEED5',
+      'DocumentSet': '\uEED6',
+      'GoToDashboard': '\uEEED',
+      'DelveAnalytics': '\uEEEE',
+      'ArrowUpRightMirrored8': '\uEEEF',
+      'ArrowDownRightMirrored8': '\uEEF0',
+      'CompanyDirectory': '\uEF0D',
+      'OpenEnrollment': '\uEF1C',
+      'CompanyDirectoryMirrored': '\uEF2B',
+      'OneDriveAdd': '\uEF32',
+      'ProfileSearch': '\uEF35',
+      'Header2': '\uEF36',
+      'Header3': '\uEF37',
+      'Header4': '\uEF38',
+      'RingerSolid': '\uEF3A',
+      'Eyedropper': '\uEF3C',
+      'MarketDown': '\uEF42',
+      'CalendarWorkWeek': '\uEF51',
+      'SidePanel': '\uEF52',
+      'GlobeFavorite': '\uEF53',
+      'CaretTopLeftSolid8': '\uEF54',
+      'CaretTopRightSolid8': '\uEF55',
+      'ViewAll2': '\uEF56',
+      'DocumentReply': '\uEF57',
+      'PlayerSettings': '\uEF58',
+      'ReceiptForward': '\uEF59',
+      'ReceiptReply': '\uEF5A',
+      'ReceiptCheck': '\uEF5B',
+      'Fax': '\uEF5C',
+      'RecurringEvent': '\uEF5D',
+      'ReplyAlt': '\uEF5E',
+      'ReplyAllAlt': '\uEF5F',
+      'EditStyle': '\uEF60',
+      'EditMail': '\uEF61',
+      'Lifesaver': '\uEF62',
+      'LifesaverLock': '\uEF63',
+      'InboxCheck': '\uEF64',
+      'FolderSearch': '\uEF65'
+    }
+  };
+  registerIcons(subset, options);
+}
+
+// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
+function initializeIcons$9(baseUrl, options) {
+  if (baseUrl === void 0) {
+    baseUrl = '';
+  }
+
+  var subset = {
+    style: {
+      MozOsxFontSmoothing: 'grayscale',
+      WebkitFontSmoothing: 'antialiased',
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+      speak: 'none'
+    },
+    fontFace: {
+      fontFamily: "\"FabricMDL2Icons-8\"",
+      src: "url('" + baseUrl + "fabric-icons-8-6fdf1528.woff') format('woff')"
+    },
+    icons: {
+      'CollapseMenu': '\uEF66',
+      'ExpandMenu': '\uEF67',
+      'Boards': '\uEF68',
+      'SunAdd': '\uEF69',
+      'SunQuestionMark': '\uEF6A',
+      'LandscapeOrientation': '\uEF6B',
+      'DocumentSearch': '\uEF6C',
+      'PublicCalendar': '\uEF6D',
+      'PublicContactCard': '\uEF6E',
+      'PublicEmail': '\uEF6F',
+      'PublicFolder': '\uEF70',
+      'WordDocument': '\uEF71',
+      'PowerPointDocument': '\uEF72',
+      'ExcelDocument': '\uEF73',
+      'GroupedList': '\uEF74',
+      'ClassroomLogo': '\uEF75',
+      'Sections': '\uEF76',
+      'EditPhoto': '\uEF77',
+      'Starburst': '\uEF78',
+      'ShareiOS': '\uEF79',
+      'AirTickets': '\uEF7A',
+      'PencilReply': '\uEF7B',
+      'Tiles2': '\uEF7C',
+      'SkypeCircleCheck': '\uEF7D',
+      'SkypeCircleClock': '\uEF7E',
+      'SkypeCircleMinus': '\uEF7F',
+      'SkypeMessage': '\uEF83',
+      'ClosedCaption': '\uEF84',
+      'ATPLogo': '\uEF85',
+      'OfficeFormsLogoInverse': '\uEF86',
+      'RecycleBin': '\uEF87',
+      'EmptyRecycleBin': '\uEF88',
+      'Hide2': '\uEF89',
+      'Breadcrumb': '\uEF8C',
+      'BirthdayCake': '\uEF8D',
+      'TimeEntry': '\uEF95',
+      'CRMProcesses': '\uEFB1',
+      'PageEdit': '\uEFB6',
+      'PageArrowRight': '\uEFB8',
+      'PageRemove': '\uEFBA',
+      'Database': '\uEFC7',
+      'DataManagementSettings': '\uEFC8',
+      'CRMServices': '\uEFD2',
+      'EditContact': '\uEFD3',
+      'ConnectContacts': '\uEFD4',
+      'AppIconDefaultAdd': '\uEFDA',
+      'AppIconDefaultList': '\uEFDE',
+      'ActivateOrders': '\uEFE0',
+      'DeactivateOrders': '\uEFE1',
+      'ProductCatalog': '\uEFE8',
+      'ScatterChart': '\uEFEB',
+      'AccountActivity': '\uEFF4',
+      'DocumentManagement': '\uEFFC',
+      'CRMReport': '\uEFFE',
+      'KnowledgeArticle': '\uF000',
+      'Relationship': '\uF003',
+      'HomeVerify': '\uF00E',
+      'ZipFolder': '\uF012',
+      'SurveyQuestions': '\uF01B',
+      'TextDocument': '\uF029',
+      'TextDocumentShared': '\uF02B',
+      'PageCheckedOut': '\uF02C',
+      'PageShared': '\uF02D',
+      'SaveAndClose': '\uF038',
+      'Script': '\uF03A',
+      'Archive': '\uF03F',
+      'ActivityFeed': '\uF056',
+      'Compare': '\uF057',
+      'EventDate': '\uF059',
+      'ArrowUpRight': '\uF069',
+      'CaretRight': '\uF06B',
+      'SetAction': '\uF071',
+      'ChatBot': '\uF08B',
+      'CaretSolidLeft': '\uF08D',
+      'CaretSolidDown': '\uF08E',
+      'CaretSolidRight': '\uF08F',
+      'CaretSolidUp': '\uF090',
+      'PowerAppsLogo': '\uF091',
+      'PowerApps2Logo': '\uF092',
+      'SearchIssue': '\uF09A',
+      'SearchIssueMirrored': '\uF09B',
+      'FabricAssetLibrary': '\uF09C',
+      'FabricDataConnectionLibrary': '\uF09D',
+      'FabricDocLibrary': '\uF09E',
+      'FabricFormLibrary': '\uF09F',
+      'FabricFormLibraryMirrored': '\uF0A0',
+      'FabricReportLibrary': '\uF0A1',
+      'FabricReportLibraryMirrored': '\uF0A2',
+      'FabricPublicFolder': '\uF0A3',
+      'FabricFolderSearch': '\uF0A4',
+      'FabricMovetoFolder': '\uF0A5',
+      'FabricUnsyncFolder': '\uF0A6',
+      'FabricSyncFolder': '\uF0A7',
+      'FabricOpenFolderHorizontal': '\uF0A8',
+      'FabricFolder': '\uF0A9',
+      'FabricFolderFill': '\uF0AA',
+      'FabricNewFolder': '\uF0AB',
+      'FabricPictureLibrary': '\uF0AC',
+      'PhotoVideoMedia': '\uF0B1',
+      'AddFavorite': '\uF0C8'
+    }
+  };
+  registerIcons(subset, options);
+}
+
+// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
+function initializeIcons$a(baseUrl, options) {
+  if (baseUrl === void 0) {
+    baseUrl = '';
+  }
+
+  var subset = {
+    style: {
+      MozOsxFontSmoothing: 'grayscale',
+      WebkitFontSmoothing: 'antialiased',
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+      speak: 'none'
+    },
+    fontFace: {
+      fontFamily: "\"FabricMDL2Icons-9\"",
+      src: "url('" + baseUrl + "fabric-icons-9-c6162b42.woff') format('woff')"
+    },
+    icons: {
+      'AddFavoriteFill': '\uF0C9',
+      'BufferTimeBefore': '\uF0CF',
+      'BufferTimeAfter': '\uF0D0',
+      'BufferTimeBoth': '\uF0D1',
+      'PublishContent': '\uF0D4',
+      'ClipboardList': '\uF0E3',
+      'ClipboardListMirrored': '\uF0E4',
+      'CannedChat': '\uF0F2',
+      'SkypeForBusinessLogo': '\uF0FC',
+      'TabCenter': '\uF100',
+      'PageCheckedin': '\uF104',
+      'PageList': '\uF106',
+      'ReadOutLoud': '\uF112',
+      'CaretBottomLeftSolid8': '\uF121',
+      'CaretBottomRightSolid8': '\uF122',
+      'FolderHorizontal': '\uF12B',
+      'MicrosoftStaffhubLogo': '\uF130',
+      'GiftboxOpen': '\uF133',
+      'StatusCircleOuter': '\uF136',
+      'StatusCircleInner': '\uF137',
+      'StatusCircleRing': '\uF138',
+      'StatusTriangleOuter': '\uF139',
+      'StatusTriangleInner': '\uF13A',
+      'StatusTriangleExclamation': '\uF13B',
+      'StatusCircleExclamation': '\uF13C',
+      'StatusCircleErrorX': '\uF13D',
+      'StatusCircleInfo': '\uF13F',
+      'StatusCircleBlock': '\uF140',
+      'StatusCircleBlock2': '\uF141',
+      'StatusCircleQuestionMark': '\uF142',
+      'StatusCircleSync': '\uF143',
+      'Toll': '\uF160',
+      'ExploreContentSingle': '\uF164',
+      'CollapseContent': '\uF165',
+      'CollapseContentSingle': '\uF166',
+      'InfoSolid': '\uF167',
+      'GroupList': '\uF168',
+      'ProgressRingDots': '\uF16A',
+      'CaloriesAdd': '\uF172',
+      'BranchFork': '\uF173',
+      'MuteChat': '\uF17A',
+      'AddHome': '\uF17B',
+      'AddWork': '\uF17C',
+      'MobileReport': '\uF18A',
+      'ScaleVolume': '\uF18C',
+      'HardDriveGroup': '\uF18F',
+      'FastMode': '\uF19A',
+      'ToggleLeft': '\uF19E',
+      'ToggleRight': '\uF19F',
+      'TriangleShape': '\uF1A7',
+      'RectangleShape': '\uF1A9',
+      'CubeShape': '\uF1AA',
+      'Trophy2': '\uF1AE',
+      'BucketColor': '\uF1B6',
+      'BucketColorFill': '\uF1B7',
+      'Taskboard': '\uF1C2',
+      'SingleColumn': '\uF1D3',
+      'DoubleColumn': '\uF1D4',
+      'TripleColumn': '\uF1D5',
+      'ColumnLeftTwoThirds': '\uF1D6',
+      'ColumnRightTwoThirds': '\uF1D7',
+      'AccessLogoFill': '\uF1DB',
+      'AnalyticsLogo': '\uF1DE',
+      'AnalyticsQuery': '\uF1DF',
+      'NewAnalyticsQuery': '\uF1E0',
+      'AnalyticsReport': '\uF1E1',
+      'WordLogo': '\uF1E3',
+      'WordLogoFill': '\uF1E4',
+      'ExcelLogo': '\uF1E5',
+      'ExcelLogoFill': '\uF1E6',
+      'OneNoteLogo': '\uF1E7',
+      'OneNoteLogoFill': '\uF1E8',
+      'OutlookLogo': '\uF1E9',
+      'OutlookLogoFill': '\uF1EA',
+      'PowerPointLogo': '\uF1EB',
+      'PowerPointLogoFill': '\uF1EC',
+      'PublisherLogo': '\uF1ED',
+      'PublisherLogoFill': '\uF1EE',
+      'ScheduleEventAction': '\uF1EF',
+      'FlameSolid': '\uF1F3',
+      'ServerProcesses': '\uF1FE',
+      'Server': '\uF201',
+      'SaveAll': '\uF203',
+      'LinkedInLogo': '\uF20A',
+      'Decimals': '\uF218',
+      'SidePanelMirrored': '\uF221',
+      'ProtectRestrict': '\uF22A',
+      'Blog': '\uF22B',
+      'UnknownMirrored': '\uF22E',
+      'PublicContactCardMirrored': '\uF230',
+      'GridViewSmall': '\uF232',
+      'GridViewMedium': '\uF233',
+      'GridViewLarge': '\uF234',
+      'Step': '\uF241',
+      'StepInsert': '\uF242',
+      'StepShared': '\uF243',
+      'StepSharedAdd': '\uF244',
+      'StepSharedInsert': '\uF245',
+      'ViewDashboard': '\uF246',
+      'ViewList': '\uF247'
+    }
+  };
+  registerIcons(subset, options);
+}
+
+// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
+function initializeIcons$b(baseUrl, options) {
+  if (baseUrl === void 0) {
+    baseUrl = '';
+  }
+
+  var subset = {
+    style: {
+      MozOsxFontSmoothing: 'grayscale',
+      WebkitFontSmoothing: 'antialiased',
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+      speak: 'none'
+    },
+    fontFace: {
+      fontFamily: "\"FabricMDL2Icons-10\"",
+      src: "url('" + baseUrl + "fabric-icons-10-c4ded8e4.woff') format('woff')"
+    },
+    icons: {
+      'ViewListGroup': '\uF248',
+      'ViewListTree': '\uF249',
+      'TriggerAuto': '\uF24A',
+      'TriggerUser': '\uF24B',
+      'PivotChart': '\uF24C',
+      'StackedBarChart': '\uF24D',
+      'StackedLineChart': '\uF24E',
+      'BuildQueue': '\uF24F',
+      'BuildQueueNew': '\uF250',
+      'UserFollowed': '\uF25C',
+      'ContactLink': '\uF25F',
+      'Stack': '\uF26F',
+      'Bullseye': '\uF272',
+      'VennDiagram': '\uF273',
+      'FiveTileGrid': '\uF274',
+      'FocalPoint': '\uF277',
+      'Insert': '\uF278',
+      'RingerRemove': '\uF279',
+      'TeamsLogoInverse': '\uF27A',
+      'TeamsLogo': '\uF27B',
+      'TeamsLogoFill': '\uF27C',
+      'SkypeForBusinessLogoFill': '\uF27D',
+      'SharepointLogo': '\uF27E',
+      'SharepointLogoFill': '\uF27F',
+      'DelveLogo': '\uF280',
+      'DelveLogoFill': '\uF281',
+      'OfficeVideoLogo': '\uF282',
+      'OfficeVideoLogoFill': '\uF283',
+      'ExchangeLogo': '\uF284',
+      'ExchangeLogoFill': '\uF285',
+      'Signin': '\uF286',
+      'DocumentApproval': '\uF28B',
+      'CloneToDesktop': '\uF28C',
+      'InstallToDrive': '\uF28D',
+      'Blur': '\uF28E',
+      'Build': '\uF28F',
+      'ProcessMetaTask': '\uF290',
+      'BranchFork2': '\uF291',
+      'BranchLocked': '\uF292',
+      'BranchCommit': '\uF293',
+      'BranchCompare': '\uF294',
+      'BranchMerge': '\uF295',
+      'BranchPullRequest': '\uF296',
+      'BranchSearch': '\uF297',
+      'BranchShelveset': '\uF298',
+      'RawSource': '\uF299',
+      'MergeDuplicate': '\uF29A',
+      'RowsGroup': '\uF29B',
+      'RowsChild': '\uF29C',
+      'Deploy': '\uF29D',
+      'Redeploy': '\uF29E',
+      'ServerEnviroment': '\uF29F',
+      'VisioDiagram': '\uF2A0',
+      'HighlightMappedShapes': '\uF2A1',
+      'TextCallout': '\uF2A2',
+      'IconSetsFlag': '\uF2A4',
+      'VisioLogo': '\uF2A7',
+      'VisioLogoFill': '\uF2A8',
+      'VisioDocument': '\uF2A9',
+      'TimelineProgress': '\uF2AA',
+      'TimelineDelivery': '\uF2AB',
+      'Backlog': '\uF2AC',
+      'TeamFavorite': '\uF2AD',
+      'TaskGroup': '\uF2AE',
+      'TaskGroupMirrored': '\uF2AF',
+      'ScopeTemplate': '\uF2B0',
+      'AssessmentGroupTemplate': '\uF2B1',
+      'NewTeamProject': '\uF2B2',
+      'CommentAdd': '\uF2B3',
+      'CommentNext': '\uF2B4',
+      'CommentPrevious': '\uF2B5',
+      'ShopServer': '\uF2B6',
+      'LocaleLanguage': '\uF2B7',
+      'QueryList': '\uF2B8',
+      'UserSync': '\uF2B9',
+      'UserPause': '\uF2BA',
+      'StreamingOff': '\uF2BB',
+      'ArrowTallUpLeft': '\uF2BD',
+      'ArrowTallUpRight': '\uF2BE',
+      'ArrowTallDownLeft': '\uF2BF',
+      'ArrowTallDownRight': '\uF2C0',
+      'FieldEmpty': '\uF2C1',
+      'FieldFilled': '\uF2C2',
+      'FieldChanged': '\uF2C3',
+      'FieldNotChanged': '\uF2C4',
+      'RingerOff': '\uF2C5',
+      'PlayResume': '\uF2C6',
+      'BulletedList2': '\uF2C7',
+      'BulletedList2Mirrored': '\uF2C8',
+      'ImageCrosshair': '\uF2C9',
+      'GitGraph': '\uF2CA',
+      'Repo': '\uF2CB',
+      'RepoSolid': '\uF2CC',
+      'FolderQuery': '\uF2CD',
+      'FolderList': '\uF2CE',
+      'FolderListMirrored': '\uF2CF',
+      'LocationOutline': '\uF2D0',
+      'POISolid': '\uF2D1',
+      'CalculatorNotEqualTo': '\uF2D2',
+      'BoxSubtractSolid': '\uF2D3'
+    }
+  };
+  registerIcons(subset, options);
+}
+
+// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
+function initializeIcons$c(baseUrl, options) {
+  if (baseUrl === void 0) {
+    baseUrl = '';
+  }
+
+  var subset = {
+    style: {
+      MozOsxFontSmoothing: 'grayscale',
+      WebkitFontSmoothing: 'antialiased',
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+      speak: 'none'
+    },
+    fontFace: {
+      fontFamily: "\"FabricMDL2Icons-11\"",
+      src: "url('" + baseUrl + "fabric-icons-11-2a8393d6.woff') format('woff')"
+    },
+    icons: {
+      'BoxAdditionSolid': '\uF2D4',
+      'BoxMultiplySolid': '\uF2D5',
+      'BoxPlaySolid': '\uF2D6',
+      'BoxCheckmarkSolid': '\uF2D7',
+      'CirclePauseSolid': '\uF2D8',
+      'CirclePause': '\uF2D9',
+      'MSNVideosSolid': '\uF2DA',
+      'CircleStopSolid': '\uF2DB',
+      'CircleStop': '\uF2DC',
+      'NavigateBack': '\uF2DD',
+      'NavigateBackMirrored': '\uF2DE',
+      'NavigateForward': '\uF2DF',
+      'NavigateForwardMirrored': '\uF2E0',
+      'UnknownSolid': '\uF2E1',
+      'UnknownMirroredSolid': '\uF2E2',
+      'CircleAddition': '\uF2E3',
+      'CircleAdditionSolid': '\uF2E4',
+      'FilePDB': '\uF2E5',
+      'FileTemplate': '\uF2E6',
+      'FileSQL': '\uF2E7',
+      'FileJAVA': '\uF2E8',
+      'FileASPX': '\uF2E9',
+      'FileCSS': '\uF2EA',
+      'FileSass': '\uF2EB',
+      'FileLess': '\uF2EC',
+      'FileHTML': '\uF2ED',
+      'JavaScriptLanguage': '\uF2EE',
+      'CSharpLanguage': '\uF2EF',
+      'CSharp': '\uF2F0',
+      'VisualBasicLanguage': '\uF2F1',
+      'VB': '\uF2F2',
+      'CPlusPlusLanguage': '\uF2F3',
+      'CPlusPlus': '\uF2F4',
+      'FSharpLanguage': '\uF2F5',
+      'FSharp': '\uF2F6',
+      'TypeScriptLanguage': '\uF2F7',
+      'PythonLanguage': '\uF2F8',
+      'PY': '\uF2F9',
+      'CoffeeScript': '\uF2FA',
+      'MarkDownLanguage': '\uF2FB',
+      'FullWidth': '\uF2FE',
+      'FullWidthEdit': '\uF2FF',
+      'Plug': '\uF300',
+      'PlugSolid': '\uF301',
+      'PlugConnected': '\uF302',
+      'PlugDisconnected': '\uF303',
+      'UnlockSolid': '\uF304',
+      'Variable': '\uF305',
+      'Parameter': '\uF306',
+      'CommentUrgent': '\uF307',
+      'Storyboard': '\uF308',
+      'DiffInline': '\uF309',
+      'DiffSideBySide': '\uF30A',
+      'ImageDiff': '\uF30B',
+      'ImagePixel': '\uF30C',
+      'FileBug': '\uF30D',
+      'FileCode': '\uF30E',
+      'FileComment': '\uF30F',
+      'BusinessHoursSign': '\uF310',
+      'FileImage': '\uF311',
+      'FileSymlink': '\uF312',
+      'AutoFillTemplate': '\uF313',
+      'WorkItem': '\uF314',
+      'WorkItemBug': '\uF315',
+      'LogRemove': '\uF316',
+      'ColumnOptions': '\uF317',
+      'Packages': '\uF318',
+      'BuildIssue': '\uF319',
+      'AssessmentGroup': '\uF31A',
+      'VariableGroup': '\uF31B',
+      'FullHistory': '\uF31C',
+      'Wheelchair': '\uF31F',
+      'SingleColumnEdit': '\uF321',
+      'DoubleColumnEdit': '\uF322',
+      'TripleColumnEdit': '\uF323',
+      'ColumnLeftTwoThirdsEdit': '\uF324',
+      'ColumnRightTwoThirdsEdit': '\uF325',
+      'StreamLogo': '\uF329',
+      'PassiveAuthentication': '\uF32A',
+      'AlertSolid': '\uF331',
+      'MegaphoneSolid': '\uF332',
+      'TaskSolid': '\uF333',
+      'ConfigurationSolid': '\uF334',
+      'BugSolid': '\uF335',
+      'CrownSolid': '\uF336',
+      'Trophy2Solid': '\uF337',
+      'QuickNoteSolid': '\uF338',
+      'ConstructionConeSolid': '\uF339',
+      'PageListSolid': '\uF33A',
+      'PageListMirroredSolid': '\uF33B',
+      'StarburstSolid': '\uF33C',
+      'ReadingModeSolid': '\uF33D',
+      'SadSolid': '\uF33E',
+      'HealthSolid': '\uF33F',
+      'ShieldSolid': '\uF340',
+      'GiftBoxSolid': '\uF341',
+      'ShoppingCartSolid': '\uF342',
+      'MailSolid': '\uF343',
+      'ChatSolid': '\uF344',
+      'RibbonSolid': '\uF345'
+    }
+  };
+  registerIcons(subset, options);
+}
+
+// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
+function initializeIcons$d(baseUrl, options) {
+  if (baseUrl === void 0) {
+    baseUrl = '';
+  }
+
+  var subset = {
+    style: {
+      MozOsxFontSmoothing: 'grayscale',
+      WebkitFontSmoothing: 'antialiased',
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+      speak: 'none'
+    },
+    fontFace: {
+      fontFamily: "\"FabricMDL2Icons-12\"",
+      src: "url('" + baseUrl + "fabric-icons-12-7e945a1e.woff') format('woff')"
+    },
+    icons: {
+      'FinancialSolid': '\uF346',
+      'FinancialMirroredSolid': '\uF347',
+      'HeadsetSolid': '\uF348',
+      'PermissionsSolid': '\uF349',
+      'ParkingSolid': '\uF34A',
+      'ParkingMirroredSolid': '\uF34B',
+      'DiamondSolid': '\uF34C',
+      'AsteriskSolid': '\uF34D',
+      'OfflineStorageSolid': '\uF34E',
+      'BankSolid': '\uF34F',
+      'DecisionSolid': '\uF350',
+      'Parachute': '\uF351',
+      'ParachuteSolid': '\uF352',
+      'FiltersSolid': '\uF353',
+      'ColorSolid': '\uF354',
+      'ReviewSolid': '\uF355',
+      'ReviewRequestSolid': '\uF356',
+      'ReviewRequestMirroredSolid': '\uF357',
+      'ReviewResponseSolid': '\uF358',
+      'FeedbackRequestSolid': '\uF359',
+      'FeedbackRequestMirroredSolid': '\uF35A',
+      'FeedbackResponseSolid': '\uF35B',
+      'WorkItemBar': '\uF35C',
+      'WorkItemBarSolid': '\uF35D',
+      'Separator': '\uF35E',
+      'NavigateExternalInline': '\uF35F',
+      'PlanView': '\uF360',
+      'TimelineMatrixView': '\uF361',
+      'EngineeringGroup': '\uF362',
+      'ProjectCollection': '\uF363',
+      'CaretBottomRightCenter8': '\uF364',
+      'CaretBottomLeftCenter8': '\uF365',
+      'CaretTopRightCenter8': '\uF366',
+      'CaretTopLeftCenter8': '\uF367',
+      'DonutChart': '\uF368',
+      'ChevronUnfold10': '\uF369',
+      'ChevronFold10': '\uF36A',
+      'DoubleChevronDown8': '\uF36B',
+      'DoubleChevronUp8': '\uF36C',
+      'DoubleChevronLeft8': '\uF36D',
+      'DoubleChevronRight8': '\uF36E',
+      'ChevronDownEnd6': '\uF36F',
+      'ChevronUpEnd6': '\uF370',
+      'ChevronLeftEnd6': '\uF371',
+      'ChevronRightEnd6': '\uF372',
+      'ContextMenu': '\uF37C',
+      'AzureAPIManagement': '\uF37F',
+      'AzureServiceEndpoint': '\uF380',
+      'VSTSLogo': '\uF381',
+      'VSTSAltLogo1': '\uF382',
+      'VSTSAltLogo2': '\uF383',
+      'FileTypeSolution': '\uF387',
+      'WordLogoInverse16': '\uF390',
+      'WordLogo16': '\uF391',
+      'WordLogoFill16': '\uF392',
+      'PowerPointLogoInverse16': '\uF393',
+      'PowerPointLogo16': '\uF394',
+      'PowerPointLogoFill16': '\uF395',
+      'ExcelLogoInverse16': '\uF396',
+      'ExcelLogo16': '\uF397',
+      'ExcelLogoFill16': '\uF398',
+      'OneNoteLogoInverse16': '\uF399',
+      'OneNoteLogo16': '\uF39A',
+      'OneNoteLogoFill16': '\uF39B',
+      'OutlookLogoInverse16': '\uF39C',
+      'OutlookLogo16': '\uF39D',
+      'OutlookLogoFill16': '\uF39E',
+      'PublisherLogoInverse16': '\uF39F',
+      'PublisherLogo16': '\uF3A0',
+      'PublisherLogoFill16': '\uF3A1',
+      'VisioLogoInverse16': '\uF3A2',
+      'VisioLogo16': '\uF3A3',
+      'VisioLogoFill16': '\uF3A4',
+      'TestBeaker': '\uF3A5',
+      'TestBeakerSolid': '\uF3A6',
+      'TestExploreSolid': '\uF3A7',
+      'TestAutoSolid': '\uF3A8',
+      'TestUserSolid': '\uF3A9',
+      'TestImpactSolid': '\uF3AA',
+      'TestPlan': '\uF3AB',
+      'TestStep': '\uF3AC',
+      'TestParameter': '\uF3AD',
+      'TestSuite': '\uF3AE',
+      'TestCase': '\uF3AF',
+      'Sprint': '\uF3B0',
+      'SignOut': '\uF3B1',
+      'TriggerApproval': '\uF3B2',
+      'Rocket': '\uF3B3',
+      'AzureKeyVault': '\uF3B4',
+      'Onboarding': '\uF3BA',
+      'Transition': '\uF3BC',
+      'LikeSolid': '\uF3BF',
+      'DislikeSolid': '\uF3C0',
+      'CRMCustomerInsightsApp': '\uF3C8',
+      'EditCreate': '\uF3C9',
+      'PlayReverseResume': '\uF3E4',
+      'PlayReverse': '\uF3E5',
+      'SearchData': '\uF3F1',
+      'UnSetColor': '\uF3F9',
+      'DeclineCall': '\uF405'
+    }
+  };
+  registerIcons(subset, options);
+}
+
+// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
+function initializeIcons$e(baseUrl, options) {
+  if (baseUrl === void 0) {
+    baseUrl = '';
+  }
+
+  var subset = {
+    style: {
+      MozOsxFontSmoothing: 'grayscale',
+      WebkitFontSmoothing: 'antialiased',
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+      speak: 'none'
+    },
+    fontFace: {
+      fontFamily: "\"FabricMDL2Icons-13\"",
+      src: "url('" + baseUrl + "fabric-icons-13-c3989a02.woff') format('woff')"
+    },
+    icons: {
+      'RectangularClipping': '\uF407',
+      'TeamsLogo16': '\uF40A',
+      'TeamsLogoFill16': '\uF40B',
+      'Spacer': '\uF40D',
+      'SkypeLogo16': '\uF40E',
+      'SkypeForBusinessLogo16': '\uF40F',
+      'SkypeForBusinessLogoFill16': '\uF410',
+      'FilterSolid': '\uF412',
+      'MailUndelivered': '\uF415',
+      'MailTentative': '\uF416',
+      'MailTentativeMirrored': '\uF417',
+      'MailReminder': '\uF418',
+      'ReceiptUndelivered': '\uF419',
+      'ReceiptTentative': '\uF41A',
+      'ReceiptTentativeMirrored': '\uF41B',
+      'Inbox': '\uF41C',
+      'IRMReply': '\uF41D',
+      'IRMReplyMirrored': '\uF41E',
+      'IRMForward': '\uF41F',
+      'IRMForwardMirrored': '\uF420',
+      'VoicemailIRM': '\uF421',
+      'EventAccepted': '\uF422',
+      'EventTentative': '\uF423',
+      'EventTentativeMirrored': '\uF424',
+      'EventDeclined': '\uF425',
+      'IDBadge': '\uF427',
+      'BackgroundColor': '\uF42B',
+      'OfficeFormsLogoInverse16': '\uF433',
+      'OfficeFormsLogo': '\uF434',
+      'OfficeFormsLogoFill': '\uF435',
+      'OfficeFormsLogo16': '\uF436',
+      'OfficeFormsLogoFill16': '\uF437',
+      'OfficeFormsLogoInverse24': '\uF43A',
+      'OfficeFormsLogo24': '\uF43B',
+      'OfficeFormsLogoFill24': '\uF43C',
+      'PageLock': '\uF43F',
+      'NotExecuted': '\uF440',
+      'NotImpactedSolid': '\uF441',
+      'FieldReadOnly': '\uF442',
+      'FieldRequired': '\uF443',
+      'BacklogBoard': '\uF444',
+      'ExternalBuild': '\uF445',
+      'ExternalTFVC': '\uF446',
+      'ExternalXAML': '\uF447',
+      'IssueSolid': '\uF448',
+      'DefectSolid': '\uF449',
+      'LadybugSolid': '\uF44A',
+      'NugetLogo': '\uF44C',
+      'TFVCLogo': '\uF44D',
+      'ProjectLogo32': '\uF47E',
+      'ProjectLogoFill32': '\uF47F',
+      'ProjectLogo16': '\uF480',
+      'ProjectLogoFill16': '\uF481',
+      'SwayLogo32': '\uF482',
+      'SwayLogoFill32': '\uF483',
+      'SwayLogo16': '\uF484',
+      'SwayLogoFill16': '\uF485',
+      'ClassNotebookLogo32': '\uF486',
+      'ClassNotebookLogoFill32': '\uF487',
+      'ClassNotebookLogo16': '\uF488',
+      'ClassNotebookLogoFill16': '\uF489',
+      'ClassNotebookLogoInverse32': '\uF48A',
+      'ClassNotebookLogoInverse16': '\uF48B',
+      'StaffNotebookLogo32': '\uF48C',
+      'StaffNotebookLogoFill32': '\uF48D',
+      'StaffNotebookLogo16': '\uF48E',
+      'StaffNotebookLogoFill16': '\uF48F',
+      'StaffNotebookLogoInverted32': '\uF490',
+      'StaffNotebookLogoInverted16': '\uF491',
+      'KaizalaLogo': '\uF492',
+      'TaskLogo': '\uF493',
+      'ProtectionCenterLogo32': '\uF494',
+      'GallatinLogo': '\uF496',
+      'Globe2': '\uF49A',
+      'Guitar': '\uF49B',
+      'Breakfast': '\uF49C',
+      'Brunch': '\uF49D',
+      'BeerMug': '\uF49E',
+      'Vacation': '\uF49F',
+      'Teeth': '\uF4A0',
+      'Taxi': '\uF4A1',
+      'Chopsticks': '\uF4A2',
+      'SyncOccurence': '\uF4A3',
+      'UnsyncOccurence': '\uF4A4',
+      'GIF': '\uF4A9',
+      'PrimaryCalendar': '\uF4AE',
+      'SearchCalendar': '\uF4AF',
+      'VideoOff': '\uF4B0',
+      'MicrosoftFlowLogo': '\uF4B1',
+      'BusinessCenterLogo': '\uF4B2',
+      'ToDoLogoBottom': '\uF4B3',
+      'ToDoLogoTop': '\uF4B4',
+      'EditSolid12': '\uF4B5',
+      'EditSolidMirrored12': '\uF4B6',
+      'UneditableSolid12': '\uF4B7',
+      'UneditableSolidMirrored12': '\uF4B8',
+      'UneditableMirrored': '\uF4B9',
+      'AdminALogo32': '\uF4BA',
+      'AdminALogoFill32': '\uF4BB',
+      'ToDoLogoInverse': '\uF4BC'
+    }
+  };
+  registerIcons(subset, options);
+}
+
+// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
+function initializeIcons$f(baseUrl, options) {
+  if (baseUrl === void 0) {
+    baseUrl = '';
+  }
+
+  var subset = {
+    style: {
+      MozOsxFontSmoothing: 'grayscale',
+      WebkitFontSmoothing: 'antialiased',
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+      speak: 'none'
+    },
+    fontFace: {
+      fontFamily: "\"FabricMDL2Icons-14\"",
+      src: "url('" + baseUrl + "fabric-icons-14-5cf58db8.woff') format('woff')"
+    },
+    icons: {
+      'Snooze': '\uF4BD',
+      'WaffleOffice365': '\uF4E0',
+      'ImageSearch': '\uF4E8',
+      'NewsSearch': '\uF4E9',
+      'VideoSearch': '\uF4EA',
+      'R': '\uF4EB',
+      'FontColorA': '\uF4EC',
+      'FontColorSwatch': '\uF4ED',
+      'LightWeight': '\uF4EE',
+      'NormalWeight': '\uF4EF',
+      'SemiboldWeight': '\uF4F0',
+      'GroupObject': '\uF4F1',
+      'UngroupObject': '\uF4F2',
+      'AlignHorizontalLeft': '\uF4F3',
+      'AlignHorizontalCenter': '\uF4F4',
+      'AlignHorizontalRight': '\uF4F5',
+      'AlignVerticalTop': '\uF4F6',
+      'AlignVerticalCenter': '\uF4F7',
+      'AlignVerticalBottom': '\uF4F8',
+      'HorizontalDistributeCenter': '\uF4F9',
+      'VerticalDistributeCenter': '\uF4FA',
+      'Ellipse': '\uF4FB',
+      'Line': '\uF4FC',
+      'Octagon': '\uF4FD',
+      'Hexagon': '\uF4FE',
+      'Pentagon': '\uF4FF',
+      'RightTriangle': '\uF500',
+      'HalfCircle': '\uF501',
+      'QuarterCircle': '\uF502',
+      'ThreeQuarterCircle': '\uF503',
+      '6PointStar': '\uF504',
+      '12PointStar': '\uF505',
+      'ArrangeBringToFront': '\uF506',
+      'ArrangeSendToBack': '\uF507',
+      'ArrangeSendBackward': '\uF508',
+      'ArrangeBringForward': '\uF509',
+      'BorderDash': '\uF50A',
+      'BorderDot': '\uF50B',
+      'LineStyle': '\uF50C',
+      'LineThickness': '\uF50D',
+      'WindowEdit': '\uF50E',
+      'HintText': '\uF50F',
+      'MediaAdd': '\uF510',
+      'AnchorLock': '\uF511',
+      'AutoHeight': '\uF512',
+      'ChartSeries': '\uF513',
+      'ChartXAngle': '\uF514',
+      'ChartYAngle': '\uF515',
+      'Combobox': '\uF516',
+      'LineSpacing': '\uF517',
+      'Padding': '\uF518',
+      'PaddingTop': '\uF519',
+      'PaddingBottom': '\uF51A',
+      'PaddingLeft': '\uF51B',
+      'PaddingRight': '\uF51C',
+      'NavigationFlipper': '\uF51D',
+      'AlignJustify': '\uF51E',
+      'TextOverflow': '\uF51F',
+      'VisualsFolder': '\uF520',
+      'VisualsStore': '\uF521',
+      'PictureCenter': '\uF522',
+      'PictureFill': '\uF523',
+      'PicturePosition': '\uF524',
+      'PictureStretch': '\uF525',
+      'PictureTile': '\uF526',
+      'Slider': '\uF527',
+      'SliderHandleSize': '\uF528',
+      'DefaultRatio': '\uF529',
+      'NumberSequence': '\uF52A',
+      'GUID': '\uF52B',
+      'ReportAdd': '\uF52C',
+      'DashboardAdd': '\uF52D',
+      'MapPinSolid': '\uF52E',
+      'WebPublish': '\uF52F',
+      'PieSingleSolid': '\uF530',
+      'BlockedSolid': '\uF531',
+      'DrillDown': '\uF532',
+      'DrillDownSolid': '\uF533',
+      'DrillExpand': '\uF534',
+      'DrillShow': '\uF535',
+      'SpecialEvent': '\uF536',
+      'OneDriveFolder16': '\uF53B',
+      'FunctionalManagerDashboard': '\uF542',
+      'BIDashboard': '\uF543',
+      'CodeEdit': '\uF544',
+      'RenewalCurrent': '\uF545',
+      'RenewalFuture': '\uF546',
+      'SplitObject': '\uF547',
+      'BulkUpload': '\uF548',
+      'DownloadDocument': '\uF549',
+      'GreetingCard': '\uF54B',
+      'Flower': '\uF54E',
+      'WaitlistConfirm': '\uF550',
+      'WaitlistConfirmMirrored': '\uF551',
+      'LaptopSecure': '\uF552',
+      'DragObject': '\uF553',
+      'EntryView': '\uF554',
+      'EntryDecline': '\uF555',
+      'ContactCardSettings': '\uF556',
+      'ContactCardSettingsMirrored': '\uF557'
+    }
+  };
+  registerIcons(subset, options);
+}
+
+// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
+function initializeIcons$g(baseUrl, options) {
+  if (baseUrl === void 0) {
+    baseUrl = '';
+  }
+
+  var subset = {
+    style: {
+      MozOsxFontSmoothing: 'grayscale',
+      WebkitFontSmoothing: 'antialiased',
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+      speak: 'none'
+    },
+    fontFace: {
+      fontFamily: "\"FabricMDL2Icons-15\"",
+      src: "url('" + baseUrl + "fabric-icons-15-3807251b.woff') format('woff')"
+    },
+    icons: {
+      'CalendarSettings': '\uF558',
+      'CalendarSettingsMirrored': '\uF559',
+      'HardDriveLock': '\uF55A',
+      'HardDriveUnlock': '\uF55B',
+      'AccountManagement': '\uF55C',
+      'ReportWarning': '\uF569',
+      'TransitionPop': '\uF5B2',
+      'TransitionPush': '\uF5B3',
+      'TransitionEffect': '\uF5B4',
+      'LookupEntities': '\uF5B5',
+      'ExploreData': '\uF5B6',
+      'AddBookmark': '\uF5B7',
+      'SearchBookmark': '\uF5B8',
+      'DrillThrough': '\uF5B9',
+      'MasterDatabase': '\uF5BA',
+      'CertifiedDatabase': '\uF5BB',
+      'MaximumValue': '\uF5BC',
+      'MinimumValue': '\uF5BD',
+      'VisualStudioIDELogo32': '\uF5D0',
+      'PasteAsText': '\uF5D5',
+      'PasteAsCode': '\uF5D6',
+      'BrowserTab': '\uF5D7',
+      'BrowserTabScreenshot': '\uF5D8',
+      'DesktopScreenshot': '\uF5D9',
+      'FileYML': '\uF5DA',
+      'ClipboardSolid': '\uF5DC',
+      'FabricUserFolder': '\uF5E5',
+      'FabricNetworkFolder': '\uF5E6',
+      'BullseyeTarget': '\uF5F0',
+      'AnalyticsView': '\uF5F1',
+      'Video360Generic': '\uF609',
+      'Untag': '\uF60B',
+      'Leave': '\uF627',
+      'Trending12': '\uF62D',
+      'Blocked12': '\uF62E',
+      'Warning12': '\uF62F',
+      'CheckedOutByOther12': '\uF630',
+      'CheckedOutByYou12': '\uF631',
+      'CircleShapeSolid': '\uF63C',
+      'SquareShapeSolid': '\uF63D',
+      'TriangleShapeSolid': '\uF63E',
+      'DropShapeSolid': '\uF63F',
+      'RectangleShapeSolid': '\uF640',
+      'ZoomToFit': '\uF649',
+      'InsertColumnsLeft': '\uF64A',
+      'InsertColumnsRight': '\uF64B',
+      'InsertRowsAbove': '\uF64C',
+      'InsertRowsBelow': '\uF64D',
+      'DeleteColumns': '\uF64E',
+      'DeleteRows': '\uF64F',
+      'DeleteRowsMirrored': '\uF650',
+      'DeleteTable': '\uF651',
+      'AccountBrowser': '\uF652',
+      'VersionControlPush': '\uF664',
+      'StackedColumnChart2': '\uF666',
+      'TripleColumnWide': '\uF66E',
+      'QuadColumn': '\uF66F',
+      'WhiteBoardApp16': '\uF673',
+      'WhiteBoardApp32': '\uF674',
+      'PinnedSolid': '\uF676',
+      'InsertSignatureLine': '\uF677',
+      'ArrangeByFrom': '\uF678',
+      'Phishing': '\uF679',
+      'CreateMailRule': '\uF67A',
+      'PublishCourse': '\uF699',
+      'DictionaryRemove': '\uF69A',
+      'UserRemove': '\uF69B',
+      'UserEvent': '\uF69C',
+      'Encryption': '\uF69D',
+      'PasswordField': '\uF6AA',
+      'OpenInNewTab': '\uF6AB',
+      'Hide3': '\uF6AC',
+      'VerifiedBrandSolid': '\uF6AD',
+      'MarkAsProtected': '\uF6AE',
+      'AuthenticatorApp': '\uF6B1',
+      'WebTemplate': '\uF6B2',
+      'DefenderTVM': '\uF6B3',
+      'MedalSolid': '\uF6B9',
+      'D365TalentLearn': '\uF6BB',
+      'D365TalentInsight': '\uF6BC',
+      'D365TalentHRCore': '\uF6BD',
+      'BacklogList': '\uF6BF',
+      'ButtonControl': '\uF6C0',
+      'TableGroup': '\uF6D9',
+      'MountainClimbing': '\uF6DB',
+      'TagUnknown': '\uF6DF',
+      'TagUnknownMirror': '\uF6E0',
+      'TagUnknown12': '\uF6E1',
+      'TagUnknown12Mirror': '\uF6E2',
+      'Link12': '\uF6E3',
+      'Presentation': '\uF6E4',
+      'Presentation12': '\uF6E5',
+      'Lock12': '\uF6E6',
+      'BuildDefinition': '\uF6E9',
+      'ReleaseDefinition': '\uF6EA',
+      'SaveTemplate': '\uF6EC',
+      'UserGauge': '\uF6ED',
+      'BlockedSiteSolid12': '\uF70A',
+      'TagSolid': '\uF70E',
+      'OfficeChat': '\uF70F'
+    }
+  };
+  registerIcons(subset, options);
+}
+
+// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
+function initializeIcons$h(baseUrl, options) {
+  if (baseUrl === void 0) {
+    baseUrl = '';
+  }
+
+  var subset = {
+    style: {
+      MozOsxFontSmoothing: 'grayscale',
+      WebkitFontSmoothing: 'antialiased',
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+      speak: 'none'
+    },
+    fontFace: {
+      fontFamily: "\"FabricMDL2Icons-16\"",
+      src: "url('" + baseUrl + "fabric-icons-16-9cf93f3b.woff') format('woff')"
+    },
+    icons: {
+      'OfficeChatSolid': '\uF710',
+      'MailSchedule': '\uF72E',
+      'WarningSolid': '\uF736',
+      'Blocked2Solid': '\uF737',
+      'SkypeCircleArrow': '\uF747',
+      'SkypeArrow': '\uF748',
+      'SyncStatus': '\uF751',
+      'SyncStatusSolid': '\uF752',
+      'ProjectDocument': '\uF759',
+      'ToDoLogoOutline': '\uF75B',
+      'VisioOnlineLogoFill32': '\uF75F',
+      'VisioOnlineLogo32': '\uF760',
+      'VisioOnlineLogoCloud32': '\uF761',
+      'VisioDiagramSync': '\uF762',
+      'Event12': '\uF763',
+      'EventDateMissed12': '\uF764',
+      'UserOptional': '\uF767',
+      'ResponsesMenu': '\uF768',
+      'DoubleDownArrow': '\uF769',
+      'DistributeDown': '\uF76A',
+      'BookmarkReport': '\uF76B',
+      'FilterSettings': '\uF76C',
+      'GripperDotsVertical': '\uF772',
+      'MailAttached': '\uF774',
+      'AddIn': '\uF775',
+      'LinkedDatabase': '\uF779',
+      'TableLink': '\uF77A',
+      'PromotedDatabase': '\uF77D',
+      'BarChartVerticalFilter': '\uF77E',
+      'BarChartVerticalFilterSolid': '\uF77F',
+      'MicOff2': '\uF781',
+      'MicrosoftTranslatorLogo': '\uF782',
+      'ShowTimeAs': '\uF787',
+      'FileRequest': '\uF789',
+      'WorkItemAlert': '\uF78F',
+      'PowerBILogo16': '\uF790',
+      'PowerBILogoBackplate16': '\uF791',
+      'BulletedListText': '\uF792',
+      'BulletedListBullet': '\uF793',
+      'BulletedListTextMirrored': '\uF794',
+      'BulletedListBulletMirrored': '\uF795',
+      'NumberedListText': '\uF796',
+      'NumberedListNumber': '\uF797',
+      'NumberedListTextMirrored': '\uF798',
+      'NumberedListNumberMirrored': '\uF799',
+      'RemoveLinkChain': '\uF79A',
+      'RemoveLinkX': '\uF79B',
+      'FabricTextHighlight': '\uF79C',
+      'ClearFormattingA': '\uF79D',
+      'ClearFormattingEraser': '\uF79E',
+      'Photo2Fill': '\uF79F',
+      'IncreaseIndentText': '\uF7A0',
+      'IncreaseIndentArrow': '\uF7A1',
+      'DecreaseIndentText': '\uF7A2',
+      'DecreaseIndentArrow': '\uF7A3',
+      'IncreaseIndentTextMirrored': '\uF7A4',
+      'IncreaseIndentArrowMirrored': '\uF7A5',
+      'DecreaseIndentTextMirrored': '\uF7A6',
+      'DecreaseIndentArrowMirrored': '\uF7A7',
+      'CheckListText': '\uF7A8',
+      'CheckListCheck': '\uF7A9',
+      'CheckListTextMirrored': '\uF7AA',
+      'CheckListCheckMirrored': '\uF7AB',
+      'NumberSymbol': '\uF7AC',
+      'Coupon': '\uF7BC',
+      'VerifiedBrand': '\uF7BD',
+      'ReleaseGate': '\uF7BE',
+      'ReleaseGateCheck': '\uF7BF',
+      'ReleaseGateError': '\uF7C0',
+      'M365InvoicingLogo': '\uF7C1',
+      'RemoveFromShoppingList': '\uF7D5',
+      'ShieldAlert': '\uF7D7',
+      'FabricTextHighlightComposite': '\uF7DA',
+      'Dataflows': '\uF7DD',
+      'GenericScanFilled': '\uF7DE',
+      'DiagnosticDataBarTooltip': '\uF7DF',
+      'SaveToMobile': '\uF7E0',
+      'Orientation2': '\uF7E1',
+      'ScreenCast': '\uF7E2',
+      'ShowGrid': '\uF7E3',
+      'SnapToGrid': '\uF7E4',
+      'ContactList': '\uF7E5',
+      'NewMail': '\uF7EA',
+      'EyeShadow': '\uF7EB',
+      'FabricFolderConfirm': '\uF7FF',
+      'InformationBarriers': '\uF803',
+      'CommentActive': '\uF804',
+      'ColumnVerticalSectionEdit': '\uF806',
+      'WavingHand': '\uF807',
+      'ShakeDevice': '\uF80A',
+      'SmartGlassRemote': '\uF80B',
+      'Rotate90Clockwise': '\uF80D',
+      'Rotate90CounterClockwise': '\uF80E',
+      'CampaignTemplate': '\uF811',
+      'ChartTemplate': '\uF812',
+      'PageListFilter': '\uF813',
+      'SecondaryNav': '\uF814',
+      'ColumnVerticalSection': '\uF81E',
+      'SkypeCircleSlash': '\uF825',
+      'SkypeSlash': '\uF826'
+    }
+  };
+  registerIcons(subset, options);
+}
+
+// Your use of the content in the files referenced here is subject to the terms of the license at https://aka.ms/fluentui-assets-license
+function initializeIcons$i(baseUrl, options) {
+  if (baseUrl === void 0) {
+    baseUrl = '';
+  }
+
+  var subset = {
+    style: {
+      MozOsxFontSmoothing: 'grayscale',
+      WebkitFontSmoothing: 'antialiased',
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+      speak: 'none'
+    },
+    fontFace: {
+      fontFamily: "\"FabricMDL2Icons-17\"",
+      src: "url('" + baseUrl + "fabric-icons-17-0c4ed701.woff') format('woff')"
+    },
+    icons: {
+      'CustomizeToolbar': '\uF828',
+      'DuplicateRow': '\uF82A',
+      'RemoveFromTrash': '\uF82B',
+      'MailOptions': '\uF82C',
+      'Childof': '\uF82D',
+      'Footer': '\uF82E',
+      'Header': '\uF82F',
+      'BarChartVerticalFill': '\uF830',
+      'StackedColumnChart2Fill': '\uF831',
+      'PlainText': '\uF834',
+      'AccessibiltyChecker': '\uF835',
+      'DatabaseSync': '\uF842',
+      'ReservationOrders': '\uF845',
+      'TabOneColumn': '\uF849',
+      'TabTwoColumn': '\uF84A',
+      'TabThreeColumn': '\uF84B',
+      'BulletedTreeList': '\uF84C',
+      'MicrosoftTranslatorLogoGreen': '\uF852',
+      'MicrosoftTranslatorLogoBlue': '\uF853',
+      'InternalInvestigation': '\uF854',
+      'AddReaction': '\uF85D',
+      'ContactHeart': '\uF862',
+      'VisuallyImpaired': '\uF866',
+      'EventToDoLogo': '\uF869',
+      'Variable2': '\uF86D',
+      'ModelingView': '\uF871',
+      'DisconnectVirtualMachine': '\uF873',
+      'ReportLock': '\uF875',
+      'Uneditable2': '\uF876',
+      'Uneditable2Mirrored': '\uF877',
+      'BarChartVerticalEdit': '\uF89D',
+      'GlobalNavButtonActive': '\uF89F',
+      'PollResults': '\uF8A0',
+      'Rerun': '\uF8A1',
+      'QandA': '\uF8A2',
+      'QandAMirror': '\uF8A3',
+      'BookAnswers': '\uF8A4',
+      'AlertSettings': '\uF8B6',
+      'TrimStart': '\uF8BB',
+      'TrimEnd': '\uF8BC',
+      'TableComputed': '\uF8F5',
+      'DecreaseIndentLegacy': '\uE290',
+      'IncreaseIndentLegacy': '\uE291',
+      'SizeLegacy': '\uE2B2'
+    }
+  };
+  registerIcons(subset, options);
+}
+
+var registerIconAliases = function () {
+  registerIconAlias('trash', 'delete');
+  registerIconAlias('onedrive', 'onedrivelogo');
+  registerIconAlias('alertsolid12', 'eventdatemissed12');
+  registerIconAlias('sixpointstar', '6pointstar');
+  registerIconAlias('twelvepointstar', '12pointstar');
+  registerIconAlias('toggleon', 'toggleleft');
+  registerIconAlias('toggleoff', 'toggleright');
+};
+
+// @uifabric/icons@7.3.36
+setVersion('@uifabric/icons', '7.3.36');
+
+var DEFAULT_BASE_URL = 'https://spoprod-a.akamaihd.net/files/fabric/assets/icons/';
+function initializeIcons$j(baseUrl, options) {
+  if (baseUrl === void 0) {
+    baseUrl = DEFAULT_BASE_URL;
+  }
+
+  [initializeIcons, initializeIcons$1, initializeIcons$2, initializeIcons$3, initializeIcons$4, initializeIcons$5, initializeIcons$6, initializeIcons$7, initializeIcons$8, initializeIcons$9, initializeIcons$a, initializeIcons$b, initializeIcons$c, initializeIcons$d, initializeIcons$e, initializeIcons$f, initializeIcons$g, initializeIcons$h, initializeIcons$i].forEach(function (initialize) {
+    return initialize(baseUrl, options);
+  });
+  registerIconAliases();
+}
+
+var baseProductionCdnUrl = 'https://static2.sharepointonline.com/files/fabric/office-ui-fabric-react-assets/';
+/** @internal */
+
+var TestImages = {
+  choiceGroupBarUnselected: baseProductionCdnUrl + 'choicegroup-bar-unselected.png',
+  choiceGroupBarSelected: baseProductionCdnUrl + 'choicegroup-bar-selected.png',
+  choiceGroupPieUnselected: baseProductionCdnUrl + 'choicegroup-pie-unselected.png',
+  choiceGroupPieSelected: baseProductionCdnUrl + 'choicegroup-pie-selected.png',
+  documentPreview: baseProductionCdnUrl + 'document-preview.png',
+  documentPreviewTwo: baseProductionCdnUrl + 'document-preview2.png',
+  documentPreviewThree: baseProductionCdnUrl + 'document-preview3.png',
+  iconOne: baseProductionCdnUrl + 'icon-one.png',
+  iconPpt: 'https://static2.sharepointonline.com/files/fabric/assets/item-types/32/pptx.png',
+  personaFemale: baseProductionCdnUrl + 'persona-female.png',
+  personaMale: baseProductionCdnUrl + 'persona-male.png'
+};
+
+/**
+ * For use in this package only.
+ * Mirror of PersonaInitialsColor avoid a circular dependency.
+ * If the real enum changes and this one starts causing compiler errors, update it.
+ * @internal
+ */
+
+var PersonaInitialsColor;
+
+(function (PersonaInitialsColor) {
+  PersonaInitialsColor[PersonaInitialsColor["lightBlue"] = 0] = "lightBlue";
+  PersonaInitialsColor[PersonaInitialsColor["blue"] = 1] = "blue";
+  PersonaInitialsColor[PersonaInitialsColor["darkBlue"] = 2] = "darkBlue";
+  PersonaInitialsColor[PersonaInitialsColor["teal"] = 3] = "teal";
+  PersonaInitialsColor[PersonaInitialsColor["lightGreen"] = 4] = "lightGreen";
+  PersonaInitialsColor[PersonaInitialsColor["green"] = 5] = "green";
+  PersonaInitialsColor[PersonaInitialsColor["darkGreen"] = 6] = "darkGreen";
+  PersonaInitialsColor[PersonaInitialsColor["lightPink"] = 7] = "lightPink";
+  PersonaInitialsColor[PersonaInitialsColor["pink"] = 8] = "pink";
+  PersonaInitialsColor[PersonaInitialsColor["magenta"] = 9] = "magenta";
+  PersonaInitialsColor[PersonaInitialsColor["purple"] = 10] = "purple";
+  PersonaInitialsColor[PersonaInitialsColor["black"] = 11] = "black";
+  PersonaInitialsColor[PersonaInitialsColor["orange"] = 12] = "orange";
+  PersonaInitialsColor[PersonaInitialsColor["red"] = 13] = "red";
+  PersonaInitialsColor[PersonaInitialsColor["darkRed"] = 14] = "darkRed";
+  PersonaInitialsColor[PersonaInitialsColor["transparent"] = 15] = "transparent";
+  PersonaInitialsColor[PersonaInitialsColor["violet"] = 16] = "violet";
+  PersonaInitialsColor[PersonaInitialsColor["lightRed"] = 17] = "lightRed";
+  PersonaInitialsColor[PersonaInitialsColor["gold"] = 18] = "gold";
+  PersonaInitialsColor[PersonaInitialsColor["burgundy"] = 19] = "burgundy";
+  PersonaInitialsColor[PersonaInitialsColor["warmGray"] = 20] = "warmGray";
+  PersonaInitialsColor[PersonaInitialsColor["coolGray"] = 21] = "coolGray";
+  PersonaInitialsColor[PersonaInitialsColor["gray"] = 22] = "gray";
+  PersonaInitialsColor[PersonaInitialsColor["cyan"] = 23] = "cyan";
+  PersonaInitialsColor[PersonaInitialsColor["rust"] = 24] = "rust";
+})(PersonaInitialsColor || (PersonaInitialsColor = {}));
+/** @internal */
+
+
+var facepilePersonas = [{
+  imageUrl: TestImages.personaFemale,
+  personaName: 'Annie Lindqvist',
+  data: '50%',
+  onClick: function (ev, persona) {
+    return alert('You clicked on ' + persona.personaName + '. Extra data: ' + persona.data);
+  }
+}, {
+  imageUrl: TestImages.personaFemale,
+  personaName: 'Aaron Reid',
+  data: '$1,000'
+}, {
+  personaName: 'Alex Lundberg',
+  data: '75%',
+  onClick: function (ev, persona) {
+    return alert('You clicked on ' + persona.personaName + '. Extra data: ' + persona.data);
+  }
+}, {
+  personaName: 'Roko Kolar',
+  data: '4 hrs'
+}, {
+  imageInitials: 'CB',
+  personaName: 'Christian Bergqvist',
+  initialsColor: PersonaInitialsColor.green,
+  data: '25%'
+}, {
+  imageUrl: TestImages.personaFemale,
+  imageInitials: 'VL',
+  personaName: 'Valentina Lovric',
+  initialsColor: PersonaInitialsColor.lightBlue,
+  data: 'Emp1234',
+  onClick: function (ev, persona) {
+    return alert('You clicked on ' + persona.personaName + '. Extra data: ' + persona.data);
+  }
+}, {
+  imageUrl: TestImages.personaMale,
+  imageInitials: 'MS',
+  personaName: 'Maor Sharett',
+  initialsColor: PersonaInitialsColor.lightGreen
+}, {
+  imageUrl: TestImages.personaFemale,
+  imageInitials: 'PV',
+  personaName: 'Annie Lindqvist2',
+  initialsColor: PersonaInitialsColor.lightPink
+}, {
+  imageUrl: TestImages.personaMale,
+  imageInitials: 'AR',
+  personaName: 'Aaron Reid2',
+  initialsColor: PersonaInitialsColor.magenta,
+  data: 'Emp1234',
+  onClick: function (ev, persona) {
+    return alert('You clicked on ' + persona.personaName + '. Extra data: ' + persona.data);
+  }
+}, {
+  imageUrl: TestImages.personaMale,
+  imageInitials: 'AL',
+  personaName: 'Alex Lundberg2',
+  initialsColor: PersonaInitialsColor.orange
+}, {
+  imageUrl: TestImages.personaMale,
+  imageInitials: 'RK',
+  personaName: 'Roko Kolar2',
+  initialsColor: PersonaInitialsColor.pink
+}, {
+  imageUrl: TestImages.personaMale,
+  imageInitials: 'CB',
+  personaName: 'Christian Bergqvist2',
+  initialsColor: PersonaInitialsColor.purple
+}, {
+  imageUrl: TestImages.personaFemale,
+  imageInitials: 'VL',
+  personaName: 'Valentina Lovric2',
+  initialsColor: PersonaInitialsColor.red
+}, {
+  imageUrl: TestImages.personaMale,
+  imageInitials: 'MS',
+  personaName: 'Maor Sharett2',
+  initialsColor: PersonaInitialsColor.teal
+}, {
+  imageUrl: TestImages.personaFemale,
+  imageInitials: 'VL',
+  personaName: 'Another A Name',
+  initialsColor: PersonaInitialsColor.blue
+}, {
+  imageUrl: TestImages.personaMale,
+  imageInitials: 'MS',
+  personaName: 'Another A Name (So Many A names!)',
+  initialsColor: PersonaInitialsColor.darkBlue
+}, {
+  imageUrl: TestImages.personaFemale,
+  imageInitials: 'VL',
+  personaName: 'Another Anecdotal A Name',
+  initialsColor: PersonaInitialsColor.darkGreen
+}, {
+  imageUrl: TestImages.personaMale,
+  imageInitials: 'MS',
+  personaName: 'Anerobic A Name',
+  initialsColor: PersonaInitialsColor.darkRed
+}, {
+  imageUrl: TestImages.personaFemale,
+  imageInitials: 'VL',
+  personaName: 'Aerobic A Name',
+  initialsColor: PersonaInitialsColor.green
+}, {
+  imageUrl: TestImages.personaMale,
+  imageInitials: 'MS',
+  personaName: 'Maor Sharett2',
+  initialsColor: PersonaInitialsColor.lightBlue
+}, {
+  imageUrl: TestImages.personaFemale,
+  imageInitials: 'VL',
+  personaName: 'Valentina Lovric2',
+  initialsColor: PersonaInitialsColor.lightGreen
+}, {
+  imageUrl: TestImages.personaMale,
+  imageInitials: 'MS',
+  personaName: 'Maor Sharett2',
+  initialsColor: PersonaInitialsColor.lightPink
+}, {
+  imageUrl: TestImages.personaFemale,
+  imageInitials: 'VL',
+  personaName: 'Valentina Lovric2',
+  initialsColor: PersonaInitialsColor.magenta
+}, {
+  imageUrl: TestImages.personaMale,
+  imageInitials: 'MS',
+  personaName: 'Maor Sharett2',
+  initialsColor: PersonaInitialsColor.orange
+}];
+
+var LOREM_IPSUM = ('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut ' + 'labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut ' + 'aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore ' + 'eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt ' + 'mollit anim id est laborum').split(' ');
+/** @internal */
+
+function lorem(wordCount) {
+  return Array.apply(null, Array(wordCount)).map(function (item, idx) {
+    return LOREM_IPSUM[idx % LOREM_IPSUM.length];
+  }).join(' ');
+}
+
+var DATA = {
+  color: ['red', 'blue', 'green', 'yellow'],
+  shape: ['circle', 'square', 'triangle'],
+  location: ['Seattle', 'New York', 'Chicago', 'Los Angeles', 'Portland']
+};
+/** @internal */
+
+function createListItems(count, startIndex) {
+  if (startIndex === void 0) {
+    startIndex = 0;
+  }
+
+  return Array.apply(null, Array(count)).map(function (item, index) {
+    var size = 150 + Math.round(Math.random() * 100);
+    return {
+      thumbnail: "//placehold.it/" + size + "x" + size,
+      key: 'item-' + (index + startIndex) + ' ' + lorem(4),
+      name: lorem(5),
+      description: lorem(10 + Math.round(Math.random() * 50)),
+      color: _randWord(DATA.color),
+      shape: _randWord(DATA.shape),
+      location: _randWord(DATA.location),
+      width: size,
+      height: size
+    };
+  });
+}
+
+function _randWord(array) {
+  var index = Math.floor(Math.random() * array.length);
+  return array[index];
+}
+
+/**
+ * For use in this package only.
+ * Mirror of PersonaPresence avoid a circular dependency.
+ * If the real enum changes and this one starts causing compiler errors, update it.
+ * @internal
+ */
+
+var PersonaPresence;
+
+(function (PersonaPresence) {
+  PersonaPresence[PersonaPresence["none"] = 0] = "none";
+  PersonaPresence[PersonaPresence["offline"] = 1] = "offline";
+  PersonaPresence[PersonaPresence["online"] = 2] = "online";
+  PersonaPresence[PersonaPresence["away"] = 3] = "away";
+  PersonaPresence[PersonaPresence["dnd"] = 4] = "dnd";
+  PersonaPresence[PersonaPresence["blocked"] = 5] = "blocked";
+  PersonaPresence[PersonaPresence["busy"] = 6] = "busy";
+})(PersonaPresence || (PersonaPresence = {}));
+/** Sample people and groups @internal */
+
+
+var people = [{
+  key: 1,
+  imageUrl: TestImages.personaFemale,
+  imageInitials: 'PV',
+  text: 'Annie Lindqvist',
+  secondaryText: 'Designer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.online
+}, {
+  key: 2,
+  imageUrl: TestImages.personaMale,
+  imageInitials: 'AR',
+  text: 'Aaron Reid',
+  secondaryText: 'Designer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.busy
+}, {
+  key: 3,
+  imageUrl: TestImages.personaMale,
+  imageInitials: 'AL',
+  text: 'Alex Lundberg',
+  secondaryText: 'Software Developer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.dnd
+}, {
+  key: 4,
+  imageUrl: TestImages.personaMale,
+  imageInitials: 'RK',
+  text: 'Roko Kolar',
+  secondaryText: 'Financial Analyst',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.offline
+}, {
+  key: 5,
+  imageUrl: TestImages.personaMale,
+  imageInitials: 'CB',
+  text: 'Christian Bergqvist',
+  secondaryText: 'Sr. Designer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.online
+}, {
+  key: 6,
+  imageUrl: TestImages.personaFemale,
+  imageInitials: 'VL',
+  text: 'Valentina Lovric',
+  secondaryText: 'Design Developer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.online
+}, {
+  key: 7,
+  imageUrl: TestImages.personaMale,
+  imageInitials: 'MS',
+  text: 'Maor Sharett',
+  secondaryText: 'UX Designer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.away
+}, {
+  key: 8,
+  imageUrl: TestImages.personaFemale,
+  imageInitials: 'PV',
+  text: 'Anny Lindqvist',
+  secondaryText: 'Designer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.busy
+}, {
+  key: 9,
+  imageUrl: TestImages.personaMale,
+  imageInitials: 'AR',
+  text: 'Aron Reid',
+  secondaryText: 'Designer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.dnd
+}, {
+  key: 10,
+  imageUrl: TestImages.personaMale,
+  imageInitials: 'AL',
+  text: 'Alix Lundberg',
+  secondaryText: 'Software Developer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.offline
+}, {
+  key: 11,
+  imageUrl: TestImages.personaMale,
+  imageInitials: 'RK',
+  text: 'Roko Kular',
+  secondaryText: 'Financial Analyst',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.none
+}, {
+  key: 12,
+  imageUrl: TestImages.personaMale,
+  imageInitials: 'CB',
+  text: 'Christian Bergqvest',
+  secondaryText: 'Sr. Designer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.busy
+}, {
+  key: 13,
+  imageUrl: TestImages.personaFemale,
+  imageInitials: 'VL',
+  text: 'Valintina Lovric',
+  secondaryText: 'Design Developer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.busy
+}, {
+  key: 14,
+  imageUrl: TestImages.personaMale,
+  imageInitials: 'MS',
+  text: 'Maor Sharet',
+  secondaryText: 'UX Designer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.blocked
+}, {
+  key: 15,
+  imageUrl: TestImages.personaFemale,
+  imageInitials: 'VL',
+  text: 'Anny Lindqvest',
+  secondaryText: 'SDE',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.blocked
+}, {
+  key: 16,
+  imageUrl: TestImages.personaMale,
+  imageInitials: 'MS',
+  text: 'Alix Lunberg',
+  secondaryText: 'SE',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.away
+}, {
+  key: 17,
+  imageUrl: TestImages.personaFemale,
+  imageInitials: 'VL',
+  text: 'Annie Lindqvest',
+  secondaryText: 'SDET',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.online
+}, {
+  key: 18,
+  imageUrl: TestImages.personaMale,
+  imageInitials: 'MS',
+  text: 'Alixander Lundberg',
+  secondaryText: 'Senior Manager of SDET',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.offline
+}, {
+  key: 19,
+  imageUrl: TestImages.personaFemale,
+  imageInitials: 'VL',
+  text: 'Anny Lundqvist',
+  secondaryText: 'Junior Manager of Software',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.away
+}, {
+  key: 20,
+  imageUrl: TestImages.personaMale,
+  imageInitials: 'MS',
+  text: 'Maor Shorett',
+  secondaryText: 'UX Designer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.blocked
+}, {
+  key: 21,
+  imageUrl: TestImages.personaFemale,
+  imageInitials: 'VL',
+  text: 'Valentina Lovrics',
+  secondaryText: 'Design Developer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.online
+}, {
+  key: 22,
+  imageUrl: TestImages.personaMale,
+  imageInitials: 'MS',
+  text: 'Maor Sharet',
+  secondaryText: 'UX Designer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.online
+}, {
+  key: 23,
+  imageUrl: TestImages.personaFemale,
+  imageInitials: 'VL',
+  text: 'Valentina Lovrecs',
+  secondaryText: 'Design Developer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.blocked
+}, {
+  key: 24,
+  imageUrl: TestImages.personaMale,
+  imageInitials: 'MS',
+  text: 'Maor Sharitt',
+  secondaryText: 'UX Designer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.offline
+}, {
+  key: 25,
+  imageUrl: './images/persona-male.png',
+  imageInitials: 'MS',
+  text: 'Maor Shariett',
+  secondaryText: 'Design Developer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 3:00pm',
+  isValid: true,
+  presence: PersonaPresence.online
+}, {
+  key: 26,
+  imageUrl: './images/persona-female.png',
+  imageInitials: 'AL',
+  text: 'Alix Lundburg',
+  secondaryText: 'UX Designer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 3:00pm',
+  isValid: true,
+  presence: PersonaPresence.away
+}, {
+  key: 27,
+  imageUrl: './images/persona-female.png',
+  imageInitials: 'VL',
+  text: 'Valantena Lovric',
+  secondaryText: 'UX Designer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.busy
+}, {
+  key: 28,
+  imageUrl: './images/persona-female.png',
+  imageInitials: 'VL',
+  text: 'Velatine Lourvric',
+  secondaryText: 'UX Designer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.online
+}, {
+  key: 29,
+  imageUrl: './images/persona-female.png',
+  imageInitials: 'VL',
+  text: 'Valentyna Lovrique',
+  secondaryText: 'UX Designer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.busy
+}, {
+  key: 30,
+  imageUrl: './images/persona-female.png',
+  imageInitials: 'AL',
+  text: 'Annie Lindquest',
+  secondaryText: 'UX Designer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.dnd
+}, {
+  key: 31,
+  imageUrl: './images/persona-female.png',
+  imageInitials: 'AL',
+  text: 'Anne Lindquist',
+  secondaryText: 'UX Designer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.blocked
+}, {
+  key: 32,
+  imageUrl: './images/persona-female.png',
+  imageInitials: 'AL',
+  text: 'Ann Lindqiest',
+  secondaryText: 'UX Designer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.online
+}, {
+  key: 33,
+  imageUrl: './images/persona-male.png',
+  imageInitials: 'AR',
+  text: 'Aron Reid',
+  secondaryText: 'UX Designer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.away
+}, {
+  key: 34,
+  imageUrl: './images/persona-male.png',
+  imageInitials: 'AR',
+  text: 'Aaron Reed',
+  secondaryText: 'UX Designer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.offline
+}, {
+  key: 35,
+  imageUrl: './images/persona-female.png',
+  imageInitials: 'AL',
+  text: 'Alix Lindberg',
+  secondaryText: 'UX Designer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.busy
+}, {
+  key: 36,
+  imageUrl: './images/persona-male.png',
+  imageInitials: 'AL',
+  text: 'Alan Lindberg',
+  secondaryText: 'UX Designer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.busy
+}, {
+  key: 37,
+  imageUrl: './images/persona-male.png',
+  imageInitials: 'MS',
+  text: 'Maor Sharit',
+  secondaryText: 'UX Designer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.offline
+}, {
+  key: 38,
+  imageUrl: './images/persona-male.png',
+  imageInitials: 'MS',
+  text: 'Maorr Sherit',
+  secondaryText: 'UX Designer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.online
+}, {
+  key: 39,
+  imageUrl: './images/persona-male.png',
+  imageInitials: 'AL',
+  text: 'Alex Lindbirg',
+  secondaryText: 'Software Developer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.dnd
+}, {
+  key: 40,
+  imageUrl: './images/persona-male.png',
+  imageInitials: 'AL',
+  text: 'Alex Lindbarg',
+  secondaryText: 'Software Developer',
+  tertiaryText: 'In a meeting',
+  optionalText: 'Available at 4:00pm',
+  isValid: true,
+  presence: PersonaPresence.online
+}, {
+  key: 41,
+  imageInitials: 'GO',
+  text: 'Group One',
+  canExpand: true,
+  isValid: true
+}, {
+  key: 42,
+  imageInitials: 'GT',
+  text: 'Group Two',
+  canExpand: true,
+  isValid: true
+}];
+
+var KTP_PREFIX = 'ktp';
+var KTP_SEPARATOR = '-';
+var KTP_LAYER_ID = 'ktp-layer-id';
+
+var KeytipEvents;
+
+(function (KeytipEvents) {
+  KeytipEvents.KEYTIP_ADDED = 'keytipAdded';
+  KeytipEvents.KEYTIP_REMOVED = 'keytipRemoved';
+  KeytipEvents.KEYTIP_UPDATED = 'keytipUpdated';
+  KeytipEvents.PERSISTED_KEYTIP_ADDED = 'persistedKeytipAdded';
+  KeytipEvents.PERSISTED_KEYTIP_REMOVED = 'persistedKeytipRemoved';
+  KeytipEvents.PERSISTED_KEYTIP_EXECUTE = 'persistedKeytipExecute';
+  KeytipEvents.ENTER_KEYTIP_MODE = 'enterKeytipMode';
+  KeytipEvents.EXIT_KEYTIP_MODE = 'exitKeytipMode';
+})(KeytipEvents || (KeytipEvents = {}));
+
+/**
+ * This class is responsible for handling registering, updating, and unregistering of keytips
+ */
+
+var KeytipManager =
+/** @class */
+function () {
+  function KeytipManager() {
+    this.keytips = {};
+    this.persistedKeytips = {};
+    this.sequenceMapping = {}; // This is (and should be) updated and kept in sync
+    // with the inKeytipMode in KeytipLayer.
+
+    this.inKeytipMode = false; // Boolean that gets checked before entering keytip mode by the KeytipLayer
+    // Used for an override in special cases (e.g. Disable entering keytip mode when a modal is shown)
+
+    this.shouldEnterKeytipMode = true; // Boolean to indicate whether to delay firing an event to update subscribers of
+    // keytip data changed.
+
+    this.delayUpdatingKeytipChange = false;
+  }
+  /**
+   * Static function to get singleton KeytipManager instance
+   *
+   * @returns {KeytipManager} Singleton KeytipManager instance
+   */
+
+
+  KeytipManager.getInstance = function () {
+    return this._instance;
+  };
+  /**
+   * Initialization code to set set parameters to define
+   * how the KeytipManager handles keytip data.
+   *
+   * @param delayUpdatingKeytipChange - T/F if we should delay notifiying keytip subscribers
+   * of keytip changes
+   */
+
+
+  KeytipManager.prototype.init = function (delayUpdatingKeytipChange) {
+    this.delayUpdatingKeytipChange = delayUpdatingKeytipChange;
+  };
+  /**
+   * Registers a keytip
+   *
+   * @param keytipProps - Keytip to register
+   * @param persisted - T/F if this keytip should be persisted, default is false
+   * @returns {string} Unique ID for this keytip
+   */
+
+
+  KeytipManager.prototype.register = function (keytipProps, persisted) {
+    if (persisted === void 0) {
+      persisted = false;
+    }
+
+    var props = keytipProps;
+
+    if (!persisted) {
+      // Add the overflowSetSequence if necessary
+      props = this.addParentOverflow(keytipProps);
+      this.sequenceMapping[props.keySequences.toString()] = props;
+    } // Create a unique keytip
+
+
+    var uniqueKeytip = this._getUniqueKtp(props); // Add to dictionary
+
+
+    persisted ? this.persistedKeytips[uniqueKeytip.uniqueID] = uniqueKeytip : this.keytips[uniqueKeytip.uniqueID] = uniqueKeytip; // We only want to add something new if we are currently showing keytip mode
+
+    if (this.inKeytipMode || !this.delayUpdatingKeytipChange) {
+      var event_1 = persisted ? KeytipEvents.PERSISTED_KEYTIP_ADDED : KeytipEvents.KEYTIP_ADDED;
+      EventGroup.raise(this, event_1, {
+        keytip: props,
+        uniqueID: uniqueKeytip.uniqueID
+      });
+    }
+
+    return uniqueKeytip.uniqueID;
+  };
+  /**
+   * Update a keytip
+   *
+   * @param keytipProps - Keytip to update
+   * @param uniqueID - Unique ID of this keytip
+   */
+
+
+  KeytipManager.prototype.update = function (keytipProps, uniqueID) {
+    var newKeytipProps = this.addParentOverflow(keytipProps);
+
+    var uniqueKeytip = this._getUniqueKtp(newKeytipProps, uniqueID);
+
+    var oldKeyTip = this.keytips[uniqueID];
+
+    if (oldKeyTip) {
+      // Update everything except 'visible'
+      uniqueKeytip.keytip.visible = oldKeyTip.keytip.visible; // Update keytip in this.keytips
+
+      this.keytips[uniqueID] = uniqueKeytip; // Update the sequence to be up to date
+
+      delete this.sequenceMapping[oldKeyTip.keytip.keySequences.toString()];
+      this.sequenceMapping[uniqueKeytip.keytip.keySequences.toString()] = uniqueKeytip.keytip; // Raise event only if we are currently in keytip mode
+
+      if (this.inKeytipMode || !this.delayUpdatingKeytipChange) {
+        EventGroup.raise(this, KeytipEvents.KEYTIP_UPDATED, {
+          keytip: uniqueKeytip.keytip,
+          uniqueID: uniqueKeytip.uniqueID
+        });
+      }
+    }
+  };
+  /**
+   * Unregisters a keytip
+   *
+   * @param keytipToRemove - IKeytipProps of the keytip to remove
+   * @param uniqueID - Unique ID of this keytip
+   * @param persisted - T/F if this keytip should be persisted, default is false
+   */
+
+
+  KeytipManager.prototype.unregister = function (keytipToRemove, uniqueID, persisted) {
+    if (persisted === void 0) {
+      persisted = false;
+    }
+
+    persisted ? delete this.persistedKeytips[uniqueID] : delete this.keytips[uniqueID];
+    !persisted && delete this.sequenceMapping[keytipToRemove.keySequences.toString()];
+    var event = persisted ? KeytipEvents.PERSISTED_KEYTIP_REMOVED : KeytipEvents.KEYTIP_REMOVED; // Update keytips only if we're in keytip mode
+
+    if (this.inKeytipMode || !this.delayUpdatingKeytipChange) {
+      EventGroup.raise(this, event, {
+        keytip: keytipToRemove,
+        uniqueID: uniqueID
+      });
+    }
+  };
+  /**
+   * Manual call to enter keytip mode
+   */
+
+
+  KeytipManager.prototype.enterKeytipMode = function () {
+    EventGroup.raise(this, KeytipEvents.ENTER_KEYTIP_MODE);
+  };
+  /**
+   * Manual call to exit keytip mode
+   */
+
+
+  KeytipManager.prototype.exitKeytipMode = function () {
+    EventGroup.raise(this, KeytipEvents.EXIT_KEYTIP_MODE);
+  };
+  /**
+   * Gets all IKeytipProps from this.keytips
+   *
+   * @returns {IKeytipProps[]} All keytips stored in the manager
+   */
+
+
+  KeytipManager.prototype.getKeytips = function () {
+    var _this = this;
+
+    return Object.keys(this.keytips).map(function (key) {
+      return _this.keytips[key].keytip;
+    });
+  };
+  /**
+   * Adds the overflowSetSequence to the keytipProps if its parent keytip also has it
+   *
+   * @param keytipProps - Keytip props to add overflowSetSequence to if necessary
+   * @returns {IKeytipProps} - Modified keytip props, if needed to be modified
+   */
+
+
+  KeytipManager.prototype.addParentOverflow = function (keytipProps) {
+    var fullSequence = __spreadArrays(keytipProps.keySequences);
+
+    fullSequence.pop();
+
+    if (fullSequence.length !== 0) {
+      var parentKeytip = this.sequenceMapping[fullSequence.toString()];
+
+      if (parentKeytip && parentKeytip.overflowSetSequence) {
+        return __assign(__assign({}, keytipProps), {
+          overflowSetSequence: parentKeytip.overflowSetSequence
+        });
+      }
+    }
+
+    return keytipProps;
+  };
+  /**
+   * Public function to bind for overflow items that have a submenu
+   *
+   * @param overflowButtonSequences
+   * @param keytipSequences
+   */
+
+
+  KeytipManager.prototype.menuExecute = function (overflowButtonSequences, keytipSequences) {
+    EventGroup.raise(this, KeytipEvents.PERSISTED_KEYTIP_EXECUTE, {
+      overflowButtonSequences: overflowButtonSequences,
+      keytipSequences: keytipSequences
+    });
+  };
+  /**
+   * Creates an IUniqueKeytip object
+   *
+   * @param keytipProps - IKeytipProps
+   * @param uniqueID - Unique ID, will default to the next unique ID if not passed
+   * @returns {IUniqueKeytip} IUniqueKeytip object
+   */
+
+
+  KeytipManager.prototype._getUniqueKtp = function (keytipProps, uniqueID) {
+    if (uniqueID === void 0) {
+      uniqueID = getId();
+    }
+
+    return {
+      keytip: __assign({}, keytipProps),
+      uniqueID: uniqueID
+    };
+  };
+
+  KeytipManager._instance = new KeytipManager();
+  return KeytipManager;
+}();
+
+/**
+ * Converts a whole set of KeySequences into one keytip ID, which will be the ID for the last keytip sequence specified
+ * keySequences should not include the initial keytip 'start' sequence.
+ *
+ * @param keySequences - Full path of IKeySequences for one keytip.
+ * @returns {string} String to use for the keytip ID.
+ */
+
+function sequencesToID(keySequences) {
+  return keySequences.reduce(function (prevValue, keySequence) {
+    return prevValue + KTP_SEPARATOR + keySequence.split('').join(KTP_SEPARATOR);
+  }, KTP_PREFIX);
+}
+/**
+ * Merges an overflow sequence with a key sequence.
+ *
+ * @param keySequences - Full sequence for one keytip.
+ * @param overflowKeySequences - Full overflow keytip sequence.
+ * @returns {string[]} Sequence that will be used by the keytip when in the overflow.
+ */
+
+function mergeOverflows(keySequences, overflowKeySequences) {
+  var overflowSequenceLen = overflowKeySequences.length;
+
+  var overflowSequence = __spreadArrays(overflowKeySequences).pop();
+
+  var newKeySequences = __spreadArrays(keySequences);
+
+  return addElementAtIndex(newKeySequences, overflowSequenceLen - 1, overflowSequence);
+}
+/**
+ * Gets the aria-describedby value to put on the component with this keytip.
+ *
+ * @param keySequences - KeySequences of the keytip.
+ * @returns {string} The aria-describedby value to set on the component with this keytip.
+ */
+
+function getAriaDescribedBy(keySequences) {
+  var describedby = ' ' + KTP_LAYER_ID;
+
+  if (!keySequences.length) {
+    // Return just the layer ID
+    return describedby;
+  }
+
+  return describedby + ' ' + sequencesToID(keySequences);
+}
+
+/**
+ * A small element to help the target component correctly read out its aria-describedby for its Keytip
+ * {@docCategory Keytips}
+ */
+
+var KeytipData =
+/** @class */
+function (_super) {
+  __extends(KeytipData, _super);
+
+  function KeytipData() {
+    var _this = _super !== null && _super.apply(this, arguments) || this;
+
+    _this._keytipManager = KeytipManager.getInstance();
+    return _this;
+  }
+
+  KeytipData.prototype.componentDidMount = function () {
+    // Register Keytip in KeytipManager
+    if (this.props.keytipProps) {
+      this._uniqueId = this._keytipManager.register(this._getKtpProps());
+    }
+  };
+
+  KeytipData.prototype.componentWillUnmount = function () {
+    // Unregister Keytip in KeytipManager
+    this.props.keytipProps && this._keytipManager.unregister(this._getKtpProps(), this._uniqueId);
+  };
+
+  KeytipData.prototype.componentDidUpdate = function (prevProps) {
+    if (prevProps.keytipProps !== this.props.keytipProps || prevProps.disabled !== this.props.disabled) {
+      // If keytipProps or disabled has changed update Keytip in KeytipManager
+      this.props.keytipProps && this._keytipManager.update(this._getKtpProps(), this._uniqueId);
+    }
+  };
+
+  KeytipData.prototype.render = function () {
+    var _a = this.props,
+        children = _a.children,
+        keytipProps = _a.keytipProps,
+        ariaDescribedBy = _a.ariaDescribedBy;
+    var nativeKeytipProps = {};
+
+    if (keytipProps) {
+      nativeKeytipProps = this._getKtpAttrs(keytipProps, ariaDescribedBy);
+    }
+
+    return children(nativeKeytipProps);
+  };
+
+  KeytipData.prototype._getKtpProps = function () {
+    return __assign({
+      disabled: this.props.disabled
+    }, this.props.keytipProps);
+  };
+  /**
+   * Gets the aria- and data- attributes to attach to the component
+   * @param keytipProps - props for Keytip
+   * @param describedByPrepend - ariaDescribedBy value to prepend
+   */
+
+
+  KeytipData.prototype._getKtpAttrs = function (keytipProps, describedByPrepend) {
+    if (keytipProps) {
+      // Add the parent overflow sequence if necessary
+      var newKeytipProps = this._keytipManager.addParentOverflow(keytipProps); // Construct aria-describedby and data-ktp-id attributes and return
+
+
+      var ariaDescribedBy = getAriaDescribedBy(newKeytipProps.keySequences);
+
+      var keySequences = __spreadArrays(newKeytipProps.keySequences);
+
+      if (newKeytipProps.overflowSetSequence) {
+        keySequences = mergeOverflows(keySequences, newKeytipProps.overflowSetSequence);
+      }
+
+      var ktpId = sequencesToID(keySequences);
+      return {
+        'aria-describedby': mergeAriaAttributeValues(describedByPrepend, ariaDescribedBy),
+        'data-ktp-target': ktpId,
+        'data-ktp-execute-target': ktpId
+      };
+    }
+
+    return undefined;
+  };
+
+  return KeytipData;
+}(React.Component);
+
+var getClassNames = classNamesFunction();
+
+var LinkBase =
+/** @class */
+function (_super) {
+  __extends(LinkBase, _super);
+
+  function LinkBase(props) {
+    var _this = _super.call(this, props) || this;
+
+    _this._link = React.createRef();
+
+    _this._onClick = function (ev) {
+      var _a = _this.props,
+          onClick = _a.onClick,
+          disabled = _a.disabled;
+
+      if (disabled) {
+        ev.preventDefault();
+      } else if (onClick) {
+        onClick(ev);
+      }
+    };
+
+    initializeComponentRef(_this);
+    return _this;
+  }
+
+  LinkBase.prototype.render = function () {
+    var _this = this;
+
+    var _a = this.props,
+        disabled = _a.disabled,
+        children = _a.children,
+        className = _a.className,
+        href = _a.href,
+        theme = _a.theme,
+        styles = _a.styles,
+        keytipProps = _a.keytipProps;
+    var classNames = getClassNames(styles, {
+      className: className,
+      isButton: !href,
+      isDisabled: disabled,
+      theme: theme
+    });
+
+    var RootType = this._getRootType(this.props);
+
+    return React.createElement(KeytipData, {
+      keytipProps: keytipProps,
+      ariaDescribedBy: this.props['aria-describedby'],
+      disabled: disabled
+    }, function (keytipAttributes) {
+      return React.createElement(RootType, __assign({}, keytipAttributes, _this._adjustPropsForRootType(RootType, _this.props), {
+        className: classNames.root,
+        onClick: _this._onClick,
+        ref: _this._link,
+        "aria-disabled": disabled
+      }), children);
+    });
+  };
+
+  LinkBase.prototype.focus = function () {
+    var current = this._link.current;
+
+    if (current && current.focus) {
+      current.focus();
+    }
+  };
+
+  LinkBase.prototype._adjustPropsForRootType = function (RootType, props) {
+    // Deconstruct the props so we remove props like `as`, `theme` and `styles`
+    // as those will always be removed. We also take some props that are optional
+    // based on the RootType.
+    var children = props.children,
+        as = props.as,
+        disabled = props.disabled,
+        target = props.target,
+        href = props.href,
+        theme = props.theme,
+        getStyles = props.getStyles,
+        styles = props.styles,
+        componentRef = props.componentRef,
+        restProps = __rest(props, ["children", "as", "disabled", "target", "href", "theme", "getStyles", "styles", "componentRef"]); // RootType will be a string if we're dealing with an html component
+
+
+    if (typeof RootType === 'string') {
+      // Remove the disabled prop for anchor elements
+      if (RootType === 'a') {
+        return __assign({
+          target: target,
+          href: disabled ? undefined : href
+        }, restProps);
+      } // Add the type='button' prop for button elements
+
+
+      if (RootType === 'button') {
+        return __assign({
+          type: 'button',
+          disabled: disabled
+        }, restProps);
+      } // Remove the target and href props for all other non anchor elements
+
+
+      return __assign(__assign({}, restProps), {
+        disabled: disabled
+      });
+    } // Retain all props except 'as' for ReactComponents
+
+
+    return __assign({
+      target: target,
+      href: href,
+      disabled: disabled
+    }, restProps);
+  };
+
+  LinkBase.prototype._getRootType = function (props) {
+    if (props.as) {
+      return props.as;
+    }
+
+    if (props.href) {
+      return 'a';
+    }
+
+    return 'button';
+  };
+
+  return LinkBase;
+}(React.Component);
+
+var GlobalClassNames = {
+  root: 'ms-Link'
+};
+var getStyles = function (props) {
+  var _a, _b, _c;
+
+  var className = props.className,
+      isButton = props.isButton,
+      isDisabled = props.isDisabled,
+      theme = props.theme;
   var semanticColors = theme.semanticColors; // Tokens
 
-  var labelFontWeight = FontWeights.semibold;
-  var labelColor = semanticColors.bodyText;
-  var labelDisabledColor = semanticColors.disabledBodyText;
-  var labelRequiredStarColor = semanticColors.errorText;
+  var linkColor = semanticColors.link;
+  var linkInteractedColor = semanticColors.linkHovered;
+  var linkDisabledColor = semanticColors.disabledText;
+  var focusBorderColor = semanticColors.focusBorder;
+  var classNames = getGlobalClassNames(GlobalClassNames, theme);
   return {
-    root: ['ms-Label', theme.fonts.medium, {
-      fontWeight: labelFontWeight,
-      color: labelColor,
-      boxSizing: 'border-box',
-      boxShadow: 'none',
-      margin: 0,
-      display: 'block',
-      padding: '5px 0',
-      wordWrap: 'break-word',
-      overflowWrap: 'break-word'
-    }, disabled && {
-      color: labelDisabledColor,
-      selectors: (_a = {}, _a[HighContrastSelector] = {
-        color: 'GrayText'
+    root: [classNames.root, theme.fonts.medium, {
+      color: linkColor,
+      outline: 'none',
+      fontSize: 'inherit',
+      fontWeight: 'inherit',
+      textDecoration: 'none',
+      selectors: (_a = {
+        '.ms-Fabric--isFocusVisible &:focus': {
+          // Can't use getFocusStyle because it doesn't support wrapping links
+          // https://github.com/microsoft/fluentui/issues/4883#issuecomment-406743543
+          // Using box-shadow and outline allows the focus rect to wrap links that span multiple lines
+          // and helps the focus rect avoid getting clipped.
+          boxShadow: "0 0 0 1px " + focusBorderColor + " inset",
+          outline: "1px auto " + focusBorderColor,
+          selectors: (_b = {}, _b[HighContrastSelector] = {
+            outline: '1px solid WindowText'
+          }, _b)
+        }
+      }, _a[HighContrastSelector] = {
+        // For IE high contrast mode
+        borderBottom: 'none'
       }, _a)
-    }, required && {
+    }, isButton && {
+      background: 'none',
+      backgroundColor: 'transparent',
+      border: 'none',
+      cursor: 'pointer',
+      display: 'inline',
+      margin: 0,
+      overflow: 'inherit',
+      padding: 0,
+      textAlign: 'left',
+      textOverflow: 'inherit',
+      userSelect: 'text',
+      borderBottom: '1px solid transparent',
+      selectors: (_c = {}, _c[HighContrastSelectorBlack] = {
+        color: '#FFFF00'
+      }, _c[HighContrastSelectorWhite] = {
+        color: '#00009F'
+      }, _c)
+    }, isDisabled && ['is-disabled', {
+      color: linkDisabledColor,
+      cursor: 'default'
+    }, {
       selectors: {
-        '::after': {
-          content: "' *'",
-          color: labelRequiredStarColor,
-          paddingRight: 12
+        '&:link, &:visited': {
+          pointerEvents: 'none'
         }
       }
-    }, className]
+    }], !isDisabled && {
+      selectors: {
+        '&:active, &:hover, &:active:hover': {
+          color: linkInteractedColor,
+          textDecoration: 'underline'
+        },
+        '&:focus': {
+          color: linkColor
+        }
+      }
+    }, classNames.root, className]
   };
 };
 
-var Label = styled(LabelBase, getStyles, undefined, {
-  scope: 'Label'
+var Link = styled(LinkBase, getStyles, undefined, {
+  scope: 'Link'
 });
-
-/**
- * @deprecated Icon type is inferred based on presence of `IIconProps.imageProps`
- * {@docCategory Icon}
- */
-var IconType;
-
-(function (IconType) {
-  /**
-   * Render using the fabric icon font.
-   * @deprecated Icon type is inferred based on presence of `IIconProps.imageProps`
-   */
-  IconType[IconType["default"] = 0] = "default";
-  /**
-   * Render using an image, where imageProps would be used.
-   * @deprecated Icon type is inferred based on presence of `IIconProps.imageProps`
-   */
-
-  IconType[IconType["image"] = 1] = "image";
-  /**
-   * Deprecated, use `default`.
-   * @deprecated Use `default`.
-   */
-
-  IconType[IconType["Default"] = 100000] = "Default";
-  /**
-   * Deprecated, use `image`.
-   * @deprecated Use `image`.
-   */
-
-  IconType[IconType["Image"] = 100001] = "Image";
-})(IconType || (IconType = {}));
 
 /**
  * The possible methods that can be used to fit the image.
@@ -6261,7 +10092,7 @@ function (_super) {
   return ImageBase;
 }(React.Component);
 
-var GlobalClassNames = {
+var GlobalClassNames$1 = {
   root: 'ms-Image',
   rootMaximizeFrame: 'ms-Image--maximizeFrame',
   image: 'ms-Image-image',
@@ -6292,7 +10123,7 @@ var getStyles$1 = function (props) {
       isError = props.isError,
       isNotImageFit = props.isNotImageFit,
       theme = props.theme;
-  var classNames = getGlobalClassNames(GlobalClassNames, theme);
+  var classNames = getGlobalClassNames(GlobalClassNames$1, theme);
   var ImageFitStyles = {
     position: 'absolute',
     left: '50% /* @noflip */',
@@ -6359,295 +10190,823 @@ var Image = styled(ImageBase, getStyles$1, undefined, {
   scope: 'Image'
 }, true);
 
-/** Class names used in themeable and non-themeable Icon components */
+//
+// Anchor index: the point from which a range selection starts.
+// Focus index: the point from which layout movement originates from.
+//
+// These two can differ. Tests:
+//
+// If you start at index 5
+// Shift click to index 10
+//    The focus is 10, the anchor is 5.
+// If you shift click at index 0
+//    The anchor remains at 5, the items between 0 and 5 are selected and everything else is cleared.
+// If you click index 8
+//    The anchor and focus are set to 8.
 
-var classNames = mergeStyleSets({
-  root: {
-    display: 'inline-block'
-  },
-  placeholder: ['ms-Icon-placeHolder', {
-    width: '1em'
-  }],
-  image: ['ms-Icon-imageContainer', {
-    overflow: 'hidden'
-  }]
-});
-/** Class name used only in non-themeable Icon components */
-
-var MS_ICON = 'ms-Icon';
-var getStyles$2 = function (props) {
-  var className = props.className,
-      iconClassName = props.iconClassName,
-      isPlaceholder = props.isPlaceholder,
-      isImage = props.isImage,
-      styles = props.styles;
-  return {
-    root: [isPlaceholder && classNames.placeholder, classNames.root, isImage && classNames.image, iconClassName, className, styles && styles.root, // tslint:disable-next-line:deprecation
-    styles && styles.imageContainer]
-  };
-};
-
-var getIconContent = memoizeFunction(function (iconName) {
-  var _a = getIcon(iconName) || {
-    subset: {},
-    code: undefined
-  },
-      code = _a.code,
-      subset = _a.subset;
-
-  if (!code) {
-    return null;
-  }
-
-  return {
-    children: code,
-    iconClassName: subset.className,
-    fontFamily: subset.fontFace && subset.fontFace.fontFamily
-  };
-}, undefined, true
-/*ignoreNullOrUndefinedResult */
-);
+var SELECTION_DISABLED_ATTRIBUTE_NAME = 'data-selection-disabled';
+var SELECTION_INDEX_ATTRIBUTE_NAME = 'data-selection-index';
+var SELECTION_TOGGLE_ATTRIBUTE_NAME = 'data-selection-toggle';
+var SELECTION_INVOKE_ATTRIBUTE_NAME = 'data-selection-invoke';
+var SELECTALL_TOGGLE_ALL_ATTRIBUTE_NAME = 'data-selection-all-toggle';
+var SELECTION_SELECT_ATTRIBUTE_NAME = 'data-selection-select';
 /**
- * Fast icon component which only supports font glyphs (not images) and can't be targeted by customizations.
- * To style the icon, use `className` or reference `ms-Icon` in CSS.
- * {@docCategory Icon}
+ * {@docCategory Selection}
  */
 
-var FontIcon = function (props) {
-  var iconName = props.iconName,
-      className = props.className,
-      _a = props.style,
-      style = _a === void 0 ? {} : _a;
-  var iconContent = getIconContent(iconName) || {};
-  var iconClassName = iconContent.iconClassName,
-      children = iconContent.children,
-      fontFamily = iconContent.fontFamily;
-  var nativeProps = getNativeProps(props, htmlElementProperties);
-  var containerProps = props['aria-label'] ? {} : {
-    role: 'presentation',
-    'aria-hidden': true
-  };
-  return React.createElement("i", __assign({
-    "data-icon-name": iconName
-  }, containerProps, nativeProps, {
-    className: css(MS_ICON, classNames.root, iconClassName, !iconName && classNames.placeholder, className),
-    // Apply the font family this way to ensure it doesn't get overridden by Fabric Core ms-Icon styles
-    // https://github.com/microsoft/fluentui/issues/10449
-    style: __assign({
-      fontFamily: fontFamily
-    }, style)
-  }), children);
-};
-/**
- * Memoized helper for rendering a FontIcon.
- * @param iconName - The name of the icon to use from the icon font.
- * @param className - Class name for styling the icon.
- * @param ariaLabel - Label for the icon for the benefit of screen readers.
- * {@docCategory Icon}
- */
-
-var getFontIcon = memoizeFunction(function (iconName, className, ariaLabel) {
-  return FontIcon({
-    iconName: iconName,
-    className: className,
-    'aria-label': ariaLabel
-  });
-});
-
-var getClassNames$2 = classNamesFunction({
-  // Icon is used a lot by other components.
-  // It's likely to see expected cases which pass different className to the Icon.
-  // Therefore setting a larger cache size.
-  cacheSize: 100
-});
-
-var IconBase =
+var SelectionZone =
 /** @class */
 function (_super) {
-  __extends(IconBase, _super);
+  __extends(SelectionZone, _super);
 
-  function IconBase(props) {
+  function SelectionZone(props) {
     var _this = _super.call(this, props) || this;
 
-    _this.onImageLoadingStateChange = function (state) {
-      if (_this.props.imageProps && _this.props.imageProps.onLoadingStateChange) {
-        _this.props.imageProps.onLoadingStateChange(state);
+    _this._root = React.createRef();
+    /**
+     * In some cases, the consuming scenario requires to set focus on a row without having SelectionZone
+     * react to the event. Note that focus events in IE \<= 11 will occur asynchronously after .focus() has
+     * been called on an element, so we need a flag to store the idea that we will bypass the "next"
+     * focus event that occurs. This method does that.
+     */
+
+    _this.ignoreNextFocus = function () {
+      _this._handleNextFocus(false);
+    };
+
+    _this._onSelectionChange = function () {
+      var selection = _this.props.selection;
+      var isModal = selection.isModal && selection.isModal();
+
+      _this.setState({
+        isModal: isModal
+      });
+    };
+
+    _this._onMouseDownCapture = function (ev) {
+      var target = ev.target;
+
+      if (document.activeElement !== target && !elementContains(document.activeElement, target)) {
+        _this.ignoreNextFocus();
+
+        return;
       }
 
-      if (state === ImageLoadState.error) {
-        _this.setState({
-          imageLoadError: true
-        });
+      if (!elementContains(target, _this._root.current)) {
+        return;
+      }
+
+      while (target !== _this._root.current) {
+        if (_this._hasAttribute(target, SELECTION_INVOKE_ATTRIBUTE_NAME)) {
+          _this.ignoreNextFocus();
+
+          break;
+        }
+
+        target = getParent(target);
+      }
+    };
+    /**
+     * When we focus an item, for single/multi select scenarios, we should try to select it immediately
+     * as long as the focus did not originate from a mouse down/touch event. For those cases, we handle them
+     * specially.
+     */
+
+
+    _this._onFocus = function (ev) {
+      var target = ev.target;
+      var selection = _this.props.selection;
+      var isToggleModifierPressed = _this._isCtrlPressed || _this._isMetaPressed;
+
+      var selectionMode = _this._getSelectionMode();
+
+      if (_this._shouldHandleFocus && selectionMode !== SelectionMode.none) {
+        var isToggle = _this._hasAttribute(target, SELECTION_TOGGLE_ATTRIBUTE_NAME);
+
+        var itemRoot = _this._findItemRoot(target);
+
+        if (!isToggle && itemRoot) {
+          var index = _this._getItemIndex(itemRoot);
+
+          if (isToggleModifierPressed) {
+            // set anchor only.
+            selection.setIndexSelected(index, selection.isIndexSelected(index), true);
+
+            if (_this.props.enterModalOnTouch && _this._isTouch && selection.setModal) {
+              selection.setModal(true);
+
+              _this._setIsTouch(false);
+            }
+          } else {
+            if (_this.props.isSelectedOnFocus) {
+              _this._onItemSurfaceClick(ev, index);
+            }
+          }
+        }
+      }
+
+      _this._handleNextFocus(false);
+    };
+
+    _this._onMouseDown = function (ev) {
+      _this._updateModifiers(ev);
+
+      var target = ev.target;
+
+      var itemRoot = _this._findItemRoot(target); // No-op if selection is disabled
+
+
+      if (_this._isSelectionDisabled(target)) {
+        return;
+      }
+
+      while (target !== _this._root.current) {
+        if (_this._hasAttribute(target, SELECTALL_TOGGLE_ALL_ATTRIBUTE_NAME)) {
+          break;
+        } else if (itemRoot) {
+          if (_this._hasAttribute(target, SELECTION_TOGGLE_ATTRIBUTE_NAME)) {
+            break;
+          } else if (_this._hasAttribute(target, SELECTION_INVOKE_ATTRIBUTE_NAME)) {
+            break;
+          } else if ((target === itemRoot || _this._shouldAutoSelect(target)) && !_this._isShiftPressed && !_this._isCtrlPressed && !_this._isMetaPressed) {
+            _this._onInvokeMouseDown(ev, _this._getItemIndex(itemRoot));
+
+            break;
+          } else if (_this.props.disableAutoSelectOnInputElements && (target.tagName === 'A' || target.tagName === 'BUTTON' || target.tagName === 'INPUT')) {
+            return;
+          }
+        }
+
+        target = getParent(target);
       }
     };
 
+    _this._onTouchStartCapture = function (ev) {
+      _this._setIsTouch(true);
+    };
+
+    _this._onClick = function (ev) {
+      _this._updateModifiers(ev);
+
+      var target = ev.target;
+
+      var itemRoot = _this._findItemRoot(target);
+
+      var isSelectionDisabled = _this._isSelectionDisabled(target);
+
+      while (target !== _this._root.current) {
+        if (_this._hasAttribute(target, SELECTALL_TOGGLE_ALL_ATTRIBUTE_NAME)) {
+          if (!isSelectionDisabled) {
+            _this._onToggleAllClick(ev);
+          }
+
+          break;
+        } else if (itemRoot) {
+          var index = _this._getItemIndex(itemRoot);
+
+          if (_this._hasAttribute(target, SELECTION_TOGGLE_ATTRIBUTE_NAME)) {
+            if (!isSelectionDisabled) {
+              if (_this._isShiftPressed) {
+                _this._onItemSurfaceClick(ev, index);
+              } else {
+                _this._onToggleClick(ev, index);
+              }
+            }
+
+            break;
+          } else if (_this._hasAttribute(target, SELECTION_INVOKE_ATTRIBUTE_NAME)) {
+            // Items should be invokable even if selection is disabled.
+            _this._onInvokeClick(ev, index);
+
+            break;
+          } else if (target === itemRoot) {
+            if (!isSelectionDisabled) {
+              _this._onItemSurfaceClick(ev, index);
+            }
+
+            break;
+          } else if (target.tagName === 'A' || target.tagName === 'BUTTON' || target.tagName === 'INPUT') {
+            return;
+          }
+        }
+
+        target = getParent(target);
+      }
+    };
+
+    _this._onContextMenu = function (ev) {
+      var target = ev.target;
+      var _a = _this.props,
+          onItemContextMenu = _a.onItemContextMenu,
+          selection = _a.selection;
+
+      if (onItemContextMenu) {
+        var itemRoot = _this._findItemRoot(target);
+
+        if (itemRoot) {
+          var index = _this._getItemIndex(itemRoot);
+
+          _this._onInvokeMouseDown(ev, index);
+
+          var skipPreventDefault = onItemContextMenu(selection.getItems()[index], index, ev.nativeEvent); // In order to keep back compat, if the value here is undefined, then we should still
+          // call preventDefault(). Only in the case where true is explicitly returned should
+          // the call be skipped.
+
+          if (!skipPreventDefault) {
+            ev.preventDefault();
+          }
+        }
+      }
+    };
+    /**
+     * In multi selection, if you double click within an item's root (but not within the invoke element or
+     * input elements), we should execute the invoke handler.
+     */
+
+
+    _this._onDoubleClick = function (ev) {
+      var target = ev.target;
+      var onItemInvoked = _this.props.onItemInvoked;
+
+      var itemRoot = _this._findItemRoot(target);
+
+      if (itemRoot && onItemInvoked && !_this._isInputElement(target)) {
+        var index = _this._getItemIndex(itemRoot);
+
+        while (target !== _this._root.current) {
+          if (_this._hasAttribute(target, SELECTION_TOGGLE_ATTRIBUTE_NAME) || _this._hasAttribute(target, SELECTION_INVOKE_ATTRIBUTE_NAME)) {
+            break;
+          } else if (target === itemRoot) {
+            _this._onInvokeClick(ev, index);
+
+            break;
+          }
+
+          target = getParent(target);
+        }
+
+        target = getParent(target);
+      }
+    };
+
+    _this._onKeyDownCapture = function (ev) {
+      _this._updateModifiers(ev);
+
+      _this._handleNextFocus(true);
+    };
+
+    _this._onKeyDown = function (ev) {
+      _this._updateModifiers(ev);
+
+      var target = ev.target;
+
+      var isSelectionDisabled = _this._isSelectionDisabled(target);
+
+      var selection = _this.props.selection;
+      var isSelectAllKey = ev.which === KeyCodes.a && (_this._isCtrlPressed || _this._isMetaPressed);
+      var isClearSelectionKey = ev.which === KeyCodes.escape; // Ignore key downs from input elements.
+
+      if (_this._isInputElement(target)) {
+        // A key was pressed while an item in this zone was focused.
+        return;
+      }
+
+      var selectionMode = _this._getSelectionMode(); // If ctrl-a is pressed, select all (if all are not already selected.)
+
+
+      if (isSelectAllKey && selectionMode === SelectionMode.multiple && !selection.isAllSelected()) {
+        if (!isSelectionDisabled) {
+          selection.setAllSelected(true);
+        }
+
+        ev.stopPropagation();
+        ev.preventDefault();
+        return;
+      } // If escape is pressed, clear selection (if any are selected.)
+
+
+      if (isClearSelectionKey && selection.getSelectedCount() > 0) {
+        if (!isSelectionDisabled) {
+          selection.setAllSelected(false);
+        }
+
+        ev.stopPropagation();
+        ev.preventDefault();
+        return;
+      }
+
+      var itemRoot = _this._findItemRoot(target); // If a key was pressed within an item, we should treat "enters" as invokes and "space" as toggle
+
+
+      if (itemRoot) {
+        var index = _this._getItemIndex(itemRoot);
+
+        while (target !== _this._root.current) {
+          if (_this._hasAttribute(target, SELECTION_TOGGLE_ATTRIBUTE_NAME)) {
+            // For toggle elements, assuming they are rendered as buttons, they will generate a click event,
+            // so we can no-op for any keydowns in this case.
+            break;
+          } else if (_this._shouldAutoSelect(target)) {
+            if (!isSelectionDisabled) {
+              // If the event went to an element which should trigger auto-select, select it and then let
+              // the default behavior kick in.
+              _this._onInvokeMouseDown(ev, index);
+            }
+
+            break;
+          } else if ((ev.which === KeyCodes.enter || ev.which === KeyCodes.space) && (target.tagName === 'BUTTON' || target.tagName === 'A' || target.tagName === 'INPUT')) {
+            return false;
+          } else if (target === itemRoot) {
+            if (ev.which === KeyCodes.enter) {
+              // Items should be invokable even if selection is disabled.
+              _this._onInvokeClick(ev, index);
+
+              ev.preventDefault();
+              return;
+            } else if (ev.which === KeyCodes.space) {
+              if (!isSelectionDisabled) {
+                _this._onToggleClick(ev, index);
+              }
+
+              ev.preventDefault();
+              return;
+            }
+
+            break;
+          }
+
+          target = getParent(target);
+        }
+      }
+    };
+
+    _this._events = new EventGroup(_this);
+    _this._async = new Async(_this);
+    initializeComponentRef(_this);
+    var selection = _this.props.selection; // Reflect the initial modal state of selection into the state.
+
+    var isModal = selection.isModal && selection.isModal();
     _this.state = {
-      imageLoadError: false
+      isModal: isModal
     };
     return _this;
   }
 
-  IconBase.prototype.render = function () {
-    var _a = this.props,
-        className = _a.className,
-        styles = _a.styles,
-        iconName = _a.iconName,
-        imageErrorAs = _a.imageErrorAs,
-        theme = _a.theme;
-    var isPlaceholder = typeof iconName === 'string' && iconName.length === 0;
-    var isImage = // tslint:disable-next-line:deprecation
-    !!this.props.imageProps || this.props.iconType === IconType.image || this.props.iconType === IconType.Image;
-    var iconContent = getIconContent(iconName) || {};
-    var iconClassName = iconContent.iconClassName,
-        children = iconContent.children;
-    var classNames = getClassNames$2(styles, {
-      theme: theme,
-      className: className,
-      iconClassName: iconClassName,
-      isImage: isImage,
-      isPlaceholder: isPlaceholder
+  SelectionZone.getDerivedStateFromProps = function (nextProps, prevState) {
+    var isModal = nextProps.selection.isModal && nextProps.selection.isModal();
+    return __assign(__assign({}, prevState), {
+      isModal: isModal
     });
-    var RootType = isImage ? 'span' : 'i';
-    var nativeProps = getNativeProps(this.props, htmlElementProperties, ['aria-label']);
-    var imageLoadError = this.state.imageLoadError;
-
-    var imageProps = __assign(__assign({}, this.props.imageProps), {
-      onLoadingStateChange: this.onImageLoadingStateChange
-    });
-
-    var ImageType = imageLoadError && imageErrorAs || Image; // tslint:disable-next-line:deprecation
-
-    var ariaLabel = this.props['aria-label'] || this.props.ariaLabel;
-    var containerProps = ariaLabel ? {
-      'aria-label': ariaLabel
-    } : {
-      'aria-hidden': this.props['aria-labelledby'] || imageProps['aria-labelledby'] ? false : true
-    };
-    return React.createElement(RootType, __assign({
-      "data-icon-name": iconName
-    }, containerProps, nativeProps, {
-      className: classNames.root
-    }), isImage ? React.createElement(ImageType, __assign({}, imageProps)) : children);
   };
 
-  return IconBase;
+  SelectionZone.prototype.componentDidMount = function () {
+    var win = getWindow(this._root.current); // Track the latest modifier keys globally.
+
+    this._events.on(win, 'keydown, keyup', this._updateModifiers, true);
+
+    this._events.on(document, 'click', this._findScrollParentAndTryClearOnEmptyClick);
+
+    this._events.on(document.body, 'touchstart', this._onTouchStartCapture, true);
+
+    this._events.on(document.body, 'touchend', this._onTouchStartCapture, true); // Subscribe to the selection to keep modal state updated.
+
+
+    this._events.on(this.props.selection, 'change', this._onSelectionChange);
+  };
+
+  SelectionZone.prototype.render = function () {
+    var isModal = this.state.isModal;
+    return React.createElement("div", {
+      className: css('ms-SelectionZone', {
+        'ms-SelectionZone--modal': !!isModal
+      }),
+      ref: this._root,
+      onKeyDown: this._onKeyDown,
+      onMouseDown: this._onMouseDown,
+      onKeyDownCapture: this._onKeyDownCapture,
+      onClick: this._onClick,
+      role: "presentation",
+      onDoubleClick: this._onDoubleClick,
+      onContextMenu: this._onContextMenu,
+      onMouseDownCapture: this._onMouseDownCapture,
+      onFocusCapture: this._onFocus,
+      "data-selection-is-modal": isModal ? true : undefined
+    }, this.props.children, React.createElement(FocusRects, null));
+  };
+
+  SelectionZone.prototype.componentDidUpdate = function (previousProps) {
+    var selection = this.props.selection;
+
+    if (selection !== previousProps.selection) {
+      // Whenever selection changes, update the subscripton to keep modal state updated.
+      this._events.off(previousProps.selection);
+
+      this._events.on(selection, 'change', this._onSelectionChange);
+    }
+  };
+
+  SelectionZone.prototype.componentWillUnmount = function () {
+    this._events.dispose();
+
+    this._async.dispose();
+  };
+
+  SelectionZone.prototype._isSelectionDisabled = function (target) {
+    if (this._getSelectionMode() === SelectionMode.none) {
+      return true;
+    }
+
+    while (target !== this._root.current) {
+      if (this._hasAttribute(target, SELECTION_DISABLED_ATTRIBUTE_NAME)) {
+        return true;
+      }
+
+      target = getParent(target);
+    }
+
+    return false;
+  };
+
+  SelectionZone.prototype._onToggleAllClick = function (ev) {
+    var selection = this.props.selection;
+
+    var selectionMode = this._getSelectionMode();
+
+    if (selectionMode === SelectionMode.multiple) {
+      selection.toggleAllSelected();
+      ev.stopPropagation();
+      ev.preventDefault();
+    }
+  };
+
+  SelectionZone.prototype._onToggleClick = function (ev, index) {
+    var selection = this.props.selection;
+
+    var selectionMode = this._getSelectionMode();
+
+    selection.setChangeEvents(false);
+
+    if (this.props.enterModalOnTouch && this._isTouch && !selection.isIndexSelected(index) && selection.setModal) {
+      selection.setModal(true);
+
+      this._setIsTouch(false);
+    }
+
+    if (selectionMode === SelectionMode.multiple) {
+      selection.toggleIndexSelected(index);
+    } else if (selectionMode === SelectionMode.single) {
+      var isSelected = selection.isIndexSelected(index);
+      var isModal = selection.isModal && selection.isModal();
+      selection.setAllSelected(false);
+      selection.setIndexSelected(index, !isSelected, true);
+
+      if (isModal && selection.setModal) {
+        // Since the above call to setAllSelected(false) clears modal state,
+        // restore it. This occurs because the SelectionMode of the Selection
+        // may differ from the SelectionZone.
+        selection.setModal(true);
+      }
+    } else {
+      selection.setChangeEvents(true);
+      return;
+    }
+
+    selection.setChangeEvents(true);
+    ev.stopPropagation(); // NOTE: ev.preventDefault is not called for toggle clicks, because this will kill the browser behavior
+    // for checkboxes if you use a checkbox for the toggle.
+  };
+
+  SelectionZone.prototype._onInvokeClick = function (ev, index) {
+    var _a = this.props,
+        selection = _a.selection,
+        onItemInvoked = _a.onItemInvoked;
+
+    if (onItemInvoked) {
+      onItemInvoked(selection.getItems()[index], index, ev.nativeEvent);
+      ev.preventDefault();
+      ev.stopPropagation();
+    }
+  };
+
+  SelectionZone.prototype._onItemSurfaceClick = function (ev, index) {
+    var selection = this.props.selection;
+    var isToggleModifierPressed = this._isCtrlPressed || this._isMetaPressed;
+
+    var selectionMode = this._getSelectionMode();
+
+    if (selectionMode === SelectionMode.multiple) {
+      if (this._isShiftPressed && !this._isTabPressed) {
+        selection.selectToIndex(index, !isToggleModifierPressed);
+      } else if (isToggleModifierPressed) {
+        selection.toggleIndexSelected(index);
+      } else {
+        this._clearAndSelectIndex(index);
+      }
+    } else if (selectionMode === SelectionMode.single) {
+      this._clearAndSelectIndex(index);
+    }
+  };
+
+  SelectionZone.prototype._onInvokeMouseDown = function (ev, index) {
+    var selection = this.props.selection; // Only do work if item is not selected.
+
+    if (selection.isIndexSelected(index)) {
+      return;
+    }
+
+    this._clearAndSelectIndex(index);
+  };
+  /**
+   * To avoid high startup cost of traversing the DOM on component mount,
+   * defer finding the scrollable parent until a click interaction.
+   *
+   * The styles will probably already calculated since we're running in a click handler,
+   * so this is less likely to cause layout thrashing then doing it in mount.
+   */
+
+
+  SelectionZone.prototype._findScrollParentAndTryClearOnEmptyClick = function (ev) {
+    var scrollParent = findScrollableParent(this._root.current); // unbind this handler and replace binding with a binding on the actual scrollable parent
+
+    this._events.off(document, 'click', this._findScrollParentAndTryClearOnEmptyClick);
+
+    this._events.on(scrollParent, 'click', this._tryClearOnEmptyClick); // If we clicked inside the scrollable parent, call through to the handler on this click.
+
+
+    if (scrollParent && ev.target instanceof Node && scrollParent.contains(ev.target) || scrollParent === ev.target) {
+      this._tryClearOnEmptyClick(ev);
+    }
+  };
+
+  SelectionZone.prototype._tryClearOnEmptyClick = function (ev) {
+    if (!this.props.selectionPreservedOnEmptyClick && this._isNonHandledClick(ev.target)) {
+      this.props.selection.setAllSelected(false);
+    }
+  };
+
+  SelectionZone.prototype._clearAndSelectIndex = function (index) {
+    var selection = this.props.selection;
+    var isAlreadySingleSelected = selection.getSelectedCount() === 1 && selection.isIndexSelected(index);
+
+    if (!isAlreadySingleSelected) {
+      var isModal = selection.isModal && selection.isModal();
+      selection.setChangeEvents(false);
+      selection.setAllSelected(false);
+      selection.setIndexSelected(index, true, true);
+
+      if (isModal || this.props.enterModalOnTouch && this._isTouch) {
+        if (selection.setModal) {
+          selection.setModal(true);
+        }
+
+        if (this._isTouch) {
+          this._setIsTouch(false);
+        }
+      }
+
+      selection.setChangeEvents(true);
+    }
+  };
+  /**
+   * We need to track the modifier key states so that when focus events occur, which do not contain
+   * modifier states in the Event object, we know how to behave.
+   */
+
+
+  SelectionZone.prototype._updateModifiers = function (ev) {
+    this._isShiftPressed = ev.shiftKey;
+    this._isCtrlPressed = ev.ctrlKey;
+    this._isMetaPressed = ev.metaKey;
+    var keyCode = ev.keyCode;
+    this._isTabPressed = keyCode ? keyCode === KeyCodes.tab : false;
+  };
+
+  SelectionZone.prototype._findItemRoot = function (target) {
+    var selection = this.props.selection;
+
+    while (target !== this._root.current) {
+      var indexValue = target.getAttribute(SELECTION_INDEX_ATTRIBUTE_NAME);
+      var index = Number(indexValue);
+
+      if (indexValue !== null && index >= 0 && index < selection.getItems().length) {
+        break;
+      }
+
+      target = getParent(target);
+    }
+
+    if (target === this._root.current) {
+      return undefined;
+    }
+
+    return target;
+  };
+
+  SelectionZone.prototype._getItemIndex = function (itemRoot) {
+    return Number(itemRoot.getAttribute(SELECTION_INDEX_ATTRIBUTE_NAME));
+  };
+
+  SelectionZone.prototype._shouldAutoSelect = function (element) {
+    return this._hasAttribute(element, SELECTION_SELECT_ATTRIBUTE_NAME);
+  };
+
+  SelectionZone.prototype._hasAttribute = function (element, attributeName) {
+    var isToggle = false;
+
+    while (!isToggle && element !== this._root.current) {
+      isToggle = element.getAttribute(attributeName) === 'true';
+      element = getParent(element);
+    }
+
+    return isToggle;
+  };
+
+  SelectionZone.prototype._isInputElement = function (element) {
+    return element.tagName === 'INPUT' || element.tagName === 'TEXTAREA';
+  };
+
+  SelectionZone.prototype._isNonHandledClick = function (element) {
+    var doc = getDocument();
+
+    if (doc && element) {
+      while (element && element !== doc.documentElement) {
+        if (isElementTabbable(element)) {
+          return false;
+        }
+
+        element = getParent(element);
+      }
+    }
+
+    return true;
+  };
+
+  SelectionZone.prototype._handleNextFocus = function (handleFocus) {
+    var _this = this;
+
+    if (this._shouldHandleFocusTimeoutId) {
+      this._async.clearTimeout(this._shouldHandleFocusTimeoutId);
+
+      this._shouldHandleFocusTimeoutId = undefined;
+    }
+
+    this._shouldHandleFocus = handleFocus;
+
+    if (handleFocus) {
+      this._async.setTimeout(function () {
+        _this._shouldHandleFocus = false;
+      }, 100);
+    }
+  };
+
+  SelectionZone.prototype._setIsTouch = function (isTouch) {
+    var _this = this;
+
+    if (this._isTouchTimeoutId) {
+      this._async.clearTimeout(this._isTouchTimeoutId);
+
+      this._isTouchTimeoutId = undefined;
+    }
+
+    this._isTouch = true;
+
+    if (isTouch) {
+      this._async.setTimeout(function () {
+        _this._isTouch = false;
+      }, 300);
+    }
+  };
+
+  SelectionZone.prototype._getSelectionMode = function () {
+    var selection = this.props.selection;
+    var _a = this.props.selectionMode,
+        selectionMode = _a === void 0 ? selection ? selection.mode : SelectionMode.none : _a;
+    return selectionMode;
+  };
+
+  SelectionZone.defaultProps = {
+    isSelectedOnFocus: true,
+    selectionMode: SelectionMode.multiple
+  };
+  return SelectionZone;
 }(React.Component);
 
 /**
- * Legacy Icon component which can be targeted by customization. It's recommended to use `FontIcon`
- * or `ImageIcon` instead, especially in scenarios where rendering performance is important.
- * {@docCategory Icon}
+ * {@docCategory GroupedList}
  */
+var CollapseAllVisibility;
 
-var Icon = styled(IconBase, getStyles$2, undefined, {
-  scope: 'Icon'
-}, true);
+(function (CollapseAllVisibility) {
+  CollapseAllVisibility[CollapseAllVisibility["hidden"] = 0] = "hidden";
+  CollapseAllVisibility[CollapseAllVisibility["visible"] = 1] = "visible";
+})(CollapseAllVisibility || (CollapseAllVisibility = {}));
 
 /**
- * Fast icon component which only supports images (not font glyphs) and can't be targeted by customizations.
- * To style the icon, use `className` or reference `ms-Icon` in CSS.
- * {@docCategory Icon}
+ * Enum to describe how a particular column header behaves.... This enum is used to
+ * to specify the property IColumn:columnActionsMode.
+ * If IColumn:columnActionsMode is undefined, then it's equivalent to ColumnActionsMode.clickable
+ * {@docCategory DetailsList}
  */
+var ColumnActionsMode;
 
-var ImageIcon = function (props) {
-  var className = props.className,
-      imageProps = props.imageProps;
-  var nativeProps = getNativeProps(props, htmlElementProperties);
-  var containerProps = props['aria-label'] ? {} : {
-    role: 'presentation',
-    'aria-hidden': imageProps.alt || imageProps['aria-labelledby'] ? false : true
-  };
-  return React.createElement("div", __assign({}, containerProps, nativeProps, {
-    className: css(MS_ICON, classNames.root, classNames.image, className)
-  }), React.createElement(Image, __assign({}, imageProps)));
-};
-
-var DirectionalHint = {
+(function (ColumnActionsMode) {
   /**
-   * Appear above the target element, with the left edges of the callout and target aligning.
+   * Renders the column header as disabled.
    */
-  topLeftEdge: 0,
-
+  ColumnActionsMode[ColumnActionsMode["disabled"] = 0] = "disabled";
   /**
-   * Appear above the target element, with the centers of the callout and target aligning.
+   * Renders the column header is clickable.
    */
-  topCenter: 1,
 
+  ColumnActionsMode[ColumnActionsMode["clickable"] = 1] = "clickable";
   /**
-   * Appear above the target element, with the right edges of the callout and target aligning.
+   * Renders the column header ias clickable and displays the dropdown cheveron.
    */
-  topRightEdge: 2,
 
-  /**
-   * Appear above the target element, aligning with the target element such that the callout tends toward
-   * the center of the screen.
-   */
-  topAutoEdge: 3,
-
-  /**
-   * Appear below the target element, with the left edges of the callout and target aligning.
-   */
-  bottomLeftEdge: 4,
-
-  /**
-   * Appear below the target element, with the centers of the callout and target aligning.
-   */
-  bottomCenter: 5,
-
-  /**
-   * Appear below the target element, with the right edges of the callout and target aligning.
-   */
-  bottomRightEdge: 6,
-
-  /**
-   * Appear below the target element, aligning with the target element such that the callout tends toward
-   * the center of the screen.
-   */
-  bottomAutoEdge: 7,
-
-  /**
-   * Appear to the left of the target element, with the top edges of the callout and target aligning.
-   */
-  leftTopEdge: 8,
-
-  /**
-   * Appear to the left of the target element, with the centers of the callout and target aligning.
-   */
-  leftCenter: 9,
-
-  /**
-   * Appear to the left of the target element, with the bottom edges of the callout and target aligning.
-   */
-  leftBottomEdge: 10,
-
-  /**
-   * Appear to the right of the target element, with the top edges of the callout and target aligning.
-   */
-  rightTopEdge: 11,
-
-  /**
-   * Appear to the right of the target element, with the centers of the callout and target aligning.
-   */
-  rightCenter: 12,
-
-  /**
-   * Appear to the right of the target element, with the bottom edges of the callout and target aligning.
-   */
-  rightBottomEdge: 13
-};
-
+  ColumnActionsMode[ColumnActionsMode["hasDropdown"] = 2] = "hasDropdown";
+})(ColumnActionsMode || (ColumnActionsMode = {}));
 /**
- * {@docCategory ContextualMenu}
+ * {@docCategory DetailsList}
  */
 
-var ContextualMenuItemType;
 
-(function (ContextualMenuItemType) {
-  ContextualMenuItemType[ContextualMenuItemType["Normal"] = 0] = "Normal";
-  ContextualMenuItemType[ContextualMenuItemType["Divider"] = 1] = "Divider";
-  ContextualMenuItemType[ContextualMenuItemType["Header"] = 2] = "Header";
-  ContextualMenuItemType[ContextualMenuItemType["Section"] = 3] = "Section";
-})(ContextualMenuItemType || (ContextualMenuItemType = {}));
+var ConstrainMode;
+
+(function (ConstrainMode) {
+  /** If specified, lets the content grow which allows the page to manage scrolling. */
+  ConstrainMode[ConstrainMode["unconstrained"] = 0] = "unconstrained";
+  /**
+   * If specified, constrains the list to the given layout space.
+   */
+
+  ConstrainMode[ConstrainMode["horizontalConstrained"] = 1] = "horizontalConstrained";
+})(ConstrainMode || (ConstrainMode = {}));
+/**
+ * Enum to describe where the column has been dropped, after starting the drag
+ * {@docCategory DetailsList}
+ */
+
+
+var ColumnDragEndLocation;
+
+(function (ColumnDragEndLocation) {
+  /**
+   * Drag ended outside of current list
+   */
+  ColumnDragEndLocation[ColumnDragEndLocation["outside"] = 0] = "outside";
+  /**
+   * Drag ended on current List
+   */
+
+  ColumnDragEndLocation[ColumnDragEndLocation["surface"] = 1] = "surface";
+  /**
+   * Drag ended on Header
+   */
+
+  ColumnDragEndLocation[ColumnDragEndLocation["header"] = 2] = "header";
+})(ColumnDragEndLocation || (ColumnDragEndLocation = {}));
+/**
+ * {@docCategory DetailsList}
+ */
+
+
+var DetailsListLayoutMode;
+
+(function (DetailsListLayoutMode) {
+  /**
+   * Lets the user resize columns and makes not attempt to fit them.
+   */
+  DetailsListLayoutMode[DetailsListLayoutMode["fixedColumns"] = 0] = "fixedColumns";
+  /**
+   * Manages which columns are visible, tries to size them according to their min/max rules and drops
+   * off columns that can't fit and have isCollapsible set.
+   */
+
+  DetailsListLayoutMode[DetailsListLayoutMode["justified"] = 1] = "justified";
+})(DetailsListLayoutMode || (DetailsListLayoutMode = {}));
+/**
+ * {@docCategory DetailsList}
+ */
+
+
+var CheckboxVisibility;
+
+(function (CheckboxVisibility) {
+  /**
+   * Visible on hover.
+   */
+  CheckboxVisibility[CheckboxVisibility["onHover"] = 0] = "onHover";
+  /**
+   * Visible always.
+   */
+
+  CheckboxVisibility[CheckboxVisibility["always"] = 1] = "always";
+  /**
+   * Hide checkboxes.
+   */
+
+  CheckboxVisibility[CheckboxVisibility["hidden"] = 2] = "hidden";
+})(CheckboxVisibility || (CheckboxVisibility = {}));
 
 /**
  * {@docCategory FocusZone}
@@ -7899,1750 +12258,220 @@ function (_super) {
 }(React.Component);
 
 /**
- * Determines the effective checked state of a menu item.
- *
- * @param item {IContextualMenuItem} to get the check state of.
- * @returns {true} if the item is checked.
- * @returns {false} if the item is unchecked.
- * @returns {null} if the item is not checkable.
+ * @deprecated Icon type is inferred based on presence of `IIconProps.imageProps`
+ * {@docCategory Icon}
  */
-function getIsChecked(item) {
-  if (item.canCheck) {
-    return !!(item.isChecked || item.checked);
-  }
+var IconType;
 
-  if (typeof item.isChecked === 'boolean') {
-    return item.isChecked;
-  }
-
-  if (typeof item.checked === 'boolean') {
-    return item.checked;
-  } // Item is not checkable.
-
-
-  return null;
-}
-function hasSubmenu(item) {
-  return !!(item.subMenuProps || item.items);
-}
-function isItemDisabled(item) {
-  return !!(item.isDisabled || item.disabled);
-}
-function getMenuItemAriaRole(item) {
-  var isChecked = getIsChecked(item);
-  var canCheck = isChecked !== null;
-  return canCheck ? 'menuitemcheckbox' : 'menuitem';
-}
-
-var BaseDecorator =
-/** @class */
-function (_super) {
-  __extends(BaseDecorator, _super);
-
-  function BaseDecorator(props) {
-    var _this = _super.call(this, props) || this;
-
-    _this._updateComposedComponentRef = _this._updateComposedComponentRef.bind(_this);
-    return _this;
-  }
+(function (IconType) {
   /**
-   * Updates the ref to the component composed by the decorator, which will also take care of hoisting
-   * (and unhoisting as appropriate) methods from said component.
-   *
-   * Pass this method as the argument to the 'ref' property of the composed component.
+   * Render using the fabric icon font.
+   * @deprecated Icon type is inferred based on presence of `IIconProps.imageProps`
+   */
+  IconType[IconType["default"] = 0] = "default";
+  /**
+   * Render using an image, where imageProps would be used.
+   * @deprecated Icon type is inferred based on presence of `IIconProps.imageProps`
    */
 
-
-  BaseDecorator.prototype._updateComposedComponentRef = function (composedComponentInstance) {
-    this._composedComponentInstance = composedComponentInstance;
-
-    if (composedComponentInstance) {
-      this._hoisted = hoistMethods(this, composedComponentInstance);
-    } else if (this._hoisted) {
-      unhoistMethods(this, this._hoisted);
-    }
-  };
-
-  return BaseDecorator;
-}(React.Component);
-
-var ResponsiveMode;
-
-(function (ResponsiveMode) {
-  ResponsiveMode[ResponsiveMode["small"] = 0] = "small";
-  ResponsiveMode[ResponsiveMode["medium"] = 1] = "medium";
-  ResponsiveMode[ResponsiveMode["large"] = 2] = "large";
-  ResponsiveMode[ResponsiveMode["xLarge"] = 3] = "xLarge";
-  ResponsiveMode[ResponsiveMode["xxLarge"] = 4] = "xxLarge";
-  ResponsiveMode[ResponsiveMode["xxxLarge"] = 5] = "xxxLarge";
-  ResponsiveMode[ResponsiveMode["unknown"] = 999] = "unknown";
-})(ResponsiveMode || (ResponsiveMode = {}));
-
-var RESPONSIVE_MAX_CONSTRAINT = [479, 639, 1023, 1365, 1919, 99999999];
-/**
- * Tracking the last mode we successfully rendered, which allows us to
- * paint initial renders with the correct size.
- */
-
-
-var _lastMode;
-function withResponsiveMode(ComposedComponent) {
-  var resultClass =
-  /** @class */
-  function (_super) {
-    __extends(WithResponsiveMode, _super);
-
-    function WithResponsiveMode(props) {
-      var _this = _super.call(this, props) || this;
-
-      _this._onResize = function () {
-        var element = ReactDOM.findDOMNode(_this);
-        var currentWindow = element && getWindow(element) || window;
-        var responsiveMode = getResponsiveMode(currentWindow);
-
-        if (responsiveMode !== _this.state.responsiveMode) {
-          _this.setState({
-            responsiveMode: responsiveMode
-          });
-        }
-      };
-
-      _this._events = new EventGroup(_this);
-      _this._updateComposedComponentRef = _this._updateComposedComponentRef.bind(_this);
-      _this.state = {
-        responsiveMode:  _lastMode || ResponsiveMode.large
-      };
-      return _this;
-    }
-
-    WithResponsiveMode.prototype.componentDidMount = function () {
-      this._events.on(window, 'resize', this._onResize);
-
-      this._onResize();
-    };
-
-    WithResponsiveMode.prototype.componentWillUnmount = function () {
-      this._events.dispose();
-    };
-
-    WithResponsiveMode.prototype.render = function () {
-      var responsiveMode = this.state.responsiveMode;
-      return responsiveMode === ResponsiveMode.unknown ? null : React.createElement(ComposedComponent, __assign({
-        ref: this._updateComposedComponentRef,
-        responsiveMode: responsiveMode
-      }, this.props));
-    };
-
-    return WithResponsiveMode;
-  }(BaseDecorator);
-
-  return hoistStatics(ComposedComponent, resultClass);
-}
-
-function getResponsiveMode(currentWindow) {
-  var responsiveMode = ResponsiveMode.small;
-
-  if (currentWindow) {
-    try {
-      while (currentWindow.innerWidth > RESPONSIVE_MAX_CONSTRAINT[responsiveMode]) {
-        responsiveMode++;
-      }
-    } catch (e) {
-      // Return a best effort result in cases where we're in the browser but it throws on getting innerWidth.
-      responsiveMode =  _lastMode || ResponsiveMode.large;
-    } // Tracking last mode just gives us a better default in future renders,
-    // which avoids starting with the wrong value if we've measured once.
-
-
-    _lastMode = responsiveMode;
-  } else {
-    {
-      throw new Error('Content was rendered in a server environment without providing a default responsive mode. ' + 'Call setResponsiveMode to define what the responsive mode is.');
-    }
-  }
-
-  return responsiveMode;
-}
-
-var RectangleEdge;
-
-(function (RectangleEdge) {
-  RectangleEdge[RectangleEdge["top"] = 1] = "top";
-  RectangleEdge[RectangleEdge["bottom"] = -1] = "bottom";
-  RectangleEdge[RectangleEdge["left"] = 2] = "left";
-  RectangleEdge[RectangleEdge["right"] = -2] = "right";
-})(RectangleEdge || (RectangleEdge = {}));
-
-var Position;
-
-(function (Position) {
-  Position[Position["top"] = 0] = "top";
-  Position[Position["bottom"] = 1] = "bottom";
-  Position[Position["start"] = 2] = "start";
-  Position[Position["end"] = 3] = "end";
-})(Position || (Position = {}));
-
-var _a$3;
-
-var Rectangle$1 =
-/** @class */
-function (_super) {
-  __extends(Rectangle, _super);
-
-  function Rectangle() {
-    return _super !== null && _super.apply(this, arguments) || this;
-  }
-
-  return Rectangle;
-}(Rectangle);
-
-function _createPositionData(targetEdge, alignmentEdge, isAuto) {
-  return {
-    targetEdge: targetEdge,
-    alignmentEdge: alignmentEdge,
-    isAuto: isAuto
-  };
-} // Currently the beakPercent is set to 50 for all positions meaning that it should tend to the center of the target
-
-
-var DirectionalDictionary = (_a$3 = {}, _a$3[DirectionalHint.topLeftEdge] = _createPositionData(RectangleEdge.top, RectangleEdge.left), _a$3[DirectionalHint.topCenter] = _createPositionData(RectangleEdge.top), _a$3[DirectionalHint.topRightEdge] = _createPositionData(RectangleEdge.top, RectangleEdge.right), _a$3[DirectionalHint.topAutoEdge] = _createPositionData(RectangleEdge.top, undefined, true), _a$3[DirectionalHint.bottomLeftEdge] = _createPositionData(RectangleEdge.bottom, RectangleEdge.left), _a$3[DirectionalHint.bottomCenter] = _createPositionData(RectangleEdge.bottom), _a$3[DirectionalHint.bottomRightEdge] = _createPositionData(RectangleEdge.bottom, RectangleEdge.right), _a$3[DirectionalHint.bottomAutoEdge] = _createPositionData(RectangleEdge.bottom, undefined, true), _a$3[DirectionalHint.leftTopEdge] = _createPositionData(RectangleEdge.left, RectangleEdge.top), _a$3[DirectionalHint.leftCenter] = _createPositionData(RectangleEdge.left), _a$3[DirectionalHint.leftBottomEdge] = _createPositionData(RectangleEdge.left, RectangleEdge.bottom), _a$3[DirectionalHint.rightTopEdge] = _createPositionData(RectangleEdge.right, RectangleEdge.top), _a$3[DirectionalHint.rightCenter] = _createPositionData(RectangleEdge.right), _a$3[DirectionalHint.rightBottomEdge] = _createPositionData(RectangleEdge.right, RectangleEdge.bottom), _a$3);
-
-function _isRectangleWithinBounds(rect, boundingRect) {
-  if (rect.top < boundingRect.top) {
-    return false;
-  }
-
-  if (rect.bottom > boundingRect.bottom) {
-    return false;
-  }
-
-  if (rect.left < boundingRect.left) {
-    return false;
-  }
-
-  if (rect.right > boundingRect.right) {
-    return false;
-  }
-
-  return true;
-}
-/**
- * Gets all of the edges of a rectangle that are outside of the given bounds.
- * If there are no out of bounds edges it returns an empty array.
- */
-
-
-function _getOutOfBoundsEdges(rect, boundingRect) {
-  var outOfBounds = new Array();
-
-  if (rect.top < boundingRect.top) {
-    outOfBounds.push(RectangleEdge.top);
-  }
-
-  if (rect.bottom > boundingRect.bottom) {
-    outOfBounds.push(RectangleEdge.bottom);
-  }
-
-  if (rect.left < boundingRect.left) {
-    outOfBounds.push(RectangleEdge.left);
-  }
-
-  if (rect.right > boundingRect.right) {
-    outOfBounds.push(RectangleEdge.right);
-  }
-
-  return outOfBounds;
-}
-
-function _getEdgeValue(rect, edge) {
-  return rect[RectangleEdge[edge]];
-}
-
-function _setEdgeValue(rect, edge, value) {
-  rect[RectangleEdge[edge]] = value;
-  return rect;
-}
-/**
- * Returns the middle value of an edge. Only returns 1 value rather than xy coordinates as
- * the itself already contains the other coordinate.
- * For instance, a bottom edge's current value is it's y coordinate, so the number returned is the x.
- */
-
-
-function _getCenterValue(rect, edge) {
-  var edges = _getFlankingEdges(edge);
-
-  return (_getEdgeValue(rect, edges.positiveEdge) + _getEdgeValue(rect, edges.negativeEdge)) / 2;
-}
-/**
- * Flips the value depending on the edge.
- * If the edge is a "positive" edge, Top or Left, then the value should stay as it is.
- * If the edge is a "negative" edge, Bottom or Right, then the value should be flipped.
- * This is to account for the fact that the coordinates are effectively reveserved in certain cases for the
- * "negative" edges.
- *
- * For example, when testing to see if a bottom edge 1 is within the bounds of another bottom edge 2:
- * If edge 1 is greater than edge 2 then it is out of bounds. This is reversed for top edge 1 and top edge 2.
- * If top edge 1 is less than edge 2 then it is out of bounds.
- */
-
-
-function _getRelativeEdgeValue(edge, value) {
-  if (edge > 0) {
-    return value;
-  } else {
-    return value * -1;
-  }
-}
-
-function _getRelativeRectEdgeValue(edge, rect) {
-  return _getRelativeEdgeValue(edge, _getEdgeValue(rect, edge));
-}
-
-function _getRelativeEdgeDifference(rect, hostRect, edge) {
-  var edgeDifference = _getEdgeValue(rect, edge) - _getEdgeValue(hostRect, edge);
-
-  return _getRelativeEdgeValue(edge, edgeDifference);
-}
-/**
- * Moves the edge of a rectangle to the value given. It only moves the edge in a linear direction based on that edge.
- * For example, if it's a bottom edge it will only change y coordinates.
- */
-
-
-function _moveEdge(rect, edge, newValue) {
-  var difference = _getEdgeValue(rect, edge) - newValue;
-  rect = _setEdgeValue(rect, edge, newValue);
-  rect = _setEdgeValue(rect, edge * -1, _getEdgeValue(rect, edge * -1) - difference);
-  return rect;
-}
-/**
- * Aligns the edge on the passed in rect to the target. If there is a gap then it will have that space between the two.
- */
-
-
-function _alignEdges(rect, target, edge, gap) {
-  if (gap === void 0) {
-    gap = 0;
-  }
-
-  return _moveEdge(rect, edge, _getEdgeValue(target, edge) + _getRelativeEdgeValue(edge, gap));
-}
-/**
- * Aligns the targetEdge on the passed in target to the rects corresponding opposite edge.
- * For instance if targetEdge is bottom, then the rects top will be moved to match it.
- */
-
-
-function _alignOppositeEdges(rect, target, targetEdge, gap) {
-  if (gap === void 0) {
-    gap = 0;
-  }
-
-  var oppositeEdge = targetEdge * -1;
-
-  var adjustedGap = _getRelativeEdgeValue(oppositeEdge, gap);
-
-  return _moveEdge(rect, targetEdge * -1, _getEdgeValue(target, targetEdge) + adjustedGap);
-}
-/**
- * Tests to see if the given edge is within the bounds of the given rectangle.
- */
-
-
-function _isEdgeInBounds(rect, bounds, edge) {
-  var adjustedRectValue = _getRelativeRectEdgeValue(edge, rect);
-
-  return adjustedRectValue > _getRelativeRectEdgeValue(edge, bounds);
-}
-/**
- * Attempts to move the rectangle through various sides of the target to find a place to fit.
- * If no fit is found, the original position should be returned.
- */
-
-
-function _flipToFit(rect, target, bounding, positionData, gap) {
-  if (gap === void 0) {
-    gap = 0;
-  }
-
-  var directions = [RectangleEdge.left, RectangleEdge.right, RectangleEdge.bottom, RectangleEdge.top]; // In RTL page, RectangleEdge.right has a higher priority than RectangleEdge.left, so the order should be updated.
-
-  if (getRTL$1()) {
-    directions[0] *= -1;
-    directions[1] *= -1;
-  }
-
-  var currentEstimate = rect;
-  var currentEdge = positionData.targetEdge;
-  var currentAlignment = positionData.alignmentEdge; // Keep switching sides until one is found with enough space.
-  // If all sides don't fit then return the unmodified element.
-
-  for (var i = 0; i < 4; i++) {
-    if (!_isEdgeInBounds(currentEstimate, bounding, currentEdge)) {
-      directions.splice(directions.indexOf(currentEdge), 1);
-
-      if (directions.length > 0) {
-        if (directions.indexOf(currentEdge * -1) > -1) {
-          currentEdge = currentEdge * -1;
-        } else {
-          currentAlignment = currentEdge;
-          currentEdge = directions.slice(-1)[0];
-        }
-
-        currentEstimate = _estimatePosition(rect, target, {
-          targetEdge: currentEdge,
-          alignmentEdge: currentAlignment
-        }, gap);
-      }
-    } else {
-      return {
-        elementRectangle: currentEstimate,
-        targetEdge: currentEdge,
-        alignmentEdge: currentAlignment
-      };
-    }
-  }
-
-  return {
-    elementRectangle: rect,
-    targetEdge: positionData.targetEdge,
-    alignmentEdge: currentAlignment
-  };
-}
-/**
- * Flips only the alignment edge of an element rectangle. This is used instead of nudging the alignment edges
- * into position, when alignTargetEdge is specified.
- */
-
-
-function _flipAlignmentEdge(elementEstimate, target, gap, coverTarget) {
-  var alignmentEdge = elementEstimate.alignmentEdge,
-      targetEdge = elementEstimate.targetEdge,
-      elementRectangle = elementEstimate.elementRectangle;
-  var oppositeEdge = alignmentEdge * -1;
-
-  var newEstimate = _estimatePosition(elementRectangle, target, {
-    targetEdge: targetEdge,
-    alignmentEdge: oppositeEdge
-  }, gap, coverTarget);
-
-  return {
-    elementRectangle: newEstimate,
-    targetEdge: targetEdge,
-    alignmentEdge: oppositeEdge
-  };
-}
-/**
- * Adjusts a element rectangle to fit within the bounds given. If directionalHintFixed or covertarget is passed in
- * then the element will not flip sides on the target. They will, however, be nudged to fit within the bounds given.
- */
-
-
-function _adjustFitWithinBounds(element, target, bounding, positionData, gap, directionalHintFixed, coverTarget) {
-  if (gap === void 0) {
-    gap = 0;
-  }
-
-  var alignmentEdge = positionData.alignmentEdge,
-      alignTargetEdge = positionData.alignTargetEdge;
-  var elementEstimate = {
-    elementRectangle: element,
-    targetEdge: positionData.targetEdge,
-    alignmentEdge: alignmentEdge
-  };
-
-  if (!directionalHintFixed && !coverTarget) {
-    elementEstimate = _flipToFit(element, target, bounding, positionData, gap);
-  }
-
-  var outOfBounds = _getOutOfBoundsEdges(element, bounding);
-
-  if (alignTargetEdge) {
-    // The edge opposite to the alignment edge might be out of bounds.
-    // Flip alignment to see if we can get it within bounds.
-    if (elementEstimate.alignmentEdge && outOfBounds.indexOf(elementEstimate.alignmentEdge * -1) > -1) {
-      var flippedElementEstimate = _flipAlignmentEdge(elementEstimate, target, gap, coverTarget);
-
-      if (_isRectangleWithinBounds(flippedElementEstimate.elementRectangle, bounding)) {
-        return flippedElementEstimate;
-      } else {
-        // If the flipped elements edges are still out of bounds, try nudging it.
-        elementEstimate = _alignOutOfBoundsEdges(_getOutOfBoundsEdges(flippedElementEstimate.elementRectangle, bounding), elementEstimate, bounding);
-      }
-    }
-  } else {
-    elementEstimate = _alignOutOfBoundsEdges(outOfBounds, elementEstimate, bounding);
-  }
-
-  return elementEstimate;
-}
-/**
- * Iterates through a list of out of bounds edges and tries to nudge and align them.
- * @param outOfBoundsEdges - Array of edges that are out of bounds
- * @param elementEstimate - The current element positioning estimate
- * @param bounding - The current bounds
- */
-
-
-function _alignOutOfBoundsEdges(outOfBoundsEdges, elementEstimate, bounding) {
-  for (var _i = 0, outOfBoundsEdges_1 = outOfBoundsEdges; _i < outOfBoundsEdges_1.length; _i++) {
-    var direction = outOfBoundsEdges_1[_i];
-    elementEstimate.elementRectangle = _alignEdges(elementEstimate.elementRectangle, bounding, direction);
-  }
-
-  return elementEstimate;
-}
-/**
- * Moves the middle point on an edge to the point given.
- * Only moves in one direction. For instance if a bottom edge is passed in, then
- * the bottom edge will be moved in the x axis to match the point.
- */
-
-
-function _centerEdgeToPoint(rect, edge, point) {
-  var positiveEdge = _getFlankingEdges(edge).positiveEdge;
-
-  var elementMiddle = _getCenterValue(rect, edge);
-
-  var distanceToMiddle = elementMiddle - _getEdgeValue(rect, positiveEdge);
-
-  return _moveEdge(rect, positiveEdge, point - distanceToMiddle);
-}
-/**
- * Moves the element rectangle to be appropriately positioned relative to a given target.
- * Does not flip or adjust the element.
- */
-
-
-function _estimatePosition(elementToPosition, target, positionData, gap, coverTarget) {
-  if (gap === void 0) {
-    gap = 0;
-  }
-
-  var estimatedElementPosition;
-  var alignmentEdge = positionData.alignmentEdge,
-      targetEdge = positionData.targetEdge;
-  var elementEdge = coverTarget ? targetEdge : targetEdge * -1;
-  estimatedElementPosition = coverTarget ? _alignEdges(elementToPosition, target, targetEdge, gap) : _alignOppositeEdges(elementToPosition, target, targetEdge, gap); // if no alignment edge is provided it's supposed to be centered.
-
-  if (!alignmentEdge) {
-    var targetMiddlePoint = _getCenterValue(target, targetEdge);
-
-    estimatedElementPosition = _centerEdgeToPoint(estimatedElementPosition, elementEdge, targetMiddlePoint);
-  } else {
-    estimatedElementPosition = _alignEdges(estimatedElementPosition, target, alignmentEdge);
-  }
-
-  return estimatedElementPosition;
-}
-/**
- * Returns the non-opposite edges of the target edge.
- * For instance if bottom is passed in then left and right will be returned.
- */
-
-
-function _getFlankingEdges(edge) {
-  if (edge === RectangleEdge.top || edge === RectangleEdge.bottom) {
-    return {
-      positiveEdge: RectangleEdge.left,
-      negativeEdge: RectangleEdge.right
-    };
-  } else {
-    return {
-      positiveEdge: RectangleEdge.top,
-      negativeEdge: RectangleEdge.bottom
-    };
-  }
-}
-/**
- * Retrieve the final value for the return edge of elementRectangle. If the elementRectangle is closer to one side
- * of the bounds versus the other, the return edge is flipped to grow inward.
- */
-
-
-function _finalizeReturnEdge(elementRectangle, returnEdge, bounds) {
-  if (bounds && Math.abs(_getRelativeEdgeDifference(elementRectangle, bounds, returnEdge)) > Math.abs(_getRelativeEdgeDifference(elementRectangle, bounds, returnEdge * -1))) {
-    return returnEdge * -1;
-  }
-
-  return returnEdge;
-}
-/**
- * Finalizes the element positon based on the hostElement. Only returns the
- * rectangle values to position such that they are anchored to the target.
- * This helps prevent resizing from looking very strange.
- * For instance, if the target edge is top and aligned with the left side then
- * the bottom and left values are returned so as the callou shrinks it shrinks towards that corner.
- */
-
-
-function _finalizeElementPosition(elementRectangle, hostElement, targetEdge, bounds, alignmentEdge, coverTarget, doNotFinalizeReturnEdge) {
-  var returnValue = {};
-
-  var hostRect = _getRectangleFromElement(hostElement);
-
-  var elementEdge = coverTarget ? targetEdge : targetEdge * -1;
-  var elementEdgeString = RectangleEdge[elementEdge];
-  var returnEdge = alignmentEdge ? alignmentEdge : _getFlankingEdges(targetEdge).positiveEdge;
-
-  if (!doNotFinalizeReturnEdge) {
-    returnEdge = _finalizeReturnEdge(elementRectangle, returnEdge, bounds);
-  }
-
-  returnValue[elementEdgeString] = _getRelativeEdgeDifference(elementRectangle, hostRect, elementEdge);
-  returnValue[RectangleEdge[returnEdge]] = _getRelativeEdgeDifference(elementRectangle, hostRect, returnEdge);
-  return returnValue;
-} // Since the beak is rotated 45 degrees the actual height/width is the length of the diagonal.
-// We still want to position the beak based on it's midpoint which does not change. It will
-// be at (beakwidth / 2, beakwidth / 2)
-
-
-function _calculateActualBeakWidthInPixels(beakWidth) {
-  return Math.sqrt(beakWidth * beakWidth * 2);
-}
-/**
- * Returns the appropriate IPositionData based on the props altered for RTL.
- * If directionalHintForRTL is passed in that is used if the page is RTL.
- * If directionalHint is specified, no directionalHintForRTL is available, and the page is RTL, the hint will be
- * flipped (e.g. bottomLeftEdge would become bottomRightEdge).
- *
- * If there is no directionalHint passed in, bottomAutoEdge is chosen automatically.
- */
-
-
-function _getPositionData(directionalHint, directionalHintForRTL, previousPositions) {
-  if (directionalHint === void 0) {
-    directionalHint = DirectionalHint.bottomAutoEdge;
-  }
-
-  if (previousPositions) {
-    return {
-      alignmentEdge: previousPositions.alignmentEdge,
-      isAuto: previousPositions.isAuto,
-      targetEdge: previousPositions.targetEdge
-    };
-  }
-
-  var positionInformation = __assign({}, DirectionalDictionary[directionalHint]);
-
-  if (getRTL$1()) {
-    // If alignment edge exists and that alignment edge is -2 or 2, right or left, then flip it.
-    if (positionInformation.alignmentEdge && positionInformation.alignmentEdge % 2 === 0) {
-      positionInformation.alignmentEdge = positionInformation.alignmentEdge * -1;
-    }
-
-    return directionalHintForRTL !== undefined ? DirectionalDictionary[directionalHintForRTL] : positionInformation;
-  }
-
-  return positionInformation;
-}
-/**
- * Get's the alignment data for the given information. This only really matters if the positioning is Auto.
- * If it is auto then the alignmentEdge should be chosen based on the target edge's position relative to
- * the center of the page.
- */
-
-
-function _getAlignmentData(positionData, target, boundingRect, coverTarget, alignTargetEdge) {
-  if (positionData.isAuto) {
-    positionData.alignmentEdge = getClosestEdge(positionData.targetEdge, target, boundingRect);
-  }
-
-  positionData.alignTargetEdge = alignTargetEdge;
-  return positionData;
-}
-
-function getClosestEdge(targetEdge, target, boundingRect) {
-  var targetCenter = _getCenterValue(target, targetEdge);
-
-  var boundingCenter = _getCenterValue(boundingRect, targetEdge);
-
-  var _a = _getFlankingEdges(targetEdge),
-      positiveEdge = _a.positiveEdge,
-      negativeEdge = _a.negativeEdge;
-
-  if (targetCenter <= boundingCenter) {
-    return positiveEdge;
-  } else {
-    return negativeEdge;
-  }
-}
-
-function _positionElementWithinBounds(elementToPosition, target, bounding, positionData, gap, directionalHintFixed, coverTarget) {
-  var estimatedElementPosition = _estimatePosition(elementToPosition, target, positionData, gap, coverTarget);
-
-  if (_isRectangleWithinBounds(estimatedElementPosition, bounding)) {
-    return {
-      elementRectangle: estimatedElementPosition,
-      targetEdge: positionData.targetEdge,
-      alignmentEdge: positionData.alignmentEdge
-    };
-  } else {
-    return _adjustFitWithinBounds(elementToPosition, target, bounding, positionData, gap, directionalHintFixed, coverTarget);
-  }
-}
-
-function _finalizeBeakPosition(elementPosition, positionedBeak, bounds) {
-  var targetEdge = elementPosition.targetEdge * -1; // The "host" element that we will use to help position the beak.
-
-  var actualElement = new Rectangle$1(0, elementPosition.elementRectangle.width, 0, elementPosition.elementRectangle.height);
-  var returnValue = {};
-
-  var returnEdge = _finalizeReturnEdge(elementPosition.elementRectangle, elementPosition.alignmentEdge ? elementPosition.alignmentEdge : _getFlankingEdges(targetEdge).positiveEdge, bounds);
-
-  returnValue[RectangleEdge[targetEdge]] = _getEdgeValue(positionedBeak, targetEdge);
-  returnValue[RectangleEdge[returnEdge]] = _getRelativeEdgeDifference(positionedBeak, actualElement, returnEdge);
-  return {
-    elementPosition: __assign({}, returnValue),
-    closestEdge: getClosestEdge(elementPosition.targetEdge, positionedBeak, actualElement),
-    targetEdge: targetEdge
-  };
-}
-
-function _positionBeak(beakWidth, elementPosition) {
-  var target = elementPosition.targetRectangle;
+  IconType[IconType["image"] = 1] = "image";
   /**
-   * Note about beak positioning: The actual beak width only matters for getting the gap between the callout and
-   * target, it does not impact the beak placement within the callout. For example example, if the beakWidth is 8,
-   * then the actual beakWidth is sqrroot(8^2 + 8^2) = 11.31x11.31. So the callout will need to be an extra 3 pixels
-   * away from its target. While the beak is being positioned in the callout it still acts as though it were 8x8.
+   * Deprecated, use `default`.
+   * @deprecated Use `default`.
    */
 
-  var _a = _getFlankingEdges(elementPosition.targetEdge),
-      positiveEdge = _a.positiveEdge,
-      negativeEdge = _a.negativeEdge;
-
-  var beakTargetPoint = _getCenterValue(target, elementPosition.targetEdge);
-
-  var elementBounds = new Rectangle$1(beakWidth / 2, elementPosition.elementRectangle.width - beakWidth / 2, beakWidth / 2, elementPosition.elementRectangle.height - beakWidth / 2);
-  var beakPosition = new Rectangle$1(0, beakWidth, 0, beakWidth);
-  beakPosition = _moveEdge(beakPosition, elementPosition.targetEdge * -1, -beakWidth / 2);
-  beakPosition = _centerEdgeToPoint(beakPosition, elementPosition.targetEdge * -1, beakTargetPoint - _getRelativeRectEdgeValue(positiveEdge, elementPosition.elementRectangle));
-
-  if (!_isEdgeInBounds(beakPosition, elementBounds, positiveEdge)) {
-    beakPosition = _alignEdges(beakPosition, elementBounds, positiveEdge);
-  } else if (!_isEdgeInBounds(beakPosition, elementBounds, negativeEdge)) {
-    beakPosition = _alignEdges(beakPosition, elementBounds, negativeEdge);
-  }
-
-  return beakPosition;
-}
-
-function _getRectangleFromElement(element) {
-  var clientRect = element.getBoundingClientRect();
-  return new Rectangle$1(clientRect.left, clientRect.right, clientRect.top, clientRect.bottom);
-}
-
-function _getRectangleFromIRect(rect) {
-  return new Rectangle$1(rect.left, rect.right, rect.top, rect.bottom);
-}
-
-function _getTargetRect(bounds, target) {
-  var targetRectangle;
-
-  if (target) {
-    if (!!target.preventDefault) {
-      var ev = target;
-      targetRectangle = new Rectangle$1(ev.clientX, ev.clientX, ev.clientY, ev.clientY);
-    } else if (!!target.getBoundingClientRect) {
-      targetRectangle = _getRectangleFromElement(target); // HTMLImgElements can have x and y values. The check for it being a point must go last.
-    } else {
-      var point = target; // tslint:disable-next-line:deprecation
-
-      var left = point.left || point.x; // tslint:disable-next-line:deprecation
-
-      var top_1 = point.top || point.y;
-      targetRectangle = new Rectangle$1(left, left, top_1, top_1);
-    }
-
-    if (!_isRectangleWithinBounds(targetRectangle, bounds)) {
-      var outOfBounds = _getOutOfBoundsEdges(targetRectangle, bounds);
-
-      for (var _i = 0, outOfBounds_1 = outOfBounds; _i < outOfBounds_1.length; _i++) {
-        var direction = outOfBounds_1[_i];
-        targetRectangle[RectangleEdge[direction]] = bounds[RectangleEdge[direction]];
-      }
-    }
-  } else {
-    targetRectangle = new Rectangle$1(0, 0, 0, 0);
-  }
-
-  return targetRectangle;
-}
-/**
- * If max height is less than zero it returns the bounds height instead.
- */
-
-
-function _getMaxHeightFromTargetRectangle(targetRectangle, targetEdge, gapSpace, bounds, coverTarget) {
-  var maxHeight = 0;
-  var directionalHint = DirectionalDictionary[targetEdge]; // If cover target is set, then the max height should be calculated using the opposite of the target edge since
-  // that's the direction that the callout will expand in.
-  // For instance, if the directionalhint is bottomLeftEdge then the callout will position so it's bottom edge
-  // is aligned with the bottom of the target and expand up towards the top of the screen and the calculated max height
-  // is (bottom of target) - (top of screen) - gapSpace.
-
-  var target = coverTarget ? directionalHint.targetEdge * -1 : directionalHint.targetEdge;
-
-  if (target === RectangleEdge.top) {
-    maxHeight = _getEdgeValue(targetRectangle, directionalHint.targetEdge) - bounds.top - gapSpace;
-  } else if (target === RectangleEdge.bottom) {
-    maxHeight = bounds.bottom - _getEdgeValue(targetRectangle, directionalHint.targetEdge) - gapSpace;
-  } else {
-    maxHeight = bounds.bottom - targetRectangle.top - gapSpace;
-  }
-
-  return maxHeight > 0 ? maxHeight : bounds.height;
-}
-
-function _positionElementRelative(props, elementToPosition, boundingRect, previousPositions) {
-  var gap = props.gapSpace ? props.gapSpace : 0;
-
-  var targetRect = _getTargetRect(boundingRect, props.target);
-
-  var positionData = _getAlignmentData(_getPositionData(props.directionalHint, props.directionalHintForRTL, previousPositions), targetRect, boundingRect, props.coverTarget, props.alignTargetEdge);
-
-  var positionedElement = _positionElementWithinBounds(_getRectangleFromElement(elementToPosition), targetRect, boundingRect, positionData, gap, props.directionalHintFixed, props.coverTarget);
-
-  return __assign(__assign({}, positionedElement), {
-    targetRectangle: targetRect
-  });
-}
-
-function _finalizePositionData(positionedElement, hostElement, bounds, coverTarget, doNotFinalizeReturnEdge) {
-  var finalizedElement = _finalizeElementPosition(positionedElement.elementRectangle, hostElement, positionedElement.targetEdge, bounds, positionedElement.alignmentEdge, coverTarget, doNotFinalizeReturnEdge);
-
-  return {
-    elementPosition: finalizedElement,
-    targetEdge: positionedElement.targetEdge,
-    alignmentEdge: positionedElement.alignmentEdge
-  };
-}
-
-function _positionCallout(props, hostElement, callout, previousPositions, doNotFinalizeReturnEdge) {
-  var beakWidth = props.isBeakVisible ? props.beakWidth || 0 : 0;
-  var gap = _calculateActualBeakWidthInPixels(beakWidth) / 2 + (props.gapSpace ? props.gapSpace : 0);
-  var positionProps = props;
-  positionProps.gapSpace = gap;
-  var boundingRect = props.bounds ? _getRectangleFromIRect(props.bounds) : new Rectangle$1(0, window.innerWidth - getScrollbarWidth(), 0, window.innerHeight);
-
-  var positionedElement = _positionElementRelative(positionProps, callout, boundingRect, previousPositions);
-
-  var beakPositioned = _positionBeak(beakWidth, positionedElement);
-
-  var finalizedBeakPosition = _finalizeBeakPosition(positionedElement, beakPositioned, boundingRect);
-
-  return __assign(__assign({}, _finalizePositionData(positionedElement, hostElement, boundingRect, props.coverTarget, doNotFinalizeReturnEdge)), {
-    beakPosition: finalizedBeakPosition
-  });
-}
-
-function _positionCard(props, hostElement, callout, previousPositions) {
-  return _positionCallout(props, hostElement, callout, previousPositions, true);
-} // END PRIVATE FUNCTIONS
-function positionCallout(props, hostElement, elementToPosition, previousPositions) {
-  return _positionCallout(props, hostElement, elementToPosition, previousPositions);
-}
-function positionCard(props, hostElement, elementToPosition, previousPositions) {
-  return _positionCard(props, hostElement, elementToPosition, previousPositions);
-}
-/**
- * Get's the maximum height that a rectangle can have in order to fit below or above a target.
- * If the directional hint specifies a left or right edge (i.e. leftCenter) it will limit the height to the topBorder
- * of the target given.
- * If no bounds are provided then the window is treated as the bounds.
- */
-
-function getMaxHeight(target, targetEdge, gapSpace, bounds, coverTarget) {
-  if (gapSpace === void 0) {
-    gapSpace = 0;
-  }
-
-  var mouseTarget = target;
-  var elementTarget = target;
-  var pointTarget = target;
-  var targetRect;
-  var boundingRectangle = bounds ? _getRectangleFromIRect(bounds) : new Rectangle$1(0, window.innerWidth - getScrollbarWidth(), 0, window.innerHeight); // tslint:disable-next-line:deprecation
-
-  var left = pointTarget.left || pointTarget.x; // tslint:disable-next-line:deprecation
-
-  var top = pointTarget.top || pointTarget.y;
-
-  if (!!mouseTarget.stopPropagation) {
-    targetRect = new Rectangle$1(mouseTarget.clientX, mouseTarget.clientX, mouseTarget.clientY, mouseTarget.clientY);
-  } else if (left !== undefined && top !== undefined) {
-    targetRect = new Rectangle$1(left, left, top, top);
-  } else {
-    targetRect = _getRectangleFromElement(elementTarget);
-  }
-
-  return _getMaxHeightFromTargetRectangle(targetRect, targetEdge, gapSpace, boundingRectangle, coverTarget);
-}
-
-function _getBoundsFromTargetWindow(target, targetWindow) {
-  var segments = undefined;
-
-  if (targetWindow.getWindowSegments) {
-    segments = targetWindow.getWindowSegments();
-  } // Identify if we're dealing with single screen scenarios.
-
-
-  if (segments === undefined || segments.length <= 1) {
-    return {
-      top: 0,
-      left: 0,
-      right: targetWindow.innerWidth,
-      bottom: targetWindow.innerHeight,
-      width: targetWindow.innerWidth,
-      height: targetWindow.innerHeight
-    };
-  } // Logic for determining dual screen scenarios.
-
-
-  var x = 0;
-  var y = 0; // If the target is an Element get coordinates for its center.
-
-  if (target !== null && !!target.getBoundingClientRect) {
-    var clientRect = target.getBoundingClientRect();
-    x = (clientRect.left + clientRect.right) / 2;
-    y = (clientRect.top + clientRect.bottom) / 2;
-  } // If the target is not null get x-axis and y-axis coordinates directly.
-  else if (target !== null) {
-      // tslint:disable-next-line:deprecation
-      x = target.left || target.x; // tslint:disable-next-line:deprecation
-
-      y = target.top || target.y;
-    }
-
-  var bounds = {
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    width: 0,
-    height: 0
-  }; // Define which window segment are the coordinates in and calculate bounds based on that.
-
-  for (var _i = 0, segments_1 = segments; _i < segments_1.length; _i++) {
-    var segment = segments_1[_i];
-
-    if (x && segment.left <= x && segment.right >= x && y && segment.top <= y && segment.bottom >= y) {
-      bounds = {
-        top: segment.top,
-        left: segment.left,
-        right: segment.right,
-        bottom: segment.bottom,
-        width: segment.width,
-        height: segment.height
-      };
-    }
-  }
-
-  return bounds;
-}
-
-function getBoundsFromTargetWindow(target, targetWindow) {
-  return _getBoundsFromTargetWindow(target, targetWindow);
-}
-
-/**
- * This adds accessibility to Dialog and Panel controls
- */
-
-var Popup =
-/** @class */
-function (_super) {
-  __extends(Popup, _super);
-
-  function Popup(props) {
-    var _this = _super.call(this, props) || this;
-
-    _this._root = React.createRef();
-    _this._disposables = [];
-
-    _this._onKeyDown = function (ev) {
-      switch (ev.which) {
-        case KeyCodes.escape:
-          if (_this.props.onDismiss) {
-            _this.props.onDismiss(ev);
-
-            ev.preventDefault();
-            ev.stopPropagation();
-          }
-
-          break;
-      }
-    };
-
-    _this._onFocus = function () {
-      _this._containsFocus = true;
-    };
-
-    _this._onBlur = function (ev) {
-      /** The popup should update this._containsFocus when:
-       * relatedTarget exists AND
-       * the relatedTarget is not contained within the popup.
-       * If the relatedTarget is within the popup, that means the popup still has focus
-       * and focused moved from one element to another within the popup.
-       * If relatedTarget is undefined or null that usually means that a
-       * keyboard event occured and focus didn't change
-       */
-      if (_this._root.current && ev.relatedTarget && !elementContains(_this._root.current, ev.relatedTarget)) {
-        _this._containsFocus = false;
-      }
-    };
-
-    _this._async = new Async(_this);
-    _this.state = {
-      needsVerticalScrollBar: false
-    };
-    return _this;
-  } // tslint:disable-next-line function-name
-
-
-  Popup.prototype.UNSAFE_componentWillMount = function () {
-    this._originalFocusedElement = getDocument().activeElement;
-  };
-
-  Popup.prototype.componentDidMount = function () {
-    if (this._root.current) {
-      this._disposables.push(on(this._root.current, 'focus', this._onFocus, true), on(this._root.current, 'blur', this._onBlur, true));
-
-      var currentWindow = getWindow(this._root.current);
-
-      if (currentWindow) {
-        this._disposables.push(on(currentWindow, 'keydown', this._onKeyDown));
-      }
-
-      if (doesElementContainFocus(this._root.current)) {
-        this._containsFocus = true;
-      }
-    }
-
-    this._updateScrollBarAsync();
-  };
-
-  Popup.prototype.componentDidUpdate = function () {
-    this._updateScrollBarAsync();
-
-    this._async.dispose();
-  };
-
-  Popup.prototype.componentWillUnmount = function () {
-    this._disposables.forEach(function (dispose) {
-      return dispose();
-    }); // tslint:disable-next-line:deprecation
-
-
-    if (this.props.shouldRestoreFocus) {
-      var _a = this.props.onRestoreFocus,
-          onRestoreFocus = _a === void 0 ? defaultFocusRestorer : _a;
-      onRestoreFocus({
-        originalElement: this._originalFocusedElement,
-        containsFocus: this._containsFocus
-      });
-    } // De-reference DOM Node to avoid retainment via transpiled closure of _onKeyDown
-
-
-    delete this._originalFocusedElement;
-  };
-
-  Popup.prototype.render = function () {
-    var _a = this.props,
-        role = _a.role,
-        className = _a.className,
-        ariaLabel = _a.ariaLabel,
-        ariaLabelledBy = _a.ariaLabelledBy,
-        ariaDescribedBy = _a.ariaDescribedBy,
-        style = _a.style;
-    return React.createElement("div", __assign({
-      ref: this._root
-    }, getNativeProps(this.props, divProperties), {
-      className: className,
-      role: role,
-      "aria-label": ariaLabel,
-      "aria-labelledby": ariaLabelledBy,
-      "aria-describedby": ariaDescribedBy,
-      onKeyDown: this._onKeyDown,
-      style: __assign({
-        overflowY: this.state.needsVerticalScrollBar ? 'scroll' : undefined,
-        outline: 'none'
-      }, style)
-    }), this.props.children);
-  };
-
-  Popup.prototype._updateScrollBarAsync = function () {
-    var _this = this;
-
-    this._async.requestAnimationFrame(function () {
-      _this._getScrollBar();
-    });
-  };
-
-  Popup.prototype._getScrollBar = function () {
-    // If overflowY is overriden, don't waste time calculating whether the scrollbar is necessary.
-    if (this.props.style && this.props.style.overflowY) {
-      return;
-    }
-
-    var needsVerticalScrollBar = false;
-
-    if (this._root && this._root.current && this._root.current.firstElementChild) {
-      // ClientHeight returns the client height of an element rounded to an
-      // integer. On some browsers at different zoom levels this rounding
-      // can generate different results for the root container and child even
-      // though they are the same height. This causes us to show a scroll bar
-      // when not needed. Ideally we would use BoundingClientRect().height
-      // instead however seems that the API is 90% slower than using ClientHeight.
-      // Therefore instead we will calculate the difference between heights and
-      // allow for a 1px difference to still be considered ok and not show the
-      // scroll bar.
-      var rootHeight = this._root.current.clientHeight;
-      var firstChildHeight = this._root.current.firstElementChild.clientHeight;
-
-      if (rootHeight > 0 && firstChildHeight > rootHeight) {
-        needsVerticalScrollBar = firstChildHeight - rootHeight > 1;
-      }
-    }
-
-    if (this.state.needsVerticalScrollBar !== needsVerticalScrollBar) {
-      this.setState({
-        needsVerticalScrollBar: needsVerticalScrollBar
-      });
-    }
-  };
-
-  Popup.defaultProps = {
-    shouldRestoreFocus: true
-  };
-  return Popup;
-}(React.Component);
-
-function defaultFocusRestorer(options) {
-  var originalElement = options.originalElement,
-      containsFocus = options.containsFocus;
-
-  if (originalElement && containsFocus && originalElement !== window) {
-    originalElement.focus();
-  }
-}
-
-var _a$4;
-var ANIMATIONS = (_a$4 = {}, _a$4[RectangleEdge.top] = AnimationClassNames.slideUpIn10, _a$4[RectangleEdge.bottom] = AnimationClassNames.slideDownIn10, _a$4[RectangleEdge.left] = AnimationClassNames.slideLeftIn10, _a$4[RectangleEdge.right] = AnimationClassNames.slideRightIn10, _a$4);
-var getClassNames$3 = classNamesFunction({
-  disableCaching: true
+  IconType[IconType["Default"] = 100000] = "Default";
+  /**
+   * Deprecated, use `image`.
+   * @deprecated Use `image`.
+   */
+
+  IconType[IconType["Image"] = 100001] = "Image";
+})(IconType || (IconType = {}));
+
+/** Class names used in themeable and non-themeable Icon components */
+
+var classNames = mergeStyleSets({
+  root: {
+    display: 'inline-block'
+  },
+  placeholder: ['ms-Icon-placeHolder', {
+    width: '1em'
+  }],
+  image: ['ms-Icon-imageContainer', {
+    overflow: 'hidden'
+  }]
 });
-var BEAK_ORIGIN_POSITION = {
-  top: 0,
-  left: 0
-}; // Microsoft Edge will overwrite inline styles if there is an animation pertaining to that style.
-// To help ensure that edge will respect the offscreen style opacity
-// filter needs to be added as an additional way to set opacity.
+/** Class name used only in non-themeable Icon components */
 
-var OFF_SCREEN_STYLE = {
-  opacity: 0,
-  filter: 'opacity(0)'
-}; // role and role description go hand-in-hand. Both would be included by spreading getNativeProps for a basic element
-// This constant array can be used to filter these out of native props spread on callout root and apply them together on
-// calloutMain (the Popup component within the callout)
+var MS_ICON = 'ms-Icon';
+var getStyles$2 = function (props) {
+  var className = props.className,
+      iconClassName = props.iconClassName,
+      isPlaceholder = props.isPlaceholder,
+      isImage = props.isImage,
+      styles = props.styles;
+  return {
+    root: [isPlaceholder && classNames.placeholder, classNames.root, isImage && classNames.image, iconClassName, className, styles && styles.root, // tslint:disable-next-line:deprecation
+    styles && styles.imageContainer]
+  };
+};
 
-var ARIA_ROLE_ATTRIBUTES = ['role', 'aria-roledescription'];
+var getIconContent = memoizeFunction(function (iconName) {
+  var _a = getIcon(iconName) || {
+    subset: {},
+    code: undefined
+  },
+      code = _a.code,
+      subset = _a.subset;
 
-var CalloutContentBase =
-/** @class */
-function (_super) {
-  __extends(CalloutContentBase, _super);
-
-  function CalloutContentBase(props) {
-    var _this = _super.call(this, props) || this;
-
-    _this._hostElement = React.createRef();
-    _this._calloutElement = React.createRef();
-    _this._hasListeners = false;
-    _this._disposables = [];
-
-    _this.dismiss = function (ev) {
-      var onDismiss = _this.props.onDismiss;
-
-      if (onDismiss) {
-        onDismiss(ev);
-      }
-    };
-
-    _this._dismissOnScroll = function (ev) {
-      var preventDismissOnScroll = _this.props.preventDismissOnScroll;
-
-      if (_this.state.positions && !preventDismissOnScroll) {
-        _this._dismissOnClickOrScroll(ev);
-      }
-    };
-
-    _this._dismissOnResize = function (ev) {
-      var preventDismissOnResize = _this.props.preventDismissOnResize;
-
-      if (!preventDismissOnResize) {
-        _this.dismiss(ev);
-      }
-    };
-
-    _this._dismissOnLostFocus = function (ev) {
-      var preventDismissOnLostFocus = _this.props.preventDismissOnLostFocus;
-
-      if (!preventDismissOnLostFocus) {
-        _this._dismissOnClickOrScroll(ev);
-      }
-    };
-
-    _this._setInitialFocus = function () {
-      if (_this.props.setInitialFocus && !_this._didSetInitialFocus && _this.state.positions && _this._calloutElement.current) {
-        _this._didSetInitialFocus = true;
-
-        _this._async.requestAnimationFrame(function () {
-          return focusFirstChild(_this._calloutElement.current);
-        }, _this._calloutElement.current);
-      }
-    };
-
-    _this._onComponentDidMount = function () {
-      _this._addListeners();
-
-      if (_this.props.onLayerMounted) {
-        _this.props.onLayerMounted();
-      }
-
-      _this._updateAsyncPosition();
-
-      _this._setHeightOffsetEveryFrame();
-    };
-
-    _this._mouseDownOnPopup = function () {
-      _this._isMouseDownOnPopup = true;
-    };
-
-    _this._mouseUpOnPopup = function () {
-      _this._isMouseDownOnPopup = false;
-    };
-
-    _this._async = new Async(_this);
-    _this._didSetInitialFocus = false;
-    _this.state = {
-      positions: undefined,
-      slideDirectionalClassName: undefined,
-      // @TODO it looks like this is not even being used anymore.
-      calloutElementRect: undefined,
-      heightOffset: 0
-    };
-    _this._positionAttempts = 0;
-    return _this;
+  if (!code) {
+    return null;
   }
 
-  CalloutContentBase.prototype.componentDidUpdate = function () {
-    if (!this.props.hidden) {
-      this._setInitialFocus();
-
-      if (!this._hasListeners) {
-        this._addListeners();
-      }
-
-      this._updateAsyncPosition();
-    } else {
-      if (this._hasListeners) {
-        this._removeListeners();
-      }
-    }
-  };
-
-  CalloutContentBase.prototype.shouldComponentUpdate = function (newProps, newState) {
-    if (!newProps.shouldUpdateWhenHidden && this.props.hidden && newProps.hidden) {
-      // Do not update when hidden.
-      return false;
-    }
-
-    return !shallowCompare(this.props, newProps) || !shallowCompare(this.state, newState);
-  }; // tslint:disable-next-line function-name
-
-
-  CalloutContentBase.prototype.UNSAFE_componentWillMount = function () {
-    this._setTargetWindowAndElement(this._getTarget());
-  };
-
-  CalloutContentBase.prototype.componentWillUnmount = function () {
-    this._async.dispose();
-
-    this._disposables.forEach(function (dispose) {
-      return dispose();
-    });
-  }; // tslint:disable-next-line function-name
-
-
-  CalloutContentBase.prototype.UNSAFE_componentWillUpdate = function (newProps) {
-    // If the target element changed, find the new one. If we are tracking target with class name, always find element
-    // because we do not know if fabric has rendered a new element and disposed the old element.
-    var newTarget = this._getTarget(newProps);
-
-    var oldTarget = this._getTarget();
-
-    if ((newTarget !== oldTarget || typeof newTarget === 'string' || newTarget instanceof String) && !this._blockResetHeight) {
-      this._maxHeight = undefined;
-
-      this._setTargetWindowAndElement(newTarget);
-    }
-
-    if (newProps.gapSpace !== this.props.gapSpace || this.props.beakWidth !== newProps.beakWidth) {
-      this._maxHeight = undefined;
-    }
-
-    if (newProps.finalHeight !== this.props.finalHeight) {
-      this._setHeightOffsetEveryFrame();
-    } // Ensure positioning is recalculated when we are about to show a persisted menu.
-
-
-    if (this._didPositionPropsChange(newProps, this.props)) {
-      this._maxHeight = undefined; // Target might have been updated while hidden.
-
-      this._setTargetWindowAndElement(newTarget);
-
-      this.setState({
-        positions: undefined
-      });
-      this._didSetInitialFocus = false;
-      this._bounds = undefined;
-    }
-
-    this._blockResetHeight = false;
-  };
-
-  CalloutContentBase.prototype.componentDidMount = function () {
-    if (!this.props.hidden) {
-      this._onComponentDidMount();
-    }
-  };
-
-  CalloutContentBase.prototype.render = function () {
-    // If there is no target window then we are likely in server side rendering and we should not render anything.
-    if (!this._targetWindow) {
-      return null;
-    }
-
-    var target = this.props.target;
-    var _a = this.props,
-        styles = _a.styles,
-        style = _a.style,
-        ariaLabel = _a.ariaLabel,
-        ariaDescribedBy = _a.ariaDescribedBy,
-        ariaLabelledBy = _a.ariaLabelledBy,
-        className = _a.className,
-        isBeakVisible = _a.isBeakVisible,
-        children = _a.children,
-        beakWidth = _a.beakWidth,
-        calloutWidth = _a.calloutWidth,
-        calloutMaxWidth = _a.calloutMaxWidth,
-        finalHeight = _a.finalHeight,
-        _b = _a.hideOverflow,
-        hideOverflow = _b === void 0 ? !!finalHeight : _b,
-        backgroundColor = _a.backgroundColor,
-        calloutMaxHeight = _a.calloutMaxHeight,
-        onScroll = _a.onScroll,
-        // tslint:disable-next-line: deprecation
-    _c = _a.shouldRestoreFocus,
-        // tslint:disable-next-line: deprecation
-    shouldRestoreFocus = _c === void 0 ? true : _c;
-    target = this._getTarget();
-    var positions = this.state.positions;
-    var getContentMaxHeight = this._getMaxHeight() ? this._getMaxHeight() + this.state.heightOffset : undefined;
-    var contentMaxHeight = calloutMaxHeight && getContentMaxHeight && calloutMaxHeight < getContentMaxHeight ? calloutMaxHeight : getContentMaxHeight;
-    var overflowYHidden = hideOverflow;
-    var beakVisible = isBeakVisible && !!target;
-    this._classNames = getClassNames$3(styles, {
-      theme: this.props.theme,
-      className: className,
-      overflowYHidden: overflowYHidden,
-      calloutWidth: calloutWidth,
-      positions: positions,
-      beakWidth: beakWidth,
-      backgroundColor: backgroundColor,
-      calloutMaxWidth: calloutMaxWidth
-    });
-
-    var overflowStyle = __assign(__assign(__assign({}, style), {
-      maxHeight: contentMaxHeight
-    }), overflowYHidden && {
-      overflowY: 'hidden'
-    });
-
-    var visibilityStyle = this.props.hidden ? {
-      visibility: 'hidden'
-    } : undefined; // React.CSSProperties does not understand IRawStyle, so the inline animations will need to be cast as any for now.
-
-    var content = React.createElement("div", {
-      ref: this._hostElement,
-      className: this._classNames.container,
-      style: visibilityStyle
-    }, React.createElement("div", __assign({}, getNativeProps(this.props, divProperties, ARIA_ROLE_ATTRIBUTES), {
-      className: css(this._classNames.root, positions && positions.targetEdge && ANIMATIONS[positions.targetEdge]),
-      style: positions ? positions.elementPosition : OFF_SCREEN_STYLE,
-      // Safari and Firefox on Mac OS requires this to back-stop click events so focus remains in the Callout.
-      // See https://developer.mozilla.org/en-US/docs/Web/HTML/Element/button#Clicking_and_focus
-      tabIndex: -1,
-      ref: this._calloutElement
-    }), beakVisible && React.createElement("div", {
-      className: this._classNames.beak,
-      style: this._getBeakPosition()
-    }), beakVisible && React.createElement("div", {
-      className: this._classNames.beakCurtain
-    }), React.createElement(Popup, __assign({}, getNativeProps(this.props, ARIA_ROLE_ATTRIBUTES), {
-      ariaLabel: ariaLabel,
-      onRestoreFocus: this.props.onRestoreFocus,
-      ariaDescribedBy: ariaDescribedBy,
-      ariaLabelledBy: ariaLabelledBy,
-      className: this._classNames.calloutMain,
-      onDismiss: this.dismiss,
-      onScroll: onScroll,
-      shouldRestoreFocus: shouldRestoreFocus,
-      style: overflowStyle,
-      onMouseDown: this._mouseDownOnPopup,
-      onMouseUp: this._mouseUpOnPopup
-    }), children)));
-    return content;
-  };
-
-  CalloutContentBase.prototype._dismissOnClickOrScroll = function (ev) {
-    var target = ev.target;
-    var isEventTargetOutsideCallout = this._hostElement.current && !elementContains(this._hostElement.current, target); // If mouse is pressed down on callout but moved outside then released, don't dismiss the callout.
-
-    if (isEventTargetOutsideCallout && this._isMouseDownOnPopup) {
-      this._isMouseDownOnPopup = false;
-      return;
-    }
-
-    if (!this._target && isEventTargetOutsideCallout || ev.target !== this._targetWindow && isEventTargetOutsideCallout && (this._target.stopPropagation || !this._target || target !== this._target && !elementContains(this._target, target))) {
-      this.dismiss(ev);
-    }
-  };
-
-  CalloutContentBase.prototype._addListeners = function () {
-    var _this = this; // This is added so the callout will dismiss when the window is scrolled
-    // but not when something inside the callout is scrolled. The delay seems
-    // to be required to avoid React firing an async focus event in IE from
-    // the target changing focus quickly prior to rendering the callout.
-
-
-    this._async.setTimeout(function () {
-      _this._disposables.push(on(_this._targetWindow, 'scroll', _this._dismissOnScroll, true), on(_this._targetWindow, 'resize', _this._dismissOnResize, true), on(_this._targetWindow.document.documentElement, 'focus', _this._dismissOnLostFocus, true), on(_this._targetWindow.document.documentElement, 'click', _this._dismissOnLostFocus, true));
-
-      _this._hasListeners = true;
-    }, 0);
-  };
-
-  CalloutContentBase.prototype._removeListeners = function () {
-    this._disposables.forEach(function (dispose) {
-      return dispose();
-    });
-
-    this._disposables = [];
-    this._hasListeners = false;
-  };
-
-  CalloutContentBase.prototype._updateAsyncPosition = function () {
-    var _this = this;
-
-    this._async.requestAnimationFrame(function () {
-      return _this._updatePosition();
-    }, this._calloutElement.current);
-  };
-
-  CalloutContentBase.prototype._getBeakPosition = function () {
-    var positions = this.state.positions;
-
-    var beakPostionStyle = __assign({}, positions && positions.beakPosition ? positions.beakPosition.elementPosition : null);
-
-    if (!beakPostionStyle.top && !beakPostionStyle.bottom && !beakPostionStyle.left && !beakPostionStyle.right) {
-      beakPostionStyle.left = BEAK_ORIGIN_POSITION.left;
-      beakPostionStyle.top = BEAK_ORIGIN_POSITION.top;
-    }
-
-    return beakPostionStyle;
-  };
-
-  CalloutContentBase.prototype._updatePosition = function () {
-    // Try to update the target, page might have changed
-    this._setTargetWindowAndElement(this._getTarget());
-
-    var positions = this.state.positions;
-    var hostElement = this._hostElement.current;
-    var calloutElement = this._calloutElement.current; // If we expect a target element to position against, we need to wait until `this._target` is resolved. Otherwise
-    // we can try to position.
-
-    var expectsTarget = !!this.props.target;
-
-    if (hostElement && calloutElement && (!expectsTarget || this._target)) {
-      var currentProps = void 0;
-      currentProps = assign(currentProps, this.props);
-      currentProps.bounds = this._getBounds();
-      currentProps.target = this._target; // If there is a finalHeight given then we assume that the user knows and will handle
-      // additional positioning adjustments so we should call positionCard
-
-      var newPositions = this.props.finalHeight ? positionCard(currentProps, hostElement, calloutElement, positions) : positionCallout(currentProps, hostElement, calloutElement, positions); // Set the new position only when the positions are not exists or one of the new callout positions are different.
-      // The position should not change if the position is within 2 decimal places.
-
-      if (!positions && newPositions || positions && newPositions && !this._arePositionsEqual(positions, newPositions) && this._positionAttempts < 5) {
-        // We should not reposition the callout more than a few times, if it is then the content is likely resizing
-        // and we should stop trying to reposition to prevent a stack overflow.
-        this._positionAttempts++;
-        this.setState({
-          positions: newPositions
-        });
-      } else if (this._positionAttempts > 0) {
-        // Only call the onPositioned callback if the callout has been re-positioned at least once.
-        this._positionAttempts = 0;
-
-        if (this.props.onPositioned) {
-          this.props.onPositioned(this.state.positions);
-        }
-      }
-    }
-  };
-
-  CalloutContentBase.prototype._getBounds = function () {
-    if (!this._bounds) {
-      var bounds = this.props.bounds;
-      var currentBounds = typeof bounds === 'function' ? bounds(this.props.target, this._targetWindow) : bounds;
-
-      if (!currentBounds) {
-        currentBounds = getBoundsFromTargetWindow(this._target, this._targetWindow);
-        currentBounds = {
-          top: currentBounds.top + this.props.minPagePadding,
-          left: currentBounds.left + this.props.minPagePadding,
-          right: currentBounds.right - this.props.minPagePadding,
-          bottom: currentBounds.bottom - this.props.minPagePadding,
-          width: currentBounds.width - this.props.minPagePadding * 2,
-          height: currentBounds.height - this.props.minPagePadding * 2
-        };
-      }
-
-      this._bounds = currentBounds;
-    }
-
-    return this._bounds;
-  }; // Max height should remain as synchronous as possible, which is why it is not done using set state.
-  // It needs to be synchronous since it will impact the ultimate position of the callout.
-
-
-  CalloutContentBase.prototype._getMaxHeight = function () {
-    var _this = this;
-
-    if (!this._maxHeight) {
-      if (this.props.directionalHintFixed && this._target) {
-        var beakWidth = this.props.isBeakVisible ? this.props.beakWidth : 0;
-        var gapSpace = this.props.gapSpace ? this.props.gapSpace : 0; // Since the callout cannot measure it's border size it must be taken into account here. Otherwise it will
-        // overlap with the target.
-
-        var totalGap_1 = gapSpace + beakWidth;
-
-        this._async.requestAnimationFrame(function () {
-          if (_this._target) {
-            _this._maxHeight = getMaxHeight(_this._target, _this.props.directionalHint, totalGap_1, _this._getBounds(), _this.props.coverTarget);
-            _this._blockResetHeight = true;
-
-            _this.forceUpdate();
-          }
-        }, this._target);
-      } else {
-        this._maxHeight = this._getBounds().height;
-      }
-    }
-
-    return this._maxHeight;
-  };
-
-  CalloutContentBase.prototype._arePositionsEqual = function (positions, newPosition) {
-    return this._comparePositions(positions.elementPosition, newPosition.elementPosition) && this._comparePositions(positions.beakPosition.elementPosition, newPosition.beakPosition.elementPosition);
-  };
-
-  CalloutContentBase.prototype._comparePositions = function (oldPositions, newPositions) {
-    for (var key in newPositions) {
-      if (newPositions.hasOwnProperty(key)) {
-        var oldPositionEdge = oldPositions[key];
-        var newPositionEdge = newPositions[key];
-
-        if (oldPositionEdge !== undefined && newPositionEdge !== undefined) {
-          if (oldPositionEdge.toFixed(2) !== newPositionEdge.toFixed(2)) {
-            return false;
-          }
-        } else {
-          return false;
-        }
-      }
-    }
-
-    return true;
-  };
-
-  CalloutContentBase.prototype._setTargetWindowAndElement = function (target) {
-    var currentElement = this._calloutElement.current;
-
-    if (target) {
-      if (typeof target === 'string') {
-        var currentDoc = getDocument(currentElement);
-        this._target = currentDoc ? currentDoc.querySelector(target) : null;
-        this._targetWindow = getWindow(currentElement);
-      } else if (!!target.stopPropagation) {
-        this._targetWindow = getWindow(target.target);
-        this._target = target;
-      } else if (!!target.getBoundingClientRect) {
-        var targetElement = target;
-        this._targetWindow = getWindow(targetElement);
-        this._target = target;
-      } else if (target.current !== undefined) {
-        this._target = target.current;
-        this._targetWindow = getWindow(this._target); // HTMLImgElements can have x and y values. The check for it being a point must go last.
-      } else {
-        this._targetWindow = getWindow(currentElement);
-        this._target = target;
-      }
-    } else {
-      this._targetWindow = getWindow(currentElement);
-    }
-  };
-
-  CalloutContentBase.prototype._setHeightOffsetEveryFrame = function () {
-    var _this = this;
-
-    if (this._calloutElement.current && this.props.finalHeight) {
-      this._setHeightOffsetTimer = this._async.requestAnimationFrame(function () {
-        var calloutMainElem = _this._calloutElement.current && _this._calloutElement.current.lastChild;
-
-        if (!calloutMainElem) {
-          return;
-        }
-
-        var cardScrollHeight = calloutMainElem.scrollHeight;
-        var cardCurrHeight = calloutMainElem.offsetHeight;
-        var scrollDiff = cardScrollHeight - cardCurrHeight;
-
-        _this.setState({
-          heightOffset: _this.state.heightOffset + scrollDiff
-        });
-
-        if (calloutMainElem.offsetHeight < _this.props.finalHeight) {
-          _this._setHeightOffsetEveryFrame();
-        } else {
-          _this._async.cancelAnimationFrame(_this._setHeightOffsetTimer, _this._calloutElement.current);
-        }
-      }, this._calloutElement.current);
-    }
-  }; // Whether or not the current positions should be reset
-
-
-  CalloutContentBase.prototype._didPositionPropsChange = function (newProps, oldProps) {
-    return !newProps.hidden && newProps.hidden !== oldProps.hidden || newProps.directionalHint !== oldProps.directionalHint;
-  };
-
-  CalloutContentBase.prototype._getTarget = function (props) {
-    if (props === void 0) {
-      props = this.props;
-    }
-
-    var target = props.target;
-    return target;
-  };
-
-  CalloutContentBase.defaultProps = {
-    preventDismissOnLostFocus: false,
-    preventDismissOnScroll: false,
-    preventDismissOnResize: false,
-    isBeakVisible: true,
-    beakWidth: 16,
-    gapSpace: 0,
-    minPagePadding: 8,
-    directionalHint: DirectionalHint.bottomAutoEdge
-  };
-  return CalloutContentBase;
-}(React.Component);
-
-function getBeakStyle(beakWidth) {
   return {
-    height: beakWidth,
-    width: beakWidth
+    children: code,
+    iconClassName: subset.className,
+    fontFamily: subset.fontFace && subset.fontFace.fontFamily
   };
-}
+}, undefined, true
+/*ignoreNullOrUndefinedResult */
+);
+/**
+ * Fast icon component which only supports font glyphs (not images) and can't be targeted by customizations.
+ * To style the icon, use `className` or reference `ms-Icon` in CSS.
+ * {@docCategory Icon}
+ */
 
-var GlobalClassNames$1 = {
-  container: 'ms-Callout-container',
-  root: 'ms-Callout',
-  beak: 'ms-Callout-beak',
-  beakCurtain: 'ms-Callout-beakCurtain',
-  calloutMain: 'ms-Callout-main'
-};
-var getStyles$3 = function (props) {
-  var _a;
-
-  var theme = props.theme,
+var FontIcon = function (props) {
+  var iconName = props.iconName,
       className = props.className,
-      overflowYHidden = props.overflowYHidden,
-      calloutWidth = props.calloutWidth,
-      beakWidth = props.beakWidth,
-      backgroundColor = props.backgroundColor,
-      calloutMaxWidth = props.calloutMaxWidth;
-  var classNames = getGlobalClassNames(GlobalClassNames$1, theme);
-  var semanticColors = theme.semanticColors,
-      effects = theme.effects;
-  return {
-    container: [classNames.container, {
-      position: 'relative'
-    }],
-    root: [classNames.root, theme.fonts.medium, {
-      position: 'absolute',
-      boxSizing: 'border-box',
-      borderRadius: effects.roundedCorner2,
-      boxShadow: effects.elevation16,
-      selectors: (_a = {}, _a[HighContrastSelector] = {
-        borderWidth: 1,
-        borderStyle: 'solid',
-        borderColor: 'WindowText'
-      }, _a)
-    }, focusClear(), className, !!calloutWidth && {
-      width: calloutWidth
-    }, !!calloutMaxWidth && {
-      maxWidth: calloutMaxWidth
-    }],
-    beak: [classNames.beak, {
-      position: 'absolute',
-      backgroundColor: semanticColors.menuBackground,
-      boxShadow: 'inherit',
-      border: 'inherit',
-      boxSizing: 'border-box',
-      transform: 'rotate(45deg)'
-    }, getBeakStyle(beakWidth), backgroundColor && {
-      backgroundColor: backgroundColor
-    }],
-    beakCurtain: [classNames.beakCurtain, {
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
-      backgroundColor: semanticColors.menuBackground,
-      borderRadius: effects.roundedCorner2
-    }],
-    calloutMain: [classNames.calloutMain, {
-      backgroundColor: semanticColors.menuBackground,
-      overflowX: 'hidden',
-      overflowY: 'auto',
-      position: 'relative',
-      borderRadius: effects.roundedCorner2
-    }, overflowYHidden && {
-      overflowY: 'hidden'
-    }, backgroundColor && {
-      backgroundColor: backgroundColor
-    }]
+      _a = props.style,
+      style = _a === void 0 ? {} : _a;
+  var iconContent = getIconContent(iconName) || {};
+  var iconClassName = iconContent.iconClassName,
+      children = iconContent.children,
+      fontFamily = iconContent.fontFamily;
+  var nativeProps = getNativeProps(props, htmlElementProperties);
+  var containerProps = props['aria-label'] ? {} : {
+    role: 'presentation',
+    'aria-hidden': true
   };
+  return React.createElement("i", __assign({
+    "data-icon-name": iconName
+  }, containerProps, nativeProps, {
+    className: css(MS_ICON, classNames.root, iconClassName, !iconName && classNames.placeholder, className),
+    // Apply the font family this way to ensure it doesn't get overridden by Fabric Core ms-Icon styles
+    // https://github.com/microsoft/fluentui/issues/10449
+    style: __assign({
+      fontFamily: fontFamily
+    }, style)
+  }), children);
 };
+/**
+ * Memoized helper for rendering a FontIcon.
+ * @param iconName - The name of the icon to use from the icon font.
+ * @param className - Class name for styling the icon.
+ * @param ariaLabel - Label for the icon for the benefit of screen readers.
+ * {@docCategory Icon}
+ */
 
-var CalloutContent = styled(CalloutContentBase, getStyles$3, undefined, {
-  scope: 'CalloutContent'
+var getFontIcon = memoizeFunction(function (iconName, className, ariaLabel) {
+  return FontIcon({
+    iconName: iconName,
+    className: className,
+    'aria-label': ariaLabel
+  });
 });
+
+var getClassNames$2 = classNamesFunction({
+  // Icon is used a lot by other components.
+  // It's likely to see expected cases which pass different className to the Icon.
+  // Therefore setting a larger cache size.
+  cacheSize: 100
+});
+
+var IconBase =
+/** @class */
+function (_super) {
+  __extends(IconBase, _super);
+
+  function IconBase(props) {
+    var _this = _super.call(this, props) || this;
+
+    _this.onImageLoadingStateChange = function (state) {
+      if (_this.props.imageProps && _this.props.imageProps.onLoadingStateChange) {
+        _this.props.imageProps.onLoadingStateChange(state);
+      }
+
+      if (state === ImageLoadState.error) {
+        _this.setState({
+          imageLoadError: true
+        });
+      }
+    };
+
+    _this.state = {
+      imageLoadError: false
+    };
+    return _this;
+  }
+
+  IconBase.prototype.render = function () {
+    var _a = this.props,
+        className = _a.className,
+        styles = _a.styles,
+        iconName = _a.iconName,
+        imageErrorAs = _a.imageErrorAs,
+        theme = _a.theme;
+    var isPlaceholder = typeof iconName === 'string' && iconName.length === 0;
+    var isImage = // tslint:disable-next-line:deprecation
+    !!this.props.imageProps || this.props.iconType === IconType.image || this.props.iconType === IconType.Image;
+    var iconContent = getIconContent(iconName) || {};
+    var iconClassName = iconContent.iconClassName,
+        children = iconContent.children;
+    var classNames = getClassNames$2(styles, {
+      theme: theme,
+      className: className,
+      iconClassName: iconClassName,
+      isImage: isImage,
+      isPlaceholder: isPlaceholder
+    });
+    var RootType = isImage ? 'span' : 'i';
+    var nativeProps = getNativeProps(this.props, htmlElementProperties, ['aria-label']);
+    var imageLoadError = this.state.imageLoadError;
+
+    var imageProps = __assign(__assign({}, this.props.imageProps), {
+      onLoadingStateChange: this.onImageLoadingStateChange
+    });
+
+    var ImageType = imageLoadError && imageErrorAs || Image; // tslint:disable-next-line:deprecation
+
+    var ariaLabel = this.props['aria-label'] || this.props.ariaLabel;
+    var containerProps = ariaLabel ? {
+      'aria-label': ariaLabel
+    } : {
+      'aria-hidden': this.props['aria-labelledby'] || imageProps['aria-labelledby'] ? false : true
+    };
+    return React.createElement(RootType, __assign({
+      "data-icon-name": iconName
+    }, containerProps, nativeProps, {
+      className: classNames.root
+    }), isImage ? React.createElement(ImageType, __assign({}, imageProps)) : children);
+  };
+
+  return IconBase;
+}(React.Component);
+
+/**
+ * Legacy Icon component which can be targeted by customization. It's recommended to use `FontIcon`
+ * or `ImageIcon` instead, especially in scenarios where rendering performance is important.
+ * {@docCategory Icon}
+ */
+
+var Icon = styled(IconBase, getStyles$2, undefined, {
+  scope: 'Icon'
+}, true);
 
 var inheritFont = {
   fontFamily: 'inherit'
@@ -9651,7 +12480,7 @@ var GlobalClassNames$2 = {
   root: 'ms-Fabric',
   bodyThemed: 'ms-Fabric-bodyThemed'
 };
-var getStyles$4 = function (props) {
+var getStyles$3 = function (props) {
   var theme = props.theme,
       className = props.className,
       applyTheme = props.applyTheme;
@@ -9675,7 +12504,7 @@ var getStyles$4 = function (props) {
   };
 };
 
-var getClassNames$4 = classNamesFunction();
+var getClassNames$3 = classNamesFunction();
 var getFabricTheme = memoizeFunction(function (theme, isRTL) {
   return createTheme(__assign(__assign({}, theme), {
     rtl: isRTL
@@ -9760,7 +12589,7 @@ function (_super) {
         className = _a.className,
         theme = _a.theme,
         applyTheme = _a.applyTheme;
-    var classNames = getClassNames$4(getStyles$4, {
+    var classNames = getClassNames$3(getStyles$3, {
       theme: theme,
       applyTheme: applyTheme,
       className: className
@@ -9787,7 +12616,7 @@ function (_super) {
   return FabricBase;
 }(React.Component);
 
-var Fabric = styled(FabricBase, getStyles$4, undefined, {
+var Fabric = styled(FabricBase, getStyles$3, undefined, {
   scope: 'Fabric'
 });
 
@@ -9835,7 +12664,7 @@ function getDefaultTarget() {
   return _defaultHostSelector;
 }
 
-var getClassNames$5 = classNamesFunction();
+var getClassNames$4 = classNamesFunction();
 
 var LayerBase =
 /** @class */
@@ -9961,7 +12790,7 @@ function (_super) {
         className = _a.className,
         styles = _a.styles,
         theme = _a.theme;
-    var classNames = getClassNames$5(styles, {
+    var classNames = getClassNames$4(styles, {
       theme: theme,
       className: className,
       isNotHost: !this.props.hostId
@@ -10024,7 +12853,7 @@ var GlobalClassNames$3 = {
   rootNoHost: 'ms-Layer--fixed',
   content: 'ms-Layer-content'
 };
-var getStyles$5 = function (props) {
+var getStyles$4 = function (props) {
   var className = props.className,
       isNotHost = props.isNotHost,
       theme = props.theme;
@@ -10045,4516 +12874,7079 @@ var getStyles$5 = function (props) {
   };
 };
 
-var Layer = styled(LayerBase, getStyles$5, undefined, {
+var Layer = styled(LayerBase, getStyles$4, undefined, {
   scope: 'Layer',
   fields: ['hostId', 'theme', 'styles']
 });
 
-var Callout =
+var SPACER_WIDTH = 36;
+var GroupSpacer = function (props) {
+  var count = props.count,
+      _a = props.indentWidth,
+      indentWidth = _a === void 0 ? SPACER_WIDTH : _a;
+  var width = count * indentWidth;
+  return count > 0 ? React.createElement("span", {
+    className: 'ms-GroupSpacer',
+    style: {
+      display: 'inline-block',
+      width: width
+    }
+  }) : null;
+};
+
+var GlobalClassNames$4 = {
+  root: 'ms-GroupedList',
+  compact: 'ms-GroupedList--Compact',
+  group: 'ms-GroupedList-group',
+  link: 'ms-Link',
+  listCell: 'ms-List-cell'
+};
+var beziers = {
+  easeInOutSine: 'cubic-bezier(0.445, 0.050, 0.550, 0.950)'
+};
+var getStyles$5 = function (props) {
+  var _a, _b;
+
+  var theme = props.theme,
+      className = props.className,
+      compact = props.compact;
+  var palette = theme.palette;
+  var classNames = getGlobalClassNames(GlobalClassNames$4, theme);
+  return {
+    root: [classNames.root, theme.fonts.small, {
+      position: 'relative',
+      selectors: (_a = {}, _a["." + classNames.listCell] = {
+        minHeight: 38
+      }, _a)
+    }, compact && [classNames.compact, {
+      selectors: (_b = {}, _b["." + classNames.listCell] = {
+        minHeight: 32
+      }, _b)
+    }], className],
+    group: [classNames.group, {
+      transition: "background-color " + AnimationVariables.durationValue2 + " " + beziers.easeInOutSine
+    }],
+    groupIsDropping: {
+      backgroundColor: palette.neutralLight
+    }
+  };
+};
+
+var DetailsRowGlobalClassNames = {
+  root: 'ms-DetailsRow',
+  // TODO: in Fabric 7.0 lowercase the 'Compact' for consistency across other components.
+  compact: 'ms-DetailsList--Compact',
+  cell: 'ms-DetailsRow-cell',
+  cellAnimation: 'ms-DetailsRow-cellAnimation',
+  cellCheck: 'ms-DetailsRow-cellCheck',
+  check: 'ms-DetailsRow-check',
+  cellMeasurer: 'ms-DetailsRow-cellMeasurer',
+  listCellFirstChild: 'ms-List-cell:first-child',
+  isContentUnselectable: 'is-contentUnselectable',
+  isSelected: 'is-selected',
+  isCheckVisible: 'is-check-visible',
+  isRowHeader: 'is-row-header',
+  fields: 'ms-DetailsRow-fields'
+};
+var IsFocusableSelector = "[data-is-focusable='true']";
+var DEFAULT_CELL_STYLE_PROPS = {
+  cellLeftPadding: 12,
+  cellRightPadding: 8,
+  cellExtraRightPadding: 24
+}; // Source of default row heights to share.
+
+var DEFAULT_ROW_HEIGHTS = {
+  rowHeight: 42,
+  compactRowHeight: 32
+}; // Constant values
+
+var values = __assign(__assign({}, DEFAULT_ROW_HEIGHTS), {
+  rowVerticalPadding: 11,
+  compactRowVerticalPadding: 6
+});
+
+var getStyles$6 = function (props) {
+  var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m;
+
+  var theme = props.theme,
+      isSelected = props.isSelected,
+      canSelect = props.canSelect,
+      droppingClassName = props.droppingClassName,
+      anySelected = props.anySelected,
+      isCheckVisible = props.isCheckVisible,
+      checkboxCellClassName = props.checkboxCellClassName,
+      compact = props.compact,
+      className = props.className,
+      _o = props.cellStyleProps,
+      cellStyleProps = _o === void 0 ? DEFAULT_CELL_STYLE_PROPS : _o,
+      enableUpdateAnimations = props.enableUpdateAnimations;
+  var palette = theme.palette,
+      fonts = theme.fonts;
+  var neutralPrimary = palette.neutralPrimary,
+      white = palette.white,
+      neutralSecondary = palette.neutralSecondary,
+      neutralLighter = palette.neutralLighter,
+      neutralLight = palette.neutralLight,
+      neutralDark = palette.neutralDark,
+      neutralQuaternaryAlt = palette.neutralQuaternaryAlt;
+  var focusBorder = theme.semanticColors.focusBorder;
+  var classNames = getGlobalClassNames(DetailsRowGlobalClassNames, theme);
+  var colors = {
+    // Default
+    defaultHeaderText: neutralPrimary,
+    defaultMetaText: neutralSecondary,
+    defaultBackground: white,
+    // Default Hover
+    defaultHoverHeaderText: neutralDark,
+    defaultHoverMetaText: neutralPrimary,
+    defaultHoverBackground: neutralLighter,
+    // Selected
+    selectedHeaderText: neutralDark,
+    selectedMetaText: neutralPrimary,
+    selectedBackground: neutralLight,
+    // Selected Hover
+    selectedHoverHeaderText: neutralDark,
+    selectedHoverMetaText: neutralPrimary,
+    selectedHoverBackground: neutralQuaternaryAlt,
+    // Focus
+    focusHeaderText: neutralDark,
+    focusMetaText: neutralPrimary,
+    focusBackground: neutralLight,
+    focusHoverBackground: neutralQuaternaryAlt
+  }; // Selected row styles
+
+  var selectedStyles = [getFocusStyle(theme, {
+    inset: -1,
+    borderColor: focusBorder,
+    outlineColor: white
+  }), classNames.isSelected, {
+    color: colors.selectedMetaText,
+    background: colors.selectedBackground,
+    borderBottom: "1px solid " + white,
+    selectors: (_a = {
+      '&:before': {
+        position: 'absolute',
+        display: 'block',
+        top: -1,
+        height: 1,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        content: '',
+        borderTop: "1px solid " + white
+      },
+      // Selected State hover
+      '&:hover': {
+        background: colors.selectedHoverBackground,
+        color: colors.selectedHoverMetaText,
+        selectors: (_b = {}, // Selected State hover meta cell
+        _b["." + classNames.cell + " " + HighContrastSelector] = {
+          color: 'HighlightText',
+          selectors: {
+            '> a': {
+              color: 'HighlightText'
+            }
+          }
+        }, // Selected State hover Header cell
+        _b["." + classNames.isRowHeader] = {
+          color: colors.selectedHoverHeaderText,
+          selectors: (_c = {}, _c[HighContrastSelector] = {
+            color: 'HighlightText'
+          }, _c)
+        }, // Ensure high-contrast mode overrides default hover background
+        _b[HighContrastSelector] = {
+          background: 'Highlight'
+        }, _b)
+      },
+      // Focus state
+      '&:focus': {
+        background: colors.focusBackground,
+        selectors: (_d = {}, // Selected State hover meta cell
+        _d["." + classNames.cell] = {
+          color: colors.focusMetaText,
+          selectors: (_e = {}, _e[HighContrastSelector] = {
+            color: 'HighlightText',
+            selectors: {
+              '> a': {
+                color: 'HighlightText'
+              }
+            }
+          }, _e)
+        }, // Row header cell
+        _d["." + classNames.isRowHeader] = {
+          color: colors.focusHeaderText,
+          selectors: (_f = {}, _f[HighContrastSelector] = {
+            color: 'HighlightText'
+          }, _f)
+        }, // Ensure high-contrast mode overrides default focus background
+        _d[HighContrastSelector] = {
+          background: 'Highlight'
+        }, _d)
+      }
+    }, _a[HighContrastSelector] = {
+      background: 'Highlight',
+      color: 'HighlightText',
+      MsHighContrastAdjust: 'none',
+      selectors: {
+        a: {
+          color: 'HighlightText'
+        }
+      }
+    }, // Focus and hover state
+    _a['&:focus:hover'] = {
+      background: colors.focusHoverBackground
+    }, _a)
+  }];
+  var cannotSelectStyles = [classNames.isContentUnselectable, {
+    userSelect: 'none',
+    cursor: 'default'
+  }];
+  var rootCompactStyles = {
+    minHeight: values.compactRowHeight,
+    border: 0
+  };
+  var cellCompactStyles = {
+    minHeight: values.compactRowHeight,
+    paddingTop: values.compactRowVerticalPadding,
+    paddingBottom: values.compactRowVerticalPadding,
+    paddingLeft: cellStyleProps.cellLeftPadding + "px"
+  };
+  var defaultCellStyles = [getFocusStyle(theme, {
+    inset: -1
+  }), classNames.cell, {
+    display: 'inline-block',
+    position: 'relative',
+    boxSizing: 'border-box',
+    minHeight: values.rowHeight,
+    verticalAlign: 'top',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    paddingTop: values.rowVerticalPadding,
+    paddingBottom: values.rowVerticalPadding,
+    paddingLeft: cellStyleProps.cellLeftPadding + "px",
+    selectors: (_g = {
+      '& > button': {
+        maxWidth: '100%'
+      }
+    }, _g[IsFocusableSelector] = getFocusStyle(theme, {
+      inset: -1,
+      borderColor: neutralSecondary,
+      outlineColor: white
+    }), _g)
+  }, isSelected && {
+    selectors: (_h = {}, _h[HighContrastSelector] = {
+      background: 'Highlight',
+      color: 'HighlightText',
+      MsHighContrastAdjust: 'none',
+      selectors: {
+        a: {
+          color: 'HighlightText'
+        }
+      }
+    }, _h)
+  }, compact && cellCompactStyles];
+  return {
+    root: [classNames.root, AnimationClassNames.fadeIn400, droppingClassName, theme.fonts.small, isCheckVisible && classNames.isCheckVisible, getFocusStyle(theme, {
+      borderColor: focusBorder,
+      outlineColor: white
+    }), {
+      borderBottom: "1px solid " + neutralLighter,
+      background: colors.defaultBackground,
+      color: colors.defaultMetaText,
+      // This ensures that the row always tries to consume is minimum width and does not compress.
+      display: 'inline-flex',
+      minWidth: '100%',
+      minHeight: values.rowHeight,
+      whiteSpace: 'nowrap',
+      padding: 0,
+      boxSizing: 'border-box',
+      verticalAlign: 'top',
+      textAlign: 'left',
+      selectors: (_j = {}, _j["." + classNames.listCellFirstChild + " &:before"] = {
+        display: 'none'
+      }, _j['&:hover'] = {
+        background: colors.defaultHoverBackground,
+        color: colors.defaultHoverMetaText,
+        selectors: (_k = {}, _k["." + classNames.isRowHeader] = {
+          color: colors.defaultHoverHeaderText
+        }, _k)
+      }, _j["&:hover ." + classNames.check] = {
+        opacity: 1
+      }, _j["." + IsFocusVisibleClassName + " &:focus ." + classNames.check] = {
+        opacity: 1
+      }, _j)
+    }, isSelected && selectedStyles, !canSelect && cannotSelectStyles, compact && rootCompactStyles, className],
+    cellUnpadded: {
+      paddingRight: cellStyleProps.cellRightPadding + "px"
+    },
+    cellPadded: {
+      paddingRight: cellStyleProps.cellExtraRightPadding + cellStyleProps.cellRightPadding + "px",
+      selectors: (_l = {}, _l["&." + classNames.cellCheck] = {
+        paddingRight: 0
+      }, _l)
+    },
+    cell: defaultCellStyles,
+    cellAnimation: enableUpdateAnimations && AnimationStyles.slideLeftIn40,
+    cellMeasurer: [classNames.cellMeasurer, {
+      overflow: 'visible',
+      whiteSpace: 'nowrap'
+    }],
+    checkCell: [defaultCellStyles, classNames.cellCheck, checkboxCellClassName, {
+      padding: 0,
+      // Ensure that the check cell covers the top border of the cell.
+      // This ensures the click target does not leave a spot which would
+      // cause other items to be deselected.
+      paddingTop: 1,
+      marginTop: -1,
+      flexShrink: 0
+    }],
+    checkCover: {
+      position: 'absolute',
+      top: -1,
+      left: 0,
+      bottom: 0,
+      right: 0,
+      display: anySelected ? 'block' : 'none'
+    },
+    fields: [classNames.fields, {
+      display: 'flex',
+      alignItems: 'stretch'
+    }],
+    isRowHeader: [classNames.isRowHeader, {
+      color: colors.defaultHeaderText,
+      fontSize: fonts.medium.fontSize
+    }, isSelected && {
+      color: colors.selectedHeaderText,
+      fontWeight: FontWeights.semibold,
+      selectors: (_m = {}, _m[HighContrastSelector] = {
+        color: 'HighlightText'
+      }, _m)
+    }],
+    isMultiline: [defaultCellStyles, {
+      whiteSpace: 'normal',
+      wordBreak: 'break-word',
+      textOverflow: 'clip'
+    }],
+    check: [classNames.check]
+  };
+};
+
+var GlobalClassNames$5 = {
+  tooltipHost: 'ms-TooltipHost',
+  root: 'ms-DetailsHeader',
+  cell: 'ms-DetailsHeader-cell',
+  cellIsCheck: 'ms-DetailsHeader-cellIsCheck',
+  collapseButton: 'ms-DetailsHeader-collapseButton',
+  isCollapsed: 'is-collapsed',
+  isAllSelected: 'is-allSelected',
+  isSelectAllHidden: 'is-selectAllHidden',
+  isResizingColumn: 'is-resizingColumn',
+  cellSizer: 'ms-DetailsHeader-cellSizer',
+  isResizing: 'is-resizing',
+  dropHintCircleStyle: 'ms-DetailsHeader-dropHintCircleStyle',
+  dropHintCaretStyle: 'ms-DetailsHeader-dropHintCaretStyle',
+  dropHintLineStyle: 'ms-DetailsHeader-dropHintLineStyle',
+  cellTitle: 'ms-DetailsHeader-cellTitle',
+  cellName: 'ms-DetailsHeader-cellName',
+  filterChevron: 'ms-DetailsHeader-filterChevron',
+  gripperBarVertical: 'ms-DetailsColumn-gripperBarVertical',
+  checkTooltip: 'ms-DetailsHeader-checkTooltip',
+  check: 'ms-DetailsHeader-check'
+};
+var HEADER_HEIGHT = 42;
+var getCellStyles = function (props) {
+  var theme = props.theme,
+      _a = props.cellStyleProps,
+      cellStyleProps = _a === void 0 ? DEFAULT_CELL_STYLE_PROPS : _a;
+  var semanticColors = theme.semanticColors;
+  var classNames = getGlobalClassNames(GlobalClassNames$5, theme);
+  return [classNames.cell, getFocusStyle(theme), {
+    color: semanticColors.bodyText,
+    position: 'relative',
+    display: 'inline-block',
+    boxSizing: 'border-box',
+    padding: "0 " + cellStyleProps.cellRightPadding + "px 0 " + cellStyleProps.cellLeftPadding + "px",
+    lineHeight: 'inherit',
+    margin: '0',
+    height: HEADER_HEIGHT,
+    verticalAlign: 'top',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis',
+    textAlign: 'left'
+  }];
+};
+var getStyles$7 = function (props) {
+  var _a, _b, _c, _d;
+
+  var theme = props.theme,
+      className = props.className,
+      isAllSelected = props.isAllSelected,
+      isResizingColumn = props.isResizingColumn,
+      isSizing = props.isSizing,
+      isAllCollapsed = props.isAllCollapsed,
+      _e = props.cellStyleProps,
+      cellStyleProps = _e === void 0 ? DEFAULT_CELL_STYLE_PROPS : _e;
+  var semanticColors = theme.semanticColors,
+      palette = theme.palette,
+      fonts = theme.fonts;
+  var classNames = getGlobalClassNames(GlobalClassNames$5, theme);
+  var colors = {
+    iconForegroundColor: semanticColors.bodySubtext,
+    headerForegroundColor: semanticColors.bodyText,
+    headerBackgroundColor: semanticColors.bodyBackground,
+    dropdownChevronForegroundColor: palette.neutralTertiary,
+    resizerColor: palette.neutralTertiaryAlt
+  };
+  var cellSizerFadeInStyles = {
+    opacity: 1,
+    transition: 'opacity 0.3s linear'
+  };
+  var cellStyles = getCellStyles(props);
+  return {
+    root: [classNames.root, fonts.small, {
+      display: 'inline-block',
+      background: colors.headerBackgroundColor,
+      position: 'relative',
+      minWidth: '100%',
+      verticalAlign: 'top',
+      height: HEADER_HEIGHT,
+      lineHeight: HEADER_HEIGHT,
+      whiteSpace: 'nowrap',
+      boxSizing: 'content-box',
+      paddingBottom: '1px',
+      paddingTop: '16px',
+      borderBottom: "1px solid " + semanticColors.bodyDivider,
+      cursor: 'default',
+      userSelect: 'none',
+      selectors: (_a = {}, _a["&:hover ." + classNames.check] = {
+        opacity: 1
+      }, _a["& ." + classNames.tooltipHost + " ." + classNames.checkTooltip] = {
+        display: 'block'
+      }, _a)
+    }, isAllSelected && classNames.isAllSelected, isResizingColumn && classNames.isResizingColumn, className],
+    check: [classNames.check, {
+      height: HEADER_HEIGHT
+    }, {
+      selectors: (_b = {}, _b["." + IsFocusVisibleClassName + " &:focus"] = {
+        opacity: 1
+      }, _b)
+    }],
+    cellWrapperPadded: {
+      paddingRight: cellStyleProps.cellExtraRightPadding + cellStyleProps.cellRightPadding
+    },
+    cellIsCheck: [cellStyles, classNames.cellIsCheck, {
+      position: 'relative',
+      padding: 0,
+      margin: 0,
+      display: 'inline-flex',
+      alignItems: 'center',
+      border: 'none'
+    }, isAllSelected && {
+      opacity: 1
+    }],
+    cellIsGroupExpander: [cellStyles, {
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: fonts.small.fontSize,
+      padding: 0,
+      border: 'none',
+      width: SPACER_WIDTH,
+      color: palette.neutralSecondary,
+      selectors: {
+        ':hover': {
+          backgroundColor: palette.neutralLighter
+        },
+        ':active': {
+          backgroundColor: palette.neutralLight
+        }
+      }
+    }],
+    cellIsActionable: {
+      selectors: {
+        ':hover': {
+          color: semanticColors.bodyText,
+          background: semanticColors.listHeaderBackgroundHovered
+        },
+        ':active': {
+          background: semanticColors.listHeaderBackgroundPressed
+        }
+      }
+    },
+    cellIsEmpty: {
+      textOverflow: 'clip'
+    },
+    cellSizer: [classNames.cellSizer, focusClear(), {
+      display: 'inline-block',
+      position: 'relative',
+      cursor: 'ew-resize',
+      bottom: 0,
+      top: 0,
+      overflow: 'hidden',
+      height: 'inherit',
+      background: 'transparent',
+      zIndex: 1,
+      width: 16,
+      selectors: (_c = {
+        ':after': {
+          content: '""',
+          position: 'absolute',
+          top: 0,
+          bottom: 0,
+          width: 1,
+          background: colors.resizerColor,
+          opacity: 0,
+          left: '50%'
+        },
+        ':focus:after': cellSizerFadeInStyles,
+        ':hover:after': cellSizerFadeInStyles
+      }, _c["&." + classNames.isResizing + ":after"] = [cellSizerFadeInStyles, {
+        boxShadow: '0 0 5px 0 rgba(0, 0, 0, 0.4)'
+      }], _c)
+    }],
+    cellIsResizing: classNames.isResizing,
+    cellSizerStart: {
+      margin: '0 -8px'
+    },
+    cellSizerEnd: {
+      margin: 0,
+      marginLeft: -16
+    },
+    collapseButton: [classNames.collapseButton, {
+      transformOrigin: '50% 50%',
+      transition: 'transform .1s linear'
+    }, isAllCollapsed ? [classNames.isCollapsed, {
+      transform: 'rotate(0deg)'
+    }] : {
+      transform: 'rotate(90deg)'
+    }],
+    checkTooltip: classNames.checkTooltip,
+    sizingOverlay: isSizing && {
+      position: 'absolute',
+      left: 0,
+      top: 0,
+      right: 0,
+      bottom: 0,
+      cursor: 'ew-resize',
+      background: 'rgba(255, 255, 255, 0)',
+      selectors: (_d = {}, _d[HighContrastSelector] = {
+        background: 'transparent',
+        MsHighContrastAdjust: 'none'
+      }, _d)
+    },
+    accessibleLabel: hiddenContentStyle,
+    dropHintCircleStyle: [classNames.dropHintCircleStyle, {
+      display: 'inline-block',
+      visibility: 'hidden',
+      position: 'absolute',
+      bottom: 0,
+      height: 9,
+      width: 9,
+      borderRadius: '50%',
+      marginLeft: -5,
+      top: 34,
+      overflow: 'visible',
+      zIndex: 10,
+      border: "1px solid " + palette.themePrimary,
+      background: palette.white
+    }],
+    dropHintCaretStyle: [classNames.dropHintCaretStyle, {
+      display: 'none',
+      position: 'absolute',
+      top: -28,
+      left: -6.5,
+      fontSize: fonts.medium.fontSize,
+      color: palette.themePrimary,
+      overflow: 'visible',
+      zIndex: 10
+    }],
+    dropHintLineStyle: [classNames.dropHintLineStyle, {
+      display: 'none',
+      position: 'absolute',
+      bottom: 0,
+      top: 0,
+      overflow: 'hidden',
+      height: 42,
+      width: 1,
+      background: palette.themePrimary,
+      zIndex: 10
+    }],
+    dropHintStyle: {
+      display: 'inline-block',
+      position: 'absolute'
+    }
+  };
+};
+
+var CheckGlobalClassNames = {
+  root: 'ms-Check',
+  circle: 'ms-Check-circle',
+  check: 'ms-Check-check',
+
+  /** Must be manually applied to the parent element of the check. */
+  checkHost: 'ms-Check-checkHost'
+};
+var getStyles$8 = function (props) {
+  var _a, _b, _c, _d, _e; // tslint:disable-next-line:deprecation
+
+
+  var _f = props.height,
+      height = _f === void 0 ? props.checkBoxHeight || '18px' : _f,
+      checked = props.checked,
+      className = props.className,
+      theme = props.theme;
+  var palette = theme.palette,
+      semanticColors = theme.semanticColors,
+      fonts = theme.fonts;
+  var isRTL = getRTL$1(theme);
+  var classNames = getGlobalClassNames(CheckGlobalClassNames, theme);
+  var sharedCircleCheck = {
+    fontSize: height,
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    width: height,
+    height: height,
+    textAlign: 'center',
+    verticalAlign: 'middle'
+  };
+  return {
+    root: [classNames.root, fonts.medium, {
+      // lineHeight currently needs to be a string to output without 'px'
+      lineHeight: '1',
+      width: height,
+      height: height,
+      verticalAlign: 'top',
+      position: 'relative',
+      userSelect: 'none',
+      selectors: (_a = {
+        ':before': {
+          content: '""',
+          position: 'absolute',
+          top: '1px',
+          right: '1px',
+          bottom: '1px',
+          left: '1px',
+          borderRadius: '50%',
+          opacity: 1,
+          background: semanticColors.bodyBackground
+        }
+      }, _a["." + classNames.checkHost + ":hover &, ." + classNames.checkHost + ":focus &, &:hover, &:focus"] = {
+        opacity: 1
+      }, _a)
+    }, checked && ['is-checked', {
+      selectors: {
+        ':before': {
+          background: palette.themePrimary,
+          opacity: 1,
+          selectors: (_b = {}, _b[HighContrastSelector] = {
+            background: 'Window'
+          }, _b)
+        }
+      }
+    }], className],
+    circle: [classNames.circle, sharedCircleCheck, {
+      color: palette.neutralSecondary,
+      selectors: (_c = {}, _c[HighContrastSelector] = {
+        color: 'WindowText'
+      }, _c)
+    }, checked && {
+      color: palette.white
+    }],
+    check: [classNames.check, sharedCircleCheck, {
+      opacity: 0,
+      color: palette.neutralSecondary,
+      fontSize: IconFontSizes.medium,
+      left: isRTL ? '-0.5px' : '.5px',
+      selectors: (_d = {
+        ':hover': {
+          opacity: 1
+        }
+      }, _d[HighContrastSelector] = {
+        MsHighContrastAdjust: 'none'
+      }, _d)
+    }, checked && {
+      opacity: 1,
+      color: palette.white,
+      fontWeight: 900,
+      selectors: (_e = {}, _e[HighContrastSelector] = {
+        border: 'none',
+        color: 'WindowText'
+      }, _e)
+    }],
+    checkHost: classNames.checkHost
+  };
+};
+
+var GlobalClassNames$6 = {
+  root: 'ms-DetailsRow-check',
+  isDisabled: 'ms-DetailsRow-check--isDisabled',
+  isHeader: 'ms-DetailsRow-check--isHeader'
+};
+var CHECK_CELL_WIDTH = 48;
+var getStyles$9 = function (props) {
+  var theme = props.theme,
+      className = props.className,
+      isHeader = props.isHeader,
+      selected = props.selected,
+      anySelected = props.anySelected,
+      canSelect = props.canSelect,
+      compact = props.compact,
+      isVisible = props.isVisible;
+  var classNames = getGlobalClassNames(GlobalClassNames$6, theme);
+  var rowHeight = DEFAULT_ROW_HEIGHTS.rowHeight,
+      compactRowHeight = DEFAULT_ROW_HEIGHTS.compactRowHeight;
+  var height = isHeader ? HEADER_HEIGHT : compact ? compactRowHeight : rowHeight;
+  var isCheckVisible = isVisible || selected || anySelected;
+  return {
+    root: [classNames.root, className],
+    check: [!canSelect && classNames.isDisabled, isHeader && classNames.isHeader, getFocusStyle(theme), theme.fonts.small, CheckGlobalClassNames.checkHost, {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      cursor: 'default',
+      boxSizing: 'border-box',
+      verticalAlign: 'top',
+      background: 'none',
+      backgroundColor: 'transparent',
+      border: 'none',
+      opacity: isCheckVisible ? 1 : 0,
+      height: height,
+      width: CHECK_CELL_WIDTH,
+      padding: 0,
+      margin: 0
+    }],
+    isDisabled: []
+  };
+};
+
+var GlobalClassNames$7 = {
+  root: 'ms-GroupHeader',
+  compact: 'ms-GroupHeader--compact',
+  check: 'ms-GroupHeader-check',
+  dropIcon: 'ms-GroupHeader-dropIcon',
+  expand: 'ms-GroupHeader-expand',
+  isCollapsed: 'is-collapsed',
+  title: 'ms-GroupHeader-title',
+  isSelected: 'is-selected',
+  iconTag: 'ms-Icon--Tag',
+  group: 'ms-GroupedList-group',
+  isDropping: 'is-dropping'
+};
+var beziers$1 = {
+  easeOutCirc: 'cubic-bezier(0.075, 0.820, 0.165, 1.000)',
+  easeOutSine: 'cubic-bezier(0.390, 0.575, 0.565, 1.000)',
+  easeInBack: 'cubic-bezier(0.600, -0.280, 0.735, 0.045)'
+};
+var DEFAULT_GROUP_HEADER_HEIGHT = 48;
+var COMPACT_GROUP_HEADER_HEIGHT = 40;
+var getStyles$a = function (props) {
+  var _a, _b, _c, _d, _e;
+
+  var theme = props.theme,
+      className = props.className,
+      selected = props.selected,
+      isCollapsed = props.isCollapsed,
+      compact = props.compact; // padding from the source to align GroupHeader title with DetailsRow's first cell.
+
+  var cellLeftPadding = DEFAULT_CELL_STYLE_PROPS.cellLeftPadding;
+  var finalRowHeight = compact ? COMPACT_GROUP_HEADER_HEIGHT : DEFAULT_GROUP_HEADER_HEIGHT;
+  var semanticColors = theme.semanticColors,
+      palette = theme.palette,
+      fonts = theme.fonts;
+  var classNames = getGlobalClassNames(GlobalClassNames$7, theme);
+  var checkExpandResetStyles = [getFocusStyle(theme), {
+    cursor: 'default',
+    background: 'none',
+    backgroundColor: 'transparent',
+    border: 'none',
+    padding: 0
+  }];
+  return {
+    root: [classNames.root, getFocusStyle(theme), theme.fonts.medium, {
+      // keep the border for height but color it so it's invisible.
+      borderBottom: "1px solid " + semanticColors.listBackground,
+      cursor: 'default',
+      userSelect: 'none',
+      selectors: (_a = {
+        ':hover': {
+          background: semanticColors.listItemBackgroundHovered,
+          color: semanticColors.actionLinkHovered
+        }
+      }, _a["&:hover ." + classNames.check] = {
+        opacity: 1
+      }, _a["." + IsFocusVisibleClassName + " &:focus ." + classNames.check] = {
+        opacity: 1
+      }, _a[":global(." + classNames.group + "." + classNames.isDropping + ")"] = {
+        selectors: (_b = {}, _b["& > ." + classNames.root + " ." + classNames.dropIcon] = {
+          transition: "transform " + AnimationVariables.durationValue4 + " " + beziers$1.easeOutCirc + " " + ("opacity " + AnimationVariables.durationValue1 + " " + beziers$1.easeOutSine),
+          transitionDelay: AnimationVariables.durationValue3,
+          opacity: 1,
+          transform: "rotate(0.2deg) scale(1);"
+        }, _b["." + classNames.check] = {
+          opacity: 0
+        }, _b)
+      }, _a)
+    }, selected && [classNames.isSelected, {
+      background: semanticColors.listItemBackgroundChecked,
+      selectors: (_c = {
+        ':hover': {
+          background: semanticColors.listItemBackgroundCheckedHovered
+        }
+      }, _c["" + classNames.check] = {
+        opacity: 1
+      }, _c)
+    }], compact && [classNames.compact, {
+      border: 'none'
+    }], className],
+    groupHeaderContainer: [{
+      display: 'flex',
+      alignItems: 'center',
+      height: finalRowHeight
+    }],
+    headerCount: [{
+      padding: '0px 4px'
+    }],
+    check: [classNames.check, checkExpandResetStyles, {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      // paddingTop and marginTop brought from the DetailsRow.styles.ts with explanation below.
+      // Ensure that the check cell covers the top border of the cell.
+      // This ensures the click target does not leave a spot which would
+      // cause other items to be deselected.
+      paddingTop: 1,
+      marginTop: -1,
+      opacity: 0,
+      width: CHECK_CELL_WIDTH,
+      height: finalRowHeight,
+      selectors: (_d = {}, _d["." + IsFocusVisibleClassName + " &:focus"] = {
+        opacity: 1
+      }, _d)
+    }],
+    expand: [classNames.expand, checkExpandResetStyles, {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      fontSize: fonts.small.fontSize,
+      width: SPACER_WIDTH,
+      height: finalRowHeight,
+      color: selected ? palette.neutralPrimary : palette.neutralSecondary,
+      selectors: {
+        ':hover': {
+          backgroundColor: selected ? palette.neutralQuaternary : palette.neutralLight
+        },
+        ':active': {
+          backgroundColor: selected ? palette.neutralTertiaryAlt : palette.neutralQuaternaryAlt
+        }
+      }
+    }],
+    expandIsCollapsed: [isCollapsed ? [classNames.isCollapsed, {
+      transform: 'rotate(0deg)',
+      transformOrigin: '50% 50%',
+      transition: 'transform .1s linear'
+    }] : {
+      transform: 'rotate(90deg)',
+      transformOrigin: '50% 50%',
+      transition: 'transform .1s linear'
+    }],
+    title: [classNames.title, {
+      paddingLeft: cellLeftPadding,
+      fontSize: compact ? fonts.medium.fontSize : fonts.mediumPlus.fontSize,
+      fontWeight: isCollapsed ? FontWeights.regular : FontWeights.semibold,
+      cursor: 'pointer',
+      outline: 0,
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis'
+    }],
+    dropIcon: [classNames.dropIcon, {
+      position: 'absolute',
+      left: -26,
+      fontSize: IconFontSizes.large,
+      color: palette.neutralSecondary,
+      transition: "transform " + AnimationVariables.durationValue2 + " " + beziers$1.easeInBack + ", " + ("opacity " + AnimationVariables.durationValue4 + " " + beziers$1.easeOutSine),
+      opacity: 0,
+      transform: 'rotate(0.2deg) scale(0.65)',
+      transformOrigin: '10px 10px',
+      selectors: (_e = {}, _e[":global(." + classNames.iconTag + ")"] = {
+        position: 'absolute'
+      }, _e)
+    }]
+  };
+};
+
+var getClassNames$5 = classNamesFunction();
+var CheckBase = function (props) {
+  var _a = props.checked,
+      checked = _a === void 0 ? false : _a,
+      className = props.className,
+      theme = props.theme,
+      styles = props.styles,
+      _b = props.useFastIcons,
+      useFastIcons = _b === void 0 ? true : _b;
+  var classNames = getClassNames$5(styles, {
+    theme: theme,
+    className: className,
+    checked: checked
+  });
+  var IconComponent = useFastIcons ? FontIcon : Icon;
+  return React.createElement("div", {
+    className: classNames.root
+  }, React.createElement(IconComponent, {
+    iconName: "CircleRing",
+    className: classNames.circle
+  }), React.createElement(IconComponent, {
+    iconName: "StatusCircleCheckmark",
+    className: classNames.check
+  }));
+};
+
+var Check = styled(CheckBase, getStyles$8, undefined, {
+  scope: 'Check'
+}, true);
+
+/**
+ * Possible variations of the spinner circle size.
+ * {@docCategory Spinner}
+ */
+var SpinnerSize;
+
+(function (SpinnerSize) {
+  /**
+   * 12px Spinner diameter
+   */
+  SpinnerSize[SpinnerSize["xSmall"] = 0] = "xSmall";
+  /**
+   * 16px Spinner diameter
+   */
+
+  SpinnerSize[SpinnerSize["small"] = 1] = "small";
+  /**
+   * 20px Spinner diameter
+   */
+
+  SpinnerSize[SpinnerSize["medium"] = 2] = "medium";
+  /**
+   * 28px Spinner diameter
+   */
+
+  SpinnerSize[SpinnerSize["large"] = 3] = "large";
+})(SpinnerSize || (SpinnerSize = {}));
+/**
+ * Deprecated at v2.0.0, use `SpinnerSize` instead.
+ * @deprecated Use `SpinnerSize` instead.
+ * {@docCategory Spinner}
+ */
+
+
+var SpinnerType;
+
+(function (SpinnerType) {
+  /**
+   * Deprecated and will be removed at \>= 2.0.0. Use `SpinnerSize.medium` instead.
+   * @deprecated Use `SpinnerSize.medium` instead.
+   */
+  SpinnerType[SpinnerType["normal"] = 0] = "normal";
+  /**
+   * Deprecated and will be removed at \>= 2.0.0. Use `SpinnerSize.large` instead.
+   * @deprecated Use `SpinnerSize.large` instead.
+   */
+
+  SpinnerType[SpinnerType["large"] = 1] = "large";
+})(SpinnerType || (SpinnerType = {}));
+
+var getClassNames$6 = classNamesFunction();
+
+var SpinnerBase =
 /** @class */
 function (_super) {
-  __extends(Callout, _super);
+  __extends(SpinnerBase, _super);
 
-  function Callout() {
+  function SpinnerBase() {
     return _super !== null && _super.apply(this, arguments) || this;
   }
 
-  Callout.prototype.render = function () {
+  SpinnerBase.prototype.render = function () {
+    // tslint:disable-next-line:deprecation
     var _a = this.props,
-        layerProps = _a.layerProps,
-        rest = __rest(_a, ["layerProps"]);
-
-    var content = React.createElement(CalloutContent, __assign({}, rest));
-    return this.props.doNotLayer ? content : React.createElement(Layer, __assign({}, layerProps), content);
-  };
-
-  return Callout;
-}(React.Component);
-
-var renderItemIcon = function (props) {
-  var item = props.item,
-      hasIcons = props.hasIcons,
-      classNames = props.classNames;
-  var iconProps = item.iconProps;
-
-  if (!hasIcons) {
-    return null;
-  }
-
-  if (item.onRenderIcon) {
-    return item.onRenderIcon(props);
-  }
-
-  return React.createElement(Icon, __assign({}, iconProps, {
-    className: classNames.icon
-  }));
-};
-
-var renderCheckMarkIcon = function (_a) {
-  var onCheckmarkClick = _a.onCheckmarkClick,
-      item = _a.item,
-      classNames = _a.classNames;
-  var isItemChecked = getIsChecked(item);
-
-  if (onCheckmarkClick) {
-    // Ensures that the item is passed as the first argument to the checkmark click callback.
-    var onClick = function (e) {
-      return onCheckmarkClick(item, e);
-    };
-
-    return React.createElement(Icon, {
-      iconName: item.canCheck !== false && isItemChecked ? 'CheckMark' : '',
-      className: classNames.checkmarkIcon,
-      onClick: onClick
-    });
-  }
-
-  return null;
-};
-
-var renderItemName = function (_a) {
-  var item = _a.item,
-      classNames = _a.classNames; // tslint:disable:deprecation
-
-  if (item.text || item.name) {
-    return React.createElement("span", {
-      className: classNames.label
-    }, item.text || item.name);
-  } // tslint:enable:deprecation
-
-
-  return null;
-};
-
-var renderSecondaryText = function (_a) {
-  var item = _a.item,
-      classNames = _a.classNames;
-
-  if (item.secondaryText) {
-    return React.createElement("span", {
-      className: classNames.secondaryText
-    }, item.secondaryText);
-  }
-
-  return null;
-};
-
-var renderSubMenuIcon = function (_a) {
-  var item = _a.item,
-      classNames = _a.classNames,
-      theme = _a.theme;
-
-  if (hasSubmenu(item)) {
-    return React.createElement(Icon, __assign({
-      iconName: getRTL$1(theme) ? 'ChevronLeft' : 'ChevronRight'
-    }, item.submenuIconProps, {
-      className: classNames.subMenuIcon
-    }));
-  }
-
-  return null;
-};
-
-var ContextualMenuItemBase =
-/** @class */
-function (_super) {
-  __extends(ContextualMenuItemBase, _super);
-
-  function ContextualMenuItemBase(props) {
-    var _this = _super.call(this, props) || this;
-
-    _this.openSubMenu = function () {
-      var _a = _this.props,
-          item = _a.item,
-          openSubMenu = _a.openSubMenu,
-          getSubmenuTarget = _a.getSubmenuTarget;
-
-      if (getSubmenuTarget) {
-        var submenuTarget = getSubmenuTarget();
-
-        if (hasSubmenu(item) && openSubMenu && submenuTarget) {
-          openSubMenu(item, submenuTarget);
-        }
-      }
-    };
-
-    _this.dismissSubMenu = function () {
-      var _a = _this.props,
-          item = _a.item,
-          dismissSubMenu = _a.dismissSubMenu;
-
-      if (hasSubmenu(item) && dismissSubMenu) {
-        dismissSubMenu();
-      }
-    };
-
-    _this.dismissMenu = function (dismissAll) {
-      var dismissMenu = _this.props.dismissMenu;
-
-      if (dismissMenu) {
-        dismissMenu(undefined
-        /* ev */
-        , dismissAll);
-      }
-    };
-
-    initializeComponentRef(_this);
-    return _this;
-  }
-
-  ContextualMenuItemBase.prototype.render = function () {
-    var _a = this.props,
-        item = _a.item,
-        classNames = _a.classNames;
-    return React.createElement("div", {
-      className: item.split ? classNames.linkContentMenu : classNames.linkContent
-    }, renderCheckMarkIcon(this.props), renderItemIcon(this.props), renderItemName(this.props), renderSecondaryText(this.props), renderSubMenuIcon(this.props));
-  };
-
-  return ContextualMenuItemBase;
-}(React.Component);
-
-/**
- * @deprecated use getStyles exported from VerticalDivider.styles.ts
- */
-
-var getDividerClassNames = memoizeFunction( // tslint:disable-next-line:deprecation
-function (theme) {
-  return mergeStyleSets({
-    wrapper: {
-      display: 'inline-flex',
-      height: '100%',
-      alignItems: 'center'
-    },
-    divider: {
-      width: 1,
-      height: '100%',
-      backgroundColor: theme.palette.neutralTertiaryAlt
-    }
-  });
-});
-
-var CONTEXTUAL_MENU_ITEM_HEIGHT = 36;
-var MediumScreenSelector = getScreenSelector(0, ScreenWidthMaxMedium);
-var getItemHighContrastStyles = memoizeFunction(function () {
-  var _a;
-
-  return {
-    selectors: (_a = {}, _a[HighContrastSelector] = {
-      backgroundColor: 'Highlight',
-      borderColor: 'Highlight',
-      color: 'HighlightText',
-      MsHighContrastAdjust: 'none'
-    }, _a)
-  };
-});
-var getMenuItemStyles = memoizeFunction(function (theme) {
-  var _a, _b, _c, _d, _e, _f, _g;
-
-  var semanticColors = theme.semanticColors,
-      fonts = theme.fonts,
-      palette = theme.palette;
-  var ContextualMenuItemBackgroundHoverColor = semanticColors.menuItemBackgroundHovered;
-  var ContextualMenuItemTextHoverColor = semanticColors.menuItemTextHovered;
-  var ContextualMenuItemBackgroundSelectedColor = semanticColors.menuItemBackgroundPressed;
-  var ContextualMenuItemDividerColor = semanticColors.bodyDivider;
-  var menuItemStyles = {
-    item: [fonts.medium, {
-      color: semanticColors.bodyText,
-      position: 'relative',
-      boxSizing: 'border-box'
-    }],
-    divider: {
-      display: 'block',
-      height: '1px',
-      backgroundColor: ContextualMenuItemDividerColor,
-      position: 'relative'
-    },
-    root: [getFocusStyle(theme), fonts.medium, {
-      color: semanticColors.bodyText,
-      backgroundColor: 'transparent',
-      border: 'none',
-      width: '100%',
-      height: CONTEXTUAL_MENU_ITEM_HEIGHT,
-      lineHeight: CONTEXTUAL_MENU_ITEM_HEIGHT,
-      display: 'block',
-      cursor: 'pointer',
-      padding: '0px 8px 0 4px',
-      textAlign: 'left'
-    }],
-    rootDisabled: {
-      color: semanticColors.disabledBodyText,
-      cursor: 'default',
-      pointerEvents: 'none',
-      selectors: (_a = {}, _a[HighContrastSelector] = {
-        color: 'GrayText',
-        opacity: 1
-      }, _a)
-    },
-    rootHovered: __assign({
-      backgroundColor: ContextualMenuItemBackgroundHoverColor,
-      color: ContextualMenuItemTextHoverColor,
-      selectors: {
-        '.ms-ContextualMenu-icon': {
-          color: palette.themeDarkAlt
-        },
-        '.ms-ContextualMenu-submenuIcon': {
-          color: palette.neutralPrimary
-        }
-      }
-    }, getItemHighContrastStyles()),
-    rootFocused: __assign({
-      backgroundColor: palette.white
-    }, getItemHighContrastStyles()),
-    rootChecked: __assign({
-      selectors: {
-        '.ms-ContextualMenu-checkmarkIcon': {
-          color: palette.neutralPrimary
-        }
-      }
-    }, getItemHighContrastStyles()),
-    rootPressed: __assign({
-      backgroundColor: ContextualMenuItemBackgroundSelectedColor,
-      selectors: {
-        '.ms-ContextualMenu-icon': {
-          color: palette.themeDark
-        },
-        '.ms-ContextualMenu-submenuIcon': {
-          color: palette.neutralPrimary
-        }
-      }
-    }, getItemHighContrastStyles()),
-    rootExpanded: __assign({
-      backgroundColor: ContextualMenuItemBackgroundSelectedColor,
-      color: semanticColors.bodyTextChecked
-    }, getItemHighContrastStyles()),
-    linkContent: {
-      whiteSpace: 'nowrap',
-      height: 'inherit',
-      display: 'flex',
-      alignItems: 'center',
-      maxWidth: '100%'
-    },
-    anchorLink: {
-      padding: '0px 8px 0 4px',
-      textRendering: 'auto',
-      color: 'inherit',
-      letterSpacing: 'normal',
-      wordSpacing: 'normal',
-      textTransform: 'none',
-      textIndent: '0px',
-      textShadow: 'none',
-      textDecoration: 'none',
-      boxSizing: 'border-box'
-    },
-    label: {
-      margin: '0 4px',
-      verticalAlign: 'middle',
-      display: 'inline-block',
-      flexGrow: '1',
-      textOverflow: 'ellipsis',
-      overflow: 'hidden',
-      whiteSpace: 'nowrap'
-    },
-    secondaryText: {
-      color: theme.palette.neutralSecondary,
-      paddingLeft: '20px',
-      textAlign: 'right'
-    },
-    icon: {
-      display: 'inline-block',
-      minHeight: '1px',
-      maxHeight: CONTEXTUAL_MENU_ITEM_HEIGHT,
-      fontSize: IconFontSizes.medium,
-      width: IconFontSizes.medium,
-      margin: '0 4px',
-      verticalAlign: 'middle',
-      flexShrink: '0',
-      selectors: (_b = {}, _b[MediumScreenSelector] = {
-        fontSize: IconFontSizes.large,
-        width: IconFontSizes.large
-      }, _b)
-    },
-    iconColor: {
-      color: semanticColors.menuIcon,
-      selectors: (_c = {}, _c[HighContrastSelector] = {
-        color: 'inherit'
-      }, _c['$root:hover &'] = {
-        selectors: (_d = {}, _d[HighContrastSelector] = {
-          color: 'HighlightText'
-        }, _d)
-      }, _c['$root:focus &'] = {
-        selectors: (_e = {}, _e[HighContrastSelector] = {
-          color: 'HighlightText'
-        }, _e)
-      }, _c)
-    },
-    iconDisabled: {
-      color: semanticColors.disabledBodyText
-    },
-    checkmarkIcon: {
-      color: semanticColors.bodySubtext,
-      selectors: (_f = {}, _f[HighContrastSelector] = {
-        color: 'HighlightText'
-      }, _f)
-    },
-    subMenuIcon: {
-      height: CONTEXTUAL_MENU_ITEM_HEIGHT,
-      lineHeight: CONTEXTUAL_MENU_ITEM_HEIGHT,
-      color: palette.neutralSecondary,
-      textAlign: 'center',
-      display: 'inline-block',
-      verticalAlign: 'middle',
-      flexShrink: '0',
-      fontSize: IconFontSizes.small,
-      selectors: (_g = {
-        ':hover': {
-          color: palette.neutralPrimary
-        },
-        ':active': {
-          color: palette.neutralPrimary
-        }
-      }, _g[MediumScreenSelector] = {
-        fontSize: IconFontSizes.medium
-      }, _g)
-    },
-    splitButtonFlexContainer: [getFocusStyle(theme), {
-      display: 'flex',
-      height: CONTEXTUAL_MENU_ITEM_HEIGHT,
-      flexWrap: 'nowrap',
-      justifyContent: 'center',
-      alignItems: 'flex-start'
-    }]
-  };
-  return concatStyleSets(menuItemStyles);
-});
-
-var CONTEXTUAL_SPLIT_MENU_MINWIDTH = '28px';
-var MediumScreenSelector$1 = getScreenSelector(0, ScreenWidthMaxMedium);
-var getSplitButtonVerticalDividerClassNames = memoizeFunction( // tslint:disable:deprecation
-function (theme) {
-  var _a;
-
-  return mergeStyleSets(getDividerClassNames(theme), {
-    // tslint:enable:deprecation
-    wrapper: {
-      position: 'absolute',
-      right: 28,
-      selectors: (_a = {}, _a[MediumScreenSelector$1] = {
-        right: 32
-      }, _a)
-    },
-    divider: {
-      height: 16,
-      width: 1
-    }
-  });
-});
-var GlobalClassNames$4 = {
-  item: 'ms-ContextualMenu-item',
-  divider: 'ms-ContextualMenu-divider',
-  root: 'ms-ContextualMenu-link',
-  isChecked: 'is-checked',
-  isExpanded: 'is-expanded',
-  isDisabled: 'is-disabled',
-  linkContent: 'ms-ContextualMenu-linkContent',
-  linkContentMenu: 'ms-ContextualMenu-linkContent',
-  icon: 'ms-ContextualMenu-icon',
-  iconColor: 'ms-ContextualMenu-iconColor',
-  checkmarkIcon: 'ms-ContextualMenu-checkmarkIcon',
-  subMenuIcon: 'ms-ContextualMenu-submenuIcon',
-  label: 'ms-ContextualMenu-itemText',
-  secondaryText: 'ms-ContextualMenu-secondaryText',
-  splitMenu: 'ms-ContextualMenu-splitMenu'
-};
-/**
- * @deprecated To be removed in 7.0.
- * @internal
- * This is a package-internal method that has been depended on.
- * It is being kept in this form for backwards compatibility.
- * It should be cleaned up in 7.0.
- *
- * TODO: Audit perf. impact of and potentially remove memoizeFunction.
- * https://github.com/microsoft/fluentui/issues/5534
- */
-
-var getItemClassNames = memoizeFunction(function (theme, disabled, expanded, checked, isAnchorLink, knownIcon, itemClassName, dividerClassName, iconClassName, subMenuClassName, primaryDisabled, className) {
-  var _a, _b, _c, _d;
-
-  var styles = getMenuItemStyles(theme);
-  var classNames = getGlobalClassNames(GlobalClassNames$4, theme);
-  return mergeStyleSets({
-    item: [classNames.item, styles.item, itemClassName],
-    divider: [classNames.divider, styles.divider, dividerClassName],
-    root: [classNames.root, styles.root, checked && [classNames.isChecked, styles.rootChecked], isAnchorLink && styles.anchorLink, expanded && [classNames.isExpanded, styles.rootExpanded], disabled && [classNames.isDisabled, styles.rootDisabled], !disabled && !expanded && [{
-      selectors: (_a = {
-        ':hover': styles.rootHovered,
-        ':active': styles.rootPressed
-      }, _a["." + IsFocusVisibleClassName + " &:focus, ." + IsFocusVisibleClassName + " &:focus:hover"] = styles.rootFocused, _a["." + IsFocusVisibleClassName + " &:hover"] = {
-        background: 'inherit;'
-      }, _a)
-    }], className],
-    splitPrimary: [styles.root, {
-      width: "calc(100% - " + CONTEXTUAL_SPLIT_MENU_MINWIDTH + ")"
-    }, checked && ['is-checked', styles.rootChecked], (disabled || primaryDisabled) && ['is-disabled', styles.rootDisabled], !(disabled || primaryDisabled) && !checked && [{
-      selectors: (_b = {
-        ':hover': styles.rootHovered
-      }, // when hovering over the splitPrimary also affect the splitMenu
-      _b[":hover ~ ." + classNames.splitMenu] = styles.rootHovered, _b[':active'] = styles.rootPressed, _b["." + IsFocusVisibleClassName + " &:focus, ." + IsFocusVisibleClassName + " &:focus:hover"] = styles.rootFocused, _b["." + IsFocusVisibleClassName + " &:hover"] = {
-        background: 'inherit;'
-      }, _b)
-    }]],
-    splitMenu: [classNames.splitMenu, styles.root, {
-      flexBasis: '0',
-      padding: '0 8px',
-      minWidth: CONTEXTUAL_SPLIT_MENU_MINWIDTH
-    }, expanded && ['is-expanded', styles.rootExpanded], disabled && ['is-disabled', styles.rootDisabled], !disabled && !expanded && [{
-      selectors: (_c = {
-        ':hover': styles.rootHovered,
-        ':active': styles.rootPressed
-      }, _c["." + IsFocusVisibleClassName + " &:focus, ." + IsFocusVisibleClassName + " &:focus:hover"] = styles.rootFocused, _c["." + IsFocusVisibleClassName + " &:hover"] = {
-        background: 'inherit;'
-      }, _c)
-    }]],
-    anchorLink: styles.anchorLink,
-    linkContent: [classNames.linkContent, styles.linkContent],
-    linkContentMenu: [classNames.linkContentMenu, styles.linkContent, {
-      justifyContent: 'center'
-    }],
-    icon: [classNames.icon, knownIcon && styles.iconColor, styles.icon, iconClassName, disabled && [classNames.isDisabled, styles.iconDisabled]],
-    iconColor: styles.iconColor,
-    checkmarkIcon: [classNames.checkmarkIcon, knownIcon && styles.checkmarkIcon, styles.icon, iconClassName],
-    subMenuIcon: [classNames.subMenuIcon, styles.subMenuIcon, subMenuClassName, expanded && {
-      color: theme.palette.neutralPrimary
-    }, disabled && [styles.iconDisabled]],
-    label: [classNames.label, styles.label],
-    secondaryText: [classNames.secondaryText, styles.secondaryText],
-    splitContainer: [styles.splitButtonFlexContainer, !disabled && !checked && [{
-      selectors: (_d = {}, _d["." + IsFocusVisibleClassName + " &:focus, ." + IsFocusVisibleClassName + " &:focus:hover"] = styles.rootFocused, _d)
-    }]]
-  });
-});
-/**
- * Wrapper function for generating ContextualMenuItem classNames which adheres to
- * the getStyles API, but invokes memoized className generator function with
- * primitive values.
- *
- * @param props the ContextualMenuItem style props used to generate its styles.
- */
-
-var getItemStyles = function (props) {
-  var theme = props.theme,
-      disabled = props.disabled,
-      expanded = props.expanded,
-      checked = props.checked,
-      isAnchorLink = props.isAnchorLink,
-      knownIcon = props.knownIcon,
-      itemClassName = props.itemClassName,
-      dividerClassName = props.dividerClassName,
-      iconClassName = props.iconClassName,
-      subMenuClassName = props.subMenuClassName,
-      primaryDisabled = props.primaryDisabled,
-      className = props.className; // tslint:disable-next-line:deprecation
-
-  return getItemClassNames(theme, disabled, expanded, checked, isAnchorLink, knownIcon, itemClassName, dividerClassName, iconClassName, subMenuClassName, primaryDisabled, className);
-};
-
-/**
- * ContextualMenuItem description
- */
-
-var ContextualMenuItem = styled(ContextualMenuItemBase, getItemStyles, undefined, {
-  scope: 'ContextualMenuItem'
-});
-
-var ContextualMenuItemWrapper =
-/** @class */
-function (_super) {
-  __extends(ContextualMenuItemWrapper, _super);
-
-  function ContextualMenuItemWrapper(props) {
-    var _this = _super.call(this, props) || this;
-
-    _this._onItemMouseEnter = function (ev) {
-      var _a = _this.props,
-          item = _a.item,
-          onItemMouseEnter = _a.onItemMouseEnter;
-
-      if (onItemMouseEnter) {
-        onItemMouseEnter(item, ev, ev.currentTarget);
-      }
-    };
-
-    _this._onItemClick = function (ev) {
-      var _a = _this.props,
-          item = _a.item,
-          onItemClickBase = _a.onItemClickBase;
-
-      if (onItemClickBase) {
-        onItemClickBase(item, ev, ev.currentTarget);
-      }
-    };
-
-    _this._onItemMouseLeave = function (ev) {
-      var _a = _this.props,
-          item = _a.item,
-          onItemMouseLeave = _a.onItemMouseLeave;
-
-      if (onItemMouseLeave) {
-        onItemMouseLeave(item, ev);
-      }
-    };
-
-    _this._onItemKeyDown = function (ev) {
-      var _a = _this.props,
-          item = _a.item,
-          onItemKeyDown = _a.onItemKeyDown;
-
-      if (onItemKeyDown) {
-        onItemKeyDown(item, ev);
-      }
-    };
-
-    _this._onItemMouseMove = function (ev) {
-      var _a = _this.props,
-          item = _a.item,
-          onItemMouseMove = _a.onItemMouseMove;
-
-      if (onItemMouseMove) {
-        onItemMouseMove(item, ev, ev.currentTarget);
-      }
-    };
-
-    _this._getSubMenuId = function (item) {
-      var getSubMenuId = _this.props.getSubMenuId;
-
-      if (getSubMenuId) {
-        return getSubMenuId(item);
-      }
-    };
-
-    _this._getSubmenuTarget = function () {
-      return undefined;
-    };
-
-    initializeComponentRef(_this);
-    return _this;
-  }
-
-  ContextualMenuItemWrapper.prototype.shouldComponentUpdate = function (newProps) {
-    return !shallowCompare(newProps, this.props);
-  };
-
-  return ContextualMenuItemWrapper;
-}(React.Component);
-
-var KTP_PREFIX = 'ktp';
-var KTP_SEPARATOR = '-';
-var KTP_LAYER_ID = 'ktp-layer-id';
-
-var KeytipEvents;
-
-(function (KeytipEvents) {
-  KeytipEvents.KEYTIP_ADDED = 'keytipAdded';
-  KeytipEvents.KEYTIP_REMOVED = 'keytipRemoved';
-  KeytipEvents.KEYTIP_UPDATED = 'keytipUpdated';
-  KeytipEvents.PERSISTED_KEYTIP_ADDED = 'persistedKeytipAdded';
-  KeytipEvents.PERSISTED_KEYTIP_REMOVED = 'persistedKeytipRemoved';
-  KeytipEvents.PERSISTED_KEYTIP_EXECUTE = 'persistedKeytipExecute';
-  KeytipEvents.ENTER_KEYTIP_MODE = 'enterKeytipMode';
-  KeytipEvents.EXIT_KEYTIP_MODE = 'exitKeytipMode';
-})(KeytipEvents || (KeytipEvents = {}));
-
-/**
- * This class is responsible for handling registering, updating, and unregistering of keytips
- */
-
-var KeytipManager =
-/** @class */
-function () {
-  function KeytipManager() {
-    this.keytips = {};
-    this.persistedKeytips = {};
-    this.sequenceMapping = {}; // This is (and should be) updated and kept in sync
-    // with the inKeytipMode in KeytipLayer.
-
-    this.inKeytipMode = false; // Boolean that gets checked before entering keytip mode by the KeytipLayer
-    // Used for an override in special cases (e.g. Disable entering keytip mode when a modal is shown)
-
-    this.shouldEnterKeytipMode = true; // Boolean to indicate whether to delay firing an event to update subscribers of
-    // keytip data changed.
-
-    this.delayUpdatingKeytipChange = false;
-  }
-  /**
-   * Static function to get singleton KeytipManager instance
-   *
-   * @returns {KeytipManager} Singleton KeytipManager instance
-   */
-
-
-  KeytipManager.getInstance = function () {
-    return this._instance;
-  };
-  /**
-   * Initialization code to set set parameters to define
-   * how the KeytipManager handles keytip data.
-   *
-   * @param delayUpdatingKeytipChange - T/F if we should delay notifiying keytip subscribers
-   * of keytip changes
-   */
-
-
-  KeytipManager.prototype.init = function (delayUpdatingKeytipChange) {
-    this.delayUpdatingKeytipChange = delayUpdatingKeytipChange;
-  };
-  /**
-   * Registers a keytip
-   *
-   * @param keytipProps - Keytip to register
-   * @param persisted - T/F if this keytip should be persisted, default is false
-   * @returns {string} Unique ID for this keytip
-   */
-
-
-  KeytipManager.prototype.register = function (keytipProps, persisted) {
-    if (persisted === void 0) {
-      persisted = false;
-    }
-
-    var props = keytipProps;
-
-    if (!persisted) {
-      // Add the overflowSetSequence if necessary
-      props = this.addParentOverflow(keytipProps);
-      this.sequenceMapping[props.keySequences.toString()] = props;
-    } // Create a unique keytip
-
-
-    var uniqueKeytip = this._getUniqueKtp(props); // Add to dictionary
-
-
-    persisted ? this.persistedKeytips[uniqueKeytip.uniqueID] = uniqueKeytip : this.keytips[uniqueKeytip.uniqueID] = uniqueKeytip; // We only want to add something new if we are currently showing keytip mode
-
-    if (this.inKeytipMode || !this.delayUpdatingKeytipChange) {
-      var event_1 = persisted ? KeytipEvents.PERSISTED_KEYTIP_ADDED : KeytipEvents.KEYTIP_ADDED;
-      EventGroup.raise(this, event_1, {
-        keytip: props,
-        uniqueID: uniqueKeytip.uniqueID
-      });
-    }
-
-    return uniqueKeytip.uniqueID;
-  };
-  /**
-   * Update a keytip
-   *
-   * @param keytipProps - Keytip to update
-   * @param uniqueID - Unique ID of this keytip
-   */
-
-
-  KeytipManager.prototype.update = function (keytipProps, uniqueID) {
-    var newKeytipProps = this.addParentOverflow(keytipProps);
-
-    var uniqueKeytip = this._getUniqueKtp(newKeytipProps, uniqueID);
-
-    var oldKeyTip = this.keytips[uniqueID];
-
-    if (oldKeyTip) {
-      // Update everything except 'visible'
-      uniqueKeytip.keytip.visible = oldKeyTip.keytip.visible; // Update keytip in this.keytips
-
-      this.keytips[uniqueID] = uniqueKeytip; // Update the sequence to be up to date
-
-      delete this.sequenceMapping[oldKeyTip.keytip.keySequences.toString()];
-      this.sequenceMapping[uniqueKeytip.keytip.keySequences.toString()] = uniqueKeytip.keytip; // Raise event only if we are currently in keytip mode
-
-      if (this.inKeytipMode || !this.delayUpdatingKeytipChange) {
-        EventGroup.raise(this, KeytipEvents.KEYTIP_UPDATED, {
-          keytip: uniqueKeytip.keytip,
-          uniqueID: uniqueKeytip.uniqueID
-        });
-      }
-    }
-  };
-  /**
-   * Unregisters a keytip
-   *
-   * @param keytipToRemove - IKeytipProps of the keytip to remove
-   * @param uniqueID - Unique ID of this keytip
-   * @param persisted - T/F if this keytip should be persisted, default is false
-   */
-
-
-  KeytipManager.prototype.unregister = function (keytipToRemove, uniqueID, persisted) {
-    if (persisted === void 0) {
-      persisted = false;
-    }
-
-    persisted ? delete this.persistedKeytips[uniqueID] : delete this.keytips[uniqueID];
-    !persisted && delete this.sequenceMapping[keytipToRemove.keySequences.toString()];
-    var event = persisted ? KeytipEvents.PERSISTED_KEYTIP_REMOVED : KeytipEvents.KEYTIP_REMOVED; // Update keytips only if we're in keytip mode
-
-    if (this.inKeytipMode || !this.delayUpdatingKeytipChange) {
-      EventGroup.raise(this, event, {
-        keytip: keytipToRemove,
-        uniqueID: uniqueID
-      });
-    }
-  };
-  /**
-   * Manual call to enter keytip mode
-   */
-
-
-  KeytipManager.prototype.enterKeytipMode = function () {
-    EventGroup.raise(this, KeytipEvents.ENTER_KEYTIP_MODE);
-  };
-  /**
-   * Manual call to exit keytip mode
-   */
-
-
-  KeytipManager.prototype.exitKeytipMode = function () {
-    EventGroup.raise(this, KeytipEvents.EXIT_KEYTIP_MODE);
-  };
-  /**
-   * Gets all IKeytipProps from this.keytips
-   *
-   * @returns {IKeytipProps[]} All keytips stored in the manager
-   */
-
-
-  KeytipManager.prototype.getKeytips = function () {
-    var _this = this;
-
-    return Object.keys(this.keytips).map(function (key) {
-      return _this.keytips[key].keytip;
-    });
-  };
-  /**
-   * Adds the overflowSetSequence to the keytipProps if its parent keytip also has it
-   *
-   * @param keytipProps - Keytip props to add overflowSetSequence to if necessary
-   * @returns {IKeytipProps} - Modified keytip props, if needed to be modified
-   */
-
-
-  KeytipManager.prototype.addParentOverflow = function (keytipProps) {
-    var fullSequence = __spreadArrays(keytipProps.keySequences);
-
-    fullSequence.pop();
-
-    if (fullSequence.length !== 0) {
-      var parentKeytip = this.sequenceMapping[fullSequence.toString()];
-
-      if (parentKeytip && parentKeytip.overflowSetSequence) {
-        return __assign(__assign({}, keytipProps), {
-          overflowSetSequence: parentKeytip.overflowSetSequence
-        });
-      }
-    }
-
-    return keytipProps;
-  };
-  /**
-   * Public function to bind for overflow items that have a submenu
-   *
-   * @param overflowButtonSequences
-   * @param keytipSequences
-   */
-
-
-  KeytipManager.prototype.menuExecute = function (overflowButtonSequences, keytipSequences) {
-    EventGroup.raise(this, KeytipEvents.PERSISTED_KEYTIP_EXECUTE, {
-      overflowButtonSequences: overflowButtonSequences,
-      keytipSequences: keytipSequences
-    });
-  };
-  /**
-   * Creates an IUniqueKeytip object
-   *
-   * @param keytipProps - IKeytipProps
-   * @param uniqueID - Unique ID, will default to the next unique ID if not passed
-   * @returns {IUniqueKeytip} IUniqueKeytip object
-   */
-
-
-  KeytipManager.prototype._getUniqueKtp = function (keytipProps, uniqueID) {
-    if (uniqueID === void 0) {
-      uniqueID = getId();
-    }
-
-    return {
-      keytip: __assign({}, keytipProps),
-      uniqueID: uniqueID
-    };
-  };
-
-  KeytipManager._instance = new KeytipManager();
-  return KeytipManager;
-}();
-
-/**
- * Converts a whole set of KeySequences into one keytip ID, which will be the ID for the last keytip sequence specified
- * keySequences should not include the initial keytip 'start' sequence.
- *
- * @param keySequences - Full path of IKeySequences for one keytip.
- * @returns {string} String to use for the keytip ID.
- */
-
-function sequencesToID(keySequences) {
-  return keySequences.reduce(function (prevValue, keySequence) {
-    return prevValue + KTP_SEPARATOR + keySequence.split('').join(KTP_SEPARATOR);
-  }, KTP_PREFIX);
-}
-/**
- * Merges an overflow sequence with a key sequence.
- *
- * @param keySequences - Full sequence for one keytip.
- * @param overflowKeySequences - Full overflow keytip sequence.
- * @returns {string[]} Sequence that will be used by the keytip when in the overflow.
- */
-
-function mergeOverflows(keySequences, overflowKeySequences) {
-  var overflowSequenceLen = overflowKeySequences.length;
-
-  var overflowSequence = __spreadArrays(overflowKeySequences).pop();
-
-  var newKeySequences = __spreadArrays(keySequences);
-
-  return addElementAtIndex(newKeySequences, overflowSequenceLen - 1, overflowSequence);
-}
-/**
- * Gets the aria-describedby value to put on the component with this keytip.
- *
- * @param keySequences - KeySequences of the keytip.
- * @returns {string} The aria-describedby value to set on the component with this keytip.
- */
-
-function getAriaDescribedBy(keySequences) {
-  var describedby = ' ' + KTP_LAYER_ID;
-
-  if (!keySequences.length) {
-    // Return just the layer ID
-    return describedby;
-  }
-
-  return describedby + ' ' + sequencesToID(keySequences);
-}
-
-/**
- * A small element to help the target component correctly read out its aria-describedby for its Keytip
- * {@docCategory Keytips}
- */
-
-var KeytipData =
-/** @class */
-function (_super) {
-  __extends(KeytipData, _super);
-
-  function KeytipData() {
-    var _this = _super !== null && _super.apply(this, arguments) || this;
-
-    _this._keytipManager = KeytipManager.getInstance();
-    return _this;
-  }
-
-  KeytipData.prototype.componentDidMount = function () {
-    // Register Keytip in KeytipManager
-    if (this.props.keytipProps) {
-      this._uniqueId = this._keytipManager.register(this._getKtpProps());
-    }
-  };
-
-  KeytipData.prototype.componentWillUnmount = function () {
-    // Unregister Keytip in KeytipManager
-    this.props.keytipProps && this._keytipManager.unregister(this._getKtpProps(), this._uniqueId);
-  };
-
-  KeytipData.prototype.componentDidUpdate = function (prevProps) {
-    if (prevProps.keytipProps !== this.props.keytipProps || prevProps.disabled !== this.props.disabled) {
-      // If keytipProps or disabled has changed update Keytip in KeytipManager
-      this.props.keytipProps && this._keytipManager.update(this._getKtpProps(), this._uniqueId);
-    }
-  };
-
-  KeytipData.prototype.render = function () {
-    var _a = this.props,
-        children = _a.children,
-        keytipProps = _a.keytipProps,
-        ariaDescribedBy = _a.ariaDescribedBy;
-    var nativeKeytipProps = {};
-
-    if (keytipProps) {
-      nativeKeytipProps = this._getKtpAttrs(keytipProps, ariaDescribedBy);
-    }
-
-    return children(nativeKeytipProps);
-  };
-
-  KeytipData.prototype._getKtpProps = function () {
-    return __assign({
-      disabled: this.props.disabled
-    }, this.props.keytipProps);
-  };
-  /**
-   * Gets the aria- and data- attributes to attach to the component
-   * @param keytipProps - props for Keytip
-   * @param describedByPrepend - ariaDescribedBy value to prepend
-   */
-
-
-  KeytipData.prototype._getKtpAttrs = function (keytipProps, describedByPrepend) {
-    if (keytipProps) {
-      // Add the parent overflow sequence if necessary
-      var newKeytipProps = this._keytipManager.addParentOverflow(keytipProps); // Construct aria-describedby and data-ktp-id attributes and return
-
-
-      var ariaDescribedBy = getAriaDescribedBy(newKeytipProps.keySequences);
-
-      var keySequences = __spreadArrays(newKeytipProps.keySequences);
-
-      if (newKeytipProps.overflowSetSequence) {
-        keySequences = mergeOverflows(keySequences, newKeytipProps.overflowSetSequence);
-      }
-
-      var ktpId = sequencesToID(keySequences);
-      return {
-        'aria-describedby': mergeAriaAttributeValues(describedByPrepend, ariaDescribedBy),
-        'data-ktp-target': ktpId,
-        'data-ktp-execute-target': ktpId
-      };
-    }
-
-    return undefined;
-  };
-
-  return KeytipData;
-}(React.Component);
-
-var ContextualMenuAnchor =
-/** @class */
-function (_super) {
-  __extends(ContextualMenuAnchor, _super);
-
-  function ContextualMenuAnchor() {
-    var _this = _super !== null && _super.apply(this, arguments) || this;
-
-    _this._anchor = React.createRef();
-    _this._getMemoizedMenuButtonKeytipProps = memoizeFunction(function (keytipProps) {
-      return __assign(__assign({}, keytipProps), {
-        hasMenu: true
-      });
-    });
-
-    _this._getSubmenuTarget = function () {
-      return _this._anchor.current ? _this._anchor.current : undefined;
-    };
-
-    _this._onItemClick = function (ev) {
-      var _a = _this.props,
-          item = _a.item,
-          onItemClick = _a.onItemClick;
-
-      if (onItemClick) {
-        onItemClick(item, ev);
-      }
-    };
-
-    return _this;
-  }
-
-  ContextualMenuAnchor.prototype.render = function () {
-    var _this = this;
-
-    var _a = this.props,
-        item = _a.item,
-        classNames = _a.classNames,
-        index = _a.index,
-        focusableElementIndex = _a.focusableElementIndex,
-        totalItemCount = _a.totalItemCount,
-        hasCheckmarks = _a.hasCheckmarks,
-        hasIcons = _a.hasIcons,
-        _b = _a.contextualMenuItemAs,
-        ChildrenRenderer = _b === void 0 ? ContextualMenuItem : _b,
-        expandedMenuItemKey = _a.expandedMenuItemKey,
-        onItemClick = _a.onItemClick,
-        openSubMenu = _a.openSubMenu,
-        dismissSubMenu = _a.dismissSubMenu,
-        dismissMenu = _a.dismissMenu;
-    var anchorRel = item.rel;
-
-    if (item.target && item.target.toLowerCase() === '_blank') {
-      anchorRel = anchorRel ? anchorRel : 'nofollow noopener noreferrer'; // Safe default to prevent tabjacking
-    }
-
-    var subMenuId = this._getSubMenuId(item);
-
-    var itemHasSubmenu = hasSubmenu(item);
-    var nativeProps = getNativeProps(item, anchorProperties);
-    var disabled = isItemDisabled(item);
-    var itemProps = item.itemProps;
-    var keytipProps = item.keytipProps;
-
-    if (keytipProps && itemHasSubmenu) {
-      keytipProps = this._getMemoizedMenuButtonKeytipProps(keytipProps);
-    }
-
-    return React.createElement("div", null, React.createElement(KeytipData, {
-      keytipProps: item.keytipProps,
-      ariaDescribedBy: nativeProps['aria-describedby'],
-      disabled: disabled
-    }, function (keytipAttributes) {
-      return React.createElement("a", __assign({}, nativeProps, keytipAttributes, {
-        ref: _this._anchor,
-        href: item.href,
-        target: item.target,
-        rel: anchorRel,
-        className: classNames.root,
-        role: "menuitem",
-        "aria-owns": item.key === expandedMenuItemKey ? subMenuId : undefined,
-        "aria-haspopup": itemHasSubmenu || undefined,
-        "aria-expanded": itemHasSubmenu ? item.key === expandedMenuItemKey : undefined,
-        "aria-posinset": focusableElementIndex + 1,
-        "aria-setsize": totalItemCount,
-        "aria-disabled": isItemDisabled(item),
-        // tslint:disable-next-line:deprecation
-        style: item.style,
-        onClick: _this._onItemClick,
-        onMouseEnter: _this._onItemMouseEnter,
-        onMouseLeave: _this._onItemMouseLeave,
-        onMouseMove: _this._onItemMouseMove,
-        onKeyDown: itemHasSubmenu ? _this._onItemKeyDown : undefined
-      }), React.createElement(ChildrenRenderer, __assign({
-        componentRef: item.componentRef,
-        item: item,
-        classNames: classNames,
-        index: index,
-        onCheckmarkClick: hasCheckmarks && onItemClick ? onItemClick : undefined,
-        hasIcons: hasIcons,
-        openSubMenu: openSubMenu,
-        dismissSubMenu: dismissSubMenu,
-        dismissMenu: dismissMenu,
-        getSubmenuTarget: _this._getSubmenuTarget
-      }, itemProps)));
-    }));
-  };
-
-  return ContextualMenuAnchor;
-}(ContextualMenuItemWrapper);
-
-var ContextualMenuButton =
-/** @class */
-function (_super) {
-  __extends(ContextualMenuButton, _super);
-
-  function ContextualMenuButton() {
-    var _this = _super !== null && _super.apply(this, arguments) || this;
-
-    _this._btn = React.createRef();
-    _this._getMemoizedMenuButtonKeytipProps = memoizeFunction(function (keytipProps) {
-      return __assign(__assign({}, keytipProps), {
-        hasMenu: true
-      });
-    });
-
-    _this._getSubmenuTarget = function () {
-      return _this._btn.current ? _this._btn.current : undefined;
-    };
-
-    return _this;
-  }
-
-  ContextualMenuButton.prototype.render = function () {
-    var _this = this;
-
-    var _a = this.props,
-        item = _a.item,
-        classNames = _a.classNames,
-        index = _a.index,
-        focusableElementIndex = _a.focusableElementIndex,
-        totalItemCount = _a.totalItemCount,
-        hasCheckmarks = _a.hasCheckmarks,
-        hasIcons = _a.hasIcons,
-        _b = _a.contextualMenuItemAs,
-        ChildrenRenderer = _b === void 0 ? ContextualMenuItem : _b,
-        expandedMenuItemKey = _a.expandedMenuItemKey,
-        onItemMouseDown = _a.onItemMouseDown,
-        onItemClick = _a.onItemClick,
-        openSubMenu = _a.openSubMenu,
-        dismissSubMenu = _a.dismissSubMenu,
-        dismissMenu = _a.dismissMenu;
-
-    var subMenuId = this._getSubMenuId(item);
-
-    var isChecked = getIsChecked(item);
-    var canCheck = isChecked !== null;
-    var defaultRole = getMenuItemAriaRole(item);
-    var itemHasSubmenu = hasSubmenu(item);
-    var itemProps = item.itemProps,
-        ariaLabel = item.ariaLabel;
-    var buttonNativeProperties = getNativeProps(item, buttonProperties); // Do not add the disabled attribute to the button so that it is focusable
-
-    delete buttonNativeProperties.disabled;
-    var itemButtonProperties = {
-      className: classNames.root,
-      onClick: this._onItemClick,
-      onKeyDown: itemHasSubmenu ? this._onItemKeyDown : undefined,
-      onMouseEnter: this._onItemMouseEnter,
-      onMouseLeave: this._onItemMouseLeave,
-      onMouseDown: function (ev) {
-        return onItemMouseDown ? onItemMouseDown(item, ev) : undefined;
-      },
-      onMouseMove: this._onItemMouseMove,
-      href: item.href,
-      title: item.title,
-      'aria-label': ariaLabel,
-      'aria-haspopup': itemHasSubmenu || undefined,
-      'aria-owns': item.key === expandedMenuItemKey ? subMenuId : undefined,
-      'aria-expanded': itemHasSubmenu ? item.key === expandedMenuItemKey : undefined,
-      'aria-checked': canCheck ? !!isChecked : undefined,
-      'aria-posinset': focusableElementIndex + 1,
-      'aria-setsize': totalItemCount,
-      'aria-disabled': isItemDisabled(item),
-      role: item.role || defaultRole,
+        type = _a.type,
+        size = _a.size,
+        ariaLabel = _a.ariaLabel,
+        ariaLive = _a.ariaLive,
+        styles = _a.styles,
+        label = _a.label,
+        theme = _a.theme,
+        className = _a.className,
+        labelPosition = _a.labelPosition;
+    var statusMessage = ariaLabel;
+    var nativeProps = getNativeProps(this.props, divProperties, ['size']); // SpinnerType is deprecated. If someone is still using this property, rather than putting the SpinnerType into the
+    // ISpinnerStyleProps, we'll map SpinnerType to its equivalent SpinnerSize and pass that in. Once SpinnerType
+    // finally goes away we should delete this.
+
+    var styleSize = size;
+
+    if (styleSize === undefined && type !== undefined) {
       // tslint:disable-next-line:deprecation
-      style: item.style
-    };
-    var keytipProps = item.keytipProps;
-
-    if (keytipProps && itemHasSubmenu) {
-      keytipProps = this._getMemoizedMenuButtonKeytipProps(keytipProps);
+      styleSize = type === SpinnerType.large ? SpinnerSize.large : SpinnerSize.medium;
     }
 
-    return React.createElement(KeytipData, {
-      keytipProps: keytipProps,
-      ariaDescribedBy: buttonNativeProperties['aria-describedby'],
-      disabled: isItemDisabled(item)
-    }, function (keytipAttributes) {
-      return React.createElement("button", __assign({
-        ref: _this._btn
-      }, buttonNativeProperties, itemButtonProperties, keytipAttributes), React.createElement(ChildrenRenderer, __assign({
-        componentRef: item.componentRef,
-        item: item,
-        classNames: classNames,
-        index: index,
-        onCheckmarkClick: hasCheckmarks && onItemClick ? onItemClick : undefined,
-        hasIcons: hasIcons,
-        openSubMenu: openSubMenu,
-        dismissSubMenu: dismissSubMenu,
-        dismissMenu: dismissMenu,
-        getSubmenuTarget: _this._getSubmenuTarget
-      }, itemProps)));
+    var classNames = getClassNames$6(styles, {
+      theme: theme,
+      size: styleSize,
+      className: className,
+      labelPosition: labelPosition
     });
+    return React.createElement("div", __assign({}, nativeProps, {
+      className: classNames.root
+    }), React.createElement("div", {
+      className: classNames.circle
+    }), label && React.createElement("div", {
+      className: classNames.label
+    }, label), statusMessage && React.createElement("div", {
+      role: "status",
+      "aria-live": ariaLive
+    }, React.createElement(DelayedRender, null, React.createElement("div", {
+      className: classNames.screenReaderText
+    }, statusMessage))));
   };
 
-  return ContextualMenuButton;
-}(ContextualMenuItemWrapper);
-
-var getStyles$6 = function (props) {
-  // tslint:disable-next-line:deprecation
-  var theme = props.theme,
-      getClassNames = props.getClassNames,
-      className = props.className;
-
-  if (!theme) {
-    throw new Error('Theme is undefined or null.');
-  }
-
-  if (getClassNames) {
-    var names = getClassNames(theme);
-    return {
-      wrapper: [names.wrapper],
-      divider: [names.divider]
-    };
-  }
-
-  return {
-    wrapper: [{
-      display: 'inline-flex',
-      height: '100%',
-      alignItems: 'center'
-    }, className],
-    divider: [{
-      width: 1,
-      height: '100%',
-      backgroundColor: theme.palette.neutralTertiaryAlt
-    }]
+  SpinnerBase.defaultProps = {
+    size: SpinnerSize.medium,
+    ariaLive: 'polite',
+    labelPosition: 'bottom'
   };
+  return SpinnerBase;
+}(React.Component);
+
+var GlobalClassNames$8 = {
+  root: 'ms-Spinner',
+  circle: 'ms-Spinner-circle',
+  label: 'ms-Spinner-label'
 };
-
-var getClassNames$6 = classNamesFunction();
-var VerticalDividerBase = function (props) {
-  // tslint:disable-next-line:deprecation
-  var styles = props.styles,
-      theme = props.theme,
-      deprecatedGetClassNames = props.getClassNames,
-      className = props.className;
-  var classNames = getClassNames$6(styles, {
-    theme: theme,
-    getClassNames: deprecatedGetClassNames,
-    className: className
+var spinAnimation = memoizeFunction(function () {
+  return keyframes({
+    '0%': {
+      transform: 'rotate(0deg)'
+    },
+    '100%': {
+      transform: 'rotate(360deg)'
+    }
   });
-  return React.createElement("span", {
-    className: classNames.wrapper
-  }, React.createElement("span", {
-    className: classNames.divider
-  }));
+});
+var getStyles$b = function (props) {
+  var _a;
+
+  var theme = props.theme,
+      size = props.size,
+      className = props.className,
+      labelPosition = props.labelPosition;
+  var palette = theme.palette;
+  var classNames = getGlobalClassNames(GlobalClassNames$8, theme);
+  return {
+    root: [classNames.root, {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }, labelPosition === 'top' && {
+      flexDirection: 'column-reverse'
+    }, labelPosition === 'right' && {
+      flexDirection: 'row'
+    }, labelPosition === 'left' && {
+      flexDirection: 'row-reverse'
+    }, className],
+    circle: [classNames.circle, {
+      boxSizing: 'border-box',
+      borderRadius: '50%',
+      border: '1.5px solid ' + palette.themeLight,
+      borderTopColor: palette.themePrimary,
+      animationName: spinAnimation(),
+      animationDuration: '1.3s',
+      animationIterationCount: 'infinite',
+      animationTimingFunction: 'cubic-bezier(.53,.21,.29,.67)',
+      selectors: (_a = {}, _a[HighContrastSelector] = {
+        borderTopColor: 'Highlight'
+      }, _a)
+    }, size === SpinnerSize.xSmall && ['ms-Spinner--xSmall', {
+      width: 12,
+      height: 12
+    }], size === SpinnerSize.small && ['ms-Spinner--small', {
+      width: 16,
+      height: 16
+    }], size === SpinnerSize.medium && ['ms-Spinner--medium', {
+      width: 20,
+      height: 20
+    }], size === SpinnerSize.large && ['ms-Spinner--large', {
+      width: 28,
+      height: 28
+    }]],
+    label: [classNames.label, theme.fonts.small, {
+      color: palette.themePrimary,
+      margin: '8px 0 0',
+      textAlign: 'center'
+    }, labelPosition === 'top' && {
+      margin: '0 0 8px'
+    }, labelPosition === 'right' && {
+      margin: '0 0 0 8px'
+    }, labelPosition === 'left' && {
+      margin: '0 8px 0 0'
+    }],
+    screenReaderText: hiddenContentStyle
+  };
 };
 
-var VerticalDivider = styled(VerticalDividerBase, getStyles$6, undefined, {
-  scope: 'VerticalDivider'
+var Spinner = styled(SpinnerBase, getStyles$b, undefined, {
+  scope: 'Spinner'
 });
-
-var TouchIdleDelay = 500;
-/* ms */
-
-var ContextualMenuSplitButton =
-/** @class */
-function (_super) {
-  __extends(ContextualMenuSplitButton, _super);
-
-  function ContextualMenuSplitButton(props) {
-    var _this = _super.call(this, props) || this;
-
-    _this._getMemoizedMenuButtonKeytipProps = memoizeFunction(function (keytipProps) {
-      return __assign(__assign({}, keytipProps), {
-        hasMenu: true
-      });
-    });
-
-    _this._onItemKeyDown = function (ev) {
-      var _a = _this.props,
-          item = _a.item,
-          onItemKeyDown = _a.onItemKeyDown;
-
-      if (ev.which === KeyCodes.enter) {
-        _this._executeItemClick(ev);
-
-        ev.preventDefault();
-        ev.stopPropagation();
-      } else if (onItemKeyDown) {
-        onItemKeyDown(item, ev);
-      }
-    };
-
-    _this._getSubmenuTarget = function () {
-      return _this._splitButton;
-    };
-
-    _this._onItemMouseEnterPrimary = function (ev) {
-      var _a = _this.props,
-          item = _a.item,
-          onItemMouseEnter = _a.onItemMouseEnter;
-
-      if (onItemMouseEnter) {
-        onItemMouseEnter(__assign(__assign({}, item), {
-          subMenuProps: undefined,
-          items: undefined
-        }), ev, _this._splitButton);
-      }
-    };
-
-    _this._onItemMouseEnterIcon = function (ev) {
-      var _a = _this.props,
-          item = _a.item,
-          onItemMouseEnter = _a.onItemMouseEnter;
-
-      if (onItemMouseEnter) {
-        onItemMouseEnter(item, ev, _this._splitButton);
-      }
-    };
-
-    _this._onItemMouseMovePrimary = function (ev) {
-      var _a = _this.props,
-          item = _a.item,
-          onItemMouseMove = _a.onItemMouseMove;
-
-      if (onItemMouseMove) {
-        onItemMouseMove(__assign(__assign({}, item), {
-          subMenuProps: undefined,
-          items: undefined
-        }), ev, _this._splitButton);
-      }
-    };
-
-    _this._onItemMouseMoveIcon = function (ev) {
-      var _a = _this.props,
-          item = _a.item,
-          onItemMouseMove = _a.onItemMouseMove;
-
-      if (onItemMouseMove) {
-        onItemMouseMove(item, ev, _this._splitButton);
-      }
-    };
-
-    _this._onIconItemClick = function (ev) {
-      var _a = _this.props,
-          item = _a.item,
-          onItemClickBase = _a.onItemClickBase;
-
-      if (onItemClickBase) {
-        onItemClickBase(item, ev, _this._splitButton ? _this._splitButton : ev.currentTarget);
-      }
-    };
-
-    _this._executeItemClick = function (ev) {
-      var _a = _this.props,
-          item = _a.item,
-          executeItemClick = _a.executeItemClick,
-          onItemClick = _a.onItemClick;
-
-      if (item.disabled || item.isDisabled) {
-        return;
-      }
-
-      if (_this._processingTouch && onItemClick) {
-        return onItemClick(item, ev);
-      }
-
-      if (executeItemClick) {
-        executeItemClick(item, ev);
-      }
-    };
-
-    _this._onTouchStart = function (ev) {
-      if (_this._splitButton && !('onpointerdown' in _this._splitButton)) {
-        _this._handleTouchAndPointerEvent(ev);
-      }
-    };
-
-    _this._onPointerDown = function (ev) {
-      if (ev.pointerType === 'touch') {
-        _this._handleTouchAndPointerEvent(ev);
-
-        ev.preventDefault();
-        ev.stopImmediatePropagation();
-      }
-    };
-
-    _this._async = new Async(_this);
-    _this._events = new EventGroup(_this);
-    return _this;
-  }
-
-  ContextualMenuSplitButton.prototype.componentDidMount = function () {
-    if (this._splitButton && 'onpointerdown' in this._splitButton) {
-      this._events.on(this._splitButton, 'pointerdown', this._onPointerDown, true);
-    }
-  };
-
-  ContextualMenuSplitButton.prototype.componentWillUnmount = function () {
-    this._async.dispose();
-
-    this._events.dispose();
-  };
-
-  ContextualMenuSplitButton.prototype.render = function () {
-    var _this = this;
-
-    var _a = this.props,
-        item = _a.item,
-        classNames = _a.classNames,
-        index = _a.index,
-        focusableElementIndex = _a.focusableElementIndex,
-        totalItemCount = _a.totalItemCount,
-        hasCheckmarks = _a.hasCheckmarks,
-        hasIcons = _a.hasIcons,
-        onItemMouseLeave = _a.onItemMouseLeave,
-        expandedMenuItemKey = _a.expandedMenuItemKey;
-    var itemHasSubmenu = hasSubmenu(item);
-    var keytipProps = item.keytipProps;
-
-    if (keytipProps) {
-      keytipProps = this._getMemoizedMenuButtonKeytipProps(keytipProps);
-    }
-
-    return React.createElement(KeytipData, {
-      keytipProps: keytipProps,
-      disabled: isItemDisabled(item)
-    }, function (keytipAttributes) {
-      return React.createElement("div", {
-        "data-ktp-target": keytipAttributes['data-ktp-target'],
-        ref: function (splitButton) {
-          return _this._splitButton = splitButton;
-        },
-        role: getMenuItemAriaRole(item),
-        "aria-label": item.ariaLabel,
-        className: classNames.splitContainer,
-        "aria-disabled": isItemDisabled(item),
-        "aria-expanded": itemHasSubmenu ? item.key === expandedMenuItemKey : undefined,
-        "aria-haspopup": true,
-        "aria-describedby": mergeAriaAttributeValues(item.ariaDescription, keytipAttributes['aria-describedby']),
-        "aria-checked": item.isChecked || item.checked,
-        "aria-posinset": focusableElementIndex + 1,
-        "aria-setsize": totalItemCount,
-        onMouseEnter: _this._onItemMouseEnterPrimary,
-        onMouseLeave: onItemMouseLeave ? onItemMouseLeave.bind(_this, __assign(__assign({}, item), {
-          subMenuProps: null,
-          items: null
-        })) : undefined,
-        onMouseMove: _this._onItemMouseMovePrimary,
-        onKeyDown: _this._onItemKeyDown,
-        onClick: _this._executeItemClick,
-        onTouchStart: _this._onTouchStart,
-        tabIndex: 0,
-        "data-is-focusable": true,
-        "aria-roledescription": item['aria-roledescription']
-      }, _this._renderSplitPrimaryButton(item, classNames, index, hasCheckmarks, hasIcons), _this._renderSplitDivider(item), _this._renderSplitIconButton(item, classNames, index, keytipAttributes));
-    });
-  };
-
-  ContextualMenuSplitButton.prototype._renderSplitPrimaryButton = function (item, // tslint:disable-next-line:deprecation
-  classNames, index, hasCheckmarks, hasIcons) {
-    var _a = this.props,
-        _b = _a.contextualMenuItemAs,
-        ChildrenRenderer = _b === void 0 ? ContextualMenuItem : _b,
-        onItemClick = _a.onItemClick;
-    var itemProps = {
-      key: item.key,
-      disabled: isItemDisabled(item) || item.primaryDisabled,
-      // tslint:disable:deprecation
-      name: item.name,
-      text: item.text || item.name,
-      secondaryText: item.secondaryText,
-      // tslint:enable:deprecation
-      className: classNames.splitPrimary,
-      canCheck: item.canCheck,
-      isChecked: item.isChecked,
-      checked: item.checked,
-      iconProps: item.iconProps,
-      onRenderIcon: item.onRenderIcon,
-      data: item.data,
-      'data-is-focusable': false
-    };
-    var itemComponentProps = item.itemProps;
-    return React.createElement("button", __assign({}, getNativeProps(itemProps, buttonProperties)), React.createElement(ChildrenRenderer, __assign({
-      "data-is-focusable": false,
-      item: itemProps,
-      classNames: classNames,
-      index: index,
-      onCheckmarkClick: hasCheckmarks && onItemClick ? onItemClick : undefined,
-      hasIcons: hasIcons
-    }, itemComponentProps)));
-  };
-
-  ContextualMenuSplitButton.prototype._renderSplitDivider = function (item) {
-    var getDividerClassNames = item.getSplitButtonVerticalDividerClassNames || getSplitButtonVerticalDividerClassNames;
-    return React.createElement(VerticalDivider, {
-      getClassNames: getDividerClassNames
-    });
-  };
-
-  ContextualMenuSplitButton.prototype._renderSplitIconButton = function (item, classNames, // tslint:disable-line:deprecation
-  index, keytipAttributes) {
-    var _a = this.props,
-        _b = _a.contextualMenuItemAs,
-        ChildrenRenderer = _b === void 0 ? ContextualMenuItem : _b,
-        onItemMouseLeave = _a.onItemMouseLeave,
-        onItemMouseDown = _a.onItemMouseDown,
-        openSubMenu = _a.openSubMenu,
-        dismissSubMenu = _a.dismissSubMenu,
-        dismissMenu = _a.dismissMenu;
-    var itemProps = {
-      onClick: this._onIconItemClick,
-      disabled: isItemDisabled(item),
-      className: classNames.splitMenu,
-      subMenuProps: item.subMenuProps,
-      submenuIconProps: item.submenuIconProps,
-      split: true,
-      key: item.key
-    };
-
-    var buttonProps = __assign(__assign({}, getNativeProps(itemProps, buttonProperties)), {
-      onMouseEnter: this._onItemMouseEnterIcon,
-      onMouseLeave: onItemMouseLeave ? onItemMouseLeave.bind(this, item) : undefined,
-      onMouseDown: function (ev) {
-        return onItemMouseDown ? onItemMouseDown(item, ev) : undefined;
-      },
-      onMouseMove: this._onItemMouseMoveIcon,
-      'data-is-focusable': false,
-      'data-ktp-execute-target': keytipAttributes['data-ktp-execute-target'],
-      'aria-hidden': true
-    });
-
-    var itemComponentProps = item.itemProps;
-    return React.createElement("button", __assign({}, buttonProps), React.createElement(ChildrenRenderer, __assign({
-      componentRef: item.componentRef,
-      item: itemProps,
-      classNames: classNames,
-      index: index,
-      hasIcons: false,
-      openSubMenu: openSubMenu,
-      dismissSubMenu: dismissSubMenu,
-      dismissMenu: dismissMenu,
-      getSubmenuTarget: this._getSubmenuTarget
-    }, itemComponentProps)));
-  };
-
-  ContextualMenuSplitButton.prototype._handleTouchAndPointerEvent = function (ev) {
-    var _this = this;
-
-    var onTap = this.props.onTap;
-
-    if (onTap) {
-      onTap(ev);
-    } // If we already have an existing timeout from a previous touch/pointer event
-    // cancel that timeout so we can set a new one.
-
-
-    if (this._lastTouchTimeoutId) {
-      this._async.clearTimeout(this._lastTouchTimeoutId);
-
-      this._lastTouchTimeoutId = undefined;
-    }
-
-    this._processingTouch = true;
-    this._lastTouchTimeoutId = this._async.setTimeout(function () {
-      _this._processingTouch = false;
-      _this._lastTouchTimeoutId = undefined;
-    }, TouchIdleDelay);
-  };
-
-  return ContextualMenuSplitButton;
-}(ContextualMenuItemWrapper);
 
 var getClassNames$7 = classNamesFunction();
-var getContextualMenuItemClassNames = classNamesFunction();
-function getSubmenuItems(item) {
-  return item.subMenuProps ? item.subMenuProps.items : item.items;
-}
-/**
- * Returns true if a list of menu items can contain a checkbox
- */
 
-function canAnyMenuItemsCheck(items) {
-  return items.some(function (item) {
-    if (item.canCheck) {
-      return true;
-    } // If the item is a section, check if any of the items in the section can check.
-
-
-    if (item.sectionProps && item.sectionProps.items.some(function (submenuItem) {
-      return submenuItem.canCheck === true;
-    })) {
-      return true;
-    }
-
-    return false;
-  });
-}
-var NavigationIdleDelay = 250
-/* ms */
-;
-var COMPONENT_NAME = 'ContextualMenu';
-
-var _getMenuItemStylesFunction = memoizeFunction(function () {
-  var styles = [];
-
-  for (var _i = 0; _i < arguments.length; _i++) {
-    styles[_i] = arguments[_i];
-  }
-
-  return function (styleProps) {
-    return concatStyleSetsWithProps.apply(void 0, __spreadArrays([styleProps, getItemStyles], styles));
-  };
-});
-
-var ContextualMenuBase =
+var GroupHeaderBase =
 /** @class */
 function (_super) {
-  __extends(ContextualMenuBase, _super);
+  __extends(GroupHeaderBase, _super);
 
-  function ContextualMenuBase(props) {
+  function GroupHeaderBase(props) {
     var _this = _super.call(this, props) || this;
 
-    _this._mounted = false;
-
-    _this.dismiss = function (ev, dismissAll) {
-      var onDismiss = _this.props.onDismiss;
-
-      if (onDismiss) {
-        onDismiss(ev, dismissAll);
-      }
-    };
-
-    _this._tryFocusPreviousActiveElement = function (options) {
-      if (options && options.containsFocus && _this._previousActiveElement) {
-        _this._previousActiveElement && _this._previousActiveElement.focus();
-      }
-    };
-
-    _this._onRenderMenuList = function (menuListProps, defaultRender) {
-      var indexCorrection = 0;
-      return React.createElement("ul", {
-        className: _this._classNames.list,
-        onKeyDown: _this._onKeyDown,
-        onKeyUp: _this._onKeyUp,
-        role: "menu"
-      }, menuListProps.items.map(function (item, index) {
-        var menuItem = _this._renderMenuItem(item, index, indexCorrection, menuListProps.totalItemCount, menuListProps.hasCheckmarks, menuListProps.hasIcons);
-
-        if (item.itemType !== ContextualMenuItemType.Divider && item.itemType !== ContextualMenuItemType.Header) {
-          var indexIncrease = item.customOnRenderListLength ? item.customOnRenderListLength : 1;
-          indexCorrection += indexIncrease;
-        }
-
-        return menuItem;
-      }));
-    };
-    /**
-     * !!!IMPORTANT!!! Avoid mutating `item: IContextualMenuItem` argument. It will
-     * cause the menu items to always re-render because the component update is based on shallow comparison.
-     */
-
-
-    _this._renderMenuItem = function (item, index, focusableElementIndex, totalItemCount, hasCheckmarks, hasIcons) {
-      var _a;
-
-      var renderedItems = [];
-      var iconProps = item.iconProps || {
-        iconName: 'None'
-      };
-      var getItemClassNames = item.getItemClassNames,
-          // tslint:disable-line:deprecation
-      itemProps = item.itemProps;
-      var styles = itemProps ? itemProps.styles : undefined; // We only send a dividerClassName when the item to be rendered is a divider.
-      // For all other cases, the default divider style is used.
-
-      var dividerClassName = item.itemType === ContextualMenuItemType.Divider ? item.className : undefined;
-      var subMenuIconClassName = item.submenuIconProps ? item.submenuIconProps.className : ''; // tslint:disable-next-line:deprecation
-
-      var itemClassNames; // IContextualMenuItem#getItemClassNames for backwards compatibility
-      // otherwise uses mergeStyles for class names.
-
-      if (getItemClassNames) {
-        itemClassNames = getItemClassNames(_this.props.theme, isItemDisabled(item), _this.state.expandedMenuItemKey === item.key, !!getIsChecked(item), !!item.href, iconProps.iconName !== 'None', item.className, dividerClassName, iconProps.className, subMenuIconClassName, item.primaryDisabled);
-      } else {
-        var itemStyleProps = {
-          theme: _this.props.theme,
-          disabled: isItemDisabled(item),
-          expanded: _this.state.expandedMenuItemKey === item.key,
-          checked: !!getIsChecked(item),
-          isAnchorLink: !!item.href,
-          knownIcon: iconProps.iconName !== 'None',
-          itemClassName: item.className,
-          dividerClassName: dividerClassName,
-          iconClassName: iconProps.className,
-          subMenuClassName: subMenuIconClassName,
-          primaryDisabled: item.primaryDisabled
-        }; // We need to generate default styles then override if styles are provided
-        // since the ContextualMenu currently handles item classNames.
-
-        itemClassNames = getContextualMenuItemClassNames(_getMenuItemStylesFunction((_a = _this._classNames.subComponentStyles) === null || _a === void 0 ? void 0 : _a.menuItem, styles), itemStyleProps);
-      } // tslint:disable-next-line:deprecation
-
-
-      if (item.text === '-' || item.name === '-') {
-        item.itemType = ContextualMenuItemType.Divider;
-      }
-
-      switch (item.itemType) {
-        case ContextualMenuItemType.Divider:
-          renderedItems.push(_this._renderSeparator(index, itemClassNames));
-          break;
-
-        case ContextualMenuItemType.Header:
-          renderedItems.push(_this._renderSeparator(index, itemClassNames));
-
-          var headerItem = _this._renderHeaderMenuItem(item, itemClassNames, index, hasCheckmarks, hasIcons);
-
-          renderedItems.push(_this._renderListItem(headerItem, item.key || index, itemClassNames, item.title));
-          break;
-
-        case ContextualMenuItemType.Section:
-          renderedItems.push(_this._renderSectionItem(item, itemClassNames, index, hasCheckmarks, hasIcons));
-          break;
-
-        default:
-          var menuItem = _this._renderNormalItem(item, itemClassNames, index, focusableElementIndex, totalItemCount, hasCheckmarks, hasIcons);
-
-          renderedItems.push(_this._renderListItem(menuItem, item.key || index, itemClassNames, item.title));
-          break;
-      }
-
-      return renderedItems;
-    };
-
-    _this._defaultMenuItemRenderer = function (item) {
-      var index = item.index,
-          focusableElementIndex = item.focusableElementIndex,
-          totalItemCount = item.totalItemCount,
-          hasCheckmarks = item.hasCheckmarks,
-          hasIcons = item.hasIcons;
-      return _this._renderMenuItem(item, index, focusableElementIndex, totalItemCount, hasCheckmarks, hasIcons);
-    };
-
-    _this._onKeyDown = function (ev) {
-      // Take note if we are processing an alt (option) or meta (command) keydown.
-      // See comment in _shouldHandleKeyUp for reasoning.
-      _this._lastKeyDownWasAltOrMeta = _this._isAltOrMeta(ev); // On Mac, pressing escape dismisses all levels of native context menus
-
-      var dismissAllMenus = ev.which === KeyCodes.escape && (isMac() || isIOS());
-      return _this._keyHandler(ev, _this._shouldHandleKeyDown, dismissAllMenus);
-    };
-
-    _this._shouldHandleKeyDown = function (ev) {
-      return ev.which === KeyCodes.escape || _this._shouldCloseSubMenu(ev) || ev.which === KeyCodes.up && (ev.altKey || ev.metaKey);
-    };
-
-    _this._onMenuFocusCapture = function (ev) {
-      if (_this.props.delayUpdateFocusOnHover) {
-        _this._shouldUpdateFocusOnMouseEvent = true;
-      }
-    };
-
-    _this._onKeyUp = function (ev) {
-      return _this._keyHandler(ev, _this._shouldHandleKeyUp, true
-      /* dismissAllMenus */
-      );
-    };
-    /**
-     * We close the menu on key up only if ALL of the following are true:
-     * - Most recent key down was alt or meta (command)
-     * - The alt/meta key down was NOT followed by some other key (such as down/up arrow to
-     *   expand/collapse the menu)
-     * - We're not on a Mac (or iOS)
-     *
-     * This is because on Windows, pressing alt moves focus to the application menu bar or similar,
-     * closing any open context menus. There is not a similar behavior on Macs.
-     */
-
-
-    _this._shouldHandleKeyUp = function (ev) {
-      var keyPressIsAltOrMetaAlone = _this._lastKeyDownWasAltOrMeta && _this._isAltOrMeta(ev);
-
-      _this._lastKeyDownWasAltOrMeta = false;
-      return !!keyPressIsAltOrMetaAlone && !(isIOS() || isMac());
-    };
-    /**
-     * Calls `shouldHandleKey` to determine whether the keyboard event should be handled;
-     * if so, stops event propagation and dismisses menu(s).
-     * @param ev - The keyboard event.
-     * @param shouldHandleKey - Returns whether we should handle this keyboard event.
-     * @param dismissAllMenus - If true, dismiss all menus. Otherwise, dismiss only the current menu.
-     * Only does anything if `shouldHandleKey` returns true.
-     * @returns Whether the event was handled.
-     */
-
-
-    _this._keyHandler = function (ev, shouldHandleKey, dismissAllMenus) {
-      var handled = false;
-
-      if (shouldHandleKey(ev)) {
-        _this._focusingPreviousElement = false;
-
-        _this.dismiss(ev, dismissAllMenus);
-
-        ev.preventDefault();
-        ev.stopPropagation();
-        handled = true;
-      }
-
-      return handled;
-    };
-    /**
-     * Checks if the submenu should be closed
-     */
-
-
-    _this._shouldCloseSubMenu = function (ev) {
-      var submenuCloseKey = getRTL$1(_this.props.theme) ? KeyCodes.right : KeyCodes.left;
-
-      if (ev.which !== submenuCloseKey || !_this.props.isSubMenu) {
-        return false;
-      }
-
-      return _this._adjustedFocusZoneProps.direction === FocusZoneDirection.vertical || !!_this._adjustedFocusZoneProps.checkForNoWrap && !shouldWrapFocus(ev.target, 'data-no-horizontal-wrap');
-    };
-
-    _this._onMenuKeyDown = function (ev) {
-      // Mark as handled if onKeyDown returns true (for handling collapse cases)
-      // or if we are attempting to expand a submenu
-      var handled = _this._onKeyDown(ev);
-
-      if (handled || !_this._host) {
-        return;
-      } // If we have a modifier key being pressed, we do not want to move focus.
-      // Otherwise, handle up and down keys.
-
-
-      var hasModifier = !!(ev.altKey || ev.metaKey);
-      var isUp = ev.which === KeyCodes.up;
-      var isDown = ev.which === KeyCodes.down;
-
-      if (!hasModifier && (isUp || isDown)) {
-        var elementToFocus = isUp ? getLastFocusable(_this._host, _this._host.lastChild, true) : getFirstFocusable(_this._host, _this._host.firstChild, true);
-
-        if (elementToFocus) {
-          elementToFocus.focus();
-          ev.preventDefault();
-          ev.stopPropagation();
-        }
-      }
-    };
-    /**
-     * Scroll handler for the callout to make sure the mouse events
-     * for updating focus are not interacting during scroll
-     */
-
-
-    _this._onScroll = function () {
-      if (!_this._isScrollIdle && _this._scrollIdleTimeoutId !== undefined) {
-        _this._async.clearTimeout(_this._scrollIdleTimeoutId);
-
-        _this._scrollIdleTimeoutId = undefined;
-      } else {
-        _this._isScrollIdle = false;
-      }
-
-      _this._scrollIdleTimeoutId = _this._async.setTimeout(function () {
-        _this._isScrollIdle = true;
-      }, NavigationIdleDelay);
-    };
-
-    _this._onItemMouseEnterBase = function (item, ev, target) {
-      if (_this._shouldIgnoreMouseEvent()) {
-        return;
-      }
-
-      _this._updateFocusOnMouseEvent(item, ev, target);
-    };
-
-    _this._onItemMouseMoveBase = function (item, ev, target) {
-      var targetElement = ev.currentTarget; // Always do this check to make sure we record a mouseMove if needed (even if we are timed out)
-
-      if (_this._shouldUpdateFocusOnMouseEvent) {
-        _this._gotMouseMove = true;
-      } else {
-        return;
-      }
-
-      if (!_this._isScrollIdle || _this._enterTimerId !== undefined || targetElement === _this._targetWindow.document.activeElement) {
-        return;
-      }
-
-      _this._updateFocusOnMouseEvent(item, ev, target);
-    };
-
-    _this._onMouseItemLeave = function (item, ev) {
-      if (_this._shouldIgnoreMouseEvent()) {
-        return;
-      }
-
-      if (_this._enterTimerId !== undefined) {
-        _this._async.clearTimeout(_this._enterTimerId);
-
-        _this._enterTimerId = undefined;
-      }
-
-      if (_this.state.expandedMenuItemKey !== undefined) {
-        return;
-      }
-      /**
-       * IE11 focus() method forces parents to scroll to top of element.
-       * Edge and IE expose a setActive() function for focusable divs that
-       * sets the page focus but does not scroll the parent element.
-       */
-
-
-      if (_this._host.setActive) {
-        try {
-          _this._host.setActive();
-        } catch (e) {
-          /* no-op */
-        }
-      } else {
-        _this._host.focus();
-      }
-    };
-
-    _this._onItemMouseDown = function (item, ev) {
-      if (item.onMouseDown) {
-        item.onMouseDown(item, ev);
-      }
-    };
-
-    _this._onItemClick = function (item, ev) {
-      _this._onItemClickBase(item, ev, ev.currentTarget);
-    };
-
-    _this._onItemClickBase = function (item, ev, target) {
-      var items = getSubmenuItems(item); // Cancel a async menu item hover timeout action from being taken and instead
-      // just trigger the click event instead.
-
-      _this._cancelSubMenuTimer();
-
-      if (!hasSubmenu(item) && (!items || !items.length)) {
-        // This is an item without a menu. Click it.
-        _this._executeItemClick(item, ev);
-      } else {
-        if (item.key !== _this.state.expandedMenuItemKey) {
-          // This has a collapsed sub menu. Expand it.
-          _this.setState({
-            // When Edge + Narrator are used together (regardless of if the button is in a form or not), pressing
-            // "Enter" fires this method and not _onMenuKeyDown. Checking ev.nativeEvent.detail differentiates
-            // between a real click event and a keypress event (detail should be the number of mouse clicks).
-            // ...Plot twist! For a real click event in IE 11, detail is always 0 (Edge sets it properly to 1).
-            // So we also check the pointerType property, which both Edge and IE set to "mouse" for real clicks
-            // and "" for pressing "Enter" with Narrator on.
-            expandedByMouseClick: ev.nativeEvent.detail !== 0 || ev.nativeEvent.pointerType === 'mouse'
-          });
-
-          _this._onItemSubMenuExpand(item, target);
-        }
+    _this._onToggleCollapse = function (ev) {
+      var _a = _this.props,
+          group = _a.group,
+          onToggleCollapse = _a.onToggleCollapse,
+          isGroupLoading = _a.isGroupLoading;
+      var isCollapsed = _this.state.isCollapsed;
+      var newCollapsed = !isCollapsed;
+      var newLoadingVisible = !newCollapsed && isGroupLoading && isGroupLoading(group);
+
+      _this.setState({
+        isCollapsed: newCollapsed,
+        isLoadingVisible: newLoadingVisible
+      });
+
+      if (onToggleCollapse) {
+        onToggleCollapse(group);
       }
 
       ev.stopPropagation();
       ev.preventDefault();
     };
 
-    _this._onAnchorClick = function (item, ev) {
-      _this._executeItemClick(item, ev);
-
-      ev.stopPropagation();
-    };
-
-    _this._executeItemClick = function (item, ev) {
-      if (item.disabled || item.isDisabled) {
-        return;
-      }
-
-      var dismiss = false;
-
-      if (item.onClick) {
-        dismiss = !!item.onClick(ev, item);
-      } else if (_this.props.onItemClick) {
-        dismiss = !!_this.props.onItemClick(ev, item);
-      }
-
-      (dismiss || !ev.defaultPrevented) && _this.dismiss(ev, true);
-    };
-
-    _this._onItemKeyDown = function (item, ev) {
-      var openKey = getRTL$1(_this.props.theme) ? KeyCodes.left : KeyCodes.right;
-
-      if (!item.disabled && (ev.which === openKey || ev.which === KeyCodes.enter || ev.which === KeyCodes.down && (ev.altKey || ev.metaKey))) {
-        _this.setState({
-          expandedByMouseClick: false
-        });
-
-        _this._onItemSubMenuExpand(item, ev.currentTarget);
-
-        ev.preventDefault();
-      }
-    }; // Cancel a async menu item hover timeout action from being taken and instead
-    // do new upcoming behavior
-
-
-    _this._cancelSubMenuTimer = function () {
-      if (_this._enterTimerId !== undefined) {
-        _this._async.clearTimeout(_this._enterTimerId);
-
-        _this._enterTimerId = undefined;
-      }
-    };
-
-    _this._onItemSubMenuExpand = function (item, target) {
-      if (_this.state.expandedMenuItemKey !== item.key) {
-        if (_this.state.expandedMenuItemKey) {
-          _this._onSubMenuDismiss();
-        } // Focus the target to ensure when we close it, we're focusing on the correct element.
-
-
-        target.focus();
-
-        _this.setState({
-          expandedMenuItemKey: item.key,
-          submenuTarget: target
-        });
-      }
-    };
-    /**
-     * This function is called ASYNCHRONOUSLY, and so there is a chance it is called
-     * after the component is unmounted. The _mounted property is added to prevent
-     * from calling setState() after unmount. Do NOT copy this pattern in synchronous
-     * code.
-     */
-
-
-    _this._onSubMenuDismiss = function (ev, dismissAll) {
-      if (dismissAll) {
-        _this.dismiss(ev, dismissAll);
-      } else if (_this._mounted) {
-        _this.setState({
-          dismissedMenuItemKey: _this.state.expandedMenuItemKey,
-          expandedMenuItemKey: undefined,
-          submenuTarget: undefined
-        });
-      }
-    };
-
-    _this._getSubMenuId = function (item) {
-      var subMenuId = _this.state.subMenuId;
-
-      if (item.subMenuProps && item.subMenuProps.id) {
-        subMenuId = item.subMenuProps.id;
-      }
-
-      return subMenuId;
-    };
-
-    _this._onPointerAndTouchEvent = function (ev) {
-      _this._cancelSubMenuTimer();
-    };
-
-    _this._async = new Async(_this);
-    _this._events = new EventGroup(_this);
-    initializeComponentRef(_this);
-    warnDeprecations(COMPONENT_NAME, props, {
-      getMenuClassNames: 'styles'
-    });
-    _this.state = {
-      contextualMenuItems: undefined,
-      subMenuId: getId('ContextualMenu')
-    };
-    _this._id = props.id || getId('ContextualMenu');
-    _this._focusingPreviousElement = false;
-    _this._isScrollIdle = true;
-    _this._shouldUpdateFocusOnMouseEvent = !_this.props.delayUpdateFocusOnHover;
-    _this._gotMouseMove = false;
-    return _this;
-  }
-
-  ContextualMenuBase.prototype.shouldComponentUpdate = function (newProps, newState) {
-    if (!newProps.shouldUpdateWhenHidden && this.props.hidden && newProps.hidden) {
-      // Do not update when hidden.
-      return false;
-    }
-
-    return !shallowCompare(this.props, newProps) || !shallowCompare(this.state, newState);
-  }; // tslint:disable-next-line function-name
-
-
-  ContextualMenuBase.prototype.UNSAFE_componentWillUpdate = function (newProps) {
-    if (newProps.target !== this.props.target) {
-      var newTarget = newProps.target;
-
-      this._setTargetWindowAndElement(newTarget);
-    }
-
-    if (this._isHidden(newProps) !== this._isHidden(this.props)) {
-      if (this._isHidden(newProps)) {
-        this._onMenuClosed();
-      } else {
-        this._onMenuOpened();
-
-        this._previousActiveElement = this._targetWindow ? this._targetWindow.document.activeElement : undefined;
-      }
-    }
-
-    if (newProps.delayUpdateFocusOnHover !== this.props.delayUpdateFocusOnHover) {
-      // update shouldUpdateFocusOnMouseEvent to follow what was passed in
-      this._shouldUpdateFocusOnMouseEvent = !newProps.delayUpdateFocusOnHover; // If shouldUpdateFocusOnMouseEvent is false, we need to reset gotMouseMove to false
-
-      this._gotMouseMove = this._shouldUpdateFocusOnMouseEvent && this._gotMouseMove;
-    }
-  }; // Invoked once, both on the client and server, immediately before the initial rendering occurs.
-  // tslint:disable-next-line function-name
-
-
-  ContextualMenuBase.prototype.UNSAFE_componentWillMount = function () {
-    var target = this.props.target;
-
-    this._setTargetWindowAndElement(target);
-
-    if (!this.props.hidden) {
-      this._previousActiveElement = this._targetWindow ? this._targetWindow.document.activeElement : undefined;
-    }
-  }; // Invoked once, only on the client (not on the server), immediately after the initial rendering occurs.
-
-
-  ContextualMenuBase.prototype.componentDidMount = function () {
-    if (!this.props.hidden) {
-      this._onMenuOpened();
-    }
-
-    this._mounted = true;
-  }; // Invoked immediately before a component is unmounted from the DOM.
-
-
-  ContextualMenuBase.prototype.componentWillUnmount = function () {
-    if (this.props.onMenuDismissed) {
-      this.props.onMenuDismissed(this.props);
-    }
-
-    this._events.dispose();
-
-    this._async.dispose();
-
-    this._mounted = false;
-  };
-
-  ContextualMenuBase.prototype.render = function () {
-    var _this = this;
-
-    var isBeakVisible = this.props.isBeakVisible;
-    var _a = this.props,
-        items = _a.items,
-        labelElementId = _a.labelElementId,
-        id = _a.id,
-        className = _a.className,
-        beakWidth = _a.beakWidth,
-        directionalHint = _a.directionalHint,
-        directionalHintForRTL = _a.directionalHintForRTL,
-        alignTargetEdge = _a.alignTargetEdge,
-        gapSpace = _a.gapSpace,
-        coverTarget = _a.coverTarget,
-        ariaLabel = _a.ariaLabel,
-        doNotLayer = _a.doNotLayer,
-        target = _a.target,
-        bounds = _a.bounds,
-        useTargetWidth = _a.useTargetWidth,
-        useTargetAsMinWidth = _a.useTargetAsMinWidth,
-        directionalHintFixed = _a.directionalHintFixed,
-        shouldFocusOnMount = _a.shouldFocusOnMount,
-        shouldFocusOnContainer = _a.shouldFocusOnContainer,
-        title = _a.title,
-        styles = _a.styles,
-        theme = _a.theme,
-        calloutProps = _a.calloutProps,
-        _b = _a.onRenderSubMenu,
-        onRenderSubMenu = _b === void 0 ? this._onRenderSubMenu : _b,
-        _c = _a.onRenderMenuList,
-        onRenderMenuList = _c === void 0 ? this._onRenderMenuList : _c,
-        focusZoneProps = _a.focusZoneProps,
-        // tslint:disable-next-line:deprecation
-    getMenuClassNames = _a.getMenuClassNames;
-    this._classNames = getMenuClassNames ? getMenuClassNames(theme, className) : getClassNames$7(styles, {
-      theme: theme,
-      className: className
-    });
-    var hasIcons = itemsHaveIcons(items);
-
-    function itemsHaveIcons(contextualMenuItems) {
-      for (var _i = 0, contextualMenuItems_1 = contextualMenuItems; _i < contextualMenuItems_1.length; _i++) {
-        var item = contextualMenuItems_1[_i];
-
-        if (!!item.iconProps) {
-          return true;
-        }
-
-        if (item.itemType === ContextualMenuItemType.Section && item.sectionProps && itemsHaveIcons(item.sectionProps.items)) {
-          return true;
-        }
-      }
-
-      return false;
-    }
-
-    this._adjustedFocusZoneProps = __assign(__assign({}, focusZoneProps), {
-      direction: this._getFocusZoneDirection()
-    });
-    var hasCheckmarks = canAnyMenuItemsCheck(items);
-    var submenuProps = this.state.expandedMenuItemKey && this.props.hidden !== true ? this._getSubmenuProps() : null;
-    isBeakVisible = isBeakVisible === undefined ? this.props.responsiveMode <= ResponsiveMode.medium : isBeakVisible;
-    /**
-     * When useTargetWidth is true, get the width of the target element and apply it for the context menu container
-     */
-
-    var contextMenuStyle;
-    var targetAsHtmlElement = this._target;
-
-    if ((useTargetWidth || useTargetAsMinWidth) && targetAsHtmlElement && targetAsHtmlElement.offsetWidth) {
-      var targetBoundingRect = targetAsHtmlElement.getBoundingClientRect();
-      var targetWidth = targetBoundingRect.width - 2
-      /* Accounts for 1px border */
-      ;
-
-      if (useTargetWidth) {
-        contextMenuStyle = {
-          width: targetWidth
-        };
-      } else if (useTargetAsMinWidth) {
-        contextMenuStyle = {
-          minWidth: targetWidth
-        };
-      }
-    } // The menu should only return if items were provided, if no items were provided then it should not appear.
-
-
-    if (items && items.length > 0) {
-      var totalItemCount = 0;
-
-      for (var _i = 0, items_1 = items; _i < items_1.length; _i++) {
-        var item = items_1[_i];
-
-        if (item.itemType !== ContextualMenuItemType.Divider && item.itemType !== ContextualMenuItemType.Header) {
-          var itemCount = item.customOnRenderListLength ? item.customOnRenderListLength : 1;
-          totalItemCount += itemCount;
-        }
-      }
-
-      var calloutStyles = this._classNames.subComponentStyles ? this._classNames.subComponentStyles.callout : undefined;
-      return React.createElement(Callout, __assign({
-        styles: calloutStyles,
-        onRestoreFocus: this._tryFocusPreviousActiveElement
-      }, calloutProps, {
-        target: target,
-        isBeakVisible: isBeakVisible,
-        beakWidth: beakWidth,
-        directionalHint: directionalHint,
-        directionalHintForRTL: directionalHintForRTL,
-        gapSpace: gapSpace,
-        coverTarget: coverTarget,
-        doNotLayer: doNotLayer,
-        className: css('ms-ContextualMenu-Callout', calloutProps && calloutProps.className),
-        setInitialFocus: shouldFocusOnMount,
-        onDismiss: this.props.onDismiss,
-        onScroll: this._onScroll,
-        bounds: bounds,
-        directionalHintFixed: directionalHintFixed,
-        alignTargetEdge: alignTargetEdge,
-        hidden: this.props.hidden
-      }), React.createElement("div", {
-        "aria-label": ariaLabel,
-        "aria-labelledby": labelElementId,
-        style: contextMenuStyle,
-        ref: function (host) {
-          return _this._host = host;
-        },
-        id: id,
-        className: this._classNames.container,
-        tabIndex: shouldFocusOnContainer ? 0 : -1,
-        onKeyDown: this._onMenuKeyDown,
-        onKeyUp: this._onKeyUp,
-        onFocusCapture: this._onMenuFocusCapture
-      }, title && React.createElement("div", {
-        className: this._classNames.title
-      }, " ", title, " "), items && items.length ? React.createElement(FocusZone, __assign({}, this._adjustedFocusZoneProps, {
-        className: this._classNames.root,
-        isCircularNavigation: true,
-        handleTabKey: FocusZoneTabbableElements.all
-      }), onRenderMenuList({
-        items: items,
-        totalItemCount: totalItemCount,
-        hasCheckmarks: hasCheckmarks,
-        hasIcons: hasIcons,
-        defaultMenuItemRenderer: this._defaultMenuItemRenderer
-      }, this._onRenderMenuList)) : null, submenuProps && onRenderSubMenu(submenuProps, this._onRenderSubMenu)));
-    } else {
-      return null;
-    }
-  };
-  /**
-   * Return whether the contextual menu is hidden.
-   * Undefined value for hidden is equivalent to hidden being false.
-   * @param props - Props for the component
-   */
-
-
-  ContextualMenuBase.prototype._isHidden = function (props) {
-    return !!props.hidden;
-  };
-
-  ContextualMenuBase.prototype._onMenuOpened = function () {
-    this._events.on(this._targetWindow, 'resize', this.dismiss);
-
-    this._shouldUpdateFocusOnMouseEvent = !this.props.delayUpdateFocusOnHover;
-    this._gotMouseMove = false;
-    this.props.onMenuOpened && this.props.onMenuOpened(this.props);
-  };
-
-  ContextualMenuBase.prototype._onMenuClosed = function () {
-    this._events.off(this._targetWindow, 'resize', this.dismiss); // This is kept for backwards compatability with hidden for right now.
-    // This preserves the way that this behaved in the past
-    // TODO find a better way to handle this by using the same conventions that
-    // Popup uses to determine if focus is contained when dismissal occurs
-
-
-    this._tryFocusPreviousActiveElement({
-      containsFocus: this._focusingPreviousElement,
-      originalElement: this._previousActiveElement
-    });
-
-    if (this.props.onMenuDismissed) {
-      this.props.onMenuDismissed(this.props);
-    }
-
-    this._shouldUpdateFocusOnMouseEvent = !this.props.delayUpdateFocusOnHover; // We need to dismiss any submenu related state properties,
-    // so that when the menu is shown again, the submenu is collapsed
-
-    this.setState({
-      expandedByMouseClick: undefined,
-      dismissedMenuItemKey: undefined,
-      expandedMenuItemKey: undefined,
-      submenuTarget: undefined
-    });
-  };
-  /**
-   * Gets the focusZoneDirection by using the arrowDirection if specified,
-   * the direction specificed in the focusZoneProps, or defaults to FocusZoneDirection.vertical
-   */
-
-
-  ContextualMenuBase.prototype._getFocusZoneDirection = function () {
-    var focusZoneProps = this.props.focusZoneProps;
-    return focusZoneProps && focusZoneProps.direction !== undefined ? focusZoneProps.direction : FocusZoneDirection.vertical;
-  };
-
-  ContextualMenuBase.prototype._onRenderSubMenu = function (subMenuProps, defaultRender) {
-    throw Error('ContextualMenuBase: onRenderSubMenu callback is null or undefined. ' + 'Please ensure to set `onRenderSubMenu` property either manually or with `styled` helper.');
-  };
-
-  ContextualMenuBase.prototype._renderSectionItem = function (sectionItem, // tslint:disable-next-line:deprecation
-  menuClassNames, index, hasCheckmarks, hasIcons) {
-    var _this = this;
-
-    var sectionProps = sectionItem.sectionProps;
-
-    if (!sectionProps) {
-      return;
-    }
-
-    var headerItem;
-    var groupProps;
-
-    if (sectionProps.title) {
-      // Since title is a user-facing string, it needs to be stripped of whitespace in order to build a valid element ID
-      var id = this._id + sectionProps.title.replace(/\s/g, '');
-      var headerContextualMenuItem = {
-        key: "section-" + sectionProps.title + "-title",
-        itemType: ContextualMenuItemType.Header,
-        text: sectionProps.title,
-        id: id
-      };
-      groupProps = {
-        role: 'group',
-        'aria-labelledby': id
-      };
-      headerItem = this._renderHeaderMenuItem(headerContextualMenuItem, menuClassNames, index, hasCheckmarks, hasIcons);
-    }
-
-    if (sectionProps.items && sectionProps.items.length > 0) {
-      return React.createElement("li", {
-        role: "presentation",
-        key: sectionProps.key || sectionItem.key || "section-" + index
-      }, React.createElement("div", __assign({}, groupProps), React.createElement("ul", {
-        className: this._classNames.list
-      }, sectionProps.topDivider && this._renderSeparator(index, menuClassNames, true, true), headerItem && this._renderListItem(headerItem, sectionItem.key || index, menuClassNames, sectionItem.title), sectionProps.items.map(function (contextualMenuItem, itemsIndex) {
-        return _this._renderMenuItem(contextualMenuItem, itemsIndex, itemsIndex, sectionProps.items.length, hasCheckmarks, hasIcons);
-      }), sectionProps.bottomDivider && this._renderSeparator(index, menuClassNames, false, true))));
-    }
-  };
-
-  ContextualMenuBase.prototype._renderListItem = function (content, key, classNames, // tslint:disable-line:deprecation
-  title) {
-    return React.createElement("li", {
-      role: "presentation",
-      title: title,
-      key: key,
-      className: classNames.item
-    }, content);
-  };
-
-  ContextualMenuBase.prototype._renderSeparator = function (index, classNames, // tslint:disable-line:deprecation
-  top, fromSection) {
-    if (fromSection || index > 0) {
-      return React.createElement("li", {
-        role: "separator",
-        key: 'separator-' + index + (top === undefined ? '' : top ? '-top' : '-bottom'),
-        className: classNames.divider,
-        "aria-hidden": "true"
-      });
-    }
-
-    return null;
-  };
-
-  ContextualMenuBase.prototype._renderNormalItem = function (item, classNames, // tslint:disable-line:deprecation
-  index, focusableElementIndex, totalItemCount, hasCheckmarks, hasIcons) {
-    if (item.onRender) {
-      return item.onRender(__assign({
-        'aria-posinset': focusableElementIndex + 1,
-        'aria-setsize': totalItemCount
-      }, item), this.dismiss);
-    }
-
-    if (item.href) {
-      return this._renderAnchorMenuItem(item, classNames, index, focusableElementIndex, totalItemCount, hasCheckmarks, hasIcons);
-    }
-
-    if (item.split && hasSubmenu(item)) {
-      return this._renderSplitButton(item, classNames, index, focusableElementIndex, totalItemCount, hasCheckmarks, hasIcons);
-    }
-
-    return this._renderButtonItem(item, classNames, index, focusableElementIndex, totalItemCount, hasCheckmarks, hasIcons);
-  };
-
-  ContextualMenuBase.prototype._renderHeaderMenuItem = function (item, // tslint:disable-next-line:deprecation
-  classNames, index, hasCheckmarks, hasIcons) {
-    var _a = this.props.contextualMenuItemAs,
-        ChildrenRenderer = _a === void 0 ? ContextualMenuItem : _a;
-    var itemProps = item.itemProps,
-        id = item.id;
-    var divHtmlProperties = itemProps && getNativeProps(itemProps, divProperties);
-    return (// tslint:disable-next-line:deprecation
-      React.createElement("div", __assign({
-        id: id,
-        className: this._classNames.header
-      }, divHtmlProperties, {
-        style: item.style
-      }), React.createElement(ChildrenRenderer, __assign({
-        item: item,
-        classNames: classNames,
-        index: index,
-        onCheckmarkClick: hasCheckmarks ? this._onItemClick : undefined,
-        hasIcons: hasIcons
-      }, itemProps)))
-    );
-  };
-
-  ContextualMenuBase.prototype._renderAnchorMenuItem = function (item, // tslint:disable-next-line:deprecation
-  classNames, index, focusableElementIndex, totalItemCount, hasCheckmarks, hasIcons) {
-    var contextualMenuItemAs = this.props.contextualMenuItemAs;
-    var expandedMenuItemKey = this.state.expandedMenuItemKey;
-    return React.createElement(ContextualMenuAnchor, {
-      item: item,
-      classNames: classNames,
-      index: index,
-      focusableElementIndex: focusableElementIndex,
-      totalItemCount: totalItemCount,
-      hasCheckmarks: hasCheckmarks,
-      hasIcons: hasIcons,
-      contextualMenuItemAs: contextualMenuItemAs,
-      onItemMouseEnter: this._onItemMouseEnterBase,
-      onItemMouseLeave: this._onMouseItemLeave,
-      onItemMouseMove: this._onItemMouseMoveBase,
-      onItemMouseDown: this._onItemMouseDown,
-      executeItemClick: this._executeItemClick,
-      onItemClick: this._onAnchorClick,
-      onItemKeyDown: this._onItemKeyDown,
-      getSubMenuId: this._getSubMenuId,
-      expandedMenuItemKey: expandedMenuItemKey,
-      openSubMenu: this._onItemSubMenuExpand,
-      dismissSubMenu: this._onSubMenuDismiss,
-      dismissMenu: this.dismiss
-    });
-  };
-
-  ContextualMenuBase.prototype._renderButtonItem = function (item, // tslint:disable-next-line:deprecation
-  classNames, index, focusableElementIndex, totalItemCount, hasCheckmarks, hasIcons) {
-    var contextualMenuItemAs = this.props.contextualMenuItemAs;
-    var expandedMenuItemKey = this.state.expandedMenuItemKey;
-    return React.createElement(ContextualMenuButton, {
-      item: item,
-      classNames: classNames,
-      index: index,
-      focusableElementIndex: focusableElementIndex,
-      totalItemCount: totalItemCount,
-      hasCheckmarks: hasCheckmarks,
-      hasIcons: hasIcons,
-      contextualMenuItemAs: contextualMenuItemAs,
-      onItemMouseEnter: this._onItemMouseEnterBase,
-      onItemMouseLeave: this._onMouseItemLeave,
-      onItemMouseMove: this._onItemMouseMoveBase,
-      onItemMouseDown: this._onItemMouseDown,
-      executeItemClick: this._executeItemClick,
-      onItemClick: this._onItemClick,
-      onItemClickBase: this._onItemClickBase,
-      onItemKeyDown: this._onItemKeyDown,
-      getSubMenuId: this._getSubMenuId,
-      expandedMenuItemKey: expandedMenuItemKey,
-      openSubMenu: this._onItemSubMenuExpand,
-      dismissSubMenu: this._onSubMenuDismiss,
-      dismissMenu: this.dismiss
-    });
-  };
-
-  ContextualMenuBase.prototype._renderSplitButton = function (item, // tslint:disable-next-line:deprecation
-  classNames, index, focusableElementIndex, totalItemCount, hasCheckmarks, hasIcons) {
-    var contextualMenuItemAs = this.props.contextualMenuItemAs;
-    var expandedMenuItemKey = this.state.expandedMenuItemKey;
-    return React.createElement(ContextualMenuSplitButton, {
-      item: item,
-      classNames: classNames,
-      index: index,
-      focusableElementIndex: focusableElementIndex,
-      totalItemCount: totalItemCount,
-      hasCheckmarks: hasCheckmarks,
-      hasIcons: hasIcons,
-      contextualMenuItemAs: contextualMenuItemAs,
-      onItemMouseEnter: this._onItemMouseEnterBase,
-      onItemMouseLeave: this._onMouseItemLeave,
-      onItemMouseMove: this._onItemMouseMoveBase,
-      onItemMouseDown: this._onItemMouseDown,
-      executeItemClick: this._executeItemClick,
-      onItemClick: this._onItemClick,
-      onItemClickBase: this._onItemClickBase,
-      onItemKeyDown: this._onItemKeyDown,
-      openSubMenu: this._onItemSubMenuExpand,
-      dismissSubMenu: this._onSubMenuDismiss,
-      dismissMenu: this.dismiss,
-      expandedMenuItemKey: expandedMenuItemKey,
-      onTap: this._onPointerAndTouchEvent
-    });
-  };
-  /**
-   * Returns true if the key for the event is alt (Mac option) or meta (Mac command).
-   */
-
-
-  ContextualMenuBase.prototype._isAltOrMeta = function (ev) {
-    return ev.which === KeyCodes.alt || ev.key === 'Meta';
-  };
-
-  ContextualMenuBase.prototype._shouldIgnoreMouseEvent = function () {
-    return !this._isScrollIdle || !this._gotMouseMove;
-  };
-  /**
-   * Handles updating focus when mouseEnter or mouseMove fire.
-   * As part of updating focus, This function will also update
-   * the expand/collapse state accordingly.
-   */
-
-
-  ContextualMenuBase.prototype._updateFocusOnMouseEvent = function (item, ev, target) {
-    var _this = this;
-
-    var targetElement = target ? target : ev.currentTarget;
-    var _a = this.props.subMenuHoverDelay,
-        timeoutDuration = _a === void 0 ? NavigationIdleDelay : _a;
-
-    if (item.key === this.state.expandedMenuItemKey) {
-      return;
-    }
-
-    if (this._enterTimerId !== undefined) {
-      this._async.clearTimeout(this._enterTimerId);
-
-      this._enterTimerId = undefined;
-    } // If the menu is not expanded we can update focus without any delay
-
-
-    if (this.state.expandedMenuItemKey === undefined) {
-      targetElement.focus();
-    } // Delay updating expanding/dismissing the submenu
-    // and only set focus if we have not already done so
-
-
-    if (hasSubmenu(item)) {
-      ev.stopPropagation();
-      this._enterTimerId = this._async.setTimeout(function () {
-        targetElement.focus();
-
-        _this.setState({
-          expandedByMouseClick: true
-        });
-
-        _this._onItemSubMenuExpand(item, targetElement);
-
-        _this._enterTimerId = undefined;
-      }, timeoutDuration);
-    } else {
-      this._enterTimerId = this._async.setTimeout(function () {
-        _this._onSubMenuDismiss(ev);
-
-        targetElement.focus();
-        _this._enterTimerId = undefined;
-      }, timeoutDuration);
-    }
-  };
-
-  ContextualMenuBase.prototype._getSubmenuProps = function () {
-    var _a = this.state,
-        submenuTarget = _a.submenuTarget,
-        expandedMenuItemKey = _a.expandedMenuItemKey;
-
-    var item = this._findItemByKey(expandedMenuItemKey);
-
-    var submenuProps = null;
-
-    if (item) {
-      submenuProps = {
-        items: getSubmenuItems(item),
-        target: submenuTarget,
-        onDismiss: this._onSubMenuDismiss,
-        isSubMenu: true,
-        id: this.state.subMenuId,
-        shouldFocusOnMount: true,
-        shouldFocusOnContainer: this.state.expandedByMouseClick,
-        directionalHint: getRTL$1(this.props.theme) ? DirectionalHint.leftTopEdge : DirectionalHint.rightTopEdge,
-        className: this.props.className,
-        gapSpace: 0,
-        isBeakVisible: false
-      };
-
-      if (item.subMenuProps) {
-        assign(submenuProps, item.subMenuProps);
-      }
-    }
-
-    return submenuProps;
-  };
-
-  ContextualMenuBase.prototype._findItemByKey = function (key) {
-    var items = this.props.items;
-    return this._findItemByKeyFromItems(key, items);
-  };
-  /**
-   * Returns the item that mathes a given key if any.
-   * @param key - The key of the item to match
-   * @param items - The items to look for the key
-   */
-
-
-  ContextualMenuBase.prototype._findItemByKeyFromItems = function (key, items) {
-    for (var _i = 0, items_2 = items; _i < items_2.length; _i++) {
-      var item = items_2[_i];
-
-      if (item.itemType === ContextualMenuItemType.Section && item.sectionProps) {
-        var match = this._findItemByKeyFromItems(key, item.sectionProps.items);
-
-        if (match) {
-          return match;
-        }
-      } else if (item.key && item.key === key) {
-        return item;
-      }
-    }
-  };
-
-  ContextualMenuBase.prototype._setTargetWindowAndElement = function (target) {
-    var currentElement = this._host;
-
-    if (target) {
-      if (typeof target === 'string') {
-        var currentDoc = getDocument(currentElement);
-        this._target = currentDoc ? currentDoc.querySelector(target) : null;
-        this._targetWindow = getWindow(currentElement);
-      } else if (!!target.stopPropagation) {
-        this._targetWindow = getWindow(target.target);
-        this._target = target;
-      } else if ( // tslint:disable-next-line:deprecation
-      (target.left !== undefined || target.x !== undefined) && ( // tslint:disable-next-line:deprecation
-      target.top !== undefined || target.y !== undefined)) {
-        this._targetWindow = getWindow(currentElement);
-        this._target = target;
-      } else if (target.current !== undefined) {
-        this._target = target.current;
-        this._targetWindow = getWindow(this._target);
-      } else {
-        var targetElement = target;
-        this._targetWindow = getWindow(targetElement);
-        this._target = target;
-      }
-    } else {
-      this._targetWindow = getWindow(currentElement);
-    }
-  }; // The default ContextualMenu properties have no items and beak, the default submenu direction is right and top.
-
-
-  ContextualMenuBase.defaultProps = {
-    items: [],
-    shouldFocusOnMount: true,
-    gapSpace: 0,
-    directionalHint: DirectionalHint.bottomAutoEdge,
-    beakWidth: 16
-  };
-  ContextualMenuBase = __decorate([withResponsiveMode], ContextualMenuBase);
-  return ContextualMenuBase;
-}(React.Component);
-
-var GlobalClassNames$5 = {
-  root: 'ms-ContextualMenu',
-  container: 'ms-ContextualMenu-container',
-  list: 'ms-ContextualMenu-list',
-  header: 'ms-ContextualMenu-header',
-  title: 'ms-ContextualMenu-title',
-  isopen: 'is-open'
-};
-var getStyles$7 = function (props) {
-  var className = props.className,
-      theme = props.theme;
-  var classNames = getGlobalClassNames(GlobalClassNames$5, theme);
-  var fonts = theme.fonts,
-      semanticColors = theme.semanticColors,
-      effects = theme.effects;
-  return {
-    root: [theme.fonts.medium, classNames.root, classNames.isopen, {
-      backgroundColor: semanticColors.menuBackground,
-      minWidth: '180px'
-    }, className],
-    container: [classNames.container, {
-      selectors: {
-        ':focus': {
-          outline: 0
-        }
-      }
-    }],
-    list: [classNames.list, classNames.isopen, {
-      listStyleType: 'none',
-      margin: '0',
-      padding: '0'
-    }],
-    header: [classNames.header, fonts.small, {
-      fontWeight: FontWeights.semibold,
-      color: semanticColors.menuHeader,
-      background: 'none',
-      backgroundColor: 'transparent',
-      border: 'none',
-      height: CONTEXTUAL_MENU_ITEM_HEIGHT,
-      lineHeight: CONTEXTUAL_MENU_ITEM_HEIGHT,
-      cursor: 'default',
-      padding: '0px 6px',
-      userSelect: 'none',
-      textAlign: 'left'
-    }],
-    title: [classNames.title, {
-      fontSize: fonts.mediumPlus.fontSize,
-      paddingRight: '14px',
-      paddingLeft: '14px',
-      paddingBottom: '5px',
-      paddingTop: '5px',
-      backgroundColor: semanticColors.menuItemBackgroundPressed
-    }],
-    subComponentStyles: {
-      callout: {
-        root: {
-          boxShadow: effects.elevation8
-        }
-      },
-      menuItem: {}
-    }
-  };
-};
-
-var LocalContextualMenu;
-
-function onRenderSubMenu(subMenuProps) {
-  return React.createElement(LocalContextualMenu, __assign({}, subMenuProps));
-}
-
-LocalContextualMenu = styled(ContextualMenuBase, getStyles$7, function () {
-  return {
-    onRenderSubMenu: onRenderSubMenu
-  };
-}, {
-  scope: 'ContextualMenu'
-});
-/**
- * ContextualMenu description
- */
-
-var ContextualMenu = LocalContextualMenu;
-
-var ButtonGlobalClassNames = {
-  msButton: 'ms-Button',
-  msButtonHasMenu: 'ms-Button--hasMenu',
-  msButtonIcon: 'ms-Button-icon',
-  msButtonMenuIcon: 'ms-Button-menuIcon',
-  msButtonLabel: 'ms-Button-label',
-  msButtonDescription: 'ms-Button-description',
-  msButtonScreenReaderText: 'ms-Button-screenReaderText',
-  msButtonFlexContainer: 'ms-Button-flexContainer',
-  msButtonTextContainer: 'ms-Button-textContainer'
-};
-var getBaseButtonClassNames = memoizeFunction(function (theme, styles, className, variantClassName, iconClassName, menuIconClassName, disabled, hasMenu, checked, expanded, isSplit) {
-  var _a, _b;
-
-  var classNames = getGlobalClassNames(ButtonGlobalClassNames, theme || {});
-  var isExpanded = expanded && !isSplit;
-  return mergeStyleSets({
-    root: [classNames.msButton, styles.root, variantClassName, checked && ['is-checked', styles.rootChecked], isExpanded && ['is-expanded', styles.rootExpanded, {
-      selectors: (_a = {}, _a[":hover ." + classNames.msButtonIcon] = styles.iconExpandedHovered, // menuIcon falls back to rootExpandedHovered to support original behavior
-      _a[":hover ." + classNames.msButtonMenuIcon] = styles.menuIconExpandedHovered || styles.rootExpandedHovered, _a[':hover'] = styles.rootExpandedHovered, _a)
-    }], hasMenu && [ButtonGlobalClassNames.msButtonHasMenu, styles.rootHasMenu], disabled && ['is-disabled', styles.rootDisabled], !disabled && !isExpanded && !checked && {
-      selectors: (_b = {
-        ':hover': styles.rootHovered
-      }, _b[":hover ." + classNames.msButtonLabel] = styles.labelHovered, _b[":hover ." + classNames.msButtonIcon] = styles.iconHovered, _b[":hover ." + classNames.msButtonDescription] = styles.descriptionHovered, _b[":hover ." + classNames.msButtonMenuIcon] = styles.menuIconHovered, _b[':focus'] = styles.rootFocused, _b[':active'] = styles.rootPressed, _b[":active ." + classNames.msButtonIcon] = styles.iconPressed, _b[":active ." + classNames.msButtonDescription] = styles.descriptionPressed, _b[":active ." + classNames.msButtonMenuIcon] = styles.menuIconPressed, _b)
-    }, disabled && checked && [styles.rootCheckedDisabled], !disabled && checked && {
-      selectors: {
-        ':hover': styles.rootCheckedHovered,
-        ':active': styles.rootCheckedPressed
-      }
-    }, className],
-    flexContainer: [classNames.msButtonFlexContainer, styles.flexContainer],
-    textContainer: [classNames.msButtonTextContainer, styles.textContainer],
-    icon: [classNames.msButtonIcon, iconClassName, styles.icon, isExpanded && styles.iconExpanded, checked && styles.iconChecked, disabled && styles.iconDisabled],
-    label: [classNames.msButtonLabel, styles.label, checked && styles.labelChecked, disabled && styles.labelDisabled],
-    menuIcon: [classNames.msButtonMenuIcon, menuIconClassName, styles.menuIcon, checked && styles.menuIconChecked, disabled && !isSplit && styles.menuIconDisabled, !disabled && !isExpanded && !checked && {
-      selectors: {
-        ':hover': styles.menuIconHovered,
-        ':active': styles.menuIconPressed
-      }
-    }, isExpanded && ['is-expanded', styles.menuIconExpanded]],
-    description: [classNames.msButtonDescription, styles.description, checked && styles.descriptionChecked, disabled && styles.descriptionDisabled],
-    screenReaderText: [classNames.msButtonScreenReaderText, styles.screenReaderText]
-  });
-});
-
-var getClassNames$8 = memoizeFunction(function (styles, disabled, expanded, checked, primaryDisabled) {
-  return {
-    root: mergeStyles(styles.splitButtonMenuButton, expanded && [styles.splitButtonMenuButtonExpanded], disabled && [styles.splitButtonMenuButtonDisabled], checked && !disabled && [styles.splitButtonMenuButtonChecked]),
-    splitButtonContainer: mergeStyles(styles.splitButtonContainer, !disabled && checked && [styles.splitButtonContainerChecked, {
-      selectors: {
-        ':hover': styles.splitButtonContainerCheckedHovered
-      }
-    }], !disabled && !checked && [{
-      selectors: {
-        ':hover': styles.splitButtonContainerHovered,
-        ':focus': styles.splitButtonContainerFocused
-      }
-    }], disabled && styles.splitButtonContainerDisabled),
-    icon: mergeStyles(styles.splitButtonMenuIcon, disabled && styles.splitButtonMenuIconDisabled, !disabled && primaryDisabled && styles.splitButtonMenuIcon),
-    flexContainer: mergeStyles(styles.splitButtonFlexContainer),
-    divider: mergeStyles(styles.splitButtonDivider, (primaryDisabled || disabled) && styles.splitButtonDividerDisabled)
-  };
-});
-
-var TouchIdleDelay$1 = 500;
-/* ms */
-
-var COMPONENT_NAME$1 = 'BaseButton';
-/**
- * {@docCategory Button}
- */
-
-var BaseButton =
-/** @class */
-function (_super) {
-  __extends(BaseButton, _super);
-
-  function BaseButton(props) {
-    var _this = _super.call(this, props) || this;
-
-    _this._buttonElement = React.createRef();
-    _this._splitButtonContainer = React.createRef();
-    _this._renderedVisibleMenu = false;
-    _this._getMemoizedMenuButtonKeytipProps = memoizeFunction(function (keytipProps) {
-      return __assign(__assign({}, keytipProps), {
-        hasMenu: true
-      });
-    });
-
-    _this._onRenderIcon = function (buttonProps, defaultRender) {
-      var iconProps = _this.props.iconProps;
-
-      if (iconProps && (iconProps.iconName !== undefined || iconProps.imageProps)) {
-        var className = iconProps.className,
-            imageProps = iconProps.imageProps,
-            rest = __rest(iconProps, ["className", "imageProps"]); // If the styles prop is specified as part of iconProps, fall back to regular Icon as FontIcon and ImageIcon
-        // do not have this prop.
-
-
-        if (iconProps.styles) {
-          return React.createElement(Icon, __assign({
-            className: css(_this._classNames.icon, className),
-            imageProps: imageProps
-          }, rest));
-        }
-
-        if (iconProps.iconName) {
-          return React.createElement(FontIcon, __assign({
-            className: css(_this._classNames.icon, className)
-          }, rest));
-        }
-
-        if (imageProps) {
-          return React.createElement(ImageIcon, __assign({
-            className: css(_this._classNames.icon, className),
-            imageProps: imageProps
-          }, rest));
-        }
-      }
-
-      return null;
-    };
-
-    _this._onRenderTextContents = function () {
+    _this._onToggleSelectGroupClick = function (ev) {
       var _a = _this.props,
-          text = _a.text,
-          children = _a.children,
-          // tslint:disable-next-line:deprecation
-      _b = _a.secondaryText,
-          // tslint:disable-next-line:deprecation
-      secondaryText = _b === void 0 ? _this.props.description : _b,
-          _c = _a.onRenderText,
-          onRenderText = _c === void 0 ? _this._onRenderText : _c,
-          _d = _a.onRenderDescription,
-          onRenderDescription = _d === void 0 ? _this._onRenderDescription : _d;
+          onToggleSelectGroup = _a.onToggleSelectGroup,
+          group = _a.group;
 
-      if (text || typeof children === 'string' || secondaryText) {
-        return React.createElement("span", {
-          className: _this._classNames.textContainer
-        }, onRenderText(_this.props, _this._onRenderText), onRenderDescription(_this.props, _this._onRenderDescription));
+      if (onToggleSelectGroup) {
+        onToggleSelectGroup(group);
       }
 
-      return [onRenderText(_this.props, _this._onRenderText), onRenderDescription(_this.props, _this._onRenderDescription)];
+      ev.preventDefault();
+      ev.stopPropagation();
     };
 
-    _this._onRenderText = function () {
-      var text = _this.props.text;
-      var children = _this.props.children; // For backwards compat, we should continue to take in the text content from children.
+    _this._onHeaderClick = function () {
+      var _a = _this.props,
+          group = _a.group,
+          onGroupHeaderClick = _a.onGroupHeaderClick,
+          onToggleSelectGroup = _a.onToggleSelectGroup;
 
-      if (text === undefined && typeof children === 'string') {
-        text = children;
+      if (onGroupHeaderClick) {
+        onGroupHeaderClick(group);
+      } else if (onToggleSelectGroup) {
+        onToggleSelectGroup(group);
       }
-
-      if (_this._hasText()) {
-        return React.createElement("span", {
-          key: _this._labelId,
-          className: _this._classNames.label,
-          id: _this._labelId
-        }, text);
-      }
-
-      return null;
     };
 
-    _this._onRenderChildren = function () {
-      var children = _this.props.children; // If children is just a string, either it or the text will be rendered via onRenderLabel
-      // If children is another component, it will be rendered after text
+    _this._onRenderTitle = function (props) {
+      var group = props.group;
 
-      if (typeof children === 'string') {
+      if (!group) {
         return null;
       }
 
-      return children;
+      return React.createElement("div", {
+        className: _this._classNames.title
+      }, React.createElement("span", null, group.name), React.createElement("span", {
+        className: _this._classNames.headerCount
+      }, "(", group.count, group.hasMoreData && '+', ")"));
     };
 
-    _this._onRenderDescription = function (props) {
-      // tslint:disable-next-line:deprecation
-      var _a = props.secondaryText,
-          secondaryText = _a === void 0 ? _this.props.description : _a; // ms-Button-description is only shown when the button type is compound.
-      // In other cases it will not be displayed.
+    _this.state = {
+      isCollapsed: _this.props.group && _this.props.group.isCollapsed,
+      isLoadingVisible: false
+    };
+    return _this;
+  } // tslint:disable-next-line function-name
 
-      return secondaryText ? React.createElement("span", {
-        key: _this._descriptionId,
-        className: _this._classNames.description,
-        id: _this._descriptionId
-      }, secondaryText) : null;
+
+  GroupHeaderBase.prototype.UNSAFE_componentWillReceiveProps = function (newProps) {
+    if (newProps.group) {
+      var newCollapsed = newProps.group.isCollapsed;
+      var isGroupLoading = newProps.isGroupLoading;
+      var newLoadingVisible = !newCollapsed && isGroupLoading && isGroupLoading(newProps.group);
+      this.setState({
+        isCollapsed: newCollapsed || false,
+        isLoadingVisible: newLoadingVisible || false
+      });
+    }
+  };
+
+  GroupHeaderBase.prototype.render = function () {
+    var _a = this.props,
+        group = _a.group,
+        groupLevel = _a.groupLevel,
+        viewport = _a.viewport,
+        selectionMode = _a.selectionMode,
+        loadingText = _a.loadingText,
+        // tslint:disable-next-line:deprecation
+    _b = _a.isSelected,
+        // tslint:disable-next-line:deprecation
+    isSelected = _b === void 0 ? false : _b,
+        _c = _a.selected,
+        selected = _c === void 0 ? false : _c,
+        indentWidth = _a.indentWidth,
+        _d = _a.onRenderTitle,
+        onRenderTitle = _d === void 0 ? this._onRenderTitle : _d,
+        _e = _a.isCollapsedGroupSelectVisible,
+        isCollapsedGroupSelectVisible = _e === void 0 ? true : _e,
+        expandButtonProps = _a.expandButtonProps,
+        selectAllButtonProps = _a.selectAllButtonProps,
+        theme = _a.theme,
+        styles = _a.styles,
+        className = _a.className,
+        groupedListId = _a.groupedListId,
+        compact = _a.compact,
+        ariaPosInSet = _a.ariaPosInSet,
+        ariaSetSize = _a.ariaSetSize;
+    var _f = this.state,
+        isCollapsed = _f.isCollapsed,
+        isLoadingVisible = _f.isLoadingVisible;
+    var canSelectGroup = selectionMode === SelectionMode.multiple;
+    var isSelectionCheckVisible = canSelectGroup && (isCollapsedGroupSelectVisible || !(group && group.isCollapsed));
+    var currentlySelected = selected || isSelected;
+    var isRTL = getRTL$1(theme);
+    this._classNames = getClassNames$7(styles, {
+      theme: theme,
+      className: className,
+      selected: currentlySelected,
+      isCollapsed: isCollapsed,
+      compact: compact
+    });
+
+    if (!group) {
+      return null;
+    }
+
+    return React.createElement("div", {
+      className: this._classNames.root,
+      style: viewport ? {
+        minWidth: viewport.width
+      } : {},
+      onClick: this._onHeaderClick,
+      "aria-expanded": !group.isCollapsed,
+      "aria-label": group.ariaLabel || group.name,
+      "aria-level": groupLevel !== undefined ? groupLevel + 1 : undefined,
+      "aria-setsize": ariaSetSize,
+      "aria-posinset": ariaPosInSet,
+      "data-is-focusable": true
+    }, React.createElement(FocusZone, {
+      className: this._classNames.groupHeaderContainer,
+      direction: FocusZoneDirection.horizontal
+    }, isSelectionCheckVisible ? React.createElement("button", __assign({
+      type: "button",
+      className: this._classNames.check,
+      role: "checkbox",
+      "aria-checked": currentlySelected,
+      "data-selection-toggle": true,
+      onClick: this._onToggleSelectGroupClick
+    }, selectAllButtonProps), React.createElement(Check, {
+      checked: currentlySelected
+    })) : selectionMode !== SelectionMode.none && React.createElement(GroupSpacer, {
+      indentWidth: indentWidth,
+      count: 1
+    }), React.createElement(GroupSpacer, {
+      indentWidth: indentWidth,
+      count: groupLevel
+    }), React.createElement("div", {
+      className: this._classNames.dropIcon
+    }, React.createElement(Icon, {
+      iconName: "Tag"
+    })), React.createElement("button", __assign({
+      type: "button",
+      className: this._classNames.expand,
+      onClick: this._onToggleCollapse,
+      "aria-expanded": !group.isCollapsed,
+      "aria-controls": group && !group.isCollapsed ? groupedListId : undefined
+    }, expandButtonProps), React.createElement(Icon, {
+      className: this._classNames.expandIsCollapsed,
+      iconName: isRTL ? 'ChevronLeftMed' : 'ChevronRightMed'
+    })), onRenderTitle(this.props, this._onRenderTitle), isLoadingVisible && React.createElement(Spinner, {
+      label: loadingText
+    })));
+  };
+
+  GroupHeaderBase.defaultProps = {
+    expandButtonProps: {
+      'aria-label': 'expand collapse group'
+    }
+  };
+  return GroupHeaderBase;
+}(React.Component);
+
+var GroupHeader = styled(GroupHeaderBase, getStyles$a, undefined, {
+  scope: 'GroupHeader'
+});
+
+var GlobalClassNames$9 = {
+  root: 'ms-GroupShowAll',
+  link: 'ms-Link'
+};
+var getStyles$c = function (props) {
+  var _a;
+
+  var theme = props.theme;
+  var fonts = theme.fonts;
+  var classNames = getGlobalClassNames(GlobalClassNames$9, theme);
+  return {
+    root: [classNames.root, {
+      position: 'relative',
+      padding: '10px 84px',
+      cursor: 'pointer',
+      selectors: (_a = {}, _a["." + classNames.link] = {
+        fontSize: fonts.small.fontSize
+      }, _a)
+    }]
+  };
+};
+
+var getClassNames$8 = classNamesFunction();
+var GroupShowAllBase = function (props) {
+  var group = props.group,
+      groupLevel = props.groupLevel,
+      _a = props.showAllLinkText,
+      showAllLinkText = _a === void 0 ? 'Show All' : _a,
+      styles = props.styles,
+      theme = props.theme,
+      onToggleSummarize = props.onToggleSummarize;
+  var classNames = getClassNames$8(styles, {
+    theme: theme
+  });
+  var memoizedOnClick = React.useCallback(function (ev) {
+    onToggleSummarize(group);
+    ev.stopPropagation();
+    ev.preventDefault();
+  }, [onToggleSummarize, group]);
+
+  if (group) {
+    return React.createElement("div", {
+      className: classNames.root
+    }, React.createElement(GroupSpacer, {
+      count: groupLevel
+    }), React.createElement(Link, {
+      onClick: memoizedOnClick
+    }, showAllLinkText));
+  }
+
+  return null;
+};
+
+var GroupShowAll = styled(GroupShowAllBase, getStyles$c, undefined, {
+  scope: 'GroupShowAll'
+});
+
+var GlobalClassNames$a = {
+  root: 'ms-groupFooter'
+};
+var getStyles$d = function (props) {
+  var theme = props.theme,
+      className = props.className;
+  var classNames = getGlobalClassNames(GlobalClassNames$a, theme);
+  return {
+    root: [theme.fonts.medium, classNames.root, {
+      position: 'relative',
+      padding: '5px 38px'
+    }, className]
+  };
+};
+
+var getClassNames$9 = classNamesFunction();
+var GroupFooterBase = function (props) {
+  var group = props.group,
+      groupLevel = props.groupLevel,
+      footerText = props.footerText,
+      indentWidth = props.indentWidth,
+      styles = props.styles,
+      theme = props.theme;
+  var classNames = getClassNames$9(styles, {
+    theme: theme
+  });
+
+  if (group && footerText) {
+    return React.createElement("div", {
+      className: classNames.root
+    }, React.createElement(GroupSpacer, {
+      indentWidth: indentWidth,
+      count: groupLevel
+    }), footerText);
+  }
+
+  return null;
+};
+
+var GroupFooter = styled(GroupFooterBase, getStyles$d, undefined, {
+  scope: 'GroupFooter'
+});
+
+/**
+ * {@docCategory List}
+ */
+var ScrollToMode = {
+  /**
+   * Does not make any consideration to where in the viewport the item should align to.
+   */
+  auto: 0,
+
+  /**
+   * Attempts to scroll the list so the top of the desired item is aligned with the top of the viewport.
+   */
+  top: 1,
+
+  /**
+   * Attempts to scroll the list so the bottom of the desired item is aligned with the bottom of the viewport.
+   */
+  bottom: 2,
+
+  /**
+   * Attempts to scroll the list so the desired item is in the exact center of the viewport.
+   */
+  center: 3
+};
+
+var RESIZE_DELAY = 16;
+var MIN_SCROLL_UPDATE_DELAY = 100;
+var MAX_SCROLL_UPDATE_DELAY = 500;
+var IDLE_DEBOUNCE_DELAY = 200; // The amount of time to wait before declaring that the list isn't scrolling
+
+var DONE_SCROLLING_WAIT = 500;
+var DEFAULT_ITEMS_PER_PAGE = 10;
+var DEFAULT_PAGE_HEIGHT = 30;
+var DEFAULT_RENDERED_WINDOWS_BEHIND = 2;
+var DEFAULT_RENDERED_WINDOWS_AHEAD = 2;
+var PAGE_KEY_PREFIX = 'page-';
+var SPACER_KEY_PREFIX = 'spacer-';
+var EMPTY_RECT = {
+  top: -1,
+  bottom: -1,
+  left: -1,
+  right: -1,
+  width: 0,
+  height: 0
+}; // Naming expensive measures so that they're named in profiles.
+
+var _measurePageRect = function (element) {
+  return element.getBoundingClientRect();
+};
+
+var _measureSurfaceRect = _measurePageRect;
+var _measureScrollRect = _measurePageRect;
+/**
+ * The List renders virtualized pages of items. Each page's item count is determined by the getItemCountForPage callback
+ * if provided by the caller, or 10 as default. Each page's height is determined by the getPageHeight callback if
+ * provided by the caller, or by cached measurements if available, or by a running average, or a default fallback.
+ *
+ * The algorithm for rendering pages works like this:
+ *
+ * 1. Predict visible pages based on "current measure data" (page heights, surface position, visible window)
+ * 2. If changes are necessary, apply changes (add/remove pages)
+ * 3. For pages that are added, measure the page heights if we need to using getBoundingClientRect
+ * 4. If measurements don't match predictions, update measure data and goto step 1 asynchronously
+ *
+ * Measuring too frequently can pull performance down significantly. To compensate, we cache measured values so that
+ * we can avoid re-measuring during operations that should not alter heights, like scrolling.
+ *
+ * To optimize glass rendering performance, onShouldVirtualize can be set. When onShouldVirtualize return false,
+ * List will run in fast mode (not virtualized) to render all items without any measurements to improve page load time.
+ * And we start doing measurements and rendering in virtualized mode when items grows larger than this threshold.
+ *
+ * However, certain operations can make measure data stale. For example, resizing the list, or passing in new props,
+ * or forcing an update change cause pages to shrink/grow. When these operations occur, we increment a measureVersion
+ * number, which we associate with cached measurements and use to determine if a remeasure should occur.
+ */
+
+var List =
+/** @class */
+function (_super) {
+  __extends(List, _super);
+
+  function List(props) {
+    var _this = _super.call(this, props) || this;
+
+    _this._root = React.createRef();
+    _this._surface = React.createRef();
+
+    _this._onRenderRoot = function (props) {
+      var rootRef = props.rootRef,
+          surfaceElement = props.surfaceElement,
+          divProps = props.divProps;
+      return React.createElement("div", __assign({
+        ref: rootRef
+      }, divProps), surfaceElement);
     };
 
-    _this._onRenderAriaDescription = function () {
-      var ariaDescription = _this.props.ariaDescription; // If ariaDescription is given, descriptionId will be assigned to ariaDescriptionSpan,
-      // otherwise it will be assigned to descriptionSpan.
-
-      return ariaDescription ? React.createElement("span", {
-        className: _this._classNames.screenReaderText,
-        id: _this._ariaDescriptionId
-      }, ariaDescription) : null;
+    _this._onRenderSurface = function (props) {
+      var surfaceRef = props.surfaceRef,
+          pageElements = props.pageElements,
+          divProps = props.divProps;
+      return React.createElement("div", __assign({
+        ref: surfaceRef
+      }, divProps), pageElements);
     };
 
-    _this._onRenderMenuIcon = function (props) {
-      var menuIconProps = _this.props.menuIconProps;
-      return React.createElement(FontIcon, __assign({
-        iconName: "ChevronDown"
-      }, menuIconProps, {
-        className: _this._classNames.menuIcon
-      }));
+    _this._onRenderPage = function (pageProps, defaultRender) {
+      var _a = _this.props,
+          onRenderCell = _a.onRenderCell,
+          role = _a.role;
+
+      var _b = pageProps.page,
+          _c = _b.items,
+          items = _c === void 0 ? [] : _c,
+          startIndex = _b.startIndex,
+          divProps = __rest(pageProps, ["page"]); // only assign list item role if no role is assigned
+
+
+      var cellRole = role === undefined ? 'listitem' : 'presentation';
+      var cells = [];
+
+      for (var i = 0; i < items.length; i++) {
+        var index = startIndex + i;
+        var item = items[i];
+        var itemKey = _this.props.getKey ? _this.props.getKey(item, index) : item && item.key;
+
+        if (itemKey === null || itemKey === undefined) {
+          itemKey = index;
+        }
+
+        cells.push(React.createElement("div", {
+          role: cellRole,
+          className: 'ms-List-cell',
+          key: itemKey,
+          "data-list-index": index,
+          "data-automationid": "ListCell"
+        }, onRenderCell && onRenderCell(item, index, !_this.props.ignoreScrollingState ? _this.state.isScrolling : undefined)));
+      }
+
+      return React.createElement("div", __assign({}, divProps), cells);
     };
 
-    _this._onRenderMenu = function (menuProps) {
-      var persistMenu = _this.props.persistMenu;
-      var menuHidden = _this.state.menuHidden;
-      var MenuType = _this.props.menuAs || ContextualMenu; // the accessible menu label (accessible name) has a relationship to the button.
-      // If the menu props do not specify an explicit value for aria-label or aria-labelledBy,
-      // AND the button has text, we'll set the menu aria-labelledBy to the text element id.
+    initializeComponentRef(_this);
+    _this.state = {
+      pages: [],
+      isScrolling: false
+    };
+    _this._async = new Async(_this);
+    _this._events = new EventGroup(_this);
+    _this._estimatedPageHeight = 0;
+    _this._totalEstimates = 0;
+    _this._requiredWindowsAhead = 0;
+    _this._requiredWindowsBehind = 0; // Track the measure version for everything.
 
-      if (!menuProps.ariaLabel && !menuProps.labelElementId && _this._hasText()) {
-        menuProps = __assign(__assign({}, menuProps), {
-          labelElementId: _this._labelId
+    _this._measureVersion = 0; // Ensure that scrolls are lazy updated.
+
+    _this._onAsyncScroll = _this._async.debounce(_this._onAsyncScroll, MIN_SCROLL_UPDATE_DELAY, {
+      leading: false,
+      maxWait: MAX_SCROLL_UPDATE_DELAY
+    });
+    _this._onAsyncIdle = _this._async.debounce(_this._onAsyncIdle, IDLE_DEBOUNCE_DELAY, {
+      leading: false
+    });
+    _this._onAsyncResize = _this._async.debounce(_this._onAsyncResize, RESIZE_DELAY, {
+      leading: false
+    });
+    _this._onScrollingDone = _this._async.debounce(_this._onScrollingDone, DONE_SCROLLING_WAIT, {
+      leading: false
+    });
+    _this._cachedPageHeights = {};
+    _this._estimatedPageHeight = 0;
+    _this._focusedIndex = -1;
+    _this._pageCache = {};
+    return _this;
+  }
+  /**
+   * Scroll to the given index. By default will bring the page the specified item is on into the view. If a callback
+   * to measure the height of an individual item is specified, will only scroll to bring the specific item into view.
+   *
+   * Note: with items of variable height and no passed in `getPageHeight` method, the list might jump after scrolling
+   * when windows before/ahead are being rendered, and the estimated height is replaced using actual elements.
+   *
+   * @param index - Index of item to scroll to
+   * @param measureItem - Optional callback to measure the height of an individual item
+   * @param scrollToMode - Optional defines where in the window the item should be positioned to when scrolling
+   */
+
+
+  List.prototype.scrollToIndex = function (index, measureItem, scrollToMode) {
+    if (scrollToMode === void 0) {
+      scrollToMode = ScrollToMode.auto;
+    }
+
+    var startIndex = this.props.startIndex;
+
+    var renderCount = this._getRenderCount();
+
+    var endIndex = startIndex + renderCount;
+    var allowedRect = this._allowedRect;
+    var scrollTop = 0;
+    var itemsPerPage = 1;
+
+    for (var itemIndex = startIndex; itemIndex < endIndex; itemIndex += itemsPerPage) {
+      var pageSpecification = this._getPageSpecification(itemIndex, allowedRect);
+
+      var pageHeight = pageSpecification.height;
+      itemsPerPage = pageSpecification.itemCount;
+      var requestedIndexIsInPage = itemIndex <= index && itemIndex + itemsPerPage > index;
+
+      if (requestedIndexIsInPage) {
+        // We have found the page. If the user provided a way to measure an individual item, we will try to scroll in
+        // just the given item, otherwise we'll only bring the page into view
+        if (measureItem && this._scrollElement) {
+          var scrollRect = _measureScrollRect(this._scrollElement);
+
+          var scrollWindow = {
+            top: this._scrollElement.scrollTop,
+            bottom: this._scrollElement.scrollTop + scrollRect.height
+          }; // Adjust for actual item position within page
+
+          var itemPositionWithinPage = index - itemIndex;
+
+          for (var itemIndexInPage = 0; itemIndexInPage < itemPositionWithinPage; ++itemIndexInPage) {
+            scrollTop += measureItem(itemIndex + itemIndexInPage);
+          }
+
+          var scrollBottom = scrollTop + measureItem(index); // If scrollToMode is set to something other than auto, we always want to
+          // scroll the item into a specific position on the page.
+
+          switch (scrollToMode) {
+            case ScrollToMode.top:
+              this._scrollElement.scrollTop = scrollTop;
+              return;
+
+            case ScrollToMode.bottom:
+              this._scrollElement.scrollTop = scrollBottom - scrollRect.height;
+              return;
+
+            case ScrollToMode.center:
+              this._scrollElement.scrollTop = (scrollTop + scrollBottom - scrollRect.height) / 2;
+              return;
+          }
+
+          var itemIsFullyVisible = scrollTop >= scrollWindow.top && scrollBottom <= scrollWindow.bottom;
+
+          if (itemIsFullyVisible) {
+            // Item is already visible, do nothing.
+            return;
+          }
+
+          var itemIsPartiallyAbove = scrollTop < scrollWindow.top;
+          var itemIsPartiallyBelow = scrollBottom > scrollWindow.bottom;
+
+          if (itemIsPartiallyAbove) ; else if (itemIsPartiallyBelow) {
+            //  Adjust scrollTop position to just bring in the element
+            // .------.  - scrollTop
+            // |      |
+            // | .------.
+            // '-|----' | - scrollWindow.bottom
+            //   | Item |
+            //   '------' - scrollBottom
+            scrollTop = scrollBottom - scrollRect.height;
+          }
+        }
+
+        this._scrollElement.scrollTop = scrollTop;
+        return;
+      }
+
+      scrollTop += pageHeight;
+    }
+  };
+
+  List.prototype.getStartItemIndexInView = function (measureItem) {
+    var pages = this.state.pages || [];
+
+    for (var _i = 0, pages_1 = pages; _i < pages_1.length; _i++) {
+      var page = pages_1[_i];
+      var isPageVisible = !page.isSpacer && (this._scrollTop || 0) >= page.top && (this._scrollTop || 0) <= page.top + page.height;
+
+      if (isPageVisible) {
+        if (!measureItem) {
+          var rowHeight = Math.floor(page.height / page.itemCount);
+          return page.startIndex + Math.floor((this._scrollTop - page.top) / rowHeight);
+        } else {
+          var totalRowHeight = 0;
+
+          for (var itemIndex = page.startIndex; itemIndex < page.startIndex + page.itemCount; itemIndex++) {
+            var rowHeight = measureItem(itemIndex);
+
+            if (page.top + totalRowHeight <= this._scrollTop && this._scrollTop < page.top + totalRowHeight + rowHeight) {
+              return itemIndex;
+            } else {
+              totalRowHeight += rowHeight;
+            }
+          }
+        }
+      }
+    }
+
+    return 0;
+  };
+
+  List.prototype.componentDidMount = function () {
+    this._updatePages();
+
+    this._measureVersion++;
+    this._scrollElement = findScrollableParent(this._root.current);
+
+    this._events.on(window, 'resize', this._onAsyncResize);
+
+    if (this._root.current) {
+      this._events.on(this._root.current, 'focus', this._onFocus, true);
+    }
+
+    if (this._scrollElement) {
+      this._events.on(this._scrollElement, 'scroll', this._onScroll);
+
+      this._events.on(this._scrollElement, 'scroll', this._onAsyncScroll);
+    }
+  };
+
+  List.prototype.componentWillUnmount = function () {
+    this._async.dispose();
+
+    this._events.dispose();
+
+    delete this._scrollElement;
+  }; // tslint:disable-next-line function-name
+
+
+  List.prototype.UNSAFE_componentWillReceiveProps = function (newProps) {
+    if (newProps.items !== this.props.items || newProps.renderCount !== this.props.renderCount || newProps.startIndex !== this.props.startIndex || newProps.version !== this.props.version) {
+      // We have received new items so we want to make sure that initially we only render a single window to
+      // fill the currently visible rect, and then later render additional windows.
+      this._resetRequiredWindows();
+
+      this._requiredRect = null;
+      this._measureVersion++;
+
+      this._invalidatePageCache();
+
+      this._updatePages(newProps);
+    }
+  };
+
+  List.prototype.shouldComponentUpdate = function (newProps, newState) {
+    var oldPages = this.state.pages;
+    var newPages = newState.pages;
+    var shouldComponentUpdate = false; // Update if the page stops scrolling
+
+    if (!newState.isScrolling && this.state.isScrolling) {
+      return true;
+    }
+
+    if (newProps.version !== this.props.version) {
+      return true;
+    }
+
+    if (newProps.items === this.props.items && oldPages.length === newPages.length) {
+      for (var i = 0; i < oldPages.length; i++) {
+        var oldPage = oldPages[i];
+        var newPage = newPages[i];
+
+        if (oldPage.key !== newPage.key || oldPage.itemCount !== newPage.itemCount) {
+          shouldComponentUpdate = true;
+          break;
+        }
+      }
+    } else {
+      shouldComponentUpdate = true;
+    }
+
+    return shouldComponentUpdate;
+  };
+
+  List.prototype.forceUpdate = function () {
+    this._invalidatePageCache(); // Ensure that when the list is force updated we update the pages first before render.
+
+
+    this._updateRenderRects(this.props, true);
+
+    this._updatePages();
+
+    this._measureVersion++;
+
+    _super.prototype.forceUpdate.call(this);
+  };
+  /**
+   * Get the current height the list and it's pages.
+   */
+
+
+  List.prototype.getTotalListHeight = function () {
+    return this._surfaceRect.height;
+  };
+
+  List.prototype.render = function () {
+    var _a = this.props,
+        className = _a.className,
+        _b = _a.role,
+        role = _b === void 0 ? 'list' : _b,
+        onRenderSurface = _a.onRenderSurface,
+        onRenderRoot = _a.onRenderRoot;
+    var _c = this.state.pages,
+        pages = _c === void 0 ? [] : _c;
+    var pageElements = [];
+    var divProps = getNativeProps(this.props, divProperties);
+
+    for (var _i = 0, pages_2 = pages; _i < pages_2.length; _i++) {
+      var page = pages_2[_i];
+      pageElements.push(this._renderPage(page));
+    }
+
+    var finalOnRenderSurface = onRenderSurface ? composeRenderFunction(onRenderSurface, this._onRenderSurface) : this._onRenderSurface;
+    var finalOnRenderRoot = onRenderRoot ? composeRenderFunction(onRenderRoot, this._onRenderRoot) : this._onRenderRoot;
+    return finalOnRenderRoot({
+      rootRef: this._root,
+      pages: pages,
+      surfaceElement: finalOnRenderSurface({
+        surfaceRef: this._surface,
+        pages: pages,
+        pageElements: pageElements,
+        divProps: {
+          role: 'presentation',
+          className: 'ms-List-surface'
+        }
+      }),
+      divProps: __assign(__assign({}, divProps), {
+        className: css('ms-List', className),
+        role: pageElements.length > 0 ? role : undefined
+      })
+    });
+  };
+
+  List.prototype._shouldVirtualize = function (props) {
+    if (props === void 0) {
+      props = this.props;
+    }
+
+    var onShouldVirtualize = props.onShouldVirtualize;
+    return !onShouldVirtualize || onShouldVirtualize(props);
+  };
+  /**
+   * when props.items change or forceUpdate called, throw away cached pages
+   */
+
+
+  List.prototype._invalidatePageCache = function () {
+    this._pageCache = {};
+  };
+
+  List.prototype._renderPage = function (page) {
+    var usePageCache = this.props.usePageCache;
+    var cachedPage; // if usePageCache is set and cached page element can be found, just return cached page
+
+    if (usePageCache) {
+      cachedPage = this._pageCache[page.key];
+
+      if (cachedPage && cachedPage.pageElement) {
+        return cachedPage.pageElement;
+      }
+    }
+
+    var pageStyle = this._getPageStyle(page);
+
+    var _a = this.props.onRenderPage,
+        onRenderPage = _a === void 0 ? this._onRenderPage : _a;
+    var pageElement = onRenderPage({
+      page: page,
+      className: 'ms-List-page',
+      key: page.key,
+      ref: page.key,
+      style: pageStyle,
+      role: 'presentation'
+    }, this._onRenderPage); // cache the first page for now since it is re-rendered a lot times unnecessarily.
+    // todo: a more aggresive caching mechanism is to cache pages constaining the items not changed.
+    // now we re-render pages too frequently, for example, props.items increased from 30 to 60, although the
+    // first 30 items did not change, we still re-rendered all of them in this props.items change.
+
+    if (usePageCache && page.startIndex === 0) {
+      this._pageCache[page.key] = {
+        page: page,
+        pageElement: pageElement
+      };
+    }
+
+    return pageElement;
+  };
+  /** Generate the style object for the page. */
+
+
+  List.prototype._getPageStyle = function (page) {
+    var getPageStyle = this.props.getPageStyle;
+    return __assign(__assign({}, getPageStyle ? getPageStyle(page) : {}), !page.items ? {
+      height: page.height
+    } : {});
+  };
+  /** Track the last item index focused so that we ensure we keep it rendered. */
+
+
+  List.prototype._onFocus = function (ev) {
+    var target = ev.target;
+
+    while (target !== this._surface.current) {
+      var indexString = target.getAttribute('data-list-index');
+
+      if (indexString) {
+        this._focusedIndex = Number(indexString);
+        break;
+      }
+
+      target = getParent(target);
+    }
+  };
+  /**
+   * Called synchronously to reset the required render range to 0 on scrolling. After async scroll has executed,
+   * we will call onAsyncIdle which will reset it back to it's correct value.
+   */
+
+
+  List.prototype._onScroll = function () {
+    if (!this.state.isScrolling && !this.props.ignoreScrollingState) {
+      this.setState({
+        isScrolling: true
+      });
+    }
+
+    this._resetRequiredWindows();
+
+    this._onScrollingDone();
+  };
+
+  List.prototype._resetRequiredWindows = function () {
+    this._requiredWindowsAhead = 0;
+    this._requiredWindowsBehind = 0;
+  };
+  /**
+   * Debounced method to asynchronously update the visible region on a scroll event.
+   */
+
+
+  List.prototype._onAsyncScroll = function () {
+    this._updateRenderRects(); // Only update pages when the visible rect falls outside of the materialized rect.
+
+
+    if (!this._materializedRect || !_isContainedWithin(this._requiredRect, this._materializedRect)) {
+      this._updatePages();
+    }
+  };
+  /**
+   * This is an async debounced method that will try and increment the windows we render. If we can increment
+   * either, we increase the amount we render and re-evaluate.
+   */
+
+
+  List.prototype._onAsyncIdle = function () {
+    var _a = this.props,
+        renderedWindowsAhead = _a.renderedWindowsAhead,
+        renderedWindowsBehind = _a.renderedWindowsBehind;
+
+    var _b = this,
+        requiredWindowsAhead = _b._requiredWindowsAhead,
+        requiredWindowsBehind = _b._requiredWindowsBehind;
+
+    var windowsAhead = Math.min(renderedWindowsAhead, requiredWindowsAhead + 1);
+    var windowsBehind = Math.min(renderedWindowsBehind, requiredWindowsBehind + 1);
+
+    if (windowsAhead !== requiredWindowsAhead || windowsBehind !== requiredWindowsBehind) {
+      // console.log('idling', windowsBehind, windowsAhead);
+      this._requiredWindowsAhead = windowsAhead;
+      this._requiredWindowsBehind = windowsBehind;
+
+      this._updateRenderRects();
+
+      this._updatePages();
+    }
+
+    if (renderedWindowsAhead > windowsAhead || renderedWindowsBehind > windowsBehind) {
+      // Async increment on next tick.
+      this._onAsyncIdle();
+    }
+  };
+  /**
+   * Function to call when the list is done scrolling.
+   * This function is debounced.
+   */
+
+
+  List.prototype._onScrollingDone = function () {
+    if (!this.props.ignoreScrollingState) {
+      this.setState({
+        isScrolling: false
+      });
+    }
+  };
+
+  List.prototype._onAsyncResize = function () {
+    this.forceUpdate();
+  };
+
+  List.prototype._updatePages = function (props) {
+    // console.log('updating pages');
+    var _this = this;
+
+    if (props === void 0) {
+      props = this.props;
+    }
+
+    if (!this._requiredRect) {
+      this._updateRenderRects(props);
+    }
+
+    var newListState = this._buildPages(props);
+
+    var oldListPages = this.state.pages;
+
+    this._notifyPageChanges(oldListPages, newListState.pages);
+
+    this.setState(newListState, function () {
+      // Multiple updates may have been queued, so the callback will reflect all of them.
+      // Re-fetch the current props and states to avoid using a stale props or state captured in the closure.
+      var finalProps = _this.props;
+      var finalState = _this.state; // If we weren't provided with the page height, measure the pages
+
+      if (!finalProps.getPageHeight) {
+        // If measured version is invalid since we've updated the DOM
+        var heightsChanged = _this._updatePageMeasurements(finalState.pages); // On first render, we should re-measure so that we don't get a visual glitch.
+
+
+        if (heightsChanged) {
+          _this._materializedRect = null;
+
+          if (!_this._hasCompletedFirstRender) {
+            _this._hasCompletedFirstRender = true;
+
+            _this._updatePages(finalProps);
+          } else {
+            _this._onAsyncScroll();
+          }
+        } else {
+          // Enqueue an idle bump.
+          _this._onAsyncIdle();
+        }
+      } else {
+        // Enqueue an idle bump
+        _this._onAsyncIdle();
+      } // Notify the caller that rendering the new pages has completed
+
+
+      if (finalProps.onPagesUpdated) {
+        finalProps.onPagesUpdated(finalState.pages);
+      }
+    });
+  };
+  /**
+   * Notify consumers that the rendered pages have changed
+   * @param oldPages - The old pages
+   * @param newPages - The new pages
+   * @param props - The props to use
+   */
+
+
+  List.prototype._notifyPageChanges = function (oldPages, newPages, props) {
+    if (props === void 0) {
+      props = this.props;
+    }
+
+    var onPageAdded = props.onPageAdded,
+        onPageRemoved = props.onPageRemoved;
+
+    if (onPageAdded || onPageRemoved) {
+      var renderedIndexes = {};
+
+      for (var _i = 0, oldPages_1 = oldPages; _i < oldPages_1.length; _i++) {
+        var page = oldPages_1[_i];
+
+        if (page.items) {
+          renderedIndexes[page.startIndex] = page;
+        }
+      }
+
+      for (var _a = 0, newPages_1 = newPages; _a < newPages_1.length; _a++) {
+        var page = newPages_1[_a];
+
+        if (page.items) {
+          if (!renderedIndexes[page.startIndex]) {
+            this._onPageAdded(page);
+          } else {
+            delete renderedIndexes[page.startIndex];
+          }
+        }
+      }
+
+      for (var index in renderedIndexes) {
+        if (renderedIndexes.hasOwnProperty(index)) {
+          this._onPageRemoved(renderedIndexes[index]);
+        }
+      }
+    }
+  };
+
+  List.prototype._updatePageMeasurements = function (pages) {
+    var heightChanged = false; // when not in virtualize mode, we render all the items without page measurement
+
+    if (!this._shouldVirtualize()) {
+      return heightChanged;
+    }
+
+    for (var i = 0; i < pages.length; i++) {
+      var page = pages[i];
+
+      if (page.items) {
+        heightChanged = this._measurePage(page) || heightChanged;
+      }
+    }
+
+    return heightChanged;
+  };
+  /**
+   * Given a page, measure its dimensions, update cache.
+   * @returns True if the height has changed.
+   */
+
+
+  List.prototype._measurePage = function (page) {
+    var hasChangedHeight = false;
+    var pageElement = this.refs[page.key];
+    var cachedHeight = this._cachedPageHeights[page.startIndex]; // console.log('   * measure attempt', page.startIndex, cachedHeight);
+
+    if (pageElement && this._shouldVirtualize() && (!cachedHeight || cachedHeight.measureVersion !== this._measureVersion)) {
+      var newClientRect = {
+        width: pageElement.clientWidth,
+        height: pageElement.clientHeight
+      };
+
+      if (newClientRect.height || newClientRect.width) {
+        hasChangedHeight = page.height !== newClientRect.height; // console.warn(' *** expensive page measure', page.startIndex, page.height, newClientRect.height);
+
+        page.height = newClientRect.height;
+        this._cachedPageHeights[page.startIndex] = {
+          height: newClientRect.height,
+          measureVersion: this._measureVersion
+        };
+        this._estimatedPageHeight = Math.round((this._estimatedPageHeight * this._totalEstimates + newClientRect.height) / (this._totalEstimates + 1));
+        this._totalEstimates++;
+      }
+    }
+
+    return hasChangedHeight;
+  };
+  /** Called when a page has been added to the DOM. */
+
+
+  List.prototype._onPageAdded = function (page) {
+    var onPageAdded = this.props.onPageAdded; // console.log('page added', page.startIndex, this.state.pages.map(page => page.key).join(', '));
+
+    if (onPageAdded) {
+      onPageAdded(page);
+    }
+  };
+  /** Called when a page has been removed from the DOM. */
+
+
+  List.prototype._onPageRemoved = function (page) {
+    var onPageRemoved = this.props.onPageRemoved; // console.log('  --- page removed', page.startIndex, this.state.pages.map(page => page.key).join(', '));
+
+    if (onPageRemoved) {
+      onPageRemoved(page);
+    }
+  };
+  /** Build up the pages that should be rendered. */
+
+
+  List.prototype._buildPages = function (props) {
+    var renderCount = props.renderCount;
+    var items = props.items,
+        startIndex = props.startIndex,
+        getPageHeight = props.getPageHeight;
+    renderCount = this._getRenderCount(props);
+
+    var materializedRect = __assign({}, EMPTY_RECT);
+
+    var pages = [];
+    var itemsPerPage = 1;
+    var pageTop = 0;
+    var currentSpacer = null;
+    var focusedIndex = this._focusedIndex;
+    var endIndex = startIndex + renderCount;
+
+    var shouldVirtualize = this._shouldVirtualize(props); // First render is very important to track; when we render cells, we have no idea of estimated page height.
+    // So we should default to rendering only the first page so that we can get information.
+    // However if the user provides a measure function, let's just assume they know the right heights.
+
+
+    var isFirstRender = this._estimatedPageHeight === 0 && !getPageHeight;
+    var allowedRect = this._allowedRect;
+
+    var _loop_1 = function (itemIndex) {
+      var pageSpecification = this_1._getPageSpecification(itemIndex, allowedRect);
+
+      var pageHeight = pageSpecification.height;
+      var pageData = pageSpecification.data;
+      var key = pageSpecification.key;
+      itemsPerPage = pageSpecification.itemCount;
+      var pageBottom = pageTop + pageHeight - 1;
+      var isPageRendered = findIndex(this_1.state.pages, function (page) {
+        return !!page.items && page.startIndex === itemIndex;
+      }) > -1;
+      var isPageInAllowedRange = !allowedRect || pageBottom >= allowedRect.top && pageTop <= allowedRect.bottom;
+      var isPageInRequiredRange = !this_1._requiredRect || pageBottom >= this_1._requiredRect.top && pageTop <= this_1._requiredRect.bottom;
+      var isPageVisible = !isFirstRender && (isPageInRequiredRange || isPageInAllowedRange && isPageRendered) || !shouldVirtualize;
+      var isPageFocused = focusedIndex >= itemIndex && focusedIndex < itemIndex + itemsPerPage;
+      var isFirstPage = itemIndex === startIndex; // console.log('building page', itemIndex, 'pageTop: ' + pageTop, 'inAllowed: ' +
+      // isPageInAllowedRange, 'inRequired: ' + isPageInRequiredRange);
+      // Only render whats visible, focused, or first page,
+      // or when running in fast rendering mode (not in virtualized mode), we render all current items in pages
+
+      if (isPageVisible || isPageFocused || isFirstPage) {
+        if (currentSpacer) {
+          pages.push(currentSpacer);
+          currentSpacer = null;
+        }
+
+        var itemsInPage = Math.min(itemsPerPage, endIndex - itemIndex);
+
+        var newPage = this_1._createPage(key, items.slice(itemIndex, itemIndex + itemsInPage), itemIndex, undefined, undefined, pageData);
+
+        newPage.top = pageTop;
+        newPage.height = pageHeight;
+
+        if (this_1._visibleRect && this_1._visibleRect.bottom) {
+          newPage.isVisible = pageBottom >= this_1._visibleRect.top && pageTop <= this_1._visibleRect.bottom;
+        }
+
+        pages.push(newPage);
+
+        if (isPageInRequiredRange && this_1._allowedRect) {
+          _mergeRect(materializedRect, {
+            top: pageTop,
+            bottom: pageBottom,
+            height: pageHeight,
+            left: allowedRect.left,
+            right: allowedRect.right,
+            width: allowedRect.width
+          });
+        }
+      } else {
+        if (!currentSpacer) {
+          currentSpacer = this_1._createPage(SPACER_KEY_PREFIX + itemIndex, undefined, itemIndex, 0, undefined, pageData, true
+          /*isSpacer*/
+          );
+        }
+
+        currentSpacer.height = (currentSpacer.height || 0) + (pageBottom - pageTop) + 1;
+        currentSpacer.itemCount += itemsPerPage;
+      }
+
+      pageTop += pageBottom - pageTop + 1; // in virtualized mode, we render need to render first page then break and measure,
+      // otherwise, we render all items without measurement to make rendering fast
+
+      if (isFirstRender && shouldVirtualize) {
+        return "break";
+      }
+    };
+
+    var this_1 = this;
+
+    for (var itemIndex = startIndex; itemIndex < endIndex; itemIndex += itemsPerPage) {
+      var state_1 = _loop_1(itemIndex);
+
+      if (state_1 === "break") break;
+    }
+
+    if (currentSpacer) {
+      currentSpacer.key = SPACER_KEY_PREFIX + 'end';
+      pages.push(currentSpacer);
+    }
+
+    this._materializedRect = materializedRect; // console.log('materialized: ', materializedRect);
+
+    return {
+      pages: pages,
+      measureVersion: this._measureVersion
+    };
+  };
+
+  List.prototype._getPageSpecification = function (itemIndex, visibleRect) {
+    var getPageSpecification = this.props.getPageSpecification;
+
+    if (getPageSpecification) {
+      var pageData = getPageSpecification(itemIndex, visibleRect);
+      var _a = pageData.itemCount,
+          itemCount = _a === void 0 ? this._getItemCountForPage(itemIndex, visibleRect) : _a;
+      var _b = pageData.height,
+          height = _b === void 0 ? this._getPageHeight(itemIndex, visibleRect, itemCount) : _b;
+      return {
+        itemCount: itemCount,
+        height: height,
+        data: pageData.data,
+        key: pageData.key
+      };
+    } else {
+      var itemCount = this._getItemCountForPage(itemIndex, visibleRect);
+
+      return {
+        itemCount: itemCount,
+        height: this._getPageHeight(itemIndex, visibleRect, itemCount)
+      };
+    }
+  };
+  /**
+   * Get the pixel height of a give page. Will use the props getPageHeight first, and if not provided, fallback to
+   * cached height, or estimated page height, or default page height.
+   */
+
+
+  List.prototype._getPageHeight = function (itemIndex, visibleRect, itemsPerPage) {
+    if (this.props.getPageHeight) {
+      return this.props.getPageHeight(itemIndex, visibleRect, itemsPerPage);
+    } else {
+      var cachedHeight = this._cachedPageHeights[itemIndex];
+      return cachedHeight ? cachedHeight.height : this._estimatedPageHeight || DEFAULT_PAGE_HEIGHT;
+    }
+  };
+
+  List.prototype._getItemCountForPage = function (itemIndex, visibileRect) {
+    var itemsPerPage = this.props.getItemCountForPage ? this.props.getItemCountForPage(itemIndex, visibileRect) : DEFAULT_ITEMS_PER_PAGE;
+    return itemsPerPage ? itemsPerPage : DEFAULT_ITEMS_PER_PAGE;
+  };
+
+  List.prototype._createPage = function (pageKey, items, startIndex, count, style, data, isSpacer) {
+    if (startIndex === void 0) {
+      startIndex = -1;
+    }
+
+    if (count === void 0) {
+      count = items ? items.length : 0;
+    }
+
+    if (style === void 0) {
+      style = {};
+    }
+
+    pageKey = pageKey || PAGE_KEY_PREFIX + startIndex;
+    var cachedPage = this._pageCache[pageKey];
+
+    if (cachedPage && cachedPage.page) {
+      return cachedPage.page;
+    }
+
+    return {
+      key: pageKey,
+      startIndex: startIndex,
+      itemCount: count,
+      items: items,
+      style: style,
+      top: 0,
+      height: 0,
+      data: data,
+      isSpacer: isSpacer || false
+    };
+  };
+
+  List.prototype._getRenderCount = function (props) {
+    var _a = props || this.props,
+        items = _a.items,
+        startIndex = _a.startIndex,
+        renderCount = _a.renderCount;
+
+    return renderCount === undefined ? items ? items.length - startIndex : 0 : renderCount;
+  };
+  /** Calculate the visible rect within the list where top: 0 and left: 0 is the top/left of the list. */
+
+
+  List.prototype._updateRenderRects = function (props, forceUpdate) {
+    props = props || this.props;
+    var renderedWindowsAhead = props.renderedWindowsAhead,
+        renderedWindowsBehind = props.renderedWindowsBehind;
+    var pages = this.state.pages; // when not in virtualize mode, we render all items without measurement to optimize page rendering perf
+
+    if (!this._shouldVirtualize(props)) {
+      return;
+    }
+
+    var surfaceRect = this._surfaceRect || __assign({}, EMPTY_RECT);
+
+    var scrollHeight = this._scrollElement && this._scrollElement.scrollHeight;
+    var scrollTop = this._scrollElement ? this._scrollElement.scrollTop : 0; // WARNING: EXPENSIVE CALL! We need to know the surface top relative to the window.
+    // This needs to be called to recalculate when new pages should be loaded.
+    // We check to see how far we've scrolled and if it's further than a third of a page we run it again.
+
+    if (this._surface.current && (forceUpdate || !pages || !this._surfaceRect || !scrollHeight || scrollHeight !== this._scrollHeight || Math.abs(this._scrollTop - scrollTop) > this._estimatedPageHeight / 3)) {
+      surfaceRect = this._surfaceRect = _measureSurfaceRect(this._surface.current);
+      this._scrollTop = scrollTop;
+    } // If the scroll height has changed, something in the container likely resized and
+    // we should redo the page heights incase their content resized.
+
+
+    if (forceUpdate || !scrollHeight || scrollHeight !== this._scrollHeight) {
+      this._measureVersion++;
+    }
+
+    this._scrollHeight = scrollHeight; // If the surface is above the container top or below the container bottom, or if this is not the first
+    // render return empty rect.
+    // The first time the list gets rendered we need to calculate the rectangle. The width of the list is
+    // used to calculate the width of the list items.
+
+    var visibleTop = Math.max(0, -surfaceRect.top);
+    var win = getWindow(this._root.current);
+    var visibleRect = {
+      top: visibleTop,
+      left: surfaceRect.left,
+      bottom: visibleTop + win.innerHeight,
+      right: surfaceRect.right,
+      width: surfaceRect.width,
+      height: win.innerHeight
+    }; // The required/allowed rects are adjusted versions of the visible rect.
+
+    this._requiredRect = _expandRect(visibleRect, this._requiredWindowsBehind, this._requiredWindowsAhead);
+    this._allowedRect = _expandRect(visibleRect, renderedWindowsBehind, renderedWindowsAhead); // store the visible rect for later use.
+
+    this._visibleRect = visibleRect;
+  };
+
+  List.defaultProps = {
+    startIndex: 0,
+    onRenderCell: function (item, index, containsFocus) {
+      return React.createElement(React.Fragment, null, item && item.name || '');
+    },
+    renderedWindowsAhead: DEFAULT_RENDERED_WINDOWS_AHEAD,
+    renderedWindowsBehind: DEFAULT_RENDERED_WINDOWS_BEHIND
+  };
+  return List;
+}(React.Component);
+
+function _expandRect(rect, pagesBefore, pagesAfter) {
+  var top = rect.top - pagesBefore * rect.height;
+  var height = rect.height + (pagesBefore + pagesAfter) * rect.height;
+  return {
+    top: top,
+    bottom: top + height,
+    height: height,
+    left: rect.left,
+    right: rect.right,
+    width: rect.width
+  };
+}
+
+function _isContainedWithin(innerRect, outerRect) {
+  return innerRect.top >= outerRect.top && innerRect.left >= outerRect.left && innerRect.bottom <= outerRect.bottom && innerRect.right <= outerRect.right;
+}
+
+function _mergeRect(targetRect, newRect) {
+  targetRect.top = newRect.top < targetRect.top || targetRect.top === -1 ? newRect.top : targetRect.top;
+  targetRect.left = newRect.left < targetRect.left || targetRect.left === -1 ? newRect.left : targetRect.left;
+  targetRect.bottom = newRect.bottom > targetRect.bottom || targetRect.bottom === -1 ? newRect.bottom : targetRect.bottom;
+  targetRect.right = newRect.right > targetRect.right || targetRect.right === -1 ? newRect.right : targetRect.right;
+  targetRect.width = targetRect.right - targetRect.left + 1;
+  targetRect.height = targetRect.bottom - targetRect.top + 1;
+  return targetRect;
+}
+
+var DEFAULT_DROPPING_CSS_CLASS = 'is-dropping';
+
+var GroupedListSection =
+/** @class */
+function (_super) {
+  __extends(GroupedListSection, _super);
+
+  function GroupedListSection(props) {
+    var _this = _super.call(this, props) || this;
+
+    _this._root = React.createRef();
+    _this._list = React.createRef();
+    _this._droppingClassName = '';
+
+    _this._onRenderGroupHeader = function (props) {
+      return React.createElement(GroupHeader, __assign({}, props));
+    };
+
+    _this._onRenderGroupShowAll = function (props) {
+      return React.createElement(GroupShowAll, __assign({}, props));
+    };
+
+    _this._onRenderGroupFooter = function (props) {
+      return React.createElement(GroupFooter, __assign({}, props));
+    };
+
+    _this._renderSubGroup = function (subGroup, subGroupIndex) {
+      var _a = _this.props,
+          dragDropEvents = _a.dragDropEvents,
+          dragDropHelper = _a.dragDropHelper,
+          eventsToRegister = _a.eventsToRegister,
+          getGroupItemLimit = _a.getGroupItemLimit,
+          groupNestingDepth = _a.groupNestingDepth,
+          groupProps = _a.groupProps,
+          items = _a.items,
+          headerProps = _a.headerProps,
+          showAllProps = _a.showAllProps,
+          footerProps = _a.footerProps,
+          listProps = _a.listProps,
+          onRenderCell = _a.onRenderCell,
+          selection = _a.selection,
+          selectionMode = _a.selectionMode,
+          viewport = _a.viewport,
+          onRenderGroupHeader = _a.onRenderGroupHeader,
+          onRenderGroupShowAll = _a.onRenderGroupShowAll,
+          onRenderGroupFooter = _a.onRenderGroupFooter,
+          onShouldVirtualize = _a.onShouldVirtualize,
+          group = _a.group,
+          compact = _a.compact;
+      var nestingDepth = subGroup.level ? subGroup.level + 1 : groupNestingDepth;
+      return !subGroup || subGroup.count > 0 || groupProps && groupProps.showEmptyGroups ? React.createElement(GroupedListSection, {
+        ref: 'subGroup_' + subGroupIndex,
+        key: _this._getGroupKey(subGroup, subGroupIndex),
+        dragDropEvents: dragDropEvents,
+        dragDropHelper: dragDropHelper,
+        eventsToRegister: eventsToRegister,
+        footerProps: footerProps,
+        getGroupItemLimit: getGroupItemLimit,
+        group: subGroup,
+        groupIndex: subGroupIndex,
+        groupNestingDepth: nestingDepth,
+        groupProps: groupProps,
+        headerProps: headerProps,
+        items: items,
+        listProps: listProps,
+        onRenderCell: onRenderCell,
+        selection: selection,
+        selectionMode: selectionMode,
+        showAllProps: showAllProps,
+        viewport: viewport,
+        onRenderGroupHeader: onRenderGroupHeader,
+        onRenderGroupShowAll: onRenderGroupShowAll,
+        onRenderGroupFooter: onRenderGroupFooter,
+        onShouldVirtualize: onShouldVirtualize,
+        groups: group ? group.children : [],
+        compact: compact
+      }) : null;
+    };
+    /**
+     * collect all the data we need to enable drag/drop for a group
+     */
+
+
+    _this._getGroupDragDropOptions = function () {
+      var _a = _this.props,
+          group = _a.group,
+          groupIndex = _a.groupIndex,
+          dragDropEvents = _a.dragDropEvents,
+          eventsToRegister = _a.eventsToRegister;
+      var options = {
+        eventMap: eventsToRegister,
+        selectionIndex: -1,
+        context: {
+          data: group,
+          index: groupIndex,
+          isGroup: true
+        },
+        updateDropState: _this._updateDroppingState,
+        canDrag: dragDropEvents.canDrag,
+        canDrop: dragDropEvents.canDrop,
+        onDrop: dragDropEvents.onDrop,
+        onDragStart: dragDropEvents.onDragStart,
+        onDragEnter: dragDropEvents.onDragEnter,
+        onDragLeave: dragDropEvents.onDragLeave,
+        onDragEnd: dragDropEvents.onDragEnd
+      };
+      return options;
+    };
+    /**
+     * update groupIsDropping state based on the input value, which is used to change style during drag and drop
+     *
+     * @param newValue - new isDropping state value
+     * @param event - the event trigger dropping state change which can be dragenter, dragleave etc
+     */
+
+
+    _this._updateDroppingState = function (newIsDropping, event) {
+      var isDropping = _this.state.isDropping;
+      var _a = _this.props,
+          dragDropEvents = _a.dragDropEvents,
+          group = _a.group;
+
+      if (isDropping !== newIsDropping) {
+        if (isDropping) {
+          if (dragDropEvents && dragDropEvents.onDragLeave) {
+            dragDropEvents.onDragLeave(group, event);
+          }
+        } else {
+          if (dragDropEvents && dragDropEvents.onDragEnter) {
+            _this._droppingClassName = dragDropEvents.onDragEnter(group, event);
+          }
+        }
+
+        _this.setState({
+          isDropping: newIsDropping
         });
       }
-
-      return React.createElement(MenuType, __assign({
-        id: _this._labelId + '-menu',
-        directionalHint: DirectionalHint.bottomLeftEdge
-      }, menuProps, {
-        shouldFocusOnContainer: _this._menuShouldFocusOnContainer,
-        shouldFocusOnMount: _this._menuShouldFocusOnMount,
-        hidden: persistMenu ? menuHidden : undefined,
-        className: css('ms-BaseButton-menuhost', menuProps.className),
-        target: _this._isSplitButton ? _this._splitButtonContainer.current : _this._buttonElement.current,
-        onDismiss: _this._onDismissMenu
-      }));
     };
 
-    _this._onDismissMenu = function (ev) {
-      var menuProps = _this.props.menuProps;
+    var selection = props.selection,
+        group = props.group;
+    initializeComponentRef(_this);
+    _this._id = getId('GroupedListSection');
+    _this.state = {
+      isDropping: false,
+      isSelected: selection && group ? selection.isRangeSelected(group.startIndex, group.count) : false
+    };
+    _this._events = new EventGroup(_this);
+    return _this;
+  }
 
-      if (menuProps && menuProps.onDismiss) {
-        menuProps.onDismiss(ev);
+  GroupedListSection.prototype.componentDidMount = function () {
+    var _a = this.props,
+        dragDropHelper = _a.dragDropHelper,
+        selection = _a.selection;
+
+    if (dragDropHelper && this._root.current) {
+      this._dragDropSubscription = dragDropHelper.subscribe(this._root.current, this._events, this._getGroupDragDropOptions());
+    }
+
+    if (selection) {
+      this._events.on(selection, SELECTION_CHANGE, this._onSelectionChange);
+    }
+  };
+
+  GroupedListSection.prototype.componentWillUnmount = function () {
+    this._events.dispose();
+
+    if (this._dragDropSubscription) {
+      this._dragDropSubscription.dispose();
+    }
+  };
+
+  GroupedListSection.prototype.componentDidUpdate = function (previousProps) {
+    if (this.props.group !== previousProps.group || this.props.groupIndex !== previousProps.groupIndex || this.props.dragDropHelper !== previousProps.dragDropHelper) {
+      if (this._dragDropSubscription) {
+        this._dragDropSubscription.dispose();
+
+        delete this._dragDropSubscription;
       }
 
-      if (!ev || !ev.defaultPrevented) {
-        _this._dismissMenu();
+      if (this.props.dragDropHelper && this._root.current) {
+        this._dragDropSubscription = this.props.dragDropHelper.subscribe(this._root.current, this._events, this._getGroupDragDropOptions());
       }
+    }
+  };
+
+  GroupedListSection.prototype.render = function () {
+    var _a = this.props,
+        getGroupItemLimit = _a.getGroupItemLimit,
+        group = _a.group,
+        groupIndex = _a.groupIndex,
+        headerProps = _a.headerProps,
+        showAllProps = _a.showAllProps,
+        footerProps = _a.footerProps,
+        viewport = _a.viewport,
+        selectionMode = _a.selectionMode,
+        _b = _a.onRenderGroupHeader,
+        onRenderGroupHeader = _b === void 0 ? this._onRenderGroupHeader : _b,
+        _c = _a.onRenderGroupShowAll,
+        onRenderGroupShowAll = _c === void 0 ? this._onRenderGroupShowAll : _c,
+        _d = _a.onRenderGroupFooter,
+        onRenderGroupFooter = _d === void 0 ? this._onRenderGroupFooter : _d,
+        onShouldVirtualize = _a.onShouldVirtualize,
+        groupedListClassNames = _a.groupedListClassNames,
+        groups = _a.groups,
+        compact = _a.compact,
+        _e = _a.listProps,
+        listProps = _e === void 0 ? {} : _e;
+    var isSelected = this.state.isSelected;
+    var renderCount = group && getGroupItemLimit ? getGroupItemLimit(group) : Infinity;
+    var isShowAllVisible = group && !group.children && !group.isCollapsed && !group.isShowingAll && (group.count > renderCount || group.hasMoreData);
+    var hasNestedGroups = group && group.children && group.children.length > 0;
+    var version = listProps.version;
+    var dividerProps = {
+      group: group,
+      groupIndex: groupIndex,
+      groupLevel: group ? group.level : 0,
+      isSelected: isSelected,
+      selected: isSelected,
+      viewport: viewport,
+      selectionMode: selectionMode,
+      groups: groups,
+      compact: compact
+    };
+    var ariaControlsProps = {
+      groupedListId: this._id,
+      ariaSetSize: groups ? groups.length : undefined,
+      ariaPosInSet: groupIndex !== undefined ? groupIndex + 1 : undefined
     };
 
-    _this._dismissMenu = function () {
-      _this._menuShouldFocusOnMount = undefined;
-      _this._menuShouldFocusOnContainer = undefined;
+    var groupHeaderProps = __assign(__assign(__assign({}, headerProps), dividerProps), ariaControlsProps);
 
-      _this.setState({
-        menuHidden: true
+    var groupShowAllProps = __assign(__assign({}, showAllProps), dividerProps);
+
+    var groupFooterProps = __assign(__assign({}, footerProps), dividerProps);
+
+    var isDraggable = !!this.props.dragDropHelper && this._getGroupDragDropOptions().canDrag(group) && !!this.props.dragDropEvents.canDragGroups;
+    return React.createElement("div", __assign({
+      ref: this._root
+    }, isDraggable && {
+      draggable: true
+    }, {
+      className: css(groupedListClassNames && groupedListClassNames.group, this._getDroppingClassName()),
+      role: "presentation"
+    }), onRenderGroupHeader(groupHeaderProps, this._onRenderGroupHeader), group && group.isCollapsed ? null : hasNestedGroups ? React.createElement(List, {
+      role: "presentation",
+      ref: this._list,
+      items: group ? group.children : [],
+      onRenderCell: this._renderSubGroup,
+      getItemCountForPage: this._returnOne,
+      onShouldVirtualize: onShouldVirtualize,
+      version: version,
+      id: this._id
+    }) : this._onRenderGroup(renderCount), group && group.isCollapsed ? null : isShowAllVisible && onRenderGroupShowAll(groupShowAllProps, this._onRenderGroupShowAll), onRenderGroupFooter(groupFooterProps, this._onRenderGroupFooter));
+  };
+
+  GroupedListSection.prototype.forceUpdate = function () {
+    _super.prototype.forceUpdate.call(this);
+
+    this.forceListUpdate();
+  };
+
+  GroupedListSection.prototype.forceListUpdate = function () {
+    var group = this.props.group;
+
+    if (this._list.current) {
+      this._list.current.forceUpdate();
+
+      if (group && group.children && group.children.length > 0) {
+        var subGroupCount = group.children.length;
+
+        for (var i = 0; i < subGroupCount; i++) {
+          var subGroup = this._list.current.refs['subGroup_' + String(i)];
+
+          if (subGroup) {
+            subGroup.forceListUpdate();
+          }
+        }
+      }
+    } else {
+      // tslint:disable-next-line:deprecation
+      var subGroup = this.refs['subGroup_' + String(0)];
+
+      if (subGroup) {
+        subGroup.forceListUpdate();
+      }
+    }
+  };
+
+  GroupedListSection.prototype._onSelectionChange = function () {
+    var _a = this.props,
+        group = _a.group,
+        selection = _a.selection;
+
+    if (selection && group) {
+      var isSelected = selection.isRangeSelected(group.startIndex, group.count);
+
+      if (isSelected !== this.state.isSelected) {
+        this.setState({
+          isSelected: isSelected
+        });
+      }
+    }
+  };
+
+  GroupedListSection.prototype._onRenderGroupCell = function (onRenderCell, groupNestingDepth) {
+    return function (item, itemIndex) {
+      return onRenderCell(groupNestingDepth, item, itemIndex);
+    };
+  };
+
+  GroupedListSection.prototype._onRenderGroup = function (renderCount) {
+    var _a = this.props,
+        group = _a.group,
+        items = _a.items,
+        onRenderCell = _a.onRenderCell,
+        listProps = _a.listProps,
+        groupNestingDepth = _a.groupNestingDepth,
+        onShouldVirtualize = _a.onShouldVirtualize,
+        groupProps = _a.groupProps;
+    var count = group && !group.isShowingAll ? group.count : items.length;
+    var startIndex = group ? group.startIndex : 0;
+    return React.createElement(List, __assign({
+      role: groupProps && groupProps.role ? groupProps.role : 'grid',
+      items: items,
+      onRenderCell: this._onRenderGroupCell(onRenderCell, groupNestingDepth),
+      ref: this._list,
+      renderCount: Math.min(count, renderCount),
+      startIndex: startIndex,
+      onShouldVirtualize: onShouldVirtualize,
+      id: this._id
+    }, listProps));
+  };
+
+  GroupedListSection.prototype._returnOne = function () {
+    return 1;
+  };
+
+  GroupedListSection.prototype._getGroupKey = function (group, index) {
+    return 'group-' + (group && group.key ? group.key : String(group.level) + String(index));
+  };
+  /**
+   * get the correct css class to reflect the dropping state for a given group
+   *
+   * If the group is the current drop target, return the default dropping class name
+   * Otherwise, return '';
+   *
+   */
+
+
+  GroupedListSection.prototype._getDroppingClassName = function () {
+    var isDropping = this.state.isDropping;
+    var _a = this.props,
+        group = _a.group,
+        groupedListClassNames = _a.groupedListClassNames;
+    isDropping = !!(group && isDropping);
+    return css(isDropping && this._droppingClassName, isDropping && DEFAULT_DROPPING_CSS_CLASS, isDropping && groupedListClassNames && groupedListClassNames.groupIsDropping);
+  };
+
+  return GroupedListSection;
+}(React.Component);
+
+var getClassNames$a = classNamesFunction();
+var ROW_HEIGHT = DEFAULT_ROW_HEIGHTS.rowHeight,
+    COMPACT_ROW_HEIGHT = DEFAULT_ROW_HEIGHTS.compactRowHeight;
+
+var GroupedListBase =
+/** @class */
+function (_super) {
+  __extends(GroupedListBase, _super);
+
+  function GroupedListBase(props) {
+    var _this = _super.call(this, props) || this;
+
+    _this._list = React.createRef();
+
+    _this._renderGroup = function (group, groupIndex) {
+      var _a = _this.props,
+          dragDropEvents = _a.dragDropEvents,
+          dragDropHelper = _a.dragDropHelper,
+          eventsToRegister = _a.eventsToRegister,
+          groupProps = _a.groupProps,
+          items = _a.items,
+          listProps = _a.listProps,
+          onRenderCell = _a.onRenderCell,
+          selectionMode = _a.selectionMode,
+          selection = _a.selection,
+          viewport = _a.viewport,
+          onShouldVirtualize = _a.onShouldVirtualize,
+          groups = _a.groups,
+          compact = _a.compact; // override group header/footer props as needed
+
+      var dividerProps = {
+        onToggleSelectGroup: _this._onToggleSelectGroup,
+        onToggleCollapse: _this._onToggleCollapse,
+        onToggleSummarize: _this._onToggleSummarize
+      };
+
+      var headerProps = __assign(__assign({}, groupProps.headerProps), dividerProps);
+
+      var showAllProps = __assign(__assign({}, groupProps.showAllProps), dividerProps);
+
+      var footerProps = __assign(__assign({}, groupProps.footerProps), dividerProps);
+
+      var groupNestingDepth = _this._getGroupNestingDepth();
+
+      if (!groupProps.showEmptyGroups && group && group.count === 0) {
+        return null;
+      }
+
+      return React.createElement(GroupedListSection, {
+        ref: 'group_' + groupIndex,
+        key: _this._getGroupKey(group, groupIndex),
+        dragDropEvents: dragDropEvents,
+        dragDropHelper: dragDropHelper,
+        eventsToRegister: eventsToRegister,
+        footerProps: footerProps,
+        getGroupItemLimit: groupProps && groupProps.getGroupItemLimit,
+        group: group,
+        groupIndex: groupIndex,
+        groupNestingDepth: groupNestingDepth,
+        groupProps: groupProps,
+        headerProps: headerProps,
+        listProps: listProps,
+        items: items,
+        onRenderCell: onRenderCell,
+        onRenderGroupHeader: groupProps.onRenderHeader,
+        onRenderGroupShowAll: groupProps.onRenderShowAll,
+        onRenderGroupFooter: groupProps.onRenderFooter,
+        selectionMode: selectionMode,
+        selection: selection,
+        showAllProps: showAllProps,
+        viewport: viewport,
+        onShouldVirtualize: onShouldVirtualize,
+        groupedListClassNames: _this._classNames,
+        groups: groups,
+        compact: compact
       });
     };
 
-    _this._openMenu = function (shouldFocusOnContainer, shouldFocusOnMount) {
-      if (shouldFocusOnMount === void 0) {
-        shouldFocusOnMount = true;
-      }
-
-      if (_this.props.menuProps) {
-        _this._menuShouldFocusOnContainer = shouldFocusOnContainer;
-        _this._menuShouldFocusOnMount = shouldFocusOnMount;
-        _this._renderedVisibleMenu = true;
-
-        _this.setState({
-          menuHidden: false
-        });
-      }
+    _this._getDefaultGroupItemLimit = function (group) {
+      return group.count;
     };
 
-    _this._onToggleMenu = function (shouldFocusOnContainer) {
-      var shouldFocusOnMount = true;
-
-      if (_this.props.menuProps && _this.props.menuProps.shouldFocusOnMount === false) {
-        shouldFocusOnMount = false;
-      }
-
-      _this.state.menuHidden ? _this._openMenu(shouldFocusOnContainer, shouldFocusOnMount) : _this._dismissMenu();
+    _this._getGroupItemLimit = function (group) {
+      var groupProps = _this.props.groupProps;
+      var getGroupItemLimit = groupProps && groupProps.getGroupItemLimit ? groupProps.getGroupItemLimit : _this._getDefaultGroupItemLimit;
+      return getGroupItemLimit(group);
     };
 
-    _this._onSplitContainerFocusCapture = function (ev) {
-      var container = _this._splitButtonContainer.current; // If the target is coming from the portal we do not need to set focus on the container.
-
-      if (!container || ev.target && portalContainsElement(ev.target, container)) {
-        return;
-      } // We should never be able to focus the individual buttons in a split button. Focus
-      // should always remain on the container.
-
-
-      container.focus();
+    _this._getGroupHeight = function (group) {
+      var rowHeight = _this.props.compact ? COMPACT_ROW_HEIGHT : ROW_HEIGHT;
+      return rowHeight + (group.isCollapsed ? 0 : rowHeight * _this._getGroupItemLimit(group));
     };
 
-    _this._onSplitButtonPrimaryClick = function (ev) {
-      if (!_this.state.menuHidden) {
-        _this._dismissMenu();
-      }
+    _this._getPageHeight = function (itemIndex) {
+      var groups = _this.state.groups;
+      var _a = _this.props.getGroupHeight,
+          getGroupHeight = _a === void 0 ? _this._getGroupHeight : _a;
+      var pageGroup = groups && groups[itemIndex];
 
-      if (!_this._processingTouch && _this.props.onClick) {
-        _this.props.onClick(ev);
-      } else if (_this._processingTouch) {
-        _this._onMenuClick(ev);
-      }
-    };
-
-    _this._onKeyDown = function (ev) {
-      // explicity cancelling event so click won't fire after this
-      if (_this.props.disabled && (ev.which === KeyCodes.enter || ev.which === KeyCodes.space)) {
-        ev.preventDefault();
-        ev.stopPropagation();
-      } else if (!_this.props.disabled) {
-        if (_this.props.menuProps) {
-          _this._onMenuKeyDown(ev);
-        } else if (_this.props.onKeyDown !== undefined) {
-          _this.props.onKeyDown(ev); // not cancelling event because it's not disabled
-
-        }
-      }
-    };
-
-    _this._onKeyUp = function (ev) {
-      if (!_this.props.disabled && _this.props.onKeyUp !== undefined) {
-        _this.props.onKeyUp(ev); // not cancelling event because it's not disabled
-
-      }
-    };
-
-    _this._onKeyPress = function (ev) {
-      if (!_this.props.disabled && _this.props.onKeyPress !== undefined) {
-        _this.props.onKeyPress(ev); // not cancelling event because it's not disabled
-
-      }
-    };
-
-    _this._onMouseUp = function (ev) {
-      if (!_this.props.disabled && _this.props.onMouseUp !== undefined) {
-        _this.props.onMouseUp(ev); // not cancelling event because it's not disabled
-
-      }
-    };
-
-    _this._onMouseDown = function (ev) {
-      if (!_this.props.disabled && _this.props.onMouseDown !== undefined) {
-        _this.props.onMouseDown(ev); // not cancelling event because it's not disabled
-
-      }
-    };
-
-    _this._onClick = function (ev) {
-      if (!_this.props.disabled) {
-        if (_this.props.menuProps) {
-          _this._onMenuClick(ev);
-        } else if (_this.props.onClick !== undefined) {
-          _this.props.onClick(ev); // not cancelling event because it's not disabled
-
-        }
-      }
-    };
-
-    _this._onSplitButtonContainerKeyDown = function (ev) {
-      if (ev.which === KeyCodes.enter || ev.which === KeyCodes.space) {
-        if (_this._buttonElement.current) {
-          _this._buttonElement.current.click();
-
-          ev.preventDefault();
-          ev.stopPropagation();
-        }
+      if (pageGroup) {
+        return getGroupHeight(pageGroup, itemIndex);
       } else {
-        _this._onMenuKeyDown(ev);
+        return 0;
       }
     };
 
-    _this._onMenuKeyDown = function (ev) {
-      if (_this.props.disabled) {
+    _this._onToggleCollapse = function (group) {
+      var groupProps = _this.props.groupProps;
+      var onToggleCollapse = groupProps && groupProps.headerProps && groupProps.headerProps.onToggleCollapse;
+
+      if (group) {
+        if (onToggleCollapse) {
+          onToggleCollapse(group);
+        }
+
+        group.isCollapsed = !group.isCollapsed;
+
+        _this._updateIsSomeGroupExpanded();
+
+        _this.forceUpdate();
+      }
+    };
+
+    _this._onToggleSelectGroup = function (group) {
+      var _a = _this.props,
+          selection = _a.selection,
+          selectionMode = _a.selectionMode;
+
+      if (group && selection && selectionMode === SelectionMode.multiple) {
+        selection.toggleRangeSelected(group.startIndex, group.count);
+      }
+    };
+
+    _this._onToggleSummarize = function (group) {
+      var groupProps = _this.props.groupProps;
+      var onToggleSummarize = groupProps && groupProps.showAllProps && groupProps.showAllProps.onToggleSummarize;
+
+      if (onToggleSummarize) {
+        onToggleSummarize(group);
+      } else {
+        if (group) {
+          group.isShowingAll = !group.isShowingAll;
+        }
+
+        _this.forceUpdate();
+      }
+    };
+
+    _this._getPageSpecification = function (itemIndex) {
+      var groups = _this.state.groups;
+      var pageGroup = groups && groups[itemIndex];
+      return {
+        key: pageGroup && pageGroup.key
+      };
+    };
+
+    initializeComponentRef(_this);
+    _this._isSomeGroupExpanded = _this._computeIsSomeGroupExpanded(props.groups);
+    _this.state = {
+      lastWidth: 0,
+      groups: props.groups
+    };
+    return _this;
+  }
+
+  GroupedListBase.prototype.scrollToIndex = function (index, measureItem, scrollToMode) {
+    if (this._list.current) {
+      this._list.current.scrollToIndex(index, measureItem, scrollToMode);
+    }
+  };
+
+  GroupedListBase.prototype.getStartItemIndexInView = function () {
+    return this._list.current.getStartItemIndexInView() || 0;
+  }; // tslint:disable-next-line function-name
+
+
+  GroupedListBase.prototype.UNSAFE_componentWillReceiveProps = function (newProps) {
+    var _a = this.props,
+        groups = _a.groups,
+        selectionMode = _a.selectionMode,
+        compact = _a.compact;
+    var shouldForceUpdates = false;
+
+    if (newProps.groups !== groups) {
+      this.setState({
+        groups: newProps.groups
+      });
+      shouldForceUpdates = true;
+    }
+
+    if (newProps.selectionMode !== selectionMode || newProps.compact !== compact) {
+      shouldForceUpdates = true;
+    }
+
+    if (shouldForceUpdates) {
+      this._forceListUpdates();
+    }
+  };
+
+  GroupedListBase.prototype.componentDidMount = function () {
+    var _a = this.props,
+        groupProps = _a.groupProps,
+        _b = _a.groups,
+        groups = _b === void 0 ? [] : _b;
+
+    if (groupProps && groupProps.isAllGroupsCollapsed) {
+      this._setGroupsCollapsedState(groups, groupProps.isAllGroupsCollapsed);
+    }
+  };
+
+  GroupedListBase.prototype.render = function () {
+    var _a = this.props,
+        className = _a.className,
+        usePageCache = _a.usePageCache,
+        onShouldVirtualize = _a.onShouldVirtualize,
+        theme = _a.theme,
+        styles = _a.styles,
+        compact = _a.compact,
+        _b = _a.listProps,
+        listProps = _b === void 0 ? {} : _b;
+    var groups = this.state.groups;
+    this._classNames = getClassNames$a(styles, {
+      theme: theme,
+      className: className,
+      compact: compact
+    });
+    var version = listProps.version;
+    return React.createElement("div", {
+      className: this._classNames.root,
+      "data-automationid": "GroupedList",
+      "data-is-scrollable": "false",
+      role: "presentation"
+    }, React.createElement(FocusRects, null), !groups ? this._renderGroup(undefined, 0) : React.createElement(List, {
+      ref: this._list,
+      role: "presentation",
+      items: groups,
+      onRenderCell: this._renderGroup,
+      getItemCountForPage: this._returnOne,
+      getPageHeight: this._getPageHeight,
+      getPageSpecification: this._getPageSpecification,
+      usePageCache: usePageCache,
+      onShouldVirtualize: onShouldVirtualize,
+      version: version
+    }));
+  };
+
+  GroupedListBase.prototype.forceUpdate = function () {
+    _super.prototype.forceUpdate.call(this);
+
+    this._forceListUpdates();
+  };
+
+  GroupedListBase.prototype.toggleCollapseAll = function (allCollapsed) {
+    var _a = this.state.groups,
+        groups = _a === void 0 ? [] : _a;
+    var groupProps = this.props.groupProps;
+    var onToggleCollapseAll = groupProps && groupProps.onToggleCollapseAll;
+
+    if (groups.length > 0) {
+      if (onToggleCollapseAll) {
+        onToggleCollapseAll(allCollapsed);
+      }
+
+      this._setGroupsCollapsedState(groups, allCollapsed);
+
+      this._updateIsSomeGroupExpanded();
+
+      this.forceUpdate();
+    }
+  };
+
+  GroupedListBase.prototype._setGroupsCollapsedState = function (groups, isCollapsed) {
+    for (var groupIndex = 0; groupIndex < groups.length; groupIndex++) {
+      groups[groupIndex].isCollapsed = isCollapsed;
+    }
+  };
+
+  GroupedListBase.prototype._returnOne = function () {
+    return 1;
+  };
+
+  GroupedListBase.prototype._getGroupKey = function (group, index) {
+    return 'group-' + (group && group.key ? group.key : String(index));
+  };
+
+  GroupedListBase.prototype._getGroupNestingDepth = function () {
+    var groups = this.state.groups;
+    var level = 0;
+    var groupsInLevel = groups;
+
+    while (groupsInLevel && groupsInLevel.length > 0) {
+      level++;
+      groupsInLevel = groupsInLevel[0].children;
+    }
+
+    return level;
+  };
+
+  GroupedListBase.prototype._forceListUpdates = function (groups) {
+    groups = groups || this.state.groups;
+    var groupCount = groups ? groups.length : 1;
+
+    if (this._list.current) {
+      this._list.current.forceUpdate();
+
+      for (var i = 0; i < groupCount; i++) {
+        var group = this._list.current.refs['group_' + String(i)];
+
+        if (group) {
+          group.forceListUpdate();
+        }
+      }
+    } else {
+      var group = this.refs['group_' + String(0)];
+
+      if (group) {
+        group.forceListUpdate();
+      }
+    }
+  };
+
+  GroupedListBase.prototype._computeIsSomeGroupExpanded = function (groups) {
+    var _this = this;
+
+    return !!(groups && groups.some(function (group) {
+      return group.children ? _this._computeIsSomeGroupExpanded(group.children) : !group.isCollapsed;
+    }));
+  };
+
+  GroupedListBase.prototype._updateIsSomeGroupExpanded = function () {
+    var groups = this.state.groups;
+    var onGroupExpandStateChanged = this.props.onGroupExpandStateChanged;
+
+    var newIsSomeGroupExpanded = this._computeIsSomeGroupExpanded(groups);
+
+    if (this._isSomeGroupExpanded !== newIsSomeGroupExpanded) {
+      if (onGroupExpandStateChanged) {
+        onGroupExpandStateChanged(newIsSomeGroupExpanded);
+      }
+
+      this._isSomeGroupExpanded = newIsSomeGroupExpanded;
+    }
+  };
+
+  GroupedListBase.defaultProps = {
+    selectionMode: SelectionMode.multiple,
+    isHeaderVisible: true,
+    groupProps: {},
+    compact: false
+  };
+  return GroupedListBase;
+}(React.Component);
+
+var GroupedList = styled(GroupedListBase, getStyles$5, undefined, {
+  scope: 'GroupedList'
+});
+
+var getClassNames$b = classNamesFunction();
+
+var DetailsRowCheckBase = function (props) {
+  var _a = props.isVisible,
+      isVisible = _a === void 0 ? false : _a,
+      _b = props.canSelect,
+      canSelect = _b === void 0 ? false : _b,
+      _c = props.anySelected,
+      anySelected = _c === void 0 ? false : _c,
+      _d = props.selected,
+      selected = _d === void 0 ? false : _d,
+      _e = props.isHeader,
+      isHeader = _e === void 0 ? false : _e,
+      className = props.className,
+      checkClassName = props.checkClassName,
+      styles = props.styles,
+      theme = props.theme,
+      compact = props.compact,
+      onRenderDetailsCheckbox = props.onRenderDetailsCheckbox,
+      _f = props.useFastIcons,
+      useFastIcons = _f === void 0 ? true : _f,
+      // must be removed from buttonProps
+  buttonProps = __rest(props, ["isVisible", "canSelect", "anySelected", "selected", "isHeader", "className", "checkClassName", "styles", "theme", "compact", "onRenderDetailsCheckbox", "useFastIcons"]);
+
+  var defaultCheckboxRender = useFastIcons ? _fastDefaultCheckboxRender : _defaultCheckboxRender;
+  var onRenderCheckbox = onRenderDetailsCheckbox ? composeRenderFunction(onRenderDetailsCheckbox, defaultCheckboxRender) : defaultCheckboxRender;
+  var classNames = getClassNames$b(styles, {
+    theme: theme,
+    canSelect: canSelect,
+    selected: selected,
+    anySelected: anySelected,
+    className: className,
+    isHeader: isHeader,
+    isVisible: isVisible,
+    compact: compact
+  });
+  var detailsCheckboxProps = {
+    checked: selected,
+    theme: theme
+  };
+  return canSelect ? React.createElement("div", __assign({}, buttonProps, {
+    role: "checkbox",
+    // tslint:disable-next-line:deprecation
+    className: css(classNames.root, classNames.check),
+    "aria-checked": selected,
+    "data-selection-toggle": true,
+    "data-automationid": "DetailsRowCheck"
+  }), onRenderCheckbox(detailsCheckboxProps)) : // tslint:disable-next-line:deprecation
+  React.createElement("div", __assign({}, buttonProps, {
+    className: css(classNames.root, classNames.check)
+  }));
+};
+
+var FastCheck = React.memo(function (props) {
+  return React.createElement(Check, {
+    theme: props.theme,
+    checked: props.checked,
+    className: props.className,
+    useFastIcons: true
+  });
+});
+
+function _defaultCheckboxRender(checkboxProps) {
+  return React.createElement(Check, {
+    checked: checkboxProps.checked
+  });
+}
+
+function _fastDefaultCheckboxRender(checkboxProps) {
+  return React.createElement(FastCheck, {
+    theme: checkboxProps.theme,
+    checked: checkboxProps.checked
+  });
+}
+
+var DetailsRowCheck = styled(DetailsRowCheckBase, getStyles$9, undefined, {
+  scope: 'DetailsRowCheck'
+}, true);
+
+var MOUSEDOWN_PRIMARY_BUTTON = 0; // for mouse down event we are using ev.button property, 0 means left button
+
+var MOUSEMOVE_PRIMARY_BUTTON = 1; // for mouse move event we are using ev.buttons property, 1 means left button
+
+var DragDropHelper =
+/** @class */
+function () {
+  function DragDropHelper(params) {
+    this._selection = params.selection;
+    this._dragEnterCounts = {};
+    this._activeTargets = {};
+    this._lastId = 0; // To make this class cheap to create, which allows simplifying some logic elsewhere,
+    // only initialize the event group and global event handlers as needed.
+
+    this._initialized = false;
+  }
+
+  DragDropHelper.prototype.dispose = function () {
+    if (this._events) {
+      this._events.dispose();
+    }
+  };
+
+  DragDropHelper.prototype.subscribe = function (root, events, dragDropOptions) {
+    var _this = this;
+
+    if (!this._initialized) {
+      this._events = new EventGroup(this);
+      var doc = getDocument(); // clear drag data when mouse up, use capture event to ensure it will be run
+
+      if (doc) {
+        this._events.on(doc.body, 'mouseup', this._onMouseUp.bind(this), true);
+
+        this._events.on(doc, 'mouseup', this._onDocumentMouseUp.bind(this), true);
+      }
+
+      this._initialized = true;
+    }
+
+    var _a = dragDropOptions.key,
+        key = _a === void 0 ? "" + ++this._lastId : _a;
+    var handlers = [];
+    var onDragStart;
+    var onDragLeave;
+    var onDragEnter;
+    var onDragEnd;
+    var onDrop;
+    var onDragOver;
+    var onMouseDown;
+    var isDraggable;
+    var isDroppable;
+    var activeTarget;
+
+    if (dragDropOptions && root) {
+      var eventMap = dragDropOptions.eventMap,
+          context = dragDropOptions.context,
+          updateDropState_1 = dragDropOptions.updateDropState;
+      var dragDropTarget = {
+        root: root,
+        options: dragDropOptions,
+        key: key
+      };
+      isDraggable = this._isDraggable(dragDropTarget);
+      isDroppable = this._isDroppable(dragDropTarget);
+
+      if (isDraggable || isDroppable) {
+        if (eventMap) {
+          for (var _i = 0, eventMap_1 = eventMap; _i < eventMap_1.length; _i++) {
+            var event_1 = eventMap_1[_i];
+            var handler = {
+              callback: event_1.callback.bind(null, context),
+              eventName: event_1.eventName
+            };
+            handlers.push(handler);
+
+            this._events.on(root, handler.eventName, handler.callback);
+          }
+        }
+      }
+
+      if (isDroppable) {
+        // If the target is droppable, wire up global event listeners to track drop-related events.
+        onDragLeave = function (event) {
+          if (!event.isHandled) {
+            event.isHandled = true;
+            _this._dragEnterCounts[key]--;
+
+            if (_this._dragEnterCounts[key] === 0) {
+              updateDropState_1(false
+              /* isDropping */
+              , event);
+            }
+          }
+        };
+
+        onDragEnter = function (event) {
+          event.preventDefault(); // needed for IE
+
+          if (!event.isHandled) {
+            event.isHandled = true;
+            _this._dragEnterCounts[key]++;
+
+            if (_this._dragEnterCounts[key] === 1) {
+              updateDropState_1(true
+              /* isDropping */
+              , event);
+            }
+          }
+        };
+
+        onDragEnd = function (event) {
+          _this._dragEnterCounts[key] = 0;
+          updateDropState_1(false
+          /* isDropping */
+          , event);
+        };
+
+        onDrop = function (event) {
+          _this._dragEnterCounts[key] = 0;
+          updateDropState_1(false
+          /* isDropping */
+          , event);
+
+          if (dragDropOptions.onDrop) {
+            dragDropOptions.onDrop(dragDropOptions.context.data, event);
+          }
+        };
+
+        onDragOver = function (event) {
+          event.preventDefault();
+
+          if (dragDropOptions.onDragOver) {
+            dragDropOptions.onDragOver(dragDropOptions.context.data, event);
+          }
+        };
+
+        this._dragEnterCounts[key] = 0; // dragenter and dragleave will be fired when hover to the child element
+        // but we only want to change state when enter or leave the current element
+        // use the count to ensure it.
+
+        events.on(root, 'dragenter', onDragEnter);
+        events.on(root, 'dragleave', onDragLeave);
+        events.on(root, 'dragend', onDragEnd);
+        events.on(root, 'drop', onDrop);
+        events.on(root, 'dragover', onDragOver);
+      }
+
+      if (isDraggable) {
+        // If the target is draggable, wire up local event listeners for mouse events.
+        onMouseDown = this._onMouseDown.bind(this, dragDropTarget);
+        onDragEnd = this._onDragEnd.bind(this, dragDropTarget); // We need to add in data so that on Firefox we show the ghost element when dragging
+
+        onDragStart = function (event) {
+          var options = dragDropOptions;
+
+          if (options && options.onDragStart) {
+            options.onDragStart(options.context.data, options.context.index, _this._selection.getSelection(), event);
+          }
+
+          _this._isDragging = true;
+
+          if (event.dataTransfer) {
+            event.dataTransfer.setData('id', root.id);
+          }
+        };
+
+        events.on(root, 'dragstart', onDragStart);
+        events.on(root, 'mousedown', onMouseDown);
+        events.on(root, 'dragend', onDragEnd);
+      }
+
+      activeTarget = {
+        target: dragDropTarget,
+        dispose: function () {
+          if (_this._activeTargets[key] === activeTarget) {
+            delete _this._activeTargets[key];
+          }
+
+          if (root) {
+            for (var _i = 0, handlers_1 = handlers; _i < handlers_1.length; _i++) {
+              var handler = handlers_1[_i];
+
+              _this._events.off(root, handler.eventName, handler.callback);
+            }
+
+            if (isDroppable) {
+              events.off(root, 'dragenter', onDragEnter);
+              events.off(root, 'dragleave', onDragLeave);
+              events.off(root, 'dragend', onDragEnd);
+              events.off(root, 'dragover', onDragOver);
+              events.off(root, 'drop', onDrop);
+            }
+
+            if (isDraggable) {
+              events.off(root, 'dragstart', onDragStart);
+              events.off(root, 'mousedown', onMouseDown);
+              events.off(root, 'dragend', onDragEnd);
+            }
+          }
+        }
+      };
+      this._activeTargets[key] = activeTarget;
+    }
+
+    return {
+      key: key,
+      dispose: function () {
+        if (activeTarget) {
+          activeTarget.dispose();
+        }
+      }
+    };
+  };
+
+  DragDropHelper.prototype.unsubscribe = function (root, key) {
+    var activeTarget = this._activeTargets[key];
+
+    if (activeTarget) {
+      activeTarget.dispose();
+    }
+  };
+
+  DragDropHelper.prototype._onDragEnd = function (target, event) {
+    var options = target.options;
+
+    if (options.onDragEnd) {
+      options.onDragEnd(options.context.data, event);
+    }
+  };
+  /**
+   * clear drag data when mouse up on body
+   */
+
+
+  DragDropHelper.prototype._onMouseUp = function (event) {
+    this._isDragging = false;
+
+    if (this._dragData) {
+      for (var _i = 0, _a = Object.keys(this._activeTargets); _i < _a.length; _i++) {
+        var key = _a[_i];
+        var activeTarget = this._activeTargets[key];
+
+        if (activeTarget.target.root) {
+          this._events.off(activeTarget.target.root, 'mousemove');
+
+          this._events.off(activeTarget.target.root, 'mouseleave');
+        }
+      }
+
+      if (this._dragData.dropTarget) {
+        // raise dragleave event to let dropTarget know it need to remove dropping style
+        EventGroup.raise(this._dragData.dropTarget.root, 'dragleave');
+        EventGroup.raise(this._dragData.dropTarget.root, 'drop');
+      }
+    }
+
+    this._dragData = null;
+  };
+  /**
+   * clear drag data when mouse up outside of the document
+   */
+
+
+  DragDropHelper.prototype._onDocumentMouseUp = function (event) {
+    var doc = getDocument();
+
+    if (doc && event.target === doc.documentElement) {
+      this._onMouseUp(event);
+    }
+  };
+  /**
+   * when mouse move over a new drop target while dragging some items,
+   * fire dragleave on the old target and fire dragenter to the new target
+   * The target will handle style change on dragenter and dragleave events.
+   */
+
+
+  DragDropHelper.prototype._onMouseMove = function (target, event) {
+    var // use buttons property here since ev.button in some edge case is not updating well during the move.
+    // but firefox doesn't support it, so we set the default value when it is not defined.
+    _a = event.buttons,
+        // use buttons property here since ev.button in some edge case is not updating well during the move.
+    // but firefox doesn't support it, so we set the default value when it is not defined.
+    buttons = _a === void 0 ? MOUSEMOVE_PRIMARY_BUTTON : _a;
+
+    if (this._dragData && buttons !== MOUSEMOVE_PRIMARY_BUTTON) {
+      // cancel mouse down event and return early when the primary button is not pressed
+      this._onMouseUp(event);
+
+      return;
+    }
+
+    var root = target.root,
+        key = target.key;
+
+    if (this._isDragging) {
+      if (this._isDroppable(target)) {
+        // we can have nested drop targets in the DOM, like a folder inside a group. In that case, when we drag into
+        // the inner target (folder), we first set dropTarget to the inner element. But the same event is bubbled to the
+        // outer target too, and we need to prevent the outer one from taking over.
+        // So, check if the last dropTarget is not a child of the current.
+        if (this._dragData) {
+          if (this._dragData.dropTarget && this._dragData.dropTarget.key !== key && !this._isChild(root, this._dragData.dropTarget.root)) {
+            if (this._dragEnterCounts[this._dragData.dropTarget.key] > 0) {
+              EventGroup.raise(this._dragData.dropTarget.root, 'dragleave');
+              EventGroup.raise(root, 'dragenter');
+              this._dragData.dropTarget = target;
+            }
+          }
+        }
+      }
+    }
+  };
+  /**
+   * when mouse leave a target while dragging some items, fire dragleave to the target
+   */
+
+
+  DragDropHelper.prototype._onMouseLeave = function (target, event) {
+    if (this._isDragging) {
+      if (this._dragData && this._dragData.dropTarget && this._dragData.dropTarget.key === target.key) {
+        EventGroup.raise(target.root, 'dragleave');
+        this._dragData.dropTarget = undefined;
+      }
+    }
+  };
+  /**
+   * when mouse down on a draggable item, we start to track dragdata.
+   */
+
+
+  DragDropHelper.prototype._onMouseDown = function (target, event) {
+    if (event.button !== MOUSEDOWN_PRIMARY_BUTTON) {
+      // Ignore anything except the primary button.
+      return;
+    }
+
+    if (this._isDraggable(target)) {
+      this._dragData = {
+        clientX: event.clientX,
+        clientY: event.clientY,
+        eventTarget: event.target,
+        dragTarget: target
+      };
+
+      for (var _i = 0, _a = Object.keys(this._activeTargets); _i < _a.length; _i++) {
+        var key = _a[_i];
+        var activeTarget = this._activeTargets[key];
+
+        if (activeTarget.target.root) {
+          this._events.on(activeTarget.target.root, 'mousemove', this._onMouseMove.bind(this, activeTarget.target));
+
+          this._events.on(activeTarget.target.root, 'mouseleave', this._onMouseLeave.bind(this, activeTarget.target));
+        }
+      }
+    } else {
+      this._dragData = null;
+    }
+  };
+  /**
+   * determine whether the child target is a descendant of the parent
+   */
+
+
+  DragDropHelper.prototype._isChild = function (parent, child) {
+    var parentElement = ReactDOM.findDOMNode(parent);
+    var childElement = ReactDOM.findDOMNode(child);
+
+    while (childElement && childElement.parentElement) {
+      if (childElement.parentElement === parentElement) {
+        return true;
+      }
+
+      childElement = childElement.parentElement;
+    }
+
+    return false;
+  };
+
+  DragDropHelper.prototype._isDraggable = function (target) {
+    var options = target.options;
+    return !!(options.canDrag && options.canDrag(options.context.data));
+  };
+
+  DragDropHelper.prototype._isDroppable = function (target) {
+    // TODO: take the drag item into consideration to prevent dragging an item into the same group
+    var options = target.options;
+    var dragContext = this._dragData && this._dragData.dragTarget ? this._dragData.dragTarget.options.context : undefined;
+    return !!(options.canDrop && options.canDrop(options.context, dragContext));
+  };
+
+  return DragDropHelper;
+}();
+
+var MOUSEDOWN_PRIMARY_BUTTON$1 = 0; // for mouse down event we are using ev.button property, 0 means left button
+
+var getClassNames$c = classNamesFunction();
+var TRANSITION_DURATION_DRAG = 200; // ms
+
+var TRANSITION_DURATION_DROP = 1500; // ms
+
+var CLASSNAME_ADD_INTERVAL = 20; // ms
+
+/**
+ * Component for rendering columns in a `DetailsList`.
+ *
+ * {@docCategory DetailsList}
+ */
+
+var DetailsColumnBase =
+/** @class */
+function (_super) {
+  __extends(DetailsColumnBase, _super);
+
+  function DetailsColumnBase(props) {
+    var _this = _super.call(this, props) || this;
+
+    _this._root = React.createRef();
+
+    _this._onRenderColumnHeaderTooltip = function (tooltipHostProps) {
+      return React.createElement("span", {
+        className: tooltipHostProps.hostClassName
+      }, tooltipHostProps.children);
+    };
+
+    _this._onColumnClick = function (ev) {
+      var _a = _this.props,
+          onColumnClick = _a.onColumnClick,
+          column = _a.column;
+
+      if (column.columnActionsMode === ColumnActionsMode.disabled) {
         return;
       }
 
-      if (_this.props.onKeyDown) {
-        _this.props.onKeyDown(ev);
+      if (column.onColumnClick) {
+        column.onColumnClick(ev, column);
       }
 
-      var isUp = ev.which === KeyCodes.up;
-      var isDown = ev.which === KeyCodes.down;
+      if (onColumnClick) {
+        onColumnClick(ev, column);
+      }
+    };
 
-      if (!ev.defaultPrevented && _this._isValidMenuOpenKey(ev)) {
-        var onMenuClick = _this.props.onMenuClick;
+    _this._onDragStart = function (item, itemIndex, selectedItems, event) {
+      var classNames = _this._classNames;
 
-        if (onMenuClick) {
-          onMenuClick(ev, _this.props);
-        }
+      if (itemIndex) {
+        _this._updateHeaderDragInfo(itemIndex);
 
-        _this._onToggleMenu(false);
+        _this._root.current.classList.add(classNames.borderWhileDragging);
 
+        _this._async.setTimeout(function () {
+          if (_this._root.current) {
+            _this._root.current.classList.add(classNames.noBorderWhileDragging);
+          }
+        }, CLASSNAME_ADD_INTERVAL);
+      }
+    };
+
+    _this._onDragEnd = function (item, event) {
+      var classNames = _this._classNames;
+
+      if (event) {
+        _this._updateHeaderDragInfo(-1, event);
+      }
+
+      _this._root.current.classList.remove(classNames.borderWhileDragging);
+
+      _this._root.current.classList.remove(classNames.noBorderWhileDragging);
+    };
+
+    _this._updateHeaderDragInfo = function (itemIndex, event) {
+      // tslint:disable:deprecation
+      if (_this.props.setDraggedItemIndex) {
+        _this.props.setDraggedItemIndex(itemIndex);
+      } // tslint:enable:deprecation
+
+
+      if (_this.props.updateDragInfo) {
+        _this.props.updateDragInfo({
+          itemIndex: itemIndex
+        }, event);
+      }
+    };
+
+    _this._onColumnContextMenu = function (ev) {
+      var _a = _this.props,
+          onColumnContextMenu = _a.onColumnContextMenu,
+          column = _a.column;
+
+      if (column.onColumnContextMenu) {
+        column.onColumnContextMenu(column, ev);
         ev.preventDefault();
+      }
+
+      if (onColumnContextMenu) {
+        onColumnContextMenu(column, ev);
+        ev.preventDefault();
+      }
+    };
+
+    _this._onRootMouseDown = function (ev) {
+      var isDraggable = _this.props.isDraggable; // Ignore anything except the primary button.
+
+      if (isDraggable && ev.button === MOUSEDOWN_PRIMARY_BUTTON$1) {
         ev.stopPropagation();
       }
+    };
 
-      if (!(ev.altKey || ev.metaKey) && (isUp || isDown)) {
-        // Suppose a menu, with shouldFocusOnMount: false, is open, and user wants to keyboard to the menu items
-        // We need to re-render the menu with shouldFocusOnMount as true.
-        if (!_this.state.menuHidden && _this.props.menuProps) {
-          var currentShouldFocusOnMount = _this._menuShouldFocusOnMount !== undefined ? _this._menuShouldFocusOnMount : _this.props.menuProps.shouldFocusOnMount;
+    initializeComponentRef(_this);
+    _this._async = new Async(_this);
+    _this._events = new EventGroup(_this);
+    return _this;
+  }
 
-          if (!currentShouldFocusOnMount) {
-            ev.preventDefault();
-            ev.stopPropagation();
-            _this._menuShouldFocusOnMount = true;
+  DetailsColumnBase.prototype.render = function () {
+    var _a = this.props,
+        column = _a.column,
+        columnIndex = _a.columnIndex,
+        parentId = _a.parentId,
+        isDraggable = _a.isDraggable,
+        styles = _a.styles,
+        theme = _a.theme,
+        _b = _a.cellStyleProps,
+        cellStyleProps = _b === void 0 ? DEFAULT_CELL_STYLE_PROPS : _b,
+        _c = _a.useFastIcons,
+        useFastIcons = _c === void 0 ? true : _c;
+    var _d = this.props.onRenderColumnHeaderTooltip,
+        onRenderColumnHeaderTooltip = _d === void 0 ? this._onRenderColumnHeaderTooltip : _d;
+    this._classNames = getClassNames$c(styles, {
+      theme: theme,
+      headerClassName: column.headerClassName,
+      iconClassName: column.iconClassName,
+      isActionable: column.columnActionsMode !== ColumnActionsMode.disabled,
+      isEmpty: !column.name,
+      isIconVisible: column.isSorted || column.isGrouped || column.isFiltered,
+      isPadded: column.isPadded,
+      isIconOnly: column.isIconOnly,
+      cellStyleProps: cellStyleProps,
+      transitionDurationDrag: TRANSITION_DURATION_DRAG,
+      transitionDurationDrop: TRANSITION_DURATION_DROP
+    });
+    var classNames = this._classNames;
+    var IconComponent = useFastIcons ? FontIcon : Icon;
+    return React.createElement(React.Fragment, null, React.createElement("div", {
+      key: column.key,
+      ref: this._root,
+      role: 'columnheader',
+      "aria-sort": column.isSorted ? column.isSortedDescending ? 'descending' : 'ascending' : 'none',
+      "aria-colindex": columnIndex,
+      className: classNames.root,
+      "data-is-draggable": isDraggable,
+      draggable: isDraggable,
+      style: {
+        width: column.calculatedWidth + cellStyleProps.cellLeftPadding + cellStyleProps.cellRightPadding + (column.isPadded ? cellStyleProps.cellExtraRightPadding : 0)
+      },
+      "data-automationid": 'ColumnsHeaderColumn',
+      "data-item-key": column.key
+    }, isDraggable && React.createElement(IconComponent, {
+      iconName: "GripperBarVertical",
+      className: classNames.gripperBarVerticalStyle
+    }), onRenderColumnHeaderTooltip({
+      hostClassName: classNames.cellTooltip,
+      id: parentId + "-" + column.key + "-tooltip",
+      setAriaDescribedBy: false,
+      column: column,
+      content: column.columnActionsMode !== ColumnActionsMode.disabled ? column.ariaLabel : '',
+      children: React.createElement("span", {
+        id: parentId + "-" + column.key,
+        "aria-label": column.isIconOnly ? column.name : undefined,
+        "aria-labelledby": column.isIconOnly ? undefined : parentId + "-" + column.key + "-name",
+        className: classNames.cellTitle,
+        "data-is-focusable": column.columnActionsMode !== ColumnActionsMode.disabled,
+        role: column.columnActionsMode !== ColumnActionsMode.disabled && (column.onColumnClick !== undefined || this.props.onColumnClick !== undefined) ? 'button' : undefined,
+        "aria-describedby": !this.props.onRenderColumnHeaderTooltip && this._hasAccessibleLabel() ? parentId + "-" + column.key + "-tooltip" : undefined,
+        onContextMenu: this._onColumnContextMenu,
+        onClick: this._onColumnClick,
+        "aria-haspopup": column.columnActionsMode === ColumnActionsMode.hasDropdown,
+        "aria-expanded": column.columnActionsMode === ColumnActionsMode.hasDropdown ? !!column.isMenuOpen : undefined
+      }, React.createElement("span", {
+        id: parentId + "-" + column.key + "-name",
+        className: classNames.cellName
+      }, (column.iconName || column.iconClassName) && React.createElement(IconComponent, {
+        className: classNames.iconClassName,
+        iconName: column.iconName
+      }), column.isIconOnly ? React.createElement("span", {
+        className: classNames.accessibleLabel
+      }, column.name) : column.name), column.isFiltered && React.createElement(IconComponent, {
+        className: classNames.nearIcon,
+        iconName: "Filter"
+      }), column.isSorted && React.createElement(IconComponent, {
+        className: classNames.sortIcon,
+        iconName: column.isSortedDescending ? 'SortDown' : 'SortUp'
+      }), column.isGrouped && React.createElement(IconComponent, {
+        className: classNames.nearIcon,
+        iconName: "GroupedDescending"
+      }), column.columnActionsMode === ColumnActionsMode.hasDropdown && !column.isIconOnly && React.createElement(IconComponent, {
+        "aria-hidden": true,
+        className: classNames.filterChevron,
+        iconName: "ChevronDown"
+      }))
+    }, this._onRenderColumnHeaderTooltip)), !this.props.onRenderColumnHeaderTooltip ? this._renderAccessibleLabel() : null);
+  };
 
-            _this.forceUpdate();
+  DetailsColumnBase.prototype.componentDidMount = function () {
+    var _this = this;
+
+    if (this.props.dragDropHelper && this.props.isDraggable) {
+      this._addDragDropHandling();
+    }
+
+    var classNames = this._classNames;
+
+    if (this.props.isDropped) {
+      if (this._root.current) {
+        this._root.current.classList.add(classNames.borderAfterDropping);
+
+        this._async.setTimeout(function () {
+          if (_this._root.current) {
+            _this._root.current.classList.add(classNames.noBorderAfterDropping);
+          }
+        }, CLASSNAME_ADD_INTERVAL);
+      }
+
+      this._async.setTimeout(function () {
+        if (_this._root.current) {
+          _this._root.current.classList.remove(classNames.borderAfterDropping);
+
+          _this._root.current.classList.remove(classNames.noBorderAfterDropping);
+        }
+      }, TRANSITION_DURATION_DROP + CLASSNAME_ADD_INTERVAL);
+    }
+  };
+
+  DetailsColumnBase.prototype.componentWillUnmount = function () {
+    if (this._dragDropSubscription) {
+      this._dragDropSubscription.dispose();
+
+      delete this._dragDropSubscription;
+    }
+
+    this._async.dispose();
+
+    this._events.dispose();
+  };
+
+  DetailsColumnBase.prototype.componentDidUpdate = function () {
+    if (!this._dragDropSubscription && this.props.dragDropHelper && this.props.isDraggable) {
+      this._addDragDropHandling();
+    }
+
+    if (this._dragDropSubscription && !this.props.isDraggable) {
+      this._dragDropSubscription.dispose();
+
+      this._events.off(this._root.current, 'mousedown');
+
+      delete this._dragDropSubscription;
+    }
+  };
+
+  DetailsColumnBase.prototype._getColumnDragDropOptions = function () {
+    var _this = this;
+
+    var columnIndex = this.props.columnIndex;
+    var options = {
+      selectionIndex: columnIndex,
+      context: {
+        data: columnIndex,
+        index: columnIndex
+      },
+      canDrag: function () {
+        return _this.props.isDraggable;
+      },
+      canDrop: function () {
+        return false;
+      },
+      onDragStart: this._onDragStart,
+      updateDropState: function () {
+        return undefined;
+      },
+      onDrop: function () {
+        return undefined;
+      },
+      onDragEnd: this._onDragEnd
+    };
+    return options;
+  };
+
+  DetailsColumnBase.prototype._hasAccessibleLabel = function () {
+    var column = this.props.column;
+    return !!(column.ariaLabel || column.filterAriaLabel || column.sortAscendingAriaLabel || column.sortDescendingAriaLabel || column.groupAriaLabel);
+  };
+
+  DetailsColumnBase.prototype._renderAccessibleLabel = function () {
+    var _a = this.props,
+        column = _a.column,
+        parentId = _a.parentId;
+    var classNames = this._classNames;
+    return this._hasAccessibleLabel() && !this.props.onRenderColumnHeaderTooltip ? React.createElement("label", {
+      key: column.key + "_label",
+      id: parentId + "-" + column.key + "-tooltip",
+      className: classNames.accessibleLabel
+    }, column.ariaLabel, column.isFiltered && column.filterAriaLabel || null, column.isSorted && (column.isSortedDescending ? column.sortDescendingAriaLabel : column.sortAscendingAriaLabel) || null, column.isGrouped && column.groupAriaLabel || null) : null;
+  };
+
+  DetailsColumnBase.prototype._addDragDropHandling = function () {
+    this._dragDropSubscription = this.props.dragDropHelper.subscribe(this._root.current, this._events, this._getColumnDragDropOptions()); // We need to use native on this to prevent MarqueeSelection from handling the event before us.
+
+    this._events.on(this._root.current, 'mousedown', this._onRootMouseDown);
+  };
+
+  return DetailsColumnBase;
+}(React.Component);
+
+var GlobalClassNames$b = {
+  isActionable: 'is-actionable',
+  cellIsCheck: 'ms-DetailsHeader-cellIsCheck',
+  collapseButton: 'ms-DetailsHeader-collapseButton',
+  isCollapsed: 'is-collapsed',
+  isAllSelected: 'is-allSelected',
+  isSelectAllHidden: 'is-selectAllHidden',
+  isResizingColumn: 'is-resizingColumn',
+  isEmpty: 'is-empty',
+  isIconVisible: 'is-icon-visible',
+  cellSizer: 'ms-DetailsHeader-cellSizer',
+  isResizing: 'is-resizing',
+  dropHintCircleStyle: 'ms-DetailsHeader-dropHintCircleStyle',
+  dropHintLineStyle: 'ms-DetailsHeader-dropHintLineStyle',
+  cellTitle: 'ms-DetailsHeader-cellTitle',
+  cellName: 'ms-DetailsHeader-cellName',
+  filterChevron: 'ms-DetailsHeader-filterChevron',
+  gripperBarVerticalStyle: 'ms-DetailsColumn-gripperBar',
+  nearIcon: 'ms-DetailsColumn-nearIcon'
+};
+var getStyles$e = function (props) {
+  var _a;
+
+  var theme = props.theme,
+      headerClassName = props.headerClassName,
+      iconClassName = props.iconClassName,
+      isActionable = props.isActionable,
+      isEmpty = props.isEmpty,
+      isIconVisible = props.isIconVisible,
+      isPadded = props.isPadded,
+      isIconOnly = props.isIconOnly,
+      _b = props.cellStyleProps,
+      cellStyleProps = _b === void 0 ? DEFAULT_CELL_STYLE_PROPS : _b,
+      transitionDurationDrag = props.transitionDurationDrag,
+      transitionDurationDrop = props.transitionDurationDrop;
+  var semanticColors = theme.semanticColors,
+      palette = theme.palette,
+      fonts = theme.fonts;
+  var classNames = getGlobalClassNames(GlobalClassNames$b, theme);
+  var colors = {
+    iconForegroundColor: semanticColors.bodySubtext,
+    headerForegroundColor: semanticColors.bodyText,
+    headerBackgroundColor: semanticColors.bodyBackground,
+    dropdownChevronForegroundColor: palette.neutralTertiary,
+    resizerColor: palette.neutralTertiaryAlt
+  };
+  var nearIconStyle = {
+    color: colors.iconForegroundColor,
+    opacity: 1,
+    paddingLeft: 8
+  };
+  var borderWhileDragging = {
+    outline: "1px solid " + palette.themePrimary
+  };
+  var borderAfterDragOrDrop = {
+    outlineColor: 'transparent'
+  };
+  return {
+    root: [getCellStyles(props), fonts.small, isActionable && [classNames.isActionable, {
+      selectors: {
+        ':hover': {
+          color: semanticColors.bodyText,
+          background: semanticColors.listHeaderBackgroundHovered
+        },
+        ':active': {
+          background: semanticColors.listHeaderBackgroundPressed
+        }
+      }
+    }], isEmpty && [classNames.isEmpty, {
+      textOverflow: 'clip'
+    }], isIconVisible && classNames.isIconVisible, isPadded && {
+      paddingRight: cellStyleProps.cellExtraRightPadding + cellStyleProps.cellRightPadding
+    }, {
+      selectors: {
+        ':hover i[data-icon-name="GripperBarVertical"]': {
+          display: 'block'
+        }
+      }
+    }, headerClassName],
+    gripperBarVerticalStyle: {
+      display: 'none',
+      position: 'absolute',
+      textAlign: 'left',
+      color: palette.neutralTertiary,
+      left: 1
+    },
+    nearIcon: [classNames.nearIcon, nearIconStyle],
+    sortIcon: [nearIconStyle, {
+      paddingLeft: 4,
+      position: 'relative',
+      top: 1
+    }],
+    iconClassName: [{
+      color: colors.iconForegroundColor,
+      opacity: 1
+    }, iconClassName],
+    filterChevron: [classNames.filterChevron, {
+      color: colors.dropdownChevronForegroundColor,
+      paddingLeft: 6,
+      verticalAlign: 'middle',
+      fontSize: fonts.small.fontSize
+    }],
+    cellTitle: [classNames.cellTitle, getFocusStyle(theme), __assign({
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'flex-start',
+      alignItems: 'stretch',
+      boxSizing: 'border-box',
+      overflow: 'hidden',
+      padding: "0 " + cellStyleProps.cellRightPadding + "px 0 " + cellStyleProps.cellLeftPadding + "px"
+    }, isIconOnly ? {
+      alignContent: 'flex-end',
+      maxHeight: '100%',
+      flexWrap: 'wrap-reverse'
+    } : {})],
+    cellName: [classNames.cellName, {
+      flex: '0 1 auto',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      fontWeight: FontWeights.semibold,
+      fontSize: fonts.medium.fontSize
+    }, isIconOnly && {
+      selectors: (_a = {}, _a["." + classNames.nearIcon] = {
+        paddingLeft: 0
+      }, _a)
+    }],
+    cellTooltip: {
+      display: 'block',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      bottom: 0,
+      right: 0
+    },
+    accessibleLabel: hiddenContentStyle,
+    borderWhileDragging: borderWhileDragging,
+    noBorderWhileDragging: [borderAfterDragOrDrop, {
+      transition: "outline " + transitionDurationDrag + "ms ease"
+    }],
+    borderAfterDropping: borderWhileDragging,
+    noBorderAfterDropping: [borderAfterDragOrDrop, {
+      transition: "outline  " + transitionDurationDrop + "ms ease"
+    }]
+  };
+};
+
+var DetailsColumn = styled(DetailsColumnBase, getStyles$e, undefined, {
+  scope: 'DetailsColumn'
+});
+
+/**
+ * {@docCategory DetailsList}
+ */
+var SelectAllVisibility;
+
+(function (SelectAllVisibility) {
+  SelectAllVisibility[SelectAllVisibility["none"] = 0] = "none";
+  SelectAllVisibility[SelectAllVisibility["hidden"] = 1] = "hidden";
+  SelectAllVisibility[SelectAllVisibility["visible"] = 2] = "visible";
+})(SelectAllVisibility || (SelectAllVisibility = {}));
+
+var getClassNames$d = classNamesFunction();
+var MOUSEDOWN_PRIMARY_BUTTON$2 = 0; // for mouse down event we are using ev.button property, 0 means left button
+
+var MOUSEMOVE_PRIMARY_BUTTON$1 = 1; // for mouse move event we are using ev.buttons property, 1 means left button
+
+var NO_COLUMNS = [];
+
+var DetailsHeaderBase =
+/** @class */
+function (_super) {
+  __extends(DetailsHeaderBase, _super);
+
+  function DetailsHeaderBase(props) {
+    var _this = _super.call(this, props) || this;
+
+    _this._rootComponent = React.createRef();
+    _this._draggedColumnIndex = -1;
+    _this._dropHintDetails = {};
+
+    _this._updateDroppingState = function (newValue, event) {
+      if (_this._draggedColumnIndex >= 0 && event.type !== 'drop' && !newValue) {
+        _this._resetDropHints();
+      }
+    };
+
+    _this._onDragOver = function (item, event) {
+      if (_this._draggedColumnIndex >= 0) {
+        event.stopPropagation();
+
+        _this._computeDropHintToBeShown(event.clientX);
+      }
+    };
+
+    _this._onDrop = function (item, event) {
+      // Safe to assume this is defined since we're handling a drop event
+      var columnReorderProps = _this._getColumnReorderProps(); // Target index will not get changed if draggeditem is after target item.
+
+
+      if (_this._draggedColumnIndex >= 0 && event) {
+        var targetIndex = _this._draggedColumnIndex > _this._currentDropHintIndex ? _this._currentDropHintIndex : _this._currentDropHintIndex - 1;
+
+        var isValidDrop = _this._isValidCurrentDropHintIndex();
+
+        event.stopPropagation();
+
+        if (isValidDrop) {
+          _this._onDropIndexInfo.sourceIndex = _this._draggedColumnIndex;
+          _this._onDropIndexInfo.targetIndex = targetIndex;
+
+          if (columnReorderProps.onColumnDrop) {
+            var dragDropDetails = {
+              draggedIndex: _this._draggedColumnIndex,
+              targetIndex: targetIndex
+            };
+            columnReorderProps.onColumnDrop(dragDropDetails); // tslint:disable:deprecation
+          } else if (columnReorderProps.handleColumnReorder) {
+            columnReorderProps.handleColumnReorder(_this._draggedColumnIndex, targetIndex); // tslint:enable:deprecation
+          }
+        }
+      }
+
+      _this._resetDropHints();
+
+      _this._dropHintDetails = {};
+      _this._draggedColumnIndex = -1;
+    };
+
+    _this._updateDragInfo = function (props, event) {
+      // Safe to assume this is defined since we're handling a drag event
+      var columnReorderProps = _this._getColumnReorderProps();
+
+      var itemIndex = props.itemIndex;
+
+      if (itemIndex >= 0) {
+        // Column index is set based on the checkbox
+        _this._draggedColumnIndex = _this._isCheckboxColumnHidden() ? itemIndex - 1 : itemIndex - 2;
+
+        _this._getDropHintPositions();
+
+        if (columnReorderProps.onColumnDragStart) {
+          columnReorderProps.onColumnDragStart(true);
+        }
+      } else if (event && _this._draggedColumnIndex >= 0) {
+        _this._resetDropHints();
+
+        _this._draggedColumnIndex = -1;
+        _this._dropHintDetails = {};
+
+        if (columnReorderProps.onColumnDragEnd) {
+          var columnDragEndLocation = _this._isEventOnHeader(event);
+
+          columnReorderProps.onColumnDragEnd({
+            dropLocation: columnDragEndLocation
+          }, event);
+        }
+      }
+    };
+
+    _this._getDropHintPositions = function () {
+      var _a = _this.props.columns,
+          columns = _a === void 0 ? NO_COLUMNS : _a; // Safe to assume this is defined since we're handling a drag/drop event
+
+      var columnReorderProps = _this._getColumnReorderProps();
+
+      var prevX = 0;
+      var prevMid = 0;
+      var prevRef;
+      var frozenColumnCountFromStart = columnReorderProps.frozenColumnCountFromStart || 0;
+      var frozenColumnCountFromEnd = columnReorderProps.frozenColumnCountFromEnd || 0;
+
+      for (var i = frozenColumnCountFromStart; i < columns.length - frozenColumnCountFromEnd + 1; i++) {
+        if (_this._rootElement) {
+          var dropHintElement = _this._rootElement.querySelectorAll('#columnDropHint_' + i)[0];
+
+          if (dropHintElement) {
+            if (i === frozenColumnCountFromStart) {
+              prevX = dropHintElement.offsetLeft;
+              prevMid = dropHintElement.offsetLeft;
+              prevRef = dropHintElement;
+            } else {
+              var newMid = (dropHintElement.offsetLeft + prevX) / 2;
+              _this._dropHintDetails[i - 1] = {
+                originX: prevX,
+                startX: prevMid,
+                endX: newMid,
+                dropHintElementRef: prevRef
+              };
+              prevMid = newMid;
+              prevRef = dropHintElement;
+              prevX = dropHintElement.offsetLeft;
+
+              if (i === columns.length - frozenColumnCountFromEnd) {
+                _this._dropHintDetails[i] = {
+                  originX: prevX,
+                  startX: prevMid,
+                  endX: dropHintElement.offsetLeft,
+                  dropHintElementRef: prevRef
+                };
+              }
+            }
           }
         }
       }
     };
+    /**
+     * Based on the given cursor position, finds the nearest drop hint and updates the state to make it visible
+     */
 
-    _this._onTouchStart = function () {
-      if (_this._isSplitButton && _this._splitButtonContainer.current && !('onpointerdown' in _this._splitButtonContainer.current)) {
-        _this._handleTouchAndPointerEvent();
+
+    _this._computeDropHintToBeShown = function (clientX) {
+      var isRtl = getRTL$1(_this.props.theme);
+
+      if (_this._rootElement) {
+        var clientRect = _this._rootElement.getBoundingClientRect();
+
+        var headerOriginX = clientRect.left;
+        var eventXRelativePosition = clientX - headerOriginX;
+        var currentDropHintIndex = _this._currentDropHintIndex;
+
+        if (_this._isValidCurrentDropHintIndex()) {
+          if (_liesBetween(isRtl, eventXRelativePosition, _this._dropHintDetails[currentDropHintIndex].startX, _this._dropHintDetails[currentDropHintIndex].endX)) {
+            return;
+          }
+        }
+
+        var _a = _this.props.columns,
+            columns = _a === void 0 ? NO_COLUMNS : _a; // Safe to assume this is defined since we're handling a drag/drop event
+
+        var columnReorderProps = _this._getColumnReorderProps();
+
+        var frozenColumnCountFromStart = columnReorderProps.frozenColumnCountFromStart || 0;
+        var frozenColumnCountFromEnd = columnReorderProps.frozenColumnCountFromEnd || 0;
+        var currentIndex = frozenColumnCountFromStart;
+        var lastValidColumn = columns.length - frozenColumnCountFromEnd;
+        var indexToUpdate = -1;
+
+        if (_isBefore(isRtl, eventXRelativePosition, _this._dropHintDetails[currentIndex].endX)) {
+          indexToUpdate = currentIndex;
+        } else if (_isAfter(isRtl, eventXRelativePosition, _this._dropHintDetails[lastValidColumn].startX)) {
+          indexToUpdate = lastValidColumn;
+        } else if (_this._isValidCurrentDropHintIndex()) {
+          if (_this._dropHintDetails[currentDropHintIndex + 1] && _liesBetween(isRtl, eventXRelativePosition, _this._dropHintDetails[currentDropHintIndex + 1].startX, _this._dropHintDetails[currentDropHintIndex + 1].endX)) {
+            indexToUpdate = currentDropHintIndex + 1;
+          } else if (_this._dropHintDetails[currentDropHintIndex - 1] && _liesBetween(isRtl, eventXRelativePosition, _this._dropHintDetails[currentDropHintIndex - 1].startX, _this._dropHintDetails[currentDropHintIndex - 1].endX)) {
+            indexToUpdate = currentDropHintIndex - 1;
+          }
+        }
+
+        if (indexToUpdate === -1) {
+          var startIndex = frozenColumnCountFromStart;
+          var endIndex = lastValidColumn;
+
+          while (startIndex < endIndex) {
+            var middleIndex = Math.ceil((endIndex + startIndex) / 2);
+
+            if (_liesBetween(isRtl, eventXRelativePosition, _this._dropHintDetails[middleIndex].startX, _this._dropHintDetails[middleIndex].endX)) {
+              indexToUpdate = middleIndex;
+              break;
+            } else if (_isBefore(isRtl, eventXRelativePosition, _this._dropHintDetails[middleIndex].originX)) {
+              endIndex = middleIndex;
+            } else if (_isAfter(isRtl, eventXRelativePosition, _this._dropHintDetails[middleIndex].originX)) {
+              startIndex = middleIndex;
+            }
+          }
+        }
+
+        if (indexToUpdate === _this._draggedColumnIndex || indexToUpdate === _this._draggedColumnIndex + 1) {
+          if (_this._isValidCurrentDropHintIndex()) {
+            _this._resetDropHints();
+          }
+        } else if (currentDropHintIndex !== indexToUpdate && indexToUpdate >= 0) {
+          _this._resetDropHints();
+
+          _this._updateDropHintElement(_this._dropHintDetails[indexToUpdate].dropHintElementRef, 'inline-block');
+
+          _this._currentDropHintIndex = indexToUpdate;
+        }
       }
     };
 
-    _this._onMenuClick = function (ev) {
-      var onMenuClick = _this.props.onMenuClick;
+    _this._renderColumnSizer = function (_a) {
+      var _b;
 
-      if (onMenuClick) {
-        onMenuClick(ev, _this.props);
+      var columnIndex = _a.columnIndex;
+      var _c = _this.props.columns,
+          columns = _c === void 0 ? NO_COLUMNS : _c;
+      var column = columns[columnIndex];
+      var columnResizeDetails = _this.state.columnResizeDetails;
+      var classNames = _this._classNames;
+      return column.isResizable ? React.createElement("div", {
+        key: column.key + "_sizer",
+        "aria-hidden": true,
+        role: "button",
+        "data-is-focusable": false,
+        onClick: _stopPropagation,
+        "data-sizer-index": columnIndex,
+        onBlur: _this._onSizerBlur,
+        className: css(classNames.cellSizer, columnIndex < columns.length - 1 ? classNames.cellSizerStart : classNames.cellSizerEnd, (_b = {}, _b[classNames.cellIsResizing] = columnResizeDetails && columnResizeDetails.columnIndex === columnIndex, _b)),
+        onDoubleClick: _this._onSizerDoubleClick.bind(_this, columnIndex)
+      }) : null;
+    };
+
+    _this._onRenderColumnHeaderTooltip = function (tooltipHostProps) {
+      return React.createElement("span", {
+        className: tooltipHostProps.hostClassName
+      }, tooltipHostProps.children);
+    };
+    /**
+     * Called when the select all toggle is clicked.
+     */
+
+
+    _this._onSelectAllClicked = function () {
+      var selection = _this.props.selection;
+
+      if (selection) {
+        selection.toggleAllSelected();
+      }
+    };
+
+    _this._onRootMouseDown = function (ev) {
+      var columnIndexAttr = ev.target.getAttribute('data-sizer-index');
+      var columnIndex = Number(columnIndexAttr);
+      var _a = _this.props.columns,
+          columns = _a === void 0 ? NO_COLUMNS : _a;
+
+      if (columnIndexAttr === null || ev.button !== MOUSEDOWN_PRIMARY_BUTTON$2) {
+        // Ignore anything except the primary button.
+        return;
       }
 
-      if (!ev.defaultPrevented) {
-        // When Edge + Narrator are used together (regardless of if the button is in a form or not), pressing
-        // "Enter" fires this method and not _onMenuKeyDown. Checking ev.nativeEvent.detail differentiates
-        // between a real click event and a keypress event (detail should be the number of mouse clicks).
-        // ...Plot twist! For a real click event in IE 11, detail is always 0 (Edge sets it properly to 1).
-        // So we also check the pointerType property, which both Edge and IE set to "mouse" for real clicks
-        // and "" for pressing "Enter" with Narrator on.
-        var shouldFocusOnContainer = ev.nativeEvent.detail !== 0 || ev.nativeEvent.pointerType === 'mouse';
+      _this.setState({
+        columnResizeDetails: {
+          columnIndex: columnIndex,
+          columnMinWidth: columns[columnIndex].calculatedWidth,
+          originX: ev.clientX
+        }
+      });
 
-        _this._onToggleMenu(shouldFocusOnContainer);
+      ev.preventDefault();
+      ev.stopPropagation();
+    };
 
-        ev.preventDefault();
-        ev.stopPropagation();
+    _this._onRootMouseMove = function (ev) {
+      var _a = _this.state,
+          columnResizeDetails = _a.columnResizeDetails,
+          isSizing = _a.isSizing;
+
+      if (columnResizeDetails && !isSizing && ev.clientX !== columnResizeDetails.originX) {
+        _this.setState({
+          isSizing: true
+        });
+      }
+    };
+
+    _this._onRootRef = function (focusZone) {
+      if (focusZone) {
+        // Need to resolve the actual DOM node, not the component.
+        // The element itself will be used for drag/drop and focusing.
+        _this._rootElement = ReactDOM.findDOMNode(focusZone);
+      } else {
+        _this._rootElement = undefined;
+      }
+    };
+
+    _this._onRootKeyDown = function (ev) {
+      var _a = _this.state,
+          columnResizeDetails = _a.columnResizeDetails,
+          isSizing = _a.isSizing;
+      var _b = _this.props,
+          _c = _b.columns,
+          columns = _c === void 0 ? NO_COLUMNS : _c,
+          onColumnResized = _b.onColumnResized;
+      var columnIndexAttr = ev.target.getAttribute('data-sizer-index');
+
+      if (!columnIndexAttr || isSizing) {
+        return;
+      }
+
+      var columnIndex = Number(columnIndexAttr);
+
+      if (!columnResizeDetails) {
+        // tslint:disable-next-line:deprecation
+        if (ev.which === KeyCodes.enter) {
+          _this.setState({
+            columnResizeDetails: {
+              columnIndex: columnIndex,
+              columnMinWidth: columns[columnIndex].calculatedWidth
+            }
+          });
+
+          ev.preventDefault();
+          ev.stopPropagation();
+        }
+      } else {
+        var increment = void 0; // tslint:disable-next-line:deprecation
+
+        if (ev.which === KeyCodes.enter) {
+          _this.setState({
+            columnResizeDetails: undefined
+          });
+
+          ev.preventDefault();
+          ev.stopPropagation(); // tslint:disable-next-line:deprecation
+        } else if (ev.which === KeyCodes.left) {
+          increment = getRTL$1(_this.props.theme) ? 1 : -1; // tslint:disable-next-line:deprecation
+        } else if (ev.which === KeyCodes.right) {
+          increment = getRTL$1(_this.props.theme) ? -1 : 1;
+        }
+
+        if (increment) {
+          if (!ev.shiftKey) {
+            increment *= 10;
+          }
+
+          _this.setState({
+            columnResizeDetails: __assign(__assign({}, columnResizeDetails), {
+              columnMinWidth: columnResizeDetails.columnMinWidth + increment
+            })
+          });
+
+          if (onColumnResized) {
+            onColumnResized(columns[columnIndex], columnResizeDetails.columnMinWidth + increment, columnIndex);
+          }
+
+          ev.preventDefault();
+          ev.stopPropagation();
+        }
+      }
+    };
+    /**
+     * mouse move event handler in the header
+     * it will set isSizing state to true when user clicked on the sizer and move the mouse.
+     *
+     * @param ev - mouse move event
+     */
+
+
+    _this._onSizerMouseMove = function (ev) {
+      var // use buttons property here since ev.button in some edge case is not upding well during the move.
+      // but firefox doesn't support it, so we set the default value when it is not defined.
+      buttons = ev.buttons;
+      var _a = _this.props,
+          onColumnIsSizingChanged = _a.onColumnIsSizingChanged,
+          onColumnResized = _a.onColumnResized,
+          _b = _a.columns,
+          columns = _b === void 0 ? NO_COLUMNS : _b;
+      var columnResizeDetails = _this.state.columnResizeDetails;
+
+      if (buttons !== undefined && buttons !== MOUSEMOVE_PRIMARY_BUTTON$1) {
+        // cancel mouse down event and return early when the primary button is not pressed
+        _this._onSizerMouseUp(ev);
+
+        return;
+      }
+
+      if (ev.clientX !== columnResizeDetails.originX) {
+        if (onColumnIsSizingChanged) {
+          onColumnIsSizingChanged(columns[columnResizeDetails.columnIndex], true);
+        }
+      }
+
+      if (onColumnResized) {
+        var movement = ev.clientX - columnResizeDetails.originX;
+
+        if (getRTL$1(_this.props.theme)) {
+          movement = -movement;
+        }
+
+        onColumnResized(columns[columnResizeDetails.columnIndex], columnResizeDetails.columnMinWidth + movement, columnResizeDetails.columnIndex);
+      }
+    };
+
+    _this._onSizerBlur = function (ev) {
+      var columnResizeDetails = _this.state.columnResizeDetails;
+
+      if (columnResizeDetails) {
+        _this.setState({
+          columnResizeDetails: undefined,
+          isSizing: false
+        });
+      }
+    };
+    /**
+     * mouse up event handler in the header
+     * clear the resize related state.
+     * This is to ensure we can catch double click event
+     *
+     * @param ev - mouse up event
+     */
+
+
+    _this._onSizerMouseUp = function (ev) {
+      var _a = _this.props,
+          _b = _a.columns,
+          columns = _b === void 0 ? NO_COLUMNS : _b,
+          onColumnIsSizingChanged = _a.onColumnIsSizingChanged;
+      var columnResizeDetails = _this.state.columnResizeDetails;
+
+      _this.setState({
+        columnResizeDetails: undefined,
+        isSizing: false
+      });
+
+      if (onColumnIsSizingChanged) {
+        onColumnIsSizingChanged(columns[columnResizeDetails.columnIndex], false);
+      }
+    };
+
+    _this._onToggleCollapseAll = function () {
+      var onToggleCollapseAll = _this.props.onToggleCollapseAll;
+      var newCollapsed = !_this.state.isAllCollapsed;
+
+      _this.setState({
+        isAllCollapsed: newCollapsed
+      });
+
+      if (onToggleCollapseAll) {
+        onToggleCollapseAll(newCollapsed);
       }
     };
 
     initializeComponentRef(_this);
-    _this._async = new Async(_this);
     _this._events = new EventGroup(_this);
-    warnConditionallyRequiredProps(COMPONENT_NAME$1, props, ['menuProps', 'onClick'], 'split', _this.props.split);
-    warnDeprecations(COMPONENT_NAME$1, props, {
-      rootProps: undefined,
-      description: 'secondaryText',
-      toggled: 'checked'
-    });
-    _this._labelId = getId();
-    _this._descriptionId = getId();
-    _this._ariaDescriptionId = getId();
     _this.state = {
-      menuHidden: true
+      columnResizeDetails: undefined,
+      isAllCollapsed: _this.props.isAllCollapsed,
+      isAllSelected: !!_this.props.selection && _this.props.selection.isAllSelected()
     };
+    _this._onDropIndexInfo = {
+      sourceIndex: -1,
+      targetIndex: -1
+    };
+    _this._id = getId('header');
+    _this._currentDropHintIndex = -1; // The drag drop handler won't do any work until subscribe() is called,
+    // so always set it up for convenience
+
+    _this._dragDropHelper = new DragDropHelper({
+      selection: {
+        getSelection: function () {
+          return;
+        }
+      },
+      minimumPixelsForDrag: _this.props.minimumPixelsForDrag
+    });
     return _this;
   }
 
-  Object.defineProperty(BaseButton.prototype, "_isSplitButton", {
-    get: function () {
-      return !!this.props.menuProps && !!this.props.onClick && this.props.split === true;
-    },
-    enumerable: true,
-    configurable: true
-  });
+  DetailsHeaderBase.prototype.componentDidMount = function () {
+    var selection = this.props.selection;
 
-  BaseButton.prototype.render = function () {
-    var _a;
-
-    var _b = this.props,
-        ariaDescription = _b.ariaDescription,
-        ariaLabel = _b.ariaLabel,
-        ariaHidden = _b.ariaHidden,
-        className = _b.className,
-        disabled = _b.disabled,
-        allowDisabledFocus = _b.allowDisabledFocus,
-        primaryDisabled = _b.primaryDisabled,
-        // tslint:disable-next-line:deprecation
-    _c = _b.secondaryText,
-        // tslint:disable-next-line:deprecation
-    secondaryText = _c === void 0 ? this.props.description : _c,
-        href = _b.href,
-        iconProps = _b.iconProps,
-        menuIconProps = _b.menuIconProps,
-        styles = _b.styles,
-        checked = _b.checked,
-        variantClassName = _b.variantClassName,
-        theme = _b.theme,
-        toggle = _b.toggle,
-        getClassNames = _b.getClassNames,
-        role = _b.role;
-    var menuHidden = this.state.menuHidden; // Button is disabled if the whole button (in case of splitbutton is disabled) or if the primary action is disabled
-
-    var isPrimaryButtonDisabled = disabled || primaryDisabled;
-    this._classNames = getClassNames ? getClassNames(theme, className, variantClassName, iconProps && iconProps.className, menuIconProps && menuIconProps.className, isPrimaryButtonDisabled, checked, !menuHidden, !!this.props.menuProps, this.props.split, !!allowDisabledFocus) : getBaseButtonClassNames(theme, styles, className, variantClassName, iconProps && iconProps.className, menuIconProps && menuIconProps.className, isPrimaryButtonDisabled, !!this.props.menuProps, checked, !menuHidden, this.props.split);
-
-    var _d = this,
-        _ariaDescriptionId = _d._ariaDescriptionId,
-        _labelId = _d._labelId,
-        _descriptionId = _d._descriptionId; // Anchor tag cannot be disabled hence in disabled state rendering
-    // anchor button as normal button
+    this._events.on(selection, SELECTION_CHANGE, this._onSelectionChanged); // We need to use native on this to prevent MarqueeSelection from handling the event before us.
 
 
-    var renderAsAnchor = !isPrimaryButtonDisabled && !!href;
-    var tag = renderAsAnchor ? 'a' : 'button';
-    var nativeProps = getNativeProps( // tslint:disable-next-line:deprecation
-    assign(renderAsAnchor ? {} : {
-      type: 'button'
-    }, this.props.rootProps, this.props), renderAsAnchor ? anchorProperties : buttonProperties, ['disabled']); // Check for ariaLabel passed in via Button props, and fall back to aria-label passed in via native props
+    this._events.on(this._rootElement, 'mousedown', this._onRootMouseDown);
 
-    var resolvedAriaLabel = ariaLabel || nativeProps['aria-label']; // Check for ariaDescription, secondaryText or aria-describedby in the native props to determine source of
-    // aria-describedby. Otherwise default to undefined so property does not appear in output.
+    this._events.on(this._rootElement, 'keydown', this._onRootKeyDown);
 
-    var ariaDescribedBy = undefined;
+    if (this._getColumnReorderProps()) {
+      this._subscriptionObject = this._dragDropHelper.subscribe(this._rootElement, this._events, this._getHeaderDragDropOptions());
+    }
+  };
 
-    if (ariaDescription) {
-      ariaDescribedBy = _ariaDescriptionId;
-    } else if (secondaryText && this.props.onRenderDescription !== nullRender) {
-      // for buttons like CompoundButton with a valid onRenderDescription, we need to set an ariaDescribedBy
-      // for buttons that do not render anything (via nullRender), we should not set an ariaDescribedBy
-      ariaDescribedBy = _descriptionId;
-    } else if (nativeProps['aria-describedby']) {
-      ariaDescribedBy = nativeProps['aria-describedby'];
-    } // If an explicit ariaLabel is given, use that as the label and we're done.
-    // If an explicit aria-labelledby is given, use that and we're done.
-    // If any kind of description is given (which will end up as an aria-describedby attribute),
-    // set the labelledby element. Otherwise, the button is labeled implicitly by the descendent
-    // text on the button (if it exists). Never set both aria-label and aria-labelledby.
+  DetailsHeaderBase.prototype.componentDidUpdate = function (prevProps) {
+    if (this._getColumnReorderProps()) {
+      if (!this._subscriptionObject) {
+        this._subscriptionObject = this._dragDropHelper.subscribe(this._rootElement, this._events, this._getHeaderDragDropOptions());
+      }
+    } else if (this._subscriptionObject) {
+      this._subscriptionObject.dispose();
 
+      delete this._subscriptionObject;
+    }
 
-    var ariaLabelledBy = undefined;
+    if (this.props !== prevProps && this._onDropIndexInfo.sourceIndex >= 0 && this._onDropIndexInfo.targetIndex >= 0) {
+      var _a = prevProps.columns,
+          previousColumns = _a === void 0 ? NO_COLUMNS : _a;
+      var _b = this.props.columns,
+          columns = _b === void 0 ? NO_COLUMNS : _b;
 
-    if (!resolvedAriaLabel) {
-      if (nativeProps['aria-labelledby']) {
-        ariaLabelledBy = nativeProps['aria-labelledby'];
-      } else if (ariaDescribedBy) {
-        ariaLabelledBy = this._hasText() ? _labelId : undefined;
+      if (previousColumns[this._onDropIndexInfo.sourceIndex].key === columns[this._onDropIndexInfo.targetIndex].key) {
+        this._onDropIndexInfo = {
+          sourceIndex: -1,
+          targetIndex: -1
+        };
       }
     }
 
-    var dataIsFocusable = this.props['data-is-focusable'] === false || disabled && !allowDisabledFocus || this._isSplitButton ? false : true;
-    var isCheckboxTypeRole = role === 'menuitemcheckbox' || role === 'checkbox'; // if isCheckboxTypeRole, always return a checked value.
-    // Otherwise only return checked value if toggle is set to true.
-    // This is because role="checkbox" always needs to have an aria-checked value
-    // but our checked prop only sets aria-pressed if we mark the button as a toggle="true"
-
-    var checkedOrPressedValue = isCheckboxTypeRole ? !!checked : toggle === true ? !!checked : undefined;
-    var buttonProps = assign(nativeProps, (_a = {
-      className: this._classNames.root,
-      ref: this._buttonElement,
-      disabled: isPrimaryButtonDisabled && !allowDisabledFocus,
-      onKeyDown: this._onKeyDown,
-      onKeyPress: this._onKeyPress,
-      onKeyUp: this._onKeyUp,
-      onMouseDown: this._onMouseDown,
-      onMouseUp: this._onMouseUp,
-      onClick: this._onClick,
-      'aria-label': resolvedAriaLabel,
-      'aria-labelledby': ariaLabelledBy,
-      'aria-describedby': ariaDescribedBy,
-      'aria-disabled': isPrimaryButtonDisabled,
-      'data-is-focusable': dataIsFocusable
-    }, // aria-pressed attribute should only be present for toggle buttons
-    // aria-checked attribute should only be present for toggle buttons with checkbox type role
-    _a[isCheckboxTypeRole ? 'aria-checked' : 'aria-pressed'] = checkedOrPressedValue, _a));
-
-    if (ariaHidden) {
-      buttonProps['aria-hidden'] = true;
-    }
-
-    if (this._isSplitButton) {
-      return this._onRenderSplitButtonContent(tag, buttonProps);
-    } else if (this.props.menuProps) {
-      assign(buttonProps, {
-        'aria-expanded': !menuHidden,
-        'aria-owns': !menuHidden ? this._labelId + '-menu' : null,
-        'aria-haspopup': true
+    if (this.props.isAllCollapsed !== prevProps.isAllCollapsed) {
+      this.setState({
+        isAllCollapsed: this.props.isAllCollapsed
       });
     }
-
-    return this._onRenderContent(tag, buttonProps);
   };
 
-  BaseButton.prototype.componentDidMount = function () {
-    // For split buttons, touching anywhere in the button should drop the dropdown, which should contain the
-    // primary action. This gives more hit target space for touch environments. We're setting the onpointerdown here,
-    // because React does not support Pointer events yet.
-    if (this._isSplitButton && this._splitButtonContainer.current) {
-      if ('onpointerdown' in this._splitButtonContainer.current) {
-        this._events.on(this._splitButtonContainer.current, 'pointerdown', this._onPointerDown, true);
-      }
+  DetailsHeaderBase.prototype.componentWillUnmount = function () {
+    if (this._subscriptionObject) {
+      this._subscriptionObject.dispose();
 
-      if ('onpointerup' in this._splitButtonContainer.current && this.props.onPointerUp) {
-        this._events.on(this._splitButtonContainer.current, 'pointerup', this.props.onPointerUp, true);
-      }
+      delete this._subscriptionObject;
     }
-  };
 
-  BaseButton.prototype.componentDidUpdate = function (prevProps, prevState) {
-    // If Button's menu was closed, run onAfterMenuDismiss.
-    if (this.props.onAfterMenuDismiss && !prevState.menuHidden && this.state.menuHidden) {
-      this.props.onAfterMenuDismiss();
-    }
-  };
-
-  BaseButton.prototype.componentWillUnmount = function () {
-    this._async.dispose();
+    this._dragDropHelper.dispose();
 
     this._events.dispose();
   };
 
-  BaseButton.prototype.focus = function () {
-    if (this._isSplitButton && this._splitButtonContainer.current) {
-      this._splitButtonContainer.current.focus();
-    } else if (this._buttonElement.current) {
-      this._buttonElement.current.focus();
-    }
-  };
-
-  BaseButton.prototype.dismissMenu = function () {
-    this._dismissMenu();
-  };
-
-  BaseButton.prototype.openMenu = function (shouldFocusOnContainer, shouldFocusOnMount) {
-    this._openMenu(shouldFocusOnContainer, shouldFocusOnMount);
-  };
-
-  BaseButton.prototype._onRenderContent = function (tag, buttonProps) {
+  DetailsHeaderBase.prototype.render = function () {
     var _this = this;
 
-    var props = this.props;
-    var Tag = tag;
-    var menuIconProps = props.menuIconProps,
-        menuProps = props.menuProps,
-        _a = props.onRenderIcon,
-        onRenderIcon = _a === void 0 ? this._onRenderIcon : _a,
-        _b = props.onRenderAriaDescription,
-        onRenderAriaDescription = _b === void 0 ? this._onRenderAriaDescription : _b,
-        _c = props.onRenderChildren,
-        onRenderChildren = _c === void 0 ? this._onRenderChildren : _c,
-        // tslint:disable-next-line:deprecation
-    _d = props.onRenderMenu,
-        // tslint:disable-next-line:deprecation
-    onRenderMenu = _d === void 0 ? this._onRenderMenu : _d,
-        _e = props.onRenderMenuIcon,
-        onRenderMenuIcon = _e === void 0 ? this._onRenderMenuIcon : _e,
-        disabled = props.disabled;
-    var keytipProps = props.keytipProps;
+    var _a = this.props,
+        _b = _a.columns,
+        columns = _b === void 0 ? NO_COLUMNS : _b,
+        ariaLabel = _a.ariaLabel,
+        ariaLabelForToggleAllGroupsButton = _a.ariaLabelForToggleAllGroupsButton,
+        ariaLabelForSelectAllCheckbox = _a.ariaLabelForSelectAllCheckbox,
+        selectAllVisibility = _a.selectAllVisibility,
+        ariaLabelForSelectionColumn = _a.ariaLabelForSelectionColumn,
+        indentWidth = _a.indentWidth,
+        _c = _a.rowWidth,
+        rowWidth = _c === void 0 ? 0 : _c,
+        onColumnClick = _a.onColumnClick,
+        onColumnContextMenu = _a.onColumnContextMenu,
+        _d = _a.onRenderColumnHeaderTooltip,
+        onRenderColumnHeaderTooltip = _d === void 0 ? this._onRenderColumnHeaderTooltip : _d,
+        styles = _a.styles,
+        selectionMode = _a.selectionMode,
+        theme = _a.theme,
+        onRenderDetailsCheckbox = _a.onRenderDetailsCheckbox,
+        groupNestingDepth = _a.groupNestingDepth,
+        useFastIcons = _a.useFastIcons,
+        checkboxVisibility = _a.checkboxVisibility,
+        className = _a.className;
+    var _e = this.state,
+        isAllSelected = _e.isAllSelected,
+        columnResizeDetails = _e.columnResizeDetails,
+        isSizing = _e.isSizing,
+        isAllCollapsed = _e.isAllCollapsed;
+    var showCheckbox = selectAllVisibility !== SelectAllVisibility.none;
+    var isCheckboxHidden = selectAllVisibility === SelectAllVisibility.hidden;
+    var isCheckboxAlwaysVisible = checkboxVisibility === CheckboxVisibility.always;
 
-    if (keytipProps && menuProps) {
-      keytipProps = this._getMemoizedMenuButtonKeytipProps(keytipProps);
-    }
+    var columnReorderProps = this._getColumnReorderProps();
 
-    var Button = function (keytipAttributes) {
-      return React.createElement(Tag, __assign({}, buttonProps, keytipAttributes), React.createElement("span", {
-        className: _this._classNames.flexContainer,
-        "data-automationid": "splitbuttonprimary"
-      }, onRenderIcon(props, _this._onRenderIcon), _this._onRenderTextContents(), onRenderAriaDescription(props, _this._onRenderAriaDescription), onRenderChildren(props, _this._onRenderChildren), !_this._isSplitButton && (menuProps || menuIconProps || _this.props.onRenderMenuIcon) && onRenderMenuIcon(_this.props, _this._onRenderMenuIcon), menuProps && !menuProps.doNotLayer && _this._shouldRenderMenu() && onRenderMenu(menuProps, _this._onRenderMenu)));
-    };
+    var frozenColumnCountFromStart = columnReorderProps && columnReorderProps.frozenColumnCountFromStart ? columnReorderProps.frozenColumnCountFromStart : 0;
+    var frozenColumnCountFromEnd = columnReorderProps && columnReorderProps.frozenColumnCountFromEnd ? columnReorderProps.frozenColumnCountFromEnd : 0;
+    this._classNames = getClassNames$d(styles, {
+      theme: theme,
+      isAllSelected: isAllSelected,
+      isSelectAllHidden: selectAllVisibility === SelectAllVisibility.hidden,
+      isResizingColumn: !!columnResizeDetails && isSizing,
+      isSizing: isSizing,
+      isAllCollapsed: isAllCollapsed,
+      isCheckboxHidden: isCheckboxHidden,
+      className: className
+    });
+    var classNames = this._classNames;
+    var IconComponent = useFastIcons ? FontIcon : Icon;
+    var isRTL = getRTL$1(theme);
+    return React.createElement(FocusZone, {
+      role: "row",
+      "aria-label": ariaLabel,
+      className: classNames.root,
+      componentRef: this._rootComponent,
+      ref: this._onRootRef,
+      onMouseMove: this._onRootMouseMove,
+      "data-automationid": "DetailsHeader",
+      style: {
+        minWidth: rowWidth
+      },
+      direction: FocusZoneDirection.horizontal
+    }, showCheckbox ? [React.createElement("div", {
+      key: "__checkbox",
+      className: classNames.cellIsCheck,
+      "aria-labelledby": this._id + "-check",
+      onClick: !isCheckboxHidden ? this._onSelectAllClicked : undefined,
+      "aria-colindex": 1,
+      role: 'columnheader'
+    }, onRenderColumnHeaderTooltip({
+      hostClassName: classNames.checkTooltip,
+      id: this._id + "-checkTooltip",
+      setAriaDescribedBy: false,
+      content: ariaLabelForSelectAllCheckbox,
+      children: React.createElement(DetailsRowCheck, {
+        id: this._id + "-check",
+        "aria-label": selectionMode === SelectionMode.multiple ? ariaLabelForSelectAllCheckbox : ariaLabelForSelectionColumn,
+        "aria-describedby": !isCheckboxHidden ? ariaLabelForSelectAllCheckbox && !this.props.onRenderColumnHeaderTooltip ? this._id + "-checkTooltip" : undefined : ariaLabelForSelectionColumn && !this.props.onRenderColumnHeaderTooltip ? this._id + "-checkTooltip" : undefined,
+        "data-is-focusable": !isCheckboxHidden || undefined,
+        isHeader: true,
+        selected: isAllSelected,
+        anySelected: false,
+        canSelect: !isCheckboxHidden,
+        className: classNames.check,
+        onRenderDetailsCheckbox: onRenderDetailsCheckbox,
+        useFastIcons: useFastIcons,
+        isVisible: isCheckboxAlwaysVisible
+      })
+    }, this._onRenderColumnHeaderTooltip)), !this.props.onRenderColumnHeaderTooltip ? ariaLabelForSelectAllCheckbox && !isCheckboxHidden ? React.createElement("label", {
+      key: "__checkboxLabel",
+      id: this._id + "-checkTooltip",
+      className: classNames.accessibleLabel,
+      "aria-hidden": true
+    }, ariaLabelForSelectAllCheckbox) : ariaLabelForSelectionColumn && isCheckboxHidden ? React.createElement("label", {
+      key: "__checkboxLabel",
+      id: this._id + "-checkTooltip",
+      className: classNames.accessibleLabel,
+      "aria-hidden": true
+    }, ariaLabelForSelectionColumn) : null : null] : null, groupNestingDepth > 0 && this.props.collapseAllVisibility === CollapseAllVisibility.visible ? React.createElement("div", {
+      className: classNames.cellIsGroupExpander,
+      onClick: this._onToggleCollapseAll,
+      "data-is-focusable": true,
+      "aria-label": ariaLabelForToggleAllGroupsButton,
+      "aria-expanded": !isAllCollapsed,
+      role: ariaLabelForToggleAllGroupsButton ? 'button' : undefined
+    }, React.createElement(IconComponent, {
+      className: classNames.collapseButton,
+      iconName: isRTL ? 'ChevronLeftMed' : 'ChevronRightMed'
+    })) : null, React.createElement(GroupSpacer, {
+      indentWidth: indentWidth,
+      count: groupNestingDepth - 1
+    }), columns.map(function (column, columnIndex) {
+      var _isDraggable = columnReorderProps ? columnIndex >= frozenColumnCountFromStart && columnIndex < columns.length - frozenColumnCountFromEnd : false;
 
-    var Content = keytipProps ? // If we're making a split button, we won't put the keytip here
-    React.createElement(KeytipData, {
-      keytipProps: !this._isSplitButton ? keytipProps : undefined,
-      ariaDescribedBy: buttonProps['aria-describedby'],
-      disabled: disabled
-    }, function (keytipAttributes) {
-      return Button(keytipAttributes);
-    }) : Button();
+      return [columnReorderProps && (_isDraggable || columnIndex === columns.length - frozenColumnCountFromEnd) && _this._renderDropHint(columnIndex), React.createElement(DetailsColumn, {
+        column: column,
+        styles: column.styles,
+        key: column.key,
+        columnIndex: (showCheckbox ? 2 : 1) + columnIndex,
+        parentId: _this._id,
+        isDraggable: _isDraggable,
+        updateDragInfo: _this._updateDragInfo,
+        dragDropHelper: _this._dragDropHelper,
+        onColumnClick: onColumnClick,
+        onColumnContextMenu: onColumnContextMenu,
+        // Do not render tooltips by default, but allow for override via props.
+        onRenderColumnHeaderTooltip: _this.props.onRenderColumnHeaderTooltip,
+        isDropped: _this._onDropIndexInfo.targetIndex === columnIndex,
+        cellStyleProps: _this.props.cellStyleProps,
+        useFastIcons: useFastIcons
+      }), _this._renderColumnDivider(columnIndex)];
+    }), columnReorderProps && frozenColumnCountFromEnd === 0 && this._renderDropHint(columns.length), isSizing && React.createElement(Layer, null, React.createElement("div", {
+      className: classNames.sizingOverlay,
+      onMouseMove: this._onSizerMouseMove,
+      onMouseUp: this._onSizerMouseUp
+    })));
+  };
+  /** Set focus to the active thing in the focus area. */
 
-    if (menuProps && menuProps.doNotLayer) {
-      return React.createElement("span", {
-        style: {
-          display: 'inline-block'
-        }
-      }, Content, this._shouldRenderMenu() && onRenderMenu(menuProps, this._onRenderMenu));
-    }
 
-    return React.createElement(React.Fragment, null, Content, React.createElement(FocusRects, null));
+  DetailsHeaderBase.prototype.focus = function () {
+    return Boolean(this._rootComponent.current && this._rootComponent.current.focus());
   };
   /**
-   * Method to help determine if the menu's component tree should
-   * be rendered. It takes into account whether the menu is expanded,
-   * whether it is a persisted menu and whether it has been shown to the user.
+   * Gets column reorder props from this.props. If the calling code is part of setting up or
+   * handling drag/drop events, it's safe to assume that this method's return value is defined
+   * (because drag/drop handling will only be set up if reorder props are given).
    */
 
 
-  BaseButton.prototype._shouldRenderMenu = function () {
-    var menuHidden = this.state.menuHidden; // tslint:disable-next-line:deprecation
-
+  DetailsHeaderBase.prototype._getColumnReorderProps = function () {
     var _a = this.props,
-        persistMenu = _a.persistMenu,
-        renderPersistedMenuHiddenOnMount = _a.renderPersistedMenuHiddenOnMount;
-
-    if (!menuHidden) {
-      // Always should render a menu when it is expanded
-      return true;
-    } else if (persistMenu && (this._renderedVisibleMenu || renderPersistedMenuHiddenOnMount)) {
-      // _renderedVisibleMenu ensures that the first rendering of
-      // the menu happens on-screen, as edge's scrollbar calculations are off if done while hidden.
-      return true;
-    }
-
-    return false;
-  };
-
-  BaseButton.prototype._hasText = function () {
-    // _onRenderTextContents and _onRenderText do not perform the same checks. Below is parity with what _onRenderText
-    // used to have before the refactor that introduced this function. _onRenderTextContents does not require props.
-    // text to be undefined in order for props.children to be used as a fallback.
-    // Purely a code maintainability/reuse issue, but logged as Issue #4979.
-    return this.props.text !== null && (this.props.text !== undefined || typeof this.props.children === 'string');
-  };
-
-  BaseButton.prototype._onRenderSplitButtonContent = function (tag, buttonProps) {
-    var _this = this;
-
-    var _a = this.props,
-        _b = _a.styles,
-        styles = _b === void 0 ? {} : _b,
-        disabled = _a.disabled,
-        allowDisabledFocus = _a.allowDisabledFocus,
-        checked = _a.checked,
-        getSplitButtonClassNames = _a.getSplitButtonClassNames,
-        primaryDisabled = _a.primaryDisabled,
-        menuProps = _a.menuProps,
-        toggle = _a.toggle,
-        role = _a.role,
-        primaryActionButtonProps = _a.primaryActionButtonProps;
-    var keytipProps = this.props.keytipProps;
-    var menuHidden = this.state.menuHidden;
-    var classNames = getSplitButtonClassNames ? getSplitButtonClassNames(!!disabled, !menuHidden, !!checked, !!allowDisabledFocus) : styles && getClassNames$8(styles, !!disabled, !menuHidden, !!checked, !!primaryDisabled);
-    assign(buttonProps, {
-      onClick: undefined,
-      onPointerDown: undefined,
-      onPointerUp: undefined,
-      tabIndex: -1,
-      'data-is-focusable': false
+        columnReorderOptions = _a.columnReorderOptions,
+        columnReorderProps = _a.columnReorderProps;
+    return columnReorderProps || columnReorderOptions && __assign(__assign({}, columnReorderOptions), {
+      onColumnDragEnd: undefined
     });
-    var ariaDescribedBy = buttonProps.ariaDescription;
-
-    if (keytipProps && menuProps) {
-      keytipProps = this._getMemoizedMenuButtonKeytipProps(keytipProps);
-    }
-
-    var containerProps = getNativeProps(buttonProps, [], ['disabled']); // Add additional props to apply on primary action button
-
-    if (primaryActionButtonProps) {
-      assign(buttonProps, primaryActionButtonProps);
-    }
-
-    var SplitButton = function (keytipAttributes) {
-      return React.createElement("div", __assign({}, containerProps, {
-        "data-ktp-target": keytipAttributes ? keytipAttributes['data-ktp-target'] : undefined,
-        role: role ? role : 'button',
-        "aria-disabled": disabled,
-        "aria-haspopup": true,
-        "aria-expanded": !menuHidden,
-        "aria-pressed": toggle ? !!checked : undefined,
-        "aria-describedby": mergeAriaAttributeValues(ariaDescribedBy, keytipAttributes ? keytipAttributes['aria-describedby'] : undefined),
-        className: classNames && classNames.splitButtonContainer,
-        onKeyDown: _this._onSplitButtonContainerKeyDown,
-        onTouchStart: _this._onTouchStart,
-        ref: _this._splitButtonContainer,
-        "data-is-focusable": true,
-        onClick: !disabled && !primaryDisabled ? _this._onSplitButtonPrimaryClick : undefined,
-        tabIndex: !disabled || allowDisabledFocus ? 0 : undefined,
-        "aria-roledescription": buttonProps['aria-roledescription'],
-        onFocusCapture: _this._onSplitContainerFocusCapture
-      }), React.createElement("span", {
-        style: {
-          display: 'flex'
-        }
-      }, _this._onRenderContent(tag, buttonProps), _this._onRenderSplitButtonMenuButton(classNames, keytipAttributes), _this._onRenderSplitButtonDivider(classNames)));
-    };
-
-    return keytipProps ? React.createElement(KeytipData, {
-      keytipProps: keytipProps,
-      disabled: disabled
-    }, function (keytipAttributes) {
-      return SplitButton(keytipAttributes);
-    }) : SplitButton();
   };
 
-  BaseButton.prototype._onRenderSplitButtonDivider = function (classNames) {
-    if (classNames && classNames.divider) {
-      var onClick = function (ev) {
-        ev.stopPropagation();
-      };
+  DetailsHeaderBase.prototype._getHeaderDragDropOptions = function () {
+    var options = {
+      selectionIndex: 1,
+      context: {
+        data: this,
+        index: 0
+      },
+      canDrag: function () {
+        return false;
+      },
+      canDrop: function () {
+        return true;
+      },
+      onDragStart: function () {
+        return undefined;
+      },
+      updateDropState: this._updateDroppingState,
+      onDrop: this._onDrop,
+      onDragEnd: function () {
+        return undefined;
+      },
+      onDragOver: this._onDragOver
+    };
+    return options;
+  };
 
-      return React.createElement("span", {
-        className: classNames.divider,
-        "aria-hidden": true,
-        onClick: onClick
+  DetailsHeaderBase.prototype._isValidCurrentDropHintIndex = function () {
+    return this._currentDropHintIndex >= 0;
+  };
+  /**
+   * @returns whether or not the "Select All" checkbox column is hidden.
+   */
+
+
+  DetailsHeaderBase.prototype._isCheckboxColumnHidden = function () {
+    var _a = this.props,
+        selectionMode = _a.selectionMode,
+        checkboxVisibility = _a.checkboxVisibility;
+    return selectionMode === SelectionMode.none || checkboxVisibility === CheckboxVisibility.hidden;
+  };
+
+  DetailsHeaderBase.prototype._resetDropHints = function () {
+    if (this._currentDropHintIndex >= 0) {
+      this._updateDropHintElement(this._dropHintDetails[this._currentDropHintIndex].dropHintElementRef, 'none');
+
+      this._currentDropHintIndex = -1;
+    }
+  };
+
+  DetailsHeaderBase.prototype._updateDropHintElement = function (element, displayProperty) {
+    element.childNodes[1].style.display = displayProperty;
+    element.childNodes[0].style.display = displayProperty;
+  };
+
+  DetailsHeaderBase.prototype._isEventOnHeader = function (event) {
+    if (this._rootElement) {
+      var clientRect = this._rootElement.getBoundingClientRect();
+
+      if (event.clientX > clientRect.left && event.clientX < clientRect.right && event.clientY > clientRect.top && event.clientY < clientRect.bottom) {
+        return ColumnDragEndLocation.header;
+      }
+    }
+  };
+
+  DetailsHeaderBase.prototype._renderColumnDivider = function (columnIndex) {
+    var _a = this.props.columns,
+        columns = _a === void 0 ? NO_COLUMNS : _a;
+    var column = columns[columnIndex];
+    var onRenderDivider = column.onRenderDivider;
+    return onRenderDivider ? onRenderDivider({
+      column: column,
+      columnIndex: columnIndex
+    }, this._renderColumnSizer) : this._renderColumnSizer({
+      column: column,
+      columnIndex: columnIndex
+    });
+  };
+
+  DetailsHeaderBase.prototype._renderDropHint = function (dropHintIndex) {
+    var classNames = this._classNames;
+    var IconComponent = this.props.useFastIcons ? FontIcon : Icon;
+    return React.createElement("div", {
+      key: 'dropHintKey',
+      className: classNames.dropHintStyle,
+      id: "columnDropHint_" + dropHintIndex
+    }, React.createElement(IconComponent, {
+      key: "dropHintCircleKey",
+      "aria-hidden": true,
+      "data-is-focusable": false,
+      "data-sizer-index": dropHintIndex,
+      className: classNames.dropHintCaretStyle,
+      iconName: 'CircleShapeSolid'
+    }), React.createElement("div", {
+      key: "dropHintLineKey",
+      "aria-hidden": true,
+      "data-is-focusable": false,
+      "data-sizer-index": dropHintIndex,
+      className: classNames.dropHintLineStyle
+    }));
+  };
+  /**
+   * double click on the column sizer will auto ajust column width
+   * to fit the longest content among current rendered rows.
+   *
+   * @param columnIndex - index of the column user double clicked
+   * @param ev - mouse double click event
+   */
+
+
+  DetailsHeaderBase.prototype._onSizerDoubleClick = function (columnIndex, ev) {
+    var _a = this.props,
+        onColumnAutoResized = _a.onColumnAutoResized,
+        _b = _a.columns,
+        columns = _b === void 0 ? NO_COLUMNS : _b;
+
+    if (onColumnAutoResized) {
+      onColumnAutoResized(columns[columnIndex], columnIndex);
+    }
+  };
+
+  DetailsHeaderBase.prototype._onSelectionChanged = function () {
+    var isAllSelected = !!this.props.selection && this.props.selection.isAllSelected();
+
+    if (this.state.isAllSelected !== isAllSelected) {
+      this.setState({
+        isAllSelected: isAllSelected
       });
     }
-
-    return null;
   };
 
-  BaseButton.prototype._onRenderSplitButtonMenuButton = function (classNames, keytipAttributes) {
-    var _a = this.props,
-        allowDisabledFocus = _a.allowDisabledFocus,
-        checked = _a.checked,
-        disabled = _a.disabled,
-        splitButtonMenuProps = _a.splitButtonMenuProps,
-        splitButtonAriaLabel = _a.splitButtonAriaLabel;
-    var menuHidden = this.state.menuHidden;
-    var menuIconProps = this.props.menuIconProps;
-
-    if (menuIconProps === undefined) {
-      menuIconProps = {
-        iconName: 'ChevronDown'
-      };
-    }
-
-    var splitButtonProps = __assign(__assign({}, splitButtonMenuProps), {
-      styles: classNames,
-      checked: checked,
-      disabled: disabled,
-      allowDisabledFocus: allowDisabledFocus,
-      onClick: this._onMenuClick,
-      menuProps: undefined,
-      iconProps: __assign(__assign({}, menuIconProps), {
-        className: this._classNames.menuIcon
-      }),
-      ariaLabel: splitButtonAriaLabel,
-      'aria-haspopup': true,
-      'aria-expanded': !menuHidden,
-      'data-is-focusable': false
-    }); // Add data-ktp-execute-target to the split button if the keytip is defined
-
-
-    return React.createElement(BaseButton, __assign({}, splitButtonProps, {
-      "data-ktp-execute-target": keytipAttributes ? keytipAttributes['data-ktp-execute-target'] : keytipAttributes,
-      onMouseDown: this._onMouseDown,
-      tabIndex: -1
-    }));
+  DetailsHeaderBase.defaultProps = {
+    selectAllVisibility: SelectAllVisibility.visible,
+    collapseAllVisibility: CollapseAllVisibility.visible,
+    useFastIcons: true
   };
-
-  BaseButton.prototype._onPointerDown = function (ev) {
-    var onPointerDown = this.props.onPointerDown;
-
-    if (onPointerDown) {
-      onPointerDown(ev);
-    }
-
-    if (ev.pointerType === 'touch') {
-      this._handleTouchAndPointerEvent();
-
-      ev.preventDefault();
-      ev.stopImmediatePropagation();
-    }
-  };
-
-  BaseButton.prototype._handleTouchAndPointerEvent = function () {
-    var _this = this; // If we already have an existing timeeout from a previous touch and pointer event
-    // cancel that timeout so we can set a nwe one.
-
-
-    if (this._lastTouchTimeoutId !== undefined) {
-      this._async.clearTimeout(this._lastTouchTimeoutId);
-
-      this._lastTouchTimeoutId = undefined;
-    }
-
-    this._processingTouch = true;
-    this._lastTouchTimeoutId = this._async.setTimeout(function () {
-      _this._processingTouch = false;
-      _this._lastTouchTimeoutId = undefined;
-    }, TouchIdleDelay$1);
-  };
-  /**
-   * Returns if the user hits a valid keyboard key to open the menu
-   * @param ev - the keyboard event
-   * @returns True if user clicks on custom trigger key if enabled or alt + down arrow if not. False otherwise.
-   */
-
-
-  BaseButton.prototype._isValidMenuOpenKey = function (ev) {
-    if (this.props.menuTriggerKeyCode) {
-      return ev.which === this.props.menuTriggerKeyCode;
-    } else if (this.props.menuProps) {
-      return ev.which === KeyCodes.down && (ev.altKey || ev.metaKey);
-    } // Note: When enter is pressed, we will let the event continue to propagate
-    // to trigger the onClick event on the button
-
-
-    return false;
-  };
-
-  BaseButton.defaultProps = {
-    baseClassName: 'ms-Button',
-    styles: {},
-    split: false
-  };
-  return BaseButton;
+  return DetailsHeaderBase;
 }(React.Component);
 
-var noOutline = {
-  outline: 0
-};
+function _liesBetween(rtl, target, left, right) {
+  return rtl ? target <= left && target >= right : target >= left && target <= right;
+}
 
-var iconStyle = function (fontSize) {
-  return {
-    fontSize: fontSize,
-    margin: '0 4px',
-    height: '16px',
-    lineHeight: '16px',
-    textAlign: 'center',
-    flexShrink: 0
-  };
-};
-/**
- * Gets the base button styles. Note: because it is a base class to be used with the `mergeRules`
- * helper, it should have values for all class names in the interface. This let `mergeRules` optimize
- * mixing class names together.
- */
+function _isBefore(rtl, a, b) {
+  return rtl ? a >= b : a <= b;
+}
 
+function _isAfter(rtl, a, b) {
+  return rtl ? a <= b : a >= b;
+}
 
-var getStyles$8 = memoizeFunction(function (theme) {
-  var _a;
+function _stopPropagation(ev) {
+  ev.stopPropagation();
+}
 
-  var semanticColors = theme.semanticColors,
-      effects = theme.effects,
-      fonts = theme.fonts;
-  var border = semanticColors.buttonBorder;
-  var disabledBackground = semanticColors.disabledBackground;
-  var disabledText = semanticColors.disabledText;
-  var buttonHighContrastFocus = {
-    left: -2,
-    top: -2,
-    bottom: -2,
-    right: -2,
-    border: 'none',
-    outlineColor: 'ButtonText'
-  };
-  return {
-    root: [getFocusStyle(theme, {
-      inset: 1,
-      highContrastStyle: buttonHighContrastFocus,
-      borderColor: 'transparent'
-    }), theme.fonts.medium, {
-      boxSizing: 'border-box',
-      border: '1px solid ' + border,
-      userSelect: 'none',
-      display: 'inline-block',
-      textDecoration: 'none',
-      textAlign: 'center',
-      cursor: 'pointer',
-      padding: '0 16px',
-      borderRadius: effects.roundedCorner2,
-      selectors: {
-        // IE11 workaround for preventing shift of child elements of a button when active.
-        ':active > *': {
-          position: 'relative',
-          left: 0,
-          top: 0
-        }
-      }
-    }],
-    rootDisabled: [getFocusStyle(theme, {
-      inset: 1,
-      highContrastStyle: buttonHighContrastFocus,
-      borderColor: 'transparent'
-    }), {
-      backgroundColor: disabledBackground,
-      borderColor: disabledBackground,
-      color: disabledText,
-      cursor: 'default',
-      pointerEvents: 'none',
-      selectors: (_a = {
-        ':hover': noOutline,
-        ':focus': noOutline
-      }, _a[HighContrastSelector] = {
-        color: 'grayText',
-        borderColor: 'grayText'
-      }, _a)
-    }],
-    iconDisabled: {
-      color: disabledText
-    },
-    menuIconDisabled: {
-      color: disabledText
-    },
-    flexContainer: {
-      display: 'flex',
-      height: '100%',
-      flexWrap: 'nowrap',
-      justifyContent: 'center',
-      alignItems: 'center'
-    },
-    description: {
-      display: 'block'
-    },
-    textContainer: {
-      flexGrow: 1,
-      display: 'block'
-    },
-    icon: iconStyle(fonts.mediumPlus.fontSize),
-    menuIcon: iconStyle(fonts.small.fontSize),
-    label: {
-      margin: '0 4px',
-      lineHeight: '100%',
-      display: 'block'
-    },
-    screenReaderText: hiddenContentStyle
-  };
+var DetailsHeader = styled(DetailsHeaderBase, getStyles$7, undefined, {
+  scope: 'DetailsHeader'
 });
 
-var DEFAULT_BUTTON_HEIGHT = '40px';
-var DEFAULT_PADDING = '0 4px';
-var getStyles$9 = memoizeFunction(function (theme, customStyles) {
-  var _a;
+var getCellText = function (item, column) {
+  var value = item && column && column.fieldName ? item[column.fieldName] : '';
 
-  var baseButtonStyles = getStyles$8(theme);
-  var actionButtonStyles = {
-    root: {
-      padding: DEFAULT_PADDING,
-      height: DEFAULT_BUTTON_HEIGHT,
-      color: theme.palette.neutralPrimary,
-      backgroundColor: 'transparent',
-      border: '1px solid transparent'
-    },
-    rootHovered: {
-      color: theme.palette.themePrimary,
-      selectors: (_a = {}, _a[HighContrastSelector] = {
-        borderColor: 'Highlight',
-        color: 'Highlight'
-      }, _a)
-    },
-    iconHovered: {
-      color: theme.palette.themePrimary
-    },
-    rootPressed: {
-      color: theme.palette.black
-    },
-    rootExpanded: {
-      color: theme.palette.themePrimary
-    },
-    iconPressed: {
-      color: theme.palette.themeDarker
-    },
-    rootDisabled: {
-      color: theme.palette.neutralTertiary,
-      backgroundColor: 'transparent',
-      borderColor: 'transparent'
-    },
-    rootChecked: {
-      color: theme.palette.black
-    },
-    iconChecked: {
-      color: theme.palette.themeDarker
-    },
-    flexContainer: {
-      justifyContent: 'flex-start'
-    },
-    icon: {
-      color: theme.palette.themeDarkAlt
-    },
-    iconDisabled: {
-      color: 'inherit'
-    },
-    menuIcon: {
-      color: theme.palette.neutralSecondary
-    },
-    textContainer: {
-      flexGrow: 0
-    }
-  };
-  return concatStyleSets(baseButtonStyles, actionButtonStyles, customStyles);
-});
-
-/**
- * {@docCategory Button}
- */
-
-var ActionButton =
-/** @class */
-function (_super) {
-  __extends(ActionButton, _super);
-
-  function ActionButton() {
-    return _super !== null && _super.apply(this, arguments) || this;
+  if (value === null || value === undefined) {
+    value = '';
   }
 
-  ActionButton.prototype.render = function () {
-    var _a = this.props,
-        styles = _a.styles,
-        theme = _a.theme;
-    return React.createElement(BaseButton, __assign({}, this.props, {
-      variantClassName: "ms-Button--action ms-Button--command",
-      styles: getStyles$9(theme, styles),
-      onRenderDescription: nullRender
-    }));
-  };
-
-  ActionButton = __decorate([customizable('ActionButton', ['theme', 'styles'], true)], ActionButton);
-  return ActionButton;
-}(React.Component);
-
-/**
- * {@docCategory Button}
- */
-
-var CommandButton = ActionButton;
-
-var COMPONENT_NAME$2 = 'PivotItem';
-
-var PivotItem =
-/** @class */
-function (_super) {
-  __extends(PivotItem, _super);
-
-  function PivotItem(props) {
-    var _this = _super.call(this, props) || this;
-
-    initializeComponentRef(_this);
-    warnDeprecations(COMPONENT_NAME$2, props, {
-      linkText: 'headerText'
-    });
-    return _this;
+  if (typeof value === 'boolean') {
+    return value.toString();
   }
 
-  PivotItem.prototype.render = function () {
-    return React.createElement("div", __assign({}, getNativeProps(this.props, divProperties)), this.props.children);
-  };
-
-  return PivotItem;
-}(React.Component);
-
+  return value;
+};
 /**
- * {@docCategory Pivot}
- */
-var PivotLinkFormat;
-
-(function (PivotLinkFormat) {
-  /**
-   * Display Pivot Links as links
-   */
-  PivotLinkFormat[PivotLinkFormat["links"] = 0] = "links";
-  /**
-   * Display Pivot Links as Tabs
-   */
-
-  PivotLinkFormat[PivotLinkFormat["tabs"] = 1] = "tabs";
-})(PivotLinkFormat || (PivotLinkFormat = {}));
-/**
- * {@docCategory Pivot}
- */
-
-
-var PivotLinkSize;
-
-(function (PivotLinkSize) {
-  /**
-   * Display Link using normal font size
-   */
-  PivotLinkSize[PivotLinkSize["normal"] = 0] = "normal";
-  /**
-   * Display links using large font size
-   */
-
-  PivotLinkSize[PivotLinkSize["large"] = 1] = "large";
-})(PivotLinkSize || (PivotLinkSize = {}));
-
-var getClassNames$9 = classNamesFunction();
-var PivotName = 'Pivot';
-/**
- *  Usage:
+ * Component for rendering a row's cells in a `DetailsList`.
  *
- *     <Pivot>
- *       <PivotItem headerText="Foo">
- *         <Label>Pivot #1</Label>
- *       </PivotItem>
- *       <PivotItem headerText="Bar">
- *         <Label>Pivot #2</Label>
- *       </PivotItem>
- *       <PivotItem headerText="Bas">
- *         <Label>Pivot #3</Label>
- *       </PivotItem>
- *     </Pivot>
+ * {@docCategory DetailsList}
  */
 
-var PivotBase =
+
+var DetailsRowFields = function (props) {
+  var columns = props.columns,
+      columnStartIndex = props.columnStartIndex,
+      rowClassNames = props.rowClassNames,
+      _a = props.cellStyleProps,
+      cellStyleProps = _a === void 0 ? DEFAULT_CELL_STYLE_PROPS : _a,
+      item = props.item,
+      itemIndex = props.itemIndex,
+      onRenderItemColumn = props.onRenderItemColumn,
+      getCellValueKey = props.getCellValueKey,
+      cellsByColumn = props.cellsByColumn,
+      enableUpdateAnimations = props.enableUpdateAnimations;
+  var cellValueKeysRef = React.useRef();
+  var cellValueKeys = cellValueKeysRef.current || (cellValueKeysRef.current = {});
+  return React.createElement("div", {
+    className: rowClassNames.fields,
+    "data-automationid": "DetailsRowFields",
+    role: "presentation"
+  }, columns.map(function (column, columnIndex) {
+    var width = typeof column.calculatedWidth === 'undefined' ? 'auto' : column.calculatedWidth + cellStyleProps.cellLeftPadding + cellStyleProps.cellRightPadding + (column.isPadded ? cellStyleProps.cellExtraRightPadding : 0);
+    var _a = column.onRender,
+        onRender = _a === void 0 ? onRenderItemColumn : _a,
+        _b = column.getValueKey,
+        getValueKey = _b === void 0 ? getCellValueKey : _b;
+    var cellContentsRender = cellsByColumn && column.key in cellsByColumn ? cellsByColumn[column.key] : onRender ? onRender(item, itemIndex, column) : getCellText(item, column);
+    var previousValueKey = cellValueKeys[column.key];
+    var cellValueKey = enableUpdateAnimations && getValueKey ? getValueKey(item, itemIndex, column) : undefined;
+    var showAnimation = false;
+
+    if (cellValueKey !== undefined && previousValueKey !== undefined && cellValueKey !== previousValueKey) {
+      showAnimation = true;
+    }
+
+    cellValueKeys[column.key] = cellValueKey; // generate a key that auto-dirties when content changes, to force the container to re-render,
+    // to trigger animation
+
+    var key = "" + column.key + (cellValueKey !== undefined ? "-" + cellValueKey : '');
+    return React.createElement("div", {
+      key: key,
+      role: column.isRowHeader ? 'rowheader' : 'gridcell',
+      "aria-readonly": true,
+      "aria-colindex": columnIndex + columnStartIndex + 1,
+      className: css(column.className, column.isMultiline && rowClassNames.isMultiline, column.isRowHeader && rowClassNames.isRowHeader, rowClassNames.cell, column.isPadded ? rowClassNames.cellPadded : rowClassNames.cellUnpadded, showAnimation && rowClassNames.cellAnimation),
+      style: {
+        width: width
+      },
+      "data-automationid": "DetailsRowCell",
+      "data-automation-key": column.key
+    }, cellContentsRender);
+  }));
+};
+
+var getClassNames$e = classNamesFunction();
+var DEFAULT_DROPPING_CSS_CLASS$1 = 'is-dropping';
+var NO_COLUMNS$1 = [];
+
+var DetailsRowBase =
 /** @class */
 function (_super) {
-  __extends(PivotBase, _super);
+  __extends(DetailsRowBase, _super);
 
-  function PivotBase(props) {
+  function DetailsRowBase(props) {
     var _this = _super.call(this, props) || this;
 
+    _this._cellMeasurer = React.createRef();
     _this._focusZone = React.createRef();
 
-    _this._renderPivotLink = function (linkCollection, link, selectedKey) {
-      var itemKey = link.itemKey,
-          headerButtonProps = link.headerButtonProps;
-      var tabId = linkCollection.keyToTabIdMapping[itemKey];
-      var onRenderItemLink = link.onRenderItemLink;
-      var linkContent;
-      var isSelected = selectedKey === itemKey;
+    _this._onSelectionChanged = function () {
+      var selectionState = _this._getSelectionState(_this.props);
 
-      if (onRenderItemLink) {
-        linkContent = onRenderItemLink(link, _this._renderLinkContent);
-      } else {
-        linkContent = _this._renderLinkContent(link);
+      if (!shallowCompare(selectionState, _this.state.selectionState)) {
+        _this.setState({
+          selectionState: selectionState
+        });
       }
-
-      var contentString = link.headerText || '';
-      contentString += link.itemCount ? ' (' + link.itemCount + ')' : ''; // Adding space supplementary for icon
-
-      contentString += link.itemIcon ? ' xx' : '';
-      return React.createElement(CommandButton, __assign({}, headerButtonProps, {
-        id: tabId,
-        key: itemKey,
-        className: isSelected ? _this._classNames.linkIsSelected : _this._classNames.link,
-        onClick: _this._onLinkClick.bind(_this, itemKey),
-        onKeyPress: _this._onKeyPress.bind(_this, itemKey),
-        ariaLabel: link.ariaLabel,
-        role: "tab",
-        "aria-selected": isSelected,
-        name: link.headerText,
-        keytipProps: link.keytipProps,
-        "data-content": contentString
-      }), linkContent);
     };
 
-    _this._renderLinkContent = function (link) {
-      var itemCount = link.itemCount,
-          itemIcon = link.itemIcon,
-          headerText = link.headerText;
-      var classNames = _this._classNames;
-      return React.createElement("span", {
-        className: classNames.linkContent
-      }, itemIcon !== undefined && React.createElement("span", {
-        className: classNames.icon
-      }, React.createElement(Icon, {
-        iconName: itemIcon
-      })), headerText !== undefined && React.createElement("span", {
-        className: classNames.text
-      }, " ", link.headerText), itemCount !== undefined && React.createElement("span", {
-        className: classNames.count
-      }, " (", itemCount, ")"));
+    _this._onRootRef = function (focusZone) {
+      if (focusZone) {
+        // Need to resolve the actual DOM node, not the component.
+        // The element itself will be used for drag/drop and focusing.
+        _this._root = ReactDOM.findDOMNode(focusZone);
+      } else {
+        _this._root = undefined;
+      }
+    };
+    /**
+     * update isDropping state based on the input value, which is used to change style during drag and drop
+     *
+     * when change to true, that means drag enter. we will add default dropping class name
+     * or the custom dropping class name (return result from onDragEnter) to the root elemet.
+     *
+     * when change to false, that means drag leave. we will remove the dropping class name from root element.
+     *
+     * @param newValue - New isDropping state value
+     * @param event - The event trigger dropping state change which can be dragenter, dragleave etc
+     */
+
+
+    _this._updateDroppingState = function (newValue, event) {
+      var isDropping = _this.state.isDropping;
+      var _a = _this.props,
+          dragDropEvents = _a.dragDropEvents,
+          item = _a.item;
+
+      if (!newValue) {
+        if (dragDropEvents.onDragLeave) {
+          dragDropEvents.onDragLeave(item, event);
+        }
+      } else if (dragDropEvents.onDragEnter) {
+        _this._droppingClassNames = dragDropEvents.onDragEnter(item, event);
+      }
+
+      if (isDropping !== newValue) {
+        _this.setState({
+          isDropping: newValue
+        });
+      }
     };
 
     initializeComponentRef(_this);
+    _this._events = new EventGroup(_this);
+    _this.state = {
+      selectionState: _this._getSelectionState(props),
+      columnMeasureInfo: undefined,
+      isDropping: false
+    };
+    _this._droppingClassNames = '';
+    return _this;
+  }
 
-    {
-      warnDeprecations(PivotName, props, {
-        initialSelectedKey: 'defaultSelectedKey',
-        initialSelectedIndex: 'defaultSelectedIndex'
+  DetailsRowBase.prototype.componentDidMount = function () {
+    var dragDropHelper = this.props.dragDropHelper;
+
+    if (dragDropHelper) {
+      this._dragDropSubscription = dragDropHelper.subscribe(this._root, this._events, this._getRowDragDropOptions());
+    }
+
+    this._events.on(this.props.selection, SELECTION_CHANGE, this._onSelectionChanged);
+
+    if (this.props.onDidMount && this.props.item) {
+      // If the item appears later, we should wait for it before calling this method.
+      this._onDidMountCalled = true;
+      this.props.onDidMount(this);
+    }
+  };
+
+  DetailsRowBase.prototype.componentDidUpdate = function (previousProps) {
+    var state = this.state;
+    var _a = this.props,
+        item = _a.item,
+        onDidMount = _a.onDidMount;
+    var columnMeasureInfo = state.columnMeasureInfo;
+
+    if (this.props.itemIndex !== previousProps.itemIndex || this.props.item !== previousProps.item || this.props.dragDropHelper !== previousProps.dragDropHelper) {
+      if (this._dragDropSubscription) {
+        this._dragDropSubscription.dispose();
+
+        delete this._dragDropSubscription;
+      }
+
+      if (this.props.dragDropHelper) {
+        this._dragDropSubscription = this.props.dragDropHelper.subscribe(this._root, this._events, this._getRowDragDropOptions());
+      }
+    }
+
+    if (columnMeasureInfo && columnMeasureInfo.index >= 0 && this._cellMeasurer.current) {
+      var newWidth = this._cellMeasurer.current.getBoundingClientRect().width;
+
+      columnMeasureInfo.onMeasureDone(newWidth);
+      this.setState({
+        columnMeasureInfo: undefined
       });
     }
 
-    _this._pivotId = getId(PivotName);
+    if (item && onDidMount && !this._onDidMountCalled) {
+      this._onDidMountCalled = true;
+      onDidMount(this);
+    }
+  };
 
-    var links = _this._getPivotLinks(props).links; // tslint:disable-next-line:deprecation
+  DetailsRowBase.prototype.componentWillUnmount = function () {
+    var _a = this.props,
+        item = _a.item,
+        onWillUnmount = _a.onWillUnmount; // Only call the onWillUnmount callback if we have an item.
 
-
-    var _a = props.defaultSelectedKey,
-        defaultSelectedKey = _a === void 0 ? props.initialSelectedKey : _a,
-        _b = props.defaultSelectedIndex,
-        defaultSelectedIndex = _b === void 0 ? props.initialSelectedIndex : _b;
-    var selectedKey;
-
-    if (defaultSelectedKey) {
-      selectedKey = defaultSelectedKey;
-    } else if (typeof defaultSelectedIndex === 'number') {
-      selectedKey = links[defaultSelectedIndex].itemKey;
-    } else if (links.length) {
-      selectedKey = links[0].itemKey;
+    if (onWillUnmount && item) {
+      onWillUnmount(this);
     }
 
-    _this.state = {
-      selectedKey: selectedKey
+    if (this._dragDropSubscription) {
+      this._dragDropSubscription.dispose();
+
+      delete this._dragDropSubscription;
+    }
+
+    this._events.dispose();
+  }; // tslint:disable-next-line function-name
+
+
+  DetailsRowBase.prototype.UNSAFE_componentWillReceiveProps = function (newProps) {
+    this.setState({
+      selectionState: this._getSelectionState(newProps)
+    });
+  };
+
+  DetailsRowBase.prototype.shouldComponentUpdate = function (nextProps, nextState) {
+    if (this.props.useReducedRowRenderer) {
+      var newSelectionState = this._getSelectionState(nextProps);
+
+      if (this.state.selectionState.isSelected !== newSelectionState.isSelected) {
+        return true;
+      }
+
+      return !shallowCompare(this.props, nextProps);
+    } else {
+      return true;
+    }
+  };
+
+  DetailsRowBase.prototype.render = function () {
+    var _a = this.props,
+        className = _a.className,
+        _b = _a.columns,
+        columns = _b === void 0 ? NO_COLUMNS$1 : _b,
+        dragDropEvents = _a.dragDropEvents,
+        item = _a.item,
+        itemIndex = _a.itemIndex,
+        _c = _a.onRenderCheck,
+        onRenderCheck = _c === void 0 ? this._onRenderCheck : _c,
+        onRenderDetailsCheckbox = _a.onRenderDetailsCheckbox,
+        onRenderItemColumn = _a.onRenderItemColumn,
+        getCellValueKey = _a.getCellValueKey,
+        selectionMode = _a.selectionMode,
+        _d = _a.rowWidth,
+        rowWidth = _d === void 0 ? 0 : _d,
+        checkboxVisibility = _a.checkboxVisibility,
+        getRowAriaLabel = _a.getRowAriaLabel,
+        getRowAriaDescribedBy = _a.getRowAriaDescribedBy,
+        checkButtonAriaLabel = _a.checkButtonAriaLabel,
+        checkboxCellClassName = _a.checkboxCellClassName,
+
+    /** Alias rowFieldsAs as RowFields and default to DetailsRowFields if rowFieldsAs does not exist */
+    _e = _a.rowFieldsAs,
+
+    /** Alias rowFieldsAs as RowFields and default to DetailsRowFields if rowFieldsAs does not exist */
+    RowFields = _e === void 0 ? DetailsRowFields : _e,
+        selection = _a.selection,
+        indentWidth = _a.indentWidth,
+        enableUpdateAnimations = _a.enableUpdateAnimations,
+        compact = _a.compact,
+        theme = _a.theme,
+        styles = _a.styles,
+        cellsByColumn = _a.cellsByColumn,
+        groupNestingDepth = _a.groupNestingDepth,
+        _f = _a.useFastIcons,
+        useFastIcons = _f === void 0 ? true : _f,
+        cellStyleProps = _a.cellStyleProps;
+    var _g = this.state,
+        columnMeasureInfo = _g.columnMeasureInfo,
+        isDropping = _g.isDropping;
+    var _h = this.state.selectionState,
+        _j = _h.isSelected,
+        isSelected = _j === void 0 ? false : _j,
+        _k = _h.isSelectionModal,
+        isSelectionModal = _k === void 0 ? false : _k;
+    var isDraggable = dragDropEvents ? !!(dragDropEvents.canDrag && dragDropEvents.canDrag(item)) : undefined;
+    var droppingClassName = isDropping ? this._droppingClassNames || DEFAULT_DROPPING_CSS_CLASS$1 : '';
+    var ariaLabel = getRowAriaLabel ? getRowAriaLabel(item) : undefined;
+    var ariaDescribedBy = getRowAriaDescribedBy ? getRowAriaDescribedBy(item) : undefined;
+    var canSelect = !!selection && selection.canSelectItem(item, itemIndex);
+    var isContentUnselectable = selectionMode === SelectionMode.multiple;
+    var showCheckbox = selectionMode !== SelectionMode.none && checkboxVisibility !== CheckboxVisibility.hidden;
+    var ariaSelected = selectionMode === SelectionMode.none ? undefined : isSelected;
+    this._classNames = __assign(__assign({}, this._classNames), getClassNames$e(styles, {
+      theme: theme,
+      isSelected: isSelected,
+      canSelect: !isContentUnselectable,
+      anySelected: isSelectionModal,
+      checkboxCellClassName: checkboxCellClassName,
+      droppingClassName: droppingClassName,
+      className: className,
+      compact: compact,
+      enableUpdateAnimations: enableUpdateAnimations,
+      cellStyleProps: cellStyleProps
+    }));
+    var rowClassNames = {
+      isMultiline: this._classNames.isMultiline,
+      isRowHeader: this._classNames.isRowHeader,
+      cell: this._classNames.cell,
+      cellAnimation: this._classNames.cellAnimation,
+      cellPadded: this._classNames.cellPadded,
+      cellUnpadded: this._classNames.cellUnpadded,
+      fields: this._classNames.fields
+    }; // Only re-assign rowClassNames when classNames have changed.
+    // Otherwise, they will cause DetailsRowFields to unnecessarily
+    // re-render, see https://github.com/microsoft/fluentui/pull/8799.
+    // Refactor DetailsRowFields to generate own styles to remove need for this.
+
+    if (!shallowCompare(this._rowClassNames || {}, rowClassNames)) {
+      this._rowClassNames = rowClassNames;
+    }
+
+    var rowFields = React.createElement(RowFields, {
+      rowClassNames: this._rowClassNames,
+      cellsByColumn: cellsByColumn,
+      columns: columns,
+      item: item,
+      itemIndex: itemIndex,
+      columnStartIndex: showCheckbox ? 1 : 0,
+      onRenderItemColumn: onRenderItemColumn,
+      getCellValueKey: getCellValueKey,
+      enableUpdateAnimations: enableUpdateAnimations,
+      cellStyleProps: cellStyleProps
+    });
+    return React.createElement(FocusZone, __assign({
+      "data-is-focusable": true
+    }, getNativeProps(this.props, divProperties), typeof isDraggable === 'boolean' ? {
+      'data-is-draggable': isDraggable,
+      draggable: isDraggable
+    } : {}, {
+      direction: FocusZoneDirection.horizontal,
+      ref: this._onRootRef,
+      componentRef: this._focusZone,
+      role: "row",
+      "aria-label": ariaLabel,
+      "aria-describedby": ariaDescribedBy,
+      className: this._classNames.root,
+      "data-selection-index": itemIndex,
+      "data-item-index": itemIndex,
+      "aria-rowindex": itemIndex + 1,
+      "data-automationid": "DetailsRow",
+      style: {
+        minWidth: rowWidth
+      },
+      "aria-selected": ariaSelected,
+      allowFocusRoot: true
+    }), showCheckbox && React.createElement("div", {
+      role: "gridcell",
+      "aria-colindex": 1,
+      "data-selection-toggle": true,
+      className: this._classNames.checkCell
+    }, onRenderCheck({
+      selected: isSelected,
+      anySelected: isSelectionModal,
+      'aria-label': checkButtonAriaLabel,
+      canSelect: canSelect,
+      compact: compact,
+      className: this._classNames.check,
+      theme: theme,
+      isVisible: checkboxVisibility === CheckboxVisibility.always,
+      onRenderDetailsCheckbox: onRenderDetailsCheckbox,
+      useFastIcons: useFastIcons
+    })), React.createElement(GroupSpacer, {
+      indentWidth: indentWidth,
+      count: groupNestingDepth - (this.props.collapseAllVisibility === CollapseAllVisibility.hidden ? 1 : 0)
+    }), item && rowFields, columnMeasureInfo && React.createElement("span", {
+      role: "presentation",
+      className: css(this._classNames.cellMeasurer, this._classNames.cell),
+      ref: this._cellMeasurer
+    }, React.createElement(RowFields, {
+      rowClassNames: this._rowClassNames,
+      columns: [columnMeasureInfo.column],
+      item: item,
+      itemIndex: itemIndex,
+      columnStartIndex: (showCheckbox ? 1 : 0) + columns.length,
+      onRenderItemColumn: onRenderItemColumn,
+      getCellValueKey: getCellValueKey
+    })), React.createElement("span", {
+      role: "checkbox",
+      className: this._classNames.checkCover,
+      "aria-checked": isSelected,
+      "data-selection-toggle": true
+    }));
+  };
+  /**
+   * measure cell at index. and call the call back with the measured cell width when finish measure
+   *
+   * @param index - The cell index
+   * @param onMeasureDone - The call back function when finish measure
+   */
+
+
+  DetailsRowBase.prototype.measureCell = function (index, onMeasureDone) {
+    var _a = this.props.columns,
+        columns = _a === void 0 ? NO_COLUMNS$1 : _a;
+
+    var column = __assign({}, columns[index]);
+
+    column.minWidth = 0;
+    column.maxWidth = 999999;
+    delete column.calculatedWidth;
+    this.setState({
+      columnMeasureInfo: {
+        index: index,
+        column: column,
+        onMeasureDone: onMeasureDone
+      }
+    });
+  };
+
+  DetailsRowBase.prototype.focus = function (forceIntoFirstElement) {
+    if (forceIntoFirstElement === void 0) {
+      forceIntoFirstElement = false;
+    }
+
+    return !!this._focusZone.current && this._focusZone.current.focus(forceIntoFirstElement);
+  };
+
+  DetailsRowBase.prototype._onRenderCheck = function (props) {
+    return React.createElement(DetailsRowCheck, __assign({}, props));
+  };
+
+  DetailsRowBase.prototype._getSelectionState = function (props) {
+    var itemIndex = props.itemIndex,
+        selection = props.selection;
+    return {
+      isSelected: !!selection && selection.isIndexSelected(itemIndex),
+      isSelectionModal: !!selection && !!selection.isModal && selection.isModal()
     };
+  };
+
+  DetailsRowBase.prototype._getRowDragDropOptions = function () {
+    var _a = this.props,
+        item = _a.item,
+        itemIndex = _a.itemIndex,
+        dragDropEvents = _a.dragDropEvents,
+        eventsToRegister = _a.eventsToRegister;
+    var options = {
+      eventMap: eventsToRegister,
+      selectionIndex: itemIndex,
+      context: {
+        data: item,
+        index: itemIndex
+      },
+      canDrag: dragDropEvents.canDrag,
+      canDrop: dragDropEvents.canDrop,
+      onDragStart: dragDropEvents.onDragStart,
+      updateDropState: this._updateDroppingState,
+      onDrop: dragDropEvents.onDrop,
+      onDragEnd: dragDropEvents.onDragEnd
+    };
+    return options;
+  };
+
+  return DetailsRowBase;
+}(React.Component);
+
+var DetailsRow = styled(DetailsRowBase, getStyles$6, undefined, {
+  scope: 'DetailsRow'
+});
+
+var BaseDecorator =
+/** @class */
+function (_super) {
+  __extends(BaseDecorator, _super);
+
+  function BaseDecorator(props) {
+    var _this = _super.call(this, props) || this;
+
+    _this._updateComposedComponentRef = _this._updateComposedComponentRef.bind(_this);
     return _this;
   }
   /**
-   * Sets focus to the first pivot tab.
+   * Updates the ref to the component composed by the decorator, which will also take care of hoisting
+   * (and unhoisting as appropriate) methods from said component.
+   *
+   * Pass this method as the argument to the 'ref' property of the composed component.
    */
 
 
-  PivotBase.prototype.focus = function () {
-    if (this._focusZone.current) {
-      this._focusZone.current.focus();
+  BaseDecorator.prototype._updateComposedComponentRef = function (composedComponentInstance) {
+    this._composedComponentInstance = composedComponentInstance;
+
+    if (composedComponentInstance) {
+      this._hoisted = hoistMethods(this, composedComponentInstance);
+    } else if (this._hoisted) {
+      unhoistMethods(this, this._hoisted);
     }
   };
 
-  PivotBase.prototype.render = function () {
-    var linkCollection = this._getPivotLinks(this.props);
-
-    var selectedKey = this._getSelectedKey(linkCollection);
-
-    var divProps = getNativeProps(this.props, divProperties);
-    this._classNames = this._getClassNames(this.props);
-    return React.createElement("div", __assign({
-      role: "toolbar"
-    }, divProps), this._renderPivotLinks(linkCollection, selectedKey), selectedKey && this._renderPivotItem(linkCollection, selectedKey));
-  };
-
-  PivotBase.prototype._getSelectedKey = function (linkCollection) {
-    var propsSelectedKey = this.props.selectedKey;
-
-    if (this._isKeyValid(linkCollection, propsSelectedKey) || propsSelectedKey === null) {
-      return propsSelectedKey;
-    }
-
-    var stateSelectedKey = this.state.selectedKey;
-
-    if (this._isKeyValid(linkCollection, stateSelectedKey)) {
-      return stateSelectedKey;
-    }
-
-    if (linkCollection.links.length) {
-      return linkCollection.links[0].itemKey;
-    }
-
-    return undefined;
-  };
-  /**
-   * Renders the set of links to route between pivots
-   */
-
-
-  PivotBase.prototype._renderPivotLinks = function (linkCollection, selectedKey) {
-    var _this = this;
-
-    var items = linkCollection.links.map(function (l) {
-      return _this._renderPivotLink(linkCollection, l, selectedKey);
-    });
-    return React.createElement(FocusZone, {
-      className: this._classNames.root,
-      role: "tablist",
-      componentRef: this._focusZone,
-      direction: FocusZoneDirection.horizontal
-    }, items);
-  };
-  /**
-   * Renders the current Pivot Item
-   */
-
-
-  PivotBase.prototype._renderPivotItem = function (linkCollection, itemKey) {
-    if (this.props.headersOnly || !itemKey) {
-      return null;
-    }
-
-    var index = linkCollection.keyToIndexMapping[itemKey];
-    var selectedTabId = linkCollection.keyToTabIdMapping[itemKey];
-    return React.createElement("div", {
-      role: "tabpanel",
-      "aria-labelledby": selectedTabId,
-      className: this._classNames.itemContainer
-    }, React.Children.toArray(this.props.children)[index]);
-  };
-  /**
-   * Gets the set of PivotLinks as array of IPivotItemProps
-   * The set of Links is determined by child components of type PivotItem
-   */
-
-
-  PivotBase.prototype._getPivotLinks = function (props) {
-    var _this = this;
-
-    var result = {
-      links: [],
-      keyToIndexMapping: {},
-      keyToTabIdMapping: {}
-    };
-    React.Children.map(React.Children.toArray(props.children), function (child, index) {
-      if (_isPivotItem(child)) {
-        var pivotItem = child;
-
-        var _a = pivotItem.props,
-            linkText = _a.linkText,
-            pivotItemProps = __rest(_a, ["linkText"]);
-
-        var itemKey = pivotItem.props.itemKey || index.toString();
-        result.links.push(__assign(__assign({
-          // Use linkText (deprecated) if headerText is not provided
-          headerText: linkText
-        }, pivotItemProps), {
-          itemKey: itemKey
-        }));
-        result.keyToIndexMapping[itemKey] = index;
-        result.keyToTabIdMapping[itemKey] = _this._getTabId(itemKey, index);
-      } else {
-        warn('The children of a Pivot component must be of type PivotItem to be rendered.');
-      }
-    });
-    return result;
-  };
-  /**
-   * Generates the Id for the tab button.
-   */
-
-
-  PivotBase.prototype._getTabId = function (itemKey, index) {
-    if (this.props.getTabId) {
-      return this.props.getTabId(itemKey, index);
-    }
-
-    return this._pivotId + ("-Tab" + index);
-  };
-  /**
-   * whether the key exists in the pivot items.
-   */
-
-
-  PivotBase.prototype._isKeyValid = function (linkCollection, itemKey) {
-    return itemKey !== undefined && itemKey !== null && linkCollection.keyToIndexMapping[itemKey] !== undefined;
-  };
-  /**
-   * Handles the onClick event on PivotLinks
-   */
-
-
-  PivotBase.prototype._onLinkClick = function (itemKey, ev) {
-    ev.preventDefault();
-
-    this._updateSelectedItem(itemKey, ev);
-  };
-  /**
-   * Handle the onKeyPress event on the PivotLinks
-   */
-
-
-  PivotBase.prototype._onKeyPress = function (itemKey, ev) {
-    if (ev.which === KeyCodes.enter) {
-      ev.preventDefault();
-
-      this._updateSelectedItem(itemKey);
-    }
-  };
-  /**
-   * Updates the state with the new selected index
-   */
-
-
-  PivotBase.prototype._updateSelectedItem = function (itemKey, ev) {
-    this.setState({
-      selectedKey: itemKey
-    });
-
-    var linkCollection = this._getPivotLinks(this.props);
-
-    if (this.props.onLinkClick && linkCollection.keyToIndexMapping[itemKey] >= 0) {
-      var index = linkCollection.keyToIndexMapping[itemKey]; // React.Element<any> cannot directly convert to PivotItem.
-
-      var item = React.Children.toArray(this.props.children)[index];
-
-      if (_isPivotItem(item)) {
-        this.props.onLinkClick(item, ev);
-      }
-    }
-  };
-
-  PivotBase.prototype._getClassNames = function (props) {
-    var theme = props.theme;
-    var rootIsLarge = props.linkSize === PivotLinkSize.large;
-    var rootIsTabs = props.linkFormat === PivotLinkFormat.tabs;
-    return getClassNames$9(props.styles, {
-      theme: theme,
-      rootIsLarge: rootIsLarge,
-      rootIsTabs: rootIsTabs
-    });
-  };
-
-  return PivotBase;
+  return BaseDecorator;
 }(React.Component);
 
-function _isPivotItem(item) {
-  // In theory, we should be able to just check item.type === PivotItem.
-  // However, under certain unclear circumstances (see https://github.com/microsoft/fluentui/issues/10785),
-  // the object identity is different despite the function implementation being the same.
-  return !!item && typeof item === 'object' && !!item.type && item.type.name === PivotItem.name;
+var RESIZE_DELAY$1 = 500;
+var MAX_RESIZE_ATTEMPTS = 3;
+/**
+ * A decorator to update decorated component on viewport or window resize events.
+ *
+ * @param ComposedComponent decorated React component reference.
+ */
+
+function withViewport(ComposedComponent) {
+  return (
+    /** @class */
+    function (_super) {
+      __extends(WithViewportComponent, _super);
+
+      function WithViewportComponent(props) {
+        var _this = _super.call(this, props) || this;
+
+        _this._root = React.createRef();
+
+        _this._registerResizeObserver = function () {
+          var win = getWindow(_this._root.current);
+          _this._viewportResizeObserver = new win.ResizeObserver(_this._onAsyncResize);
+
+          _this._viewportResizeObserver.observe(_this._root.current);
+        };
+
+        _this._unregisterResizeObserver = function () {
+          if (_this._viewportResizeObserver) {
+            _this._viewportResizeObserver.disconnect();
+
+            delete _this._viewportResizeObserver;
+          }
+        };
+        /* Note: using lambda here because decorators don't seem to work in decorators. */
+
+
+        _this._updateViewport = function (withForceUpdate) {
+          var viewport = _this.state.viewport;
+          var viewportElement = _this._root.current;
+          var scrollElement = findScrollableParent(viewportElement);
+          var scrollRect = getRect(scrollElement);
+          var clientRect = getRect(viewportElement);
+
+          var updateComponent = function () {
+            if (withForceUpdate && _this._composedComponentInstance) {
+              _this._composedComponentInstance.forceUpdate();
+            }
+          };
+
+          var isSizeChanged = (clientRect && clientRect.width) !== viewport.width || (scrollRect && scrollRect.height) !== viewport.height;
+
+          if (isSizeChanged && _this._resizeAttempts < MAX_RESIZE_ATTEMPTS && clientRect && scrollRect) {
+            _this._resizeAttempts++;
+
+            _this.setState({
+              viewport: {
+                width: clientRect.width,
+                height: scrollRect.height
+              }
+            }, function () {
+              _this._updateViewport(withForceUpdate);
+            });
+          } else {
+            _this._resizeAttempts = 0;
+            updateComponent();
+          }
+        };
+
+        _this._async = new Async(_this);
+        _this._events = new EventGroup(_this);
+        _this._resizeAttempts = 0;
+        _this.state = {
+          viewport: {
+            width: 0,
+            height: 0
+          }
+        };
+        return _this;
+      }
+
+      WithViewportComponent.prototype.componentDidMount = function () {
+        var skipViewportMeasures = this.props.skipViewportMeasures;
+        var win = getWindow(this._root.current);
+        this._onAsyncResize = this._async.debounce(this._onAsyncResize, RESIZE_DELAY$1, {
+          leading: false
+        }); // ResizeObserver seems always fire even window is not resized. This is
+        // particularly bad when skipViewportMeasures is set when optimizing fixed layout lists.
+        // It will measure and update and re-render the entire list after list is fully rendered.
+        // So fallback to listen to resize event when skipViewportMeasures is set.
+
+        if (!skipViewportMeasures && this._isResizeObserverAvailable()) {
+          this._registerResizeObserver();
+        } else {
+          this._events.on(win, 'resize', this._onAsyncResize);
+        }
+
+        if (!skipViewportMeasures) {
+          this._updateViewport();
+        }
+      };
+
+      WithViewportComponent.prototype.componentDidUpdate = function (newProps) {
+        var oldSkipViewportMeasures = this.props.skipViewportMeasures;
+        var newSkipViewportMeasures = newProps.skipViewportMeasures;
+        var win = getWindow(this._root.current);
+
+        if (oldSkipViewportMeasures !== newSkipViewportMeasures) {
+          if (newSkipViewportMeasures) {
+            this._unregisterResizeObserver();
+
+            this._events.on(win, 'resize', this._onAsyncResize);
+          } else if (!newSkipViewportMeasures && this._isResizeObserverAvailable()) {
+            this._events.off(win, 'resize', this._onAsyncResize);
+
+            this._registerResizeObserver();
+          }
+        }
+
+        if (!!newSkipViewportMeasures) {
+          this._updateViewport();
+        }
+      };
+
+      WithViewportComponent.prototype.componentWillUnmount = function () {
+        this._events.dispose();
+
+        this._async.dispose();
+
+        this._unregisterResizeObserver();
+      };
+
+      WithViewportComponent.prototype.render = function () {
+        var viewport = this.state.viewport;
+        var newViewport = viewport.width > 0 && viewport.height > 0 ? viewport : undefined;
+        return React.createElement("div", {
+          className: "ms-Viewport",
+          ref: this._root,
+          style: {
+            minWidth: 1,
+            minHeight: 1
+          }
+        }, React.createElement(ComposedComponent, __assign({
+          ref: this._updateComposedComponentRef,
+          viewport: newViewport
+        }, this.props)));
+      };
+
+      WithViewportComponent.prototype.forceUpdate = function () {
+        this._updateViewport(true);
+      };
+
+      WithViewportComponent.prototype._onAsyncResize = function () {
+        this._updateViewport();
+      };
+
+      WithViewportComponent.prototype._isResizeObserverAvailable = function () {
+        var win = getWindow(this._root.current);
+        return win && win.ResizeObserver;
+      };
+
+      return WithViewportComponent;
+    }(BaseDecorator)
+  );
 }
 
-var globalClassNames = {
-  count: 'ms-Pivot-count',
-  icon: 'ms-Pivot-icon',
-  linkIsSelected: 'is-selected',
-  link: 'ms-Pivot-link',
-  linkContent: 'ms-Pivot-linkContent',
-  root: 'ms-Pivot',
-  rootIsLarge: 'ms-Pivot--large',
-  rootIsTabs: 'ms-Pivot--tabs',
-  text: 'ms-Pivot-text'
+/**
+ * Takes an array of groups and returns a count of the groups and all descendant groups.
+ * @param groups - The array of groups to count.
+ */
+
+var GetGroupCount = function (groups) {
+  var total = 0;
+
+  if (groups) {
+    var remainingGroups = __spreadArrays(groups);
+
+    var currentGroup = void 0;
+
+    while (remainingGroups && remainingGroups.length > 0) {
+      ++total;
+      currentGroup = remainingGroups.pop();
+
+      if (currentGroup && currentGroup.children) {
+        remainingGroups.push.apply(remainingGroups, currentGroup.children);
+      }
+    }
+  }
+
+  return total;
 };
 
-var linkStyles = function (props) {
+var getClassNames$f = classNamesFunction();
+var MIN_COLUMN_WIDTH = 100; // this is the global min width
+
+var DEFAULT_RENDERED_WINDOWS_AHEAD$1 = 2;
+var DEFAULT_RENDERED_WINDOWS_BEHIND$1 = 2;
+
+var DetailsListBase =
+/** @class */
+function (_super) {
+  __extends(DetailsListBase, _super);
+
+  function DetailsListBase(props) {
+    var _this = _super.call(this, props) || this;
+
+    _this._root = React.createRef();
+    _this._header = React.createRef();
+    _this._groupedList = React.createRef();
+    _this._list = React.createRef();
+    _this._focusZone = React.createRef();
+    _this._selectionZone = React.createRef();
+    _this._sumColumnWidths = memoizeFunction(function (columns) {
+      var totalWidth = 0;
+      columns.forEach(function (column) {
+        return totalWidth += column.calculatedWidth || column.minWidth;
+      });
+      return totalWidth;
+    });
+
+    _this._onRenderRow = function (props, defaultRender) {
+      return React.createElement(DetailsRow, __assign({}, props));
+    };
+
+    _this._onRenderDetailsHeader = function (detailsHeaderProps, defaultRender) {
+      return React.createElement(DetailsHeader, __assign({}, detailsHeaderProps));
+    };
+
+    _this._onRenderDetailsFooter = function (detailsFooterProps, defaultRender) {
+      return null;
+    };
+
+    _this._onRenderListCell = function (nestingDepth) {
+      return function (item, itemIndex) {
+        return _this._onRenderCell(nestingDepth, item, itemIndex);
+      };
+    };
+
+    _this._onRenderCell = function (nestingDepth, item, index) {
+      var _a = _this.props,
+          compact = _a.compact,
+          dragDropEvents = _a.dragDropEvents,
+          eventsToRegister = _a.rowElementEventMap,
+          onRenderMissingItem = _a.onRenderMissingItem,
+          onRenderItemColumn = _a.onRenderItemColumn,
+          getCellValueKey = _a.getCellValueKey,
+          _b = _a.selectionMode,
+          selectionMode = _b === void 0 ? _this._selection.mode : _b,
+          viewport = _a.viewport,
+          checkboxVisibility = _a.checkboxVisibility,
+          getRowAriaLabel = _a.getRowAriaLabel,
+          getRowAriaDescribedBy = _a.getRowAriaDescribedBy,
+          checkButtonAriaLabel = _a.checkButtonAriaLabel,
+          checkboxCellClassName = _a.checkboxCellClassName,
+          groupProps = _a.groupProps,
+          useReducedRowRenderer = _a.useReducedRowRenderer,
+          indentWidth = _a.indentWidth,
+          _c = _a.cellStyleProps,
+          cellStyleProps = _c === void 0 ? DEFAULT_CELL_STYLE_PROPS : _c,
+          onRenderCheckbox = _a.onRenderCheckbox,
+          enableUpdateAnimations = _a.enableUpdateAnimations,
+          useFastIcons = _a.useFastIcons;
+      var onRenderRow = _this.props.onRenderRow ? composeRenderFunction(_this.props.onRenderRow, _this._onRenderRow) : _this._onRenderRow;
+      var collapseAllVisibility = groupProps && groupProps.collapseAllVisibility;
+      var selection = _this._selection;
+      var dragDropHelper = _this._dragDropHelper;
+      var columns = _this.state.adjustedColumns;
+      var rowProps = {
+        item: item,
+        itemIndex: index,
+        compact: compact,
+        columns: columns,
+        groupNestingDepth: nestingDepth,
+        selectionMode: selectionMode,
+        selection: selection,
+        onDidMount: _this._onRowDidMount,
+        onWillUnmount: _this._onRowWillUnmount,
+        onRenderItemColumn: onRenderItemColumn,
+        getCellValueKey: getCellValueKey,
+        eventsToRegister: eventsToRegister,
+        dragDropEvents: dragDropEvents,
+        dragDropHelper: dragDropHelper,
+        viewport: viewport,
+        checkboxVisibility: checkboxVisibility,
+        collapseAllVisibility: collapseAllVisibility,
+        getRowAriaLabel: getRowAriaLabel,
+        getRowAriaDescribedBy: getRowAriaDescribedBy,
+        checkButtonAriaLabel: checkButtonAriaLabel,
+        checkboxCellClassName: checkboxCellClassName,
+        useReducedRowRenderer: useReducedRowRenderer,
+        indentWidth: indentWidth,
+        cellStyleProps: cellStyleProps,
+        onRenderDetailsCheckbox: onRenderCheckbox,
+        enableUpdateAnimations: enableUpdateAnimations,
+        rowWidth: _this._sumColumnWidths(columns),
+        useFastIcons: useFastIcons
+      };
+
+      if (!item) {
+        if (onRenderMissingItem) {
+          return onRenderMissingItem(index, rowProps);
+        }
+
+        return null;
+      }
+
+      return onRenderRow(rowProps);
+    };
+
+    _this._onGroupExpandStateChanged = function (isSomeGroupExpanded) {
+      _this.setState({
+        isSomeGroupExpanded: isSomeGroupExpanded
+      });
+    };
+
+    _this._onColumnIsSizingChanged = function (column, isSizing) {
+      _this.setState({
+        isSizing: isSizing
+      });
+    };
+
+    _this._onHeaderKeyDown = function (ev) {
+      if (ev.which === KeyCodes.down) {
+        if (_this._focusZone.current && _this._focusZone.current.focus()) {
+          // select the first item in list after down arrow key event
+          // only if nothing was selected; otherwise start with the already-selected item
+          if (_this._selection.getSelectedIndices().length === 0) {
+            _this._selection.setIndexSelected(0, true, false);
+          }
+
+          ev.preventDefault();
+          ev.stopPropagation();
+        }
+      }
+    };
+
+    _this._onContentKeyDown = function (ev) {
+      if (ev.which === KeyCodes.up && !ev.altKey) {
+        if (_this._header.current && _this._header.current.focus()) {
+          ev.preventDefault();
+          ev.stopPropagation();
+        }
+      }
+    };
+
+    _this._onRowDidMount = function (row) {
+      var _a = row.props,
+          item = _a.item,
+          itemIndex = _a.itemIndex;
+
+      var itemKey = _this._getItemKey(item, itemIndex);
+
+      _this._activeRows[itemKey] = row; // this is used for column auto resize
+
+      _this._setFocusToRowIfPending(row);
+
+      var onRowDidMount = _this.props.onRowDidMount;
+
+      if (onRowDidMount) {
+        onRowDidMount(item, itemIndex);
+      }
+    };
+
+    _this._onRowWillUnmount = function (row) {
+      var onRowWillUnmount = _this.props.onRowWillUnmount;
+      var _a = row.props,
+          item = _a.item,
+          itemIndex = _a.itemIndex;
+
+      var itemKey = _this._getItemKey(item, itemIndex);
+
+      delete _this._activeRows[itemKey];
+
+      if (onRowWillUnmount) {
+        onRowWillUnmount(item, itemIndex);
+      }
+    };
+
+    _this._onToggleCollapse = function (collapsed) {
+      _this.setState({
+        isCollapsed: collapsed
+      });
+
+      if (_this._groupedList.current) {
+        _this._groupedList.current.toggleCollapseAll(collapsed);
+      }
+    };
+
+    _this._onColumnDragEnd = function (props, event) {
+      var columnReorderOptions = _this.props.columnReorderOptions;
+      var finalDropLocation = ColumnDragEndLocation.outside;
+
+      if (columnReorderOptions && columnReorderOptions.onDragEnd) {
+        if (props.dropLocation && props.dropLocation !== ColumnDragEndLocation.header) {
+          finalDropLocation = props.dropLocation;
+        } else if (_this._root.current) {
+          var clientRect = _this._root.current.getBoundingClientRect();
+
+          if (event.clientX > clientRect.left && event.clientX < clientRect.right && event.clientY > clientRect.top && event.clientY < clientRect.bottom) {
+            finalDropLocation = ColumnDragEndLocation.surface;
+          }
+        }
+
+        columnReorderOptions.onDragEnd(finalDropLocation);
+      }
+    };
+
+    _this._onColumnResized = function (resizingColumn, newWidth, resizingColumnIndex) {
+      var newCalculatedWidth = Math.max(resizingColumn.minWidth || MIN_COLUMN_WIDTH, newWidth);
+
+      if (_this.props.onColumnResize) {
+        _this.props.onColumnResize(resizingColumn, newCalculatedWidth, resizingColumnIndex);
+      }
+
+      _this._rememberCalculatedWidth(resizingColumn, newCalculatedWidth);
+
+      _this._adjustColumns(_this.props, true, resizingColumnIndex);
+
+      _this.setState({
+        version: {}
+      });
+    };
+    /**
+     * Callback function when double clicked on the details header column resizer
+     * which will measure the column cells of all the active rows and resize the
+     * column to the max cell width.
+     *
+     * @param column - double clicked column definition
+     * @param columnIndex - double clicked column index
+     * TODO: min width 100 should be changed to const value and should be consistent with the
+     * value used on _onSizerMove method in DetailsHeader
+     */
+
+
+    _this._onColumnAutoResized = function (column, columnIndex) {
+      var max = 0;
+      var count = 0;
+      var totalCount = Object.keys(_this._activeRows).length;
+
+      for (var key in _this._activeRows) {
+        if (_this._activeRows.hasOwnProperty(key)) {
+          var currentRow = _this._activeRows[key];
+          currentRow.measureCell(columnIndex, function (width) {
+            max = Math.max(max, width);
+            count++;
+
+            if (count === totalCount) {
+              _this._onColumnResized(column, max, columnIndex);
+            }
+          });
+        }
+      }
+    };
+    /**
+     * Call back function when an element in FocusZone becomes active. It will translate it into item
+     * and call onActiveItemChanged callback if specified.
+     *
+     * @param row - element that became active in Focus Zone
+     * @param focus - event from Focus Zone
+     */
+
+
+    _this._onActiveRowChanged = function (el, ev) {
+      var _a = _this.props,
+          items = _a.items,
+          onActiveItemChanged = _a.onActiveItemChanged;
+
+      if (!el) {
+        return;
+      } // Check and assign index only if the event was raised from any DetailsRow element
+
+
+      if (el.getAttribute('data-item-index')) {
+        var index = Number(el.getAttribute('data-item-index'));
+
+        if (index >= 0) {
+          if (onActiveItemChanged) {
+            onActiveItemChanged(items[index], index, ev);
+          }
+
+          _this.setState({
+            focusedItemIndex: index
+          });
+        }
+      }
+    };
+
+    _this._onBlur = function (event) {
+      _this.setState({
+        focusedItemIndex: -1
+      });
+    };
+
+    _this.isRightArrow = function (event) {
+      return event.which === getRTLSafeKeyCode(KeyCodes.right, _this.props.theme);
+    };
+
+    initializeComponentRef(_this);
+    _this._async = new Async(_this);
+    _this._activeRows = {};
+    _this._columnOverrides = {};
+    _this.state = {
+      focusedItemIndex: -1,
+      lastWidth: 0,
+      adjustedColumns: _this._getAdjustedColumns(props),
+      isSizing: false,
+      isDropping: false,
+      isCollapsed: props.groupProps && props.groupProps.isAllGroupsCollapsed,
+      isSomeGroupExpanded: props.groupProps && !props.groupProps.isAllGroupsCollapsed,
+      version: {}
+    };
+    _this._selection = props.selection || new Selection({
+      onSelectionChanged: undefined,
+      getKey: props.getKey,
+      selectionMode: props.selectionMode
+    });
+
+    if (!_this.props.disableSelectionZone) {
+      _this._selection.setItems(props.items, false);
+    }
+
+    _this._dragDropHelper = props.dragDropEvents ? new DragDropHelper({
+      selection: _this._selection,
+      minimumPixelsForDrag: props.minimumPixelsForDrag
+    }) : undefined;
+    _this._initialFocusedIndex = props.initialFocusedIndex;
+    return _this;
+  }
+
+  DetailsListBase.prototype.scrollToIndex = function (index, measureItem, scrollToMode) {
+    this._list.current && this._list.current.scrollToIndex(index, measureItem, scrollToMode);
+    this._groupedList.current && this._groupedList.current.scrollToIndex(index, measureItem, scrollToMode);
+  };
+
+  DetailsListBase.prototype.focusIndex = function (index, forceIntoFirstElement, measureItem, scrollToMode) {
+    if (forceIntoFirstElement === void 0) {
+      forceIntoFirstElement = false;
+    }
+
+    var item = this.props.items[index];
+
+    if (item) {
+      this.scrollToIndex(index, measureItem, scrollToMode);
+
+      var itemKey = this._getItemKey(item, index);
+
+      var row = this._activeRows[itemKey];
+
+      if (row) {
+        this._setFocusToRow(row, forceIntoFirstElement);
+      }
+    }
+  };
+
+  DetailsListBase.prototype.getStartItemIndexInView = function () {
+    if (this._list && this._list.current) {
+      return this._list.current.getStartItemIndexInView();
+    } else if (this._groupedList && this._groupedList.current) {
+      return this._groupedList.current.getStartItemIndexInView();
+    }
+
+    return 0;
+  };
+
+  DetailsListBase.prototype.componentWillUnmount = function () {
+    if (this._dragDropHelper) {
+      // TODO If the DragDropHelper was passed via props, this will dispose it, which is incorrect behavior.
+      this._dragDropHelper.dispose();
+    }
+
+    this._async.dispose();
+  };
+
+  DetailsListBase.prototype.componentDidUpdate = function (prevProps, prevState) {
+    if (this._initialFocusedIndex !== undefined) {
+      var item = this.props.items[this._initialFocusedIndex];
+
+      if (item) {
+        var itemKey = this._getItemKey(item, this._initialFocusedIndex);
+
+        var row = this._activeRows[itemKey];
+
+        if (row) {
+          this._setFocusToRowIfPending(row);
+        }
+      }
+    }
+
+    if (this.props.items !== prevProps.items && this.props.items.length > 0 && this.state.focusedItemIndex !== -1 && !elementContains(this._root.current, document.activeElement, false)) {
+      // Item set has changed and previously-focused item is gone.
+      // Set focus to item at index of previously-focused item if it is in range,
+      // else set focus to the last item.
+      var index = this.state.focusedItemIndex < this.props.items.length ? this.state.focusedItemIndex : this.props.items.length - 1;
+      var item = this.props.items[index];
+
+      var itemKey = this._getItemKey(item, this.state.focusedItemIndex);
+
+      var row = this._activeRows[itemKey];
+
+      if (row) {
+        this._setFocusToRow(row);
+      } else {
+        this._initialFocusedIndex = index;
+      }
+    }
+
+    if (this.props.onDidUpdate) {
+      this.props.onDidUpdate(this);
+    }
+  }; // tslint:disable-next-line function-name
+
+
+  DetailsListBase.prototype.UNSAFE_componentWillReceiveProps = function (newProps) {
+    var _a = this.props,
+        checkboxVisibility = _a.checkboxVisibility,
+        items = _a.items,
+        setKey = _a.setKey,
+        _b = _a.selectionMode,
+        selectionMode = _b === void 0 ? this._selection.mode : _b,
+        columns = _a.columns,
+        viewport = _a.viewport,
+        compact = _a.compact,
+        dragDropEvents = _a.dragDropEvents;
+    var _c = (this.props.groupProps || {}).isAllGroupsCollapsed,
+        isAllGroupsCollapsed = _c === void 0 ? undefined : _c;
+    var newViewportWidth = newProps.viewport && newProps.viewport.width || 0;
+    var oldViewportWidth = viewport && viewport.width || 0;
+    var shouldResetSelection = newProps.setKey !== setKey || newProps.setKey === undefined;
+    var shouldForceUpdates = false;
+
+    if (newProps.layoutMode !== this.props.layoutMode) {
+      shouldForceUpdates = true;
+    }
+
+    if (shouldResetSelection) {
+      this._initialFocusedIndex = newProps.initialFocusedIndex; // reset focusedItemIndex when setKey changes
+
+      this.setState({
+        focusedItemIndex: this._initialFocusedIndex !== undefined ? this._initialFocusedIndex : -1
+      });
+    }
+
+    if (!this.props.disableSelectionZone && newProps.items !== items) {
+      this._selection.setItems(newProps.items, shouldResetSelection);
+    }
+
+    if (newProps.checkboxVisibility !== checkboxVisibility || newProps.columns !== columns || newViewportWidth !== oldViewportWidth || newProps.compact !== compact) {
+      shouldForceUpdates = true;
+    }
+
+    this._adjustColumns(newProps, true);
+
+    if (newProps.selectionMode !== selectionMode) {
+      shouldForceUpdates = true;
+    }
+
+    if (isAllGroupsCollapsed === undefined && newProps.groupProps && newProps.groupProps.isAllGroupsCollapsed !== undefined) {
+      this.setState({
+        isCollapsed: newProps.groupProps.isAllGroupsCollapsed,
+        isSomeGroupExpanded: !newProps.groupProps.isAllGroupsCollapsed
+      });
+    }
+
+    if (newProps.dragDropEvents !== dragDropEvents) {
+      this._dragDropHelper && this._dragDropHelper.dispose();
+      this._dragDropHelper = newProps.dragDropEvents ? new DragDropHelper({
+        selection: this._selection,
+        minimumPixelsForDrag: newProps.minimumPixelsForDrag
+      }) : undefined;
+      shouldForceUpdates = true;
+    }
+
+    if (shouldForceUpdates) {
+      this.setState({
+        version: {}
+      });
+    }
+  };
+
+  DetailsListBase.prototype.render = function () {
+    var _a = this.props,
+        ariaLabelForListHeader = _a.ariaLabelForListHeader,
+        ariaLabelForSelectAllCheckbox = _a.ariaLabelForSelectAllCheckbox,
+        ariaLabelForSelectionColumn = _a.ariaLabelForSelectionColumn,
+        className = _a.className,
+        checkboxVisibility = _a.checkboxVisibility,
+        compact = _a.compact,
+        constrainMode = _a.constrainMode,
+        dragDropEvents = _a.dragDropEvents,
+        groups = _a.groups,
+        groupProps = _a.groupProps,
+        indentWidth = _a.indentWidth,
+        items = _a.items,
+        isPlaceholderData = _a.isPlaceholderData,
+        isHeaderVisible = _a.isHeaderVisible,
+        layoutMode = _a.layoutMode,
+        onItemInvoked = _a.onItemInvoked,
+        onItemContextMenu = _a.onItemContextMenu,
+        onColumnHeaderClick = _a.onColumnHeaderClick,
+        onColumnHeaderContextMenu = _a.onColumnHeaderContextMenu,
+        _b = _a.selectionMode,
+        selectionMode = _b === void 0 ? this._selection.mode : _b,
+        selectionPreservedOnEmptyClick = _a.selectionPreservedOnEmptyClick,
+        selectionZoneProps = _a.selectionZoneProps,
+        ariaLabel = _a.ariaLabel,
+        ariaLabelForGrid = _a.ariaLabelForGrid,
+        rowElementEventMap = _a.rowElementEventMap,
+        _c = _a.shouldApplyApplicationRole,
+        shouldApplyApplicationRole = _c === void 0 ? false : _c,
+        getKey = _a.getKey,
+        listProps = _a.listProps,
+        usePageCache = _a.usePageCache,
+        onShouldVirtualize = _a.onShouldVirtualize,
+        viewport = _a.viewport,
+        minimumPixelsForDrag = _a.minimumPixelsForDrag,
+        getGroupHeight = _a.getGroupHeight,
+        styles = _a.styles,
+        theme = _a.theme,
+        _d = _a.cellStyleProps,
+        cellStyleProps = _d === void 0 ? DEFAULT_CELL_STYLE_PROPS : _d,
+        onRenderCheckbox = _a.onRenderCheckbox,
+        useFastIcons = _a.useFastIcons;
+    var _e = this.state,
+        adjustedColumns = _e.adjustedColumns,
+        isCollapsed = _e.isCollapsed,
+        isSizing = _e.isSizing,
+        isSomeGroupExpanded = _e.isSomeGroupExpanded;
+
+    var _f = this,
+        selection = _f._selection,
+        dragDropHelper = _f._dragDropHelper;
+
+    var groupNestingDepth = this._getGroupNestingDepth();
+
+    var additionalListProps = __assign({
+      renderedWindowsAhead: isSizing ? 0 : DEFAULT_RENDERED_WINDOWS_AHEAD$1,
+      renderedWindowsBehind: isSizing ? 0 : DEFAULT_RENDERED_WINDOWS_BEHIND$1,
+      getKey: getKey,
+      version: this.state.version
+    }, listProps);
+
+    var selectAllVisibility = SelectAllVisibility.none; // for SelectionMode.none
+
+    if (selectionMode === SelectionMode.single) {
+      selectAllVisibility = SelectAllVisibility.hidden;
+    }
+
+    if (selectionMode === SelectionMode.multiple) {
+      // if isCollapsedGroupSelectVisible is false, disable select all when the list has all collapsed groups
+      var isCollapsedGroupSelectVisible = groupProps && groupProps.headerProps && groupProps.headerProps.isCollapsedGroupSelectVisible;
+
+      if (isCollapsedGroupSelectVisible === undefined) {
+        isCollapsedGroupSelectVisible = true;
+      }
+
+      var isSelectAllVisible = isCollapsedGroupSelectVisible || !groups || isSomeGroupExpanded;
+      selectAllVisibility = isSelectAllVisible ? SelectAllVisibility.visible : SelectAllVisibility.hidden;
+    }
+
+    if (checkboxVisibility === CheckboxVisibility.hidden) {
+      selectAllVisibility = SelectAllVisibility.none;
+    }
+
+    var _g = this.props,
+        _h = _g.onRenderDetailsHeader,
+        onRenderDetailsHeader = _h === void 0 ? this._onRenderDetailsHeader : _h,
+        _j = _g.onRenderDetailsFooter,
+        onRenderDetailsFooter = _j === void 0 ? this._onRenderDetailsFooter : _j;
+
+    var detailsFooterProps = this._getDetailsFooterProps();
+
+    var columnReorderProps = this._getColumnReorderProps();
+
+    var rowCount = (isHeaderVisible ? 1 : 0) + GetGroupCount(groups) + (items ? items.length : 0);
+    var classNames = getClassNames$f(styles, {
+      theme: theme,
+      compact: compact,
+      isFixed: layoutMode === DetailsListLayoutMode.fixedColumns,
+      isHorizontalConstrained: constrainMode === ConstrainMode.horizontalConstrained,
+      className: className
+    });
+    var list = groups ? React.createElement(GroupedList, {
+      componentRef: this._groupedList,
+      groups: groups,
+      groupProps: groupProps ? this._getGroupProps(groupProps) : undefined,
+      items: items,
+      onRenderCell: this._onRenderCell,
+      selection: selection,
+      selectionMode: checkboxVisibility !== CheckboxVisibility.hidden ? selectionMode : SelectionMode.none,
+      dragDropEvents: dragDropEvents,
+      dragDropHelper: dragDropHelper,
+      eventsToRegister: rowElementEventMap,
+      listProps: additionalListProps,
+      onGroupExpandStateChanged: this._onGroupExpandStateChanged,
+      usePageCache: usePageCache,
+      onShouldVirtualize: onShouldVirtualize,
+      getGroupHeight: getGroupHeight,
+      compact: compact
+    }) : React.createElement(List, __assign({
+      ref: this._list,
+      role: "presentation",
+      items: items,
+      onRenderCell: this._onRenderListCell(0),
+      usePageCache: usePageCache,
+      onShouldVirtualize: onShouldVirtualize
+    }, additionalListProps));
+    return (// If shouldApplyApplicationRole is true, role application will be applied to make arrow keys work
+      // with JAWS.
+      React.createElement("div", __assign({
+        ref: this._root,
+        className: classNames.root,
+        "data-automationid": "DetailsList",
+        "data-is-scrollable": "false",
+        "aria-label": ariaLabel
+      }, shouldApplyApplicationRole ? {
+        role: 'application'
+      } : {}), React.createElement(FocusRects, null), React.createElement("div", {
+        role: "grid",
+        "aria-label": ariaLabelForGrid,
+        "aria-rowcount": isPlaceholderData ? -1 : rowCount,
+        "aria-colcount": (selectAllVisibility !== SelectAllVisibility.none ? 1 : 0) + (adjustedColumns ? adjustedColumns.length : 0),
+        "aria-readonly": "true",
+        "aria-busy": isPlaceholderData
+      }, React.createElement("div", {
+        onKeyDown: this._onHeaderKeyDown,
+        role: "presentation",
+        className: classNames.headerWrapper
+      }, isHeaderVisible && onRenderDetailsHeader({
+        componentRef: this._header,
+        selectionMode: selectionMode,
+        layoutMode: layoutMode,
+        selection: selection,
+        columns: adjustedColumns,
+        onColumnClick: onColumnHeaderClick,
+        onColumnContextMenu: onColumnHeaderContextMenu,
+        onColumnResized: this._onColumnResized,
+        onColumnIsSizingChanged: this._onColumnIsSizingChanged,
+        onColumnAutoResized: this._onColumnAutoResized,
+        groupNestingDepth: groupNestingDepth,
+        isAllCollapsed: isCollapsed,
+        onToggleCollapseAll: this._onToggleCollapse,
+        ariaLabel: ariaLabelForListHeader,
+        ariaLabelForSelectAllCheckbox: ariaLabelForSelectAllCheckbox,
+        ariaLabelForSelectionColumn: ariaLabelForSelectionColumn,
+        selectAllVisibility: selectAllVisibility,
+        collapseAllVisibility: groupProps && groupProps.collapseAllVisibility,
+        viewport: viewport,
+        columnReorderProps: columnReorderProps,
+        minimumPixelsForDrag: minimumPixelsForDrag,
+        cellStyleProps: cellStyleProps,
+        checkboxVisibility: checkboxVisibility,
+        indentWidth: indentWidth,
+        onRenderDetailsCheckbox: onRenderCheckbox,
+        rowWidth: this._sumColumnWidths(this.state.adjustedColumns),
+        useFastIcons: useFastIcons
+      }, this._onRenderDetailsHeader)), React.createElement("div", {
+        onKeyDown: this._onContentKeyDown,
+        role: "presentation",
+        className: classNames.contentWrapper
+      }, React.createElement(FocusZone, {
+        componentRef: this._focusZone,
+        className: classNames.focusZone,
+        direction: FocusZoneDirection.vertical,
+        shouldEnterInnerZone: this.isRightArrow,
+        onActiveElementChanged: this._onActiveRowChanged,
+        onBlur: this._onBlur
+      }, !this.props.disableSelectionZone ? React.createElement(SelectionZone, __assign({
+        ref: this._selectionZone,
+        selection: selection,
+        selectionPreservedOnEmptyClick: selectionPreservedOnEmptyClick,
+        selectionMode: selectionMode,
+        onItemInvoked: onItemInvoked,
+        onItemContextMenu: onItemContextMenu,
+        enterModalOnTouch: this.props.enterModalSelectionOnTouch
+      }, selectionZoneProps || {}), list) : list)), onRenderDetailsFooter(__assign({}, detailsFooterProps), this._onRenderDetailsFooter)))
+    );
+  };
+
+  DetailsListBase.prototype.forceUpdate = function () {
+    _super.prototype.forceUpdate.call(this);
+
+    this._forceListUpdates();
+  };
+
+  DetailsListBase.prototype._getGroupNestingDepth = function () {
+    var groups = this.props.groups;
+    var level = 0;
+    var groupsInLevel = groups;
+
+    while (groupsInLevel && groupsInLevel.length > 0) {
+      level++;
+      groupsInLevel = groupsInLevel[0].children;
+    }
+
+    return level;
+  };
+
+  DetailsListBase.prototype._setFocusToRowIfPending = function (row) {
+    var itemIndex = row.props.itemIndex;
+
+    if (this._initialFocusedIndex !== undefined && itemIndex === this._initialFocusedIndex) {
+      this._setFocusToRow(row);
+
+      delete this._initialFocusedIndex;
+    }
+  };
+
+  DetailsListBase.prototype._setFocusToRow = function (row, forceIntoFirstElement) {
+    if (forceIntoFirstElement === void 0) {
+      forceIntoFirstElement = false;
+    }
+
+    if (this._selectionZone.current) {
+      this._selectionZone.current.ignoreNextFocus();
+    }
+
+    this._async.setTimeout(function () {
+      row.focus(forceIntoFirstElement);
+    }, 0);
+  };
+
+  DetailsListBase.prototype._forceListUpdates = function () {
+    if (this._groupedList.current) {
+      this._groupedList.current.forceUpdate();
+    }
+
+    if (this._list.current) {
+      this._list.current.forceUpdate();
+    }
+  };
+
+  DetailsListBase.prototype._notifyColumnsResized = function () {
+    this.state.adjustedColumns.forEach(function (column) {
+      if (column.onColumnResize) {
+        column.onColumnResize(column.currentWidth);
+      }
+    });
+  };
+
+  DetailsListBase.prototype._adjustColumns = function (newProps, forceUpdate, resizingColumnIndex) {
+    var adjustedColumns = this._getAdjustedColumns(newProps, forceUpdate, resizingColumnIndex);
+
+    var viewport = this.props.viewport;
+    var viewportWidth = viewport && viewport.width ? viewport.width : 0;
+
+    if (adjustedColumns) {
+      this.setState({
+        adjustedColumns: adjustedColumns,
+        lastWidth: viewportWidth
+      }, this._notifyColumnsResized);
+    }
+  };
+  /** Returns adjusted columns, given the viewport size and layout mode. */
+
+
+  DetailsListBase.prototype._getAdjustedColumns = function (newProps, forceUpdate, resizingColumnIndex) {
+    var _this = this;
+
+    var newItems = newProps.items,
+        layoutMode = newProps.layoutMode,
+        selectionMode = newProps.selectionMode,
+        viewport = newProps.viewport;
+    var viewportWidth = viewport && viewport.width ? viewport.width : 0;
+    var newColumns = newProps.columns;
+    var columns = this.props ? this.props.columns : [];
+    var lastWidth = this.state ? this.state.lastWidth : -1;
+    var lastSelectionMode = this.state ? this.state.lastSelectionMode : undefined;
+
+    if (!forceUpdate && lastWidth === viewportWidth && lastSelectionMode === selectionMode && (!columns || newColumns === columns)) {
+      return [];
+    }
+
+    newColumns = newColumns || buildColumns(newItems, true);
+    var adjustedColumns;
+
+    if (layoutMode === DetailsListLayoutMode.fixedColumns) {
+      adjustedColumns = this._getFixedColumns(newColumns); // Preserve adjusted column calculated widths.
+
+      adjustedColumns.forEach(function (column) {
+        _this._rememberCalculatedWidth(column, column.calculatedWidth);
+      });
+    } else {
+      if (resizingColumnIndex !== undefined) {
+        adjustedColumns = this._getJustifiedColumnsAfterResize(newColumns, viewportWidth, newProps, resizingColumnIndex);
+      } else {
+        adjustedColumns = this._getJustifiedColumns(newColumns, viewportWidth, newProps, 0);
+      }
+
+      adjustedColumns.forEach(function (column) {
+        _this._getColumnOverride(column.key).currentWidth = column.calculatedWidth;
+      });
+    }
+
+    return adjustedColumns;
+  };
+  /** Builds a set of columns based on the given columns mixed with the current overrides. */
+
+
+  DetailsListBase.prototype._getFixedColumns = function (newColumns) {
+    var _this = this;
+
+    return newColumns.map(function (column) {
+      var newColumn = __assign(__assign({}, column), _this._columnOverrides[column.key]);
+
+      if (!newColumn.calculatedWidth) {
+        newColumn.calculatedWidth = newColumn.maxWidth || newColumn.minWidth || MIN_COLUMN_WIDTH;
+      }
+
+      return newColumn;
+    });
+  };
+
+  DetailsListBase.prototype._getJustifiedColumnsAfterResize = function (newColumns, viewportWidth, props, resizingColumnIndex) {
+    var _this = this;
+
+    var fixedColumns = newColumns.slice(0, resizingColumnIndex);
+    fixedColumns.forEach(function (column) {
+      return column.calculatedWidth = _this._getColumnOverride(column.key).currentWidth;
+    });
+    var fixedWidth = fixedColumns.reduce(function (total, column, i) {
+      return total + getPaddedWidth(column, i === 0, props);
+    }, 0);
+    var remainingColumns = newColumns.slice(resizingColumnIndex);
+    var remainingWidth = viewportWidth - fixedWidth;
+    return __spreadArrays(fixedColumns, this._getJustifiedColumns(remainingColumns, remainingWidth, props, resizingColumnIndex));
+  };
+  /** Builds a set of columns to fix within the viewport width. */
+
+
+  DetailsListBase.prototype._getJustifiedColumns = function (newColumns, viewportWidth, props, firstIndex) {
+    var _this = this;
+
+    var _a = props.selectionMode,
+        selectionMode = _a === void 0 ? this._selection.mode : _a,
+        checkboxVisibility = props.checkboxVisibility;
+    var rowCheckWidth = selectionMode !== SelectionMode.none && checkboxVisibility !== CheckboxVisibility.hidden ? CHECK_CELL_WIDTH : 0;
+    var groupExpandWidth = this._getGroupNestingDepth() * SPACER_WIDTH;
+    var totalWidth = 0; // offset because we have one less inner padding.
+
+    var availableWidth = viewportWidth - (rowCheckWidth + groupExpandWidth);
+    var adjustedColumns = newColumns.map(function (column, i) {
+      var newColumn = __assign(__assign(__assign({}, column), {
+        calculatedWidth: column.minWidth || MIN_COLUMN_WIDTH
+      }), _this._columnOverrides[column.key]);
+
+      var isFirst = i + firstIndex === 0;
+      totalWidth += getPaddedWidth(newColumn, isFirst, props);
+      return newColumn;
+    });
+    var lastIndex = adjustedColumns.length - 1; // Shrink or remove collapsable columns.
+
+    while (lastIndex > 0 && totalWidth > availableWidth) {
+      var column = adjustedColumns[lastIndex];
+      var minWidth = column.minWidth || MIN_COLUMN_WIDTH;
+      var overflowWidth = totalWidth - availableWidth; // tslint:disable-next-line:deprecation
+
+      if (column.calculatedWidth - minWidth >= overflowWidth || !(column.isCollapsible || column.isCollapsable)) {
+        var originalWidth = column.calculatedWidth;
+        column.calculatedWidth = Math.max(column.calculatedWidth - overflowWidth, minWidth);
+        totalWidth -= originalWidth - column.calculatedWidth;
+      } else {
+        totalWidth -= getPaddedWidth(column, false, props);
+        adjustedColumns.splice(lastIndex, 1);
+      }
+
+      lastIndex--;
+    } // Then expand columns starting at the beginning, until we've filled the width.
+
+
+    for (var i = 0; i < adjustedColumns.length && totalWidth < availableWidth; i++) {
+      var column = adjustedColumns[i];
+      var isLast = i === adjustedColumns.length - 1;
+      var overrides = this._columnOverrides[column.key];
+
+      if (overrides && overrides.calculatedWidth && !isLast) {
+        continue;
+      }
+
+      var spaceLeft = availableWidth - totalWidth;
+      var increment = void 0;
+
+      if (isLast) {
+        increment = spaceLeft;
+      } else {
+        var maxWidth = column.maxWidth;
+        var minWidth = column.minWidth || maxWidth || MIN_COLUMN_WIDTH;
+        increment = maxWidth ? Math.min(spaceLeft, maxWidth - minWidth) : spaceLeft;
+      }
+
+      column.calculatedWidth = column.calculatedWidth + increment;
+      totalWidth += increment;
+    }
+
+    return adjustedColumns;
+  };
+
+  DetailsListBase.prototype._rememberCalculatedWidth = function (column, newCalculatedWidth) {
+    var overrides = this._getColumnOverride(column.key);
+
+    overrides.calculatedWidth = newCalculatedWidth;
+    overrides.currentWidth = newCalculatedWidth;
+  };
+
+  DetailsListBase.prototype._getColumnOverride = function (key) {
+    return this._columnOverrides[key] = this._columnOverrides[key] || {};
+  };
+
+  DetailsListBase.prototype._getItemKey = function (item, itemIndex) {
+    var getKey = this.props.getKey;
+    var itemKey = undefined;
+
+    if (item) {
+      itemKey = item.key;
+    }
+
+    if (getKey) {
+      itemKey = getKey(item, itemIndex);
+    }
+
+    if (!itemKey) {
+      itemKey = itemIndex;
+    }
+
+    return itemKey;
+  };
+
+  DetailsListBase.prototype._getDetailsFooterProps = function () {
+    var columns = this.state.adjustedColumns;
+    var _a = this.props,
+        viewport = _a.viewport,
+        checkboxVisibility = _a.checkboxVisibility,
+        indentWidth = _a.indentWidth,
+        _b = _a.cellStyleProps,
+        cellStyleProps = _b === void 0 ? DEFAULT_CELL_STYLE_PROPS : _b,
+        _c = _a.selectionMode,
+        selectionMode = _c === void 0 ? this._selection.mode : _c;
+    return {
+      columns: columns,
+      groupNestingDepth: this._getGroupNestingDepth(),
+      selection: this._selection,
+      selectionMode: selectionMode,
+      viewport: viewport,
+      checkboxVisibility: checkboxVisibility,
+      indentWidth: indentWidth,
+      cellStyleProps: cellStyleProps
+    };
+  };
+
+  DetailsListBase.prototype._getColumnReorderProps = function () {
+    var columnReorderOptions = this.props.columnReorderOptions;
+
+    if (columnReorderOptions) {
+      return __assign(__assign({}, columnReorderOptions), {
+        onColumnDragEnd: this._onColumnDragEnd
+      });
+    }
+  };
+
+  DetailsListBase.prototype._getGroupProps = function (detailsGroupProps) {
+    var _this = this;
+
+    var onRenderDetailsGroupFooter = detailsGroupProps.onRenderFooter,
+        onRenderDetailsGroupHeader = detailsGroupProps.onRenderHeader;
+    var columns = this.state.adjustedColumns;
+    var _a = this.props,
+        _b = _a.selectionMode,
+        selectionMode = _b === void 0 ? this._selection.mode : _b,
+        viewport = _a.viewport,
+        _c = _a.cellStyleProps,
+        cellStyleProps = _c === void 0 ? DEFAULT_CELL_STYLE_PROPS : _c,
+        checkboxVisibility = _a.checkboxVisibility,
+        indentWidth = _a.indentWidth;
+
+    var groupNestingDepth = this._getGroupNestingDepth();
+
+    var onRenderFooter = onRenderDetailsGroupFooter ? function (props, defaultRender) {
+      return onRenderDetailsGroupFooter(__assign(__assign({}, props), {
+        columns: columns,
+        groupNestingDepth: groupNestingDepth,
+        indentWidth: indentWidth,
+        selection: _this._selection,
+        selectionMode: selectionMode,
+        viewport: viewport,
+        checkboxVisibility: checkboxVisibility,
+        cellStyleProps: cellStyleProps
+      }), defaultRender);
+    } : undefined;
+    var onRenderHeader = onRenderDetailsGroupHeader ? function (props, defaultRender) {
+      return onRenderDetailsGroupHeader(__assign(__assign({}, props), {
+        columns: columns,
+        groupNestingDepth: groupNestingDepth,
+        indentWidth: indentWidth,
+        selection: _this._selection,
+        selectionMode: selectionMode,
+        viewport: viewport,
+        checkboxVisibility: checkboxVisibility,
+        cellStyleProps: cellStyleProps
+      }), defaultRender);
+    } : undefined;
+    return __assign(__assign({}, detailsGroupProps), {
+      onRenderFooter: onRenderFooter,
+      onRenderHeader: onRenderHeader
+    });
+  };
+
+  DetailsListBase.defaultProps = {
+    layoutMode: DetailsListLayoutMode.justified,
+    selectionMode: SelectionMode.multiple,
+    constrainMode: ConstrainMode.horizontalConstrained,
+    checkboxVisibility: CheckboxVisibility.onHover,
+    isHeaderVisible: true,
+    compact: false,
+    useFastIcons: true
+  };
+  DetailsListBase = __decorate([withViewport], DetailsListBase);
+  return DetailsListBase;
+}(React.Component);
+function buildColumns(items, canResizeColumns, onColumnClick, sortedColumnKey, isSortedDescending, groupedColumnKey, isMultiline) {
+  var columns = [];
+
+  if (items && items.length) {
+    var firstItem = items[0];
+
+    for (var propName in firstItem) {
+      if (firstItem.hasOwnProperty(propName)) {
+        columns.push({
+          key: propName,
+          name: propName,
+          fieldName: propName,
+          minWidth: MIN_COLUMN_WIDTH,
+          maxWidth: 300,
+          isCollapsable: !!columns.length,
+          isCollapsible: !!columns.length,
+          isMultiline: isMultiline === undefined ? false : isMultiline,
+          isSorted: sortedColumnKey === propName,
+          isSortedDescending: !!isSortedDescending,
+          isRowHeader: false,
+          columnActionsMode: ColumnActionsMode.clickable,
+          isResizable: canResizeColumns,
+          onColumnClick: onColumnClick,
+          isGrouped: groupedColumnKey === propName
+        });
+      }
+    }
+  }
+
+  return columns;
+}
+
+function getPaddedWidth(column, isFirst, props) {
+  var _a = props.cellStyleProps,
+      cellStyleProps = _a === void 0 ? DEFAULT_CELL_STYLE_PROPS : _a;
+  return column.calculatedWidth + cellStyleProps.cellLeftPadding + cellStyleProps.cellRightPadding + (column.isPadded ? cellStyleProps.cellExtraRightPadding : 0);
+}
+
+var GlobalClassNames$c = {
+  root: 'ms-DetailsList',
+  compact: 'ms-DetailsList--Compact',
+  contentWrapper: 'ms-DetailsList-contentWrapper',
+  headerWrapper: 'ms-DetailsList-headerWrapper',
+  isFixed: 'is-fixed',
+  isHorizontalConstrained: 'is-horizontalConstrained',
+  listCell: 'ms-List-cell'
+};
+var getStyles$f = function (props) {
   var _a, _b;
 
-  var rootIsLarge = props.rootIsLarge,
-      rootIsTabs = props.rootIsTabs;
-  var _c = props.theme,
-      semanticColors = _c.semanticColors,
-      fonts = _c.fonts;
-  return [fonts.medium, {
-    color: semanticColors.actionLink,
-    display: 'inline-block',
-    lineHeight: 44,
-    height: 44,
-    marginRight: 8,
-    padding: '0 8px',
-    textAlign: 'center',
-    position: 'relative',
-    backgroundColor: 'transparent',
-    border: 0,
-    borderRadius: 0,
-    selectors: (_a = {
-      ':before': {
-        backgroundColor: 'transparent',
-        bottom: 0,
-        content: '""',
-        height: 2,
-        left: 8,
-        position: 'absolute',
-        right: 8,
-        transition: "left " + AnimationVariables.durationValue2 + " " + AnimationVariables.easeFunction2 + ",\n                      right " + AnimationVariables.durationValue2 + " " + AnimationVariables.easeFunction2
-      },
-      ':after': {
-        color: 'transparent',
-        content: 'attr(data-content)',
-        display: 'block',
-        fontWeight: FontWeights.bold,
-        height: 1,
-        overflow: 'hidden',
-        visibility: 'hidden'
-      },
-      ':hover': {
-        backgroundColor: semanticColors.buttonBackgroundHovered,
-        color: semanticColors.buttonTextHovered,
-        cursor: 'pointer'
-      },
-      ':active': {
-        backgroundColor: semanticColors.buttonBackgroundPressed,
-        color: semanticColors.buttonTextHovered
-      },
-      ':focus': {
-        outline: 'none'
-      }
-    }, _a["." + IsFocusVisibleClassName + " &:focus"] = {
-      outline: "1px solid " + semanticColors.focusBorder
-    }, _a["." + IsFocusVisibleClassName + " &:focus:after"] = {
-      content: 'attr(data-content)',
-      position: 'relative',
-      border: 0
-    }, _a)
-  }, rootIsLarge && {
-    fontSize: fonts.large.fontSize
-  }, rootIsTabs && [{
-    marginRight: 0,
-    height: 44,
-    lineHeight: 44,
-    backgroundColor: semanticColors.buttonBackground,
-    padding: '0 10px',
-    verticalAlign: 'top',
-    selectors: (_b = {
-      ':focus': {
-        outlineOffset: '-1px'
-      }
-    }, _b["." + IsFocusVisibleClassName + " &:focus::before"] = {
-      height: 'auto',
-      background: 'transparent',
-      transition: 'none'
-    }, _b)
-  }]];
-};
-
-var getStyles$a = function (props) {
-  var _a, _b, _c;
-
-  var className = props.className,
-      rootIsLarge = props.rootIsLarge,
-      rootIsTabs = props.rootIsTabs,
-      theme = props.theme;
-  var semanticColors = theme.semanticColors,
-      fonts = theme.fonts;
-  var classNames = getGlobalClassNames(globalClassNames, theme);
+  var theme = props.theme,
+      className = props.className,
+      isHorizontalConstrained = props.isHorizontalConstrained,
+      compact = props.compact,
+      isFixed = props.isFixed;
+  var semanticColors = theme.semanticColors;
+  var classNames = getGlobalClassNames(GlobalClassNames$c, theme);
   return {
-    root: [classNames.root, fonts.medium, normalize, {
+    root: [classNames.root, theme.fonts.small, {
       position: 'relative',
-      color: semanticColors.link,
-      whiteSpace: 'nowrap'
-    }, rootIsLarge && classNames.rootIsLarge, rootIsTabs && classNames.rootIsTabs, className],
-    link: __spreadArrays([classNames.link], linkStyles(props), [rootIsTabs && {
-      selectors: {
-        '&:hover, &:focus': {
-          color: semanticColors.buttonTextCheckedHovered
-        },
-        '&:active, &:hover': {
-          color: semanticColors.primaryButtonText,
-          backgroundColor: semanticColors.primaryButtonBackground
-        }
-      }
-    }]),
-    linkIsSelected: __spreadArrays([classNames.link, classNames.linkIsSelected], linkStyles(props), [{
-      fontWeight: FontWeights.semibold,
-      selectors: (_a = {
-        ':before': {
-          backgroundColor: semanticColors.inputBackgroundChecked,
-          selectors: (_b = {}, _b[HighContrastSelector] = {
-            backgroundColor: 'Highlight'
-          }, _b)
-        },
-        ':hover::before': {
-          left: 0,
-          right: 0
-        }
-      }, _a[HighContrastSelector] = {
-        color: 'Highlight'
+      background: semanticColors.listBackground,
+      color: semanticColors.listText,
+      selectors: (_a = {}, _a["& ." + classNames.listCell] = {
+        minHeight: 38,
+        wordBreak: 'break-word'
       }, _a)
-    }, rootIsTabs && {
-      backgroundColor: semanticColors.primaryButtonBackground,
-      color: semanticColors.primaryButtonText,
-      fontWeight: FontWeights.regular,
-      selectors: (_c = {
-        ':before': {
-          backgroundColor: 'transparent',
-          transition: 'none',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          content: '""',
-          height: 'auto'
-        },
-        ':hover': {
-          backgroundColor: semanticColors.primaryButtonBackgroundHovered,
-          color: semanticColors.primaryButtonText
-        },
-        '&:active': {
-          backgroundColor: semanticColors.primaryButtonBackgroundPressed,
-          color: semanticColors.primaryButtonText
-        }
-      }, _c[HighContrastSelector] = {
-        fontWeight: FontWeights.semibold,
-        color: 'HighlightText',
-        background: 'Highlight',
-        MsHighContrastAdjust: 'none'
-      }, _c)
-    }]),
-    linkContent: [classNames.linkContent, {
-      flex: '0 1 100%',
-      selectors: {
-        '& > * ': {
-          marginLeft: 4
-        },
-        '& > *:first-child': {
-          marginLeft: 0
-        }
-      }
-    }],
-    text: [classNames.text, {
+    }, isFixed && classNames.isFixed, compact && [classNames.compact, {
+      selectors: (_b = {}, _b["." + classNames.listCell] = {
+        minHeight: 32
+      }, _b)
+    }], isHorizontalConstrained && [classNames.isHorizontalConstrained, {
+      overflowX: 'auto',
+      overflowY: 'visible',
+      WebkitOverflowScrolling: 'touch'
+    }], className],
+    focusZone: [{
       display: 'inline-block',
-      verticalAlign: 'top'
+      minWidth: '100%',
+      minHeight: 1
     }],
-    count: [classNames.count, {
-      display: 'inline-block',
-      verticalAlign: 'top'
-    }],
-    icon: classNames.icon
+    headerWrapper: classNames.headerWrapper,
+    contentWrapper: classNames.contentWrapper
   };
 };
 
-/**
- * The Pivot control and related tabs pattern are used for navigating frequently accessed,
- * distinct content categories. Pivots allow for navigation between two or more content
- * views and relies on text headers to articulate the different sections of content.
- */
-
-var Pivot = styled(PivotBase, getStyles$a, undefined, {
-  scope: 'Pivot'
+var DetailsList = styled(DetailsListBase, getStyles$f, undefined, {
+  scope: 'DetailsList'
 });
 
-var labelStyles = {
-  root: {
-    marginTop: 10
+function _templateObject() {
+  var data = _taggedTemplateLiteral(["\n    width: 0.5rem;\n    height: 100%;\n    margin: auto 35px auto auto;\n    background: ", "\n"]);
+
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+var VerticalLine = styled$1.div(_templateObject(), function (props) {
+  if (props.selected) {
+    return 'rgba(253, 167, 223,0.4)';
   }
-};
-function PivotFlt() {
-  return /*#__PURE__*/React__default.createElement(Pivot, {
-    "aria-label": "Basic Pivot Example"
-  }, /*#__PURE__*/React__default.createElement(PivotItem, {
-    headerText: "My Files",
-    headerButtonProps: {
-      'data-order': 1,
-      'data-title': 'My Files Title'
+
+  return 'rgba(223, 230, 233,0.4)';
+});
+
+var CheckRow = /*#__PURE__*/function (_React$Component) {
+  _inherits(CheckRow, _React$Component);
+
+  var _super = _createSuper(CheckRow);
+
+  function CheckRow() {
+    _classCallCheck(this, CheckRow);
+
+    return _super.apply(this, arguments);
+  }
+
+  _createClass(CheckRow, [{
+    key: "render",
+    value: function render() {
+      return /*#__PURE__*/React__default.createElement(React__default.Fragment, null, /*#__PURE__*/React__default.createElement(VerticalLine, {
+        selected: this.props.selected
+      }));
     }
-  }, /*#__PURE__*/React__default.createElement(Label, {
-    styles: labelStyles
-  }, "Pivot #1")), /*#__PURE__*/React__default.createElement(PivotItem, {
-    headerText: "Recent"
-  }, /*#__PURE__*/React__default.createElement(Label, {
-    styles: labelStyles
-  }, "Pivot #2")), /*#__PURE__*/React__default.createElement(PivotItem, {
-    headerText: "Shared with me"
-  }, /*#__PURE__*/React__default.createElement(Label, {
-    styles: labelStyles
-  }, "Pivot #3")));
+  }]);
+
+  return CheckRow;
+}(React__default.Component);
+
+function _templateObject2() {
+  var data = _taggedTemplateLiteral(["\n    > .focused-row{\n        background: ", ";\n    }\n    > .focused-row:hover{\n        background: ", ";\n    }\n    > .focused-row:focus{\n        background: ", ";\n    }\n"]);
+
+  _templateObject2 = function _templateObject2() {
+    return data;
+  };
+
+  return data;
 }
 
-exports.default = PivotFlt;
+function _templateObject$1() {
+  var data = _taggedTemplateLiteral(["\n  width: 100%;\n  height: 50vh;\n  overflow: auto;\n"]);
+
+  _templateObject$1 = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+initializeIcons$j();
+var DetailsListWrapper = styled$1.div(_templateObject$1());
+var FocusedRow = styled$1.div(_templateObject2(), function (props) {
+  return props.rowNormalBgColor || 'rgba(223, 230, 233,0.2)';
+}, function (props) {
+  return props.rowHoverColor || 'rgba(116, 185, 255,0.2)';
+}, function (props) {
+  return props.rowFocusedColor || 'rgba(253, 167, 223,0.2)';
+});
+
+var TableFlt = /*#__PURE__*/function (_React$Component) {
+  _inherits(TableFlt, _React$Component);
+
+  var _super = _createSuper(TableFlt);
+
+  // #region ====== props ========
+  // rowNormalBgColor 行背景色
+  // rowHoverColor 鼠标悬浮时的行背景色
+  // rowFocusedColor 行被选中(获取焦点)时的行背景色
+  // #endregion
+  function TableFlt(props) {
+    var _this;
+
+    _classCallCheck(this, TableFlt);
+
+    _this = _super.call(this, props);
+
+    _defineProperty(_assertThisInitialized(_this), "_onRenderRow", function (rowProps) {
+      var rowPropParams = {
+        // rowNormalBgColor 行背景色
+        rowNormalBgColor: _this.props.rowNormalBgColor,
+        // rowHoverColor 鼠标悬浮时的行背景色
+        rowHoverColor: _this.props.rowHoverColor,
+        // rowFocusedColor 行被选中(获取焦点)时的行背景色
+        rowFocusedColor: _this.props.rowFocusedColor
+      };
+
+      var _onRenderCheck = function _onRenderCheck(rowProps) {
+        return /*#__PURE__*/React__default.createElement(CheckRow, {
+          selected: rowProps.selected
+        });
+      };
+
+      console.log('this.props.rowNormalBgColor = ', _this.props.rowNormalBgColor);
+      return /*#__PURE__*/React__default.createElement(FocusedRow, rowPropParams, /*#__PURE__*/React__default.createElement(DetailsRow, _extends({
+        className: "focused-row"
+      }, rowProps, {
+        onRenderCheck: _onRenderCheck // styles={{
+        //   root: {
+        //     backgroundColor: "rgba(253, 167, 223,0.2)"
+        //   }
+        // }}
+
+      })));
+    });
+
+    _defineProperty(_assertThisInitialized(_this), "_onColumnClick", function (event, column) {
+      var columns = _this.state.columns;
+      var sortedItems = _this.state.sortedItems;
+      var isSortedDescending = column.isSortedDescending; // If we've sorted this column, flip it.
+
+      if (column.isSorted) {
+        isSortedDescending = !isSortedDescending;
+      } // Sort the items.
+
+
+      sortedItems = _copyAndSort(sortedItems, column.fieldName, isSortedDescending); // Reset the items and columns to match the state.
+
+      _this.setState({
+        sortedItems: sortedItems,
+        columns: columns.map(function (col) {
+          col.isSorted = col.key === column.key;
+
+          if (col.isSorted) {
+            col.isSortedDescending = isSortedDescending;
+          }
+
+          return col;
+        })
+      });
+    });
+
+    var items = createListItems(500);
+    _this.state = {
+      sortedItems: items,
+      columns: _buildColumns(items)
+    };
+    return _this;
+  }
+
+  _createClass(TableFlt, [{
+    key: "render",
+    value: function render() {
+      var _this$state = this.state,
+          sortedItems = _this$state.sortedItems,
+          columns = _this$state.columns;
+      return /*#__PURE__*/React__default.createElement(DetailsListWrapper, null, /*#__PURE__*/React__default.createElement(DetailsList, {
+        items: sortedItems,
+        setKey: "set",
+        columns: columns,
+        onRenderItemColumn: _renderItemColumn,
+        onColumnHeaderClick: this._onColumnClick,
+        onItemInvoked: _onItemInvoked,
+        onColumnHeaderContextMenu: _onColumnHeaderContextMenu,
+        onRenderRow: this._onRenderRow,
+        ariaLabelForSelectionColumn: "Toggle selection",
+        ariaLabelForSelectAllCheckbox: "Toggle selection for all items",
+        checkButtonAriaLabel: "Row checkbox" // styles={{
+        //     subComponentStyles: {
+        //       menuItem: {
+        //         root: { check: { '&:hover': { backgroundColor: '#98dad2' } } }
+        //       }
+        //     }
+        //   }}
+
+      }));
+    }
+  }]);
+
+  return TableFlt;
+}(React__default.Component);
+
+function _onColumnHeaderContextMenu(column, ev) {//   console.log(`column ${column.key} contextmenu opened.`);
+}
+
+function _onItemInvoked(item, index) {
+  alert("Item ".concat(item.name, " at index ").concat(index, " has been invoked."));
+}
+
+function _buildColumns(items) {
+  var columns = buildColumns(items);
+  var thumbnailColumn = columns.filter(function (column) {
+    return column.name === "thumbnail";
+  })[0]; // Special case one column's definition.
+
+  thumbnailColumn.name = "image";
+  thumbnailColumn.maxWidth = 50;
+  thumbnailColumn.ariaLabel = "Thumbnail";
+  return columns;
+}
+
+function _renderItemColumn(item, index, column) {
+  var fieldContent = item[column.fieldName];
+
+  switch (column.key) {
+    case "thumbnail":
+      return /*#__PURE__*/React__default.createElement(Image, {
+        src: fieldContent,
+        width: 50,
+        height: 50,
+        imageFit: ImageFit.cover
+      });
+
+    case "name":
+      return /*#__PURE__*/React__default.createElement(Link, {
+        href: "#"
+      }, fieldContent);
+
+    case "color":
+      return /*#__PURE__*/React__default.createElement("span", {
+        "data-selection-disabled": true,
+        className: mergeStyles({
+          color: fieldContent,
+          height: "100%",
+          display: "block"
+        })
+      }, fieldContent);
+
+    default:
+      return /*#__PURE__*/React__default.createElement("span", null, fieldContent);
+  }
+}
+
+function _copyAndSort(items, columnKey, isSortedDescending) {
+  var key = columnKey;
+  return items.slice(0).sort(function (a, b) {
+    return (isSortedDescending ? a[key] < b[key] : a[key] > b[key]) ? 1 : -1;
+  });
+}
+
+exports.default = TableFlt;
 //# sourceMappingURL=index.js.map
