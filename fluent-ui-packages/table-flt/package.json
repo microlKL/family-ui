@@ -22,7 +22,6 @@
   },
   "scripts": {
     "test": "jest",
-    "test:karma": "karma start",
     "build": "rollup -c ../config/rollup.config.js",
     "build:prod": "SET NODE_ENV=production && rollup -c ../config/rollup.config.js",
     "build:dev": "SET NODE_ENV=development && rollup -c ../config/rollup.config.js"

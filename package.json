@@ -8,10 +8,7 @@
     "start:api": "yarn workspace @family-ui/app-api storybook",
     "build:api": "yarn workspace @family-ui/app-api build:storybook",
     "start:study": "yarn workspace @family-ui/app-study storybook",
-    "test": "jest",
-    "test:coverage": "yarn jest --coverage",
-    "test:api": "yarn workspace @family-ui/app-api test",
-    "test:table": "yarn workspace @family-ui/table-flt test:karma"
+    "test:api": "yarn workspace @family-ui/app-api test"
   },
   "config": {
     "commitizen": {
