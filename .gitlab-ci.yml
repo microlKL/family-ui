@@ -29,8 +29,6 @@ prodTest1:
     - pwd
     - node --version
     - yarn --version
-    - yarn install
-    - yarn test:api
     - pwd
   tags:
     - gbr-fmui-prod

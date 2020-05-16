@@ -8,7 +8,7 @@ module.exports = function (config) {
     // yarn add -D karma-firefox-launcher
     // yarn add -D karma-chorome-launcher
     // browsers: ['PhantomJS','Chrome'], // 'PhantomJS','Chrome','Firefox'
-    browsers: ['PhantomJS'], // 'PhantomJS','Chrome','Firefox'
+    browsers: ['Chrome'], // 'PhantomJS','Chrome','Firefox'
 
     singleRun: true,
 
@@ -51,7 +51,7 @@ module.exports = function (config) {
             // include: path.resolve(__dirname, "../src"),
             // 用排除的方式，除了 /node_modules/ 都让 babel-loader 进行解析，这样一来就能解析引用的别的package中的组件了
             // exclude: /node_modules/,
-            // exclude: /node_modules/,
+            exclude: /node_modules/,
             use: [
               {
                 loader: "babel-loader",
