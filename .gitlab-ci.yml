@@ -25,6 +25,7 @@ prodTest1:
     - pwd
     - node --version
     - yarn --version
+    - yarn install
     - yarn test:api
     - pwd
   tags:
@@ -37,6 +38,7 @@ prodTest2:
     - pwd
     - node --version
     - yarn --version
+    - yarn install
     - yarn test:api
     - pwd
   tags:
@@ -50,6 +52,8 @@ prodDeploy:
     - pwd
     - node --version
     - yarn --version
+    - yarn install
+    - yarn build:api
     - rm -rf /home/web/*
     - cp -r packages/app-api/storybook-static/. /home/web/
     - pwd
