@@ -15,7 +15,7 @@
       "path": "./node_modules/cz-lerna-changelog"
     }
   },
-  "备注":"files 决定 npm publish 发布到 npm 仓库时输出的文件夹",
+  "备注": "files 决定 npm publish 发布到 npm 仓库时输出的文件夹",
   "files": [
     "fluent-ui-packages"
   ],
@@ -23,6 +23,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
     "commitizen": "^4.0.4",
     "cz-lerna-changelog": "^2.0.2",
     "lerna": "^3.20.2",
@@ -33,7 +34,7 @@
     "packages/*",
     "fluent-ui-packages/*"
   ],
-  "homepage":"https://pedantic-mirzakhani-f9bb7c.netlify.app/",
+  "homepage": "https://pedantic-mirzakhani-f9bb7c.netlify.app/",
   "repository": {
     "type": "git",
     "url": "https://gitee.com/starFromGithub/family-ui-webpack.git"

@@ -71,8 +71,6 @@
   },
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.8.3",
-    "@family-ui/nav-flt": "^0.0.812",
-    "@family-ui/pivot-flt": "^0.0.101",
     "@family-ui/table-flt": "^0.0.101",
     "@fluentui/react": "^7.110.5",
     "@storybook/addon-a11y": "^5.3.18",

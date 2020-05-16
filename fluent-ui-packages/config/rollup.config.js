@@ -1,8 +1,8 @@
 import postcss from "rollup-plugin-postcss";
-import { eslint } from "rollup-plugin-eslint";
+// import { eslint } from "rollup-plugin-eslint";
 import commonjs from "rollup-plugin-commonjs";
-import clear from "rollup-plugin-clear";
-import external from "rollup-plugin-peer-deps-external";
+// import clear from "rollup-plugin-clear";
+// import external from "rollup-plugin-peer-deps-external";
 import url from "rollup-plugin-url";
 
 import babel from "rollup-plugin-babel";
@@ -28,7 +28,7 @@ export default {
     exports: "named"
   },
   //告诉rollup不要将此lodash打包，而作为外部依赖
-  external: ["react", "react-dom","lodash", "antd","@fluentui/react"],
+  external: ["react", "react-dom","lodash", "antd","@fluentui/react","styled-components"],
   // 是否开启代码分割
   experimentalCodeSplitting: true,
   plugins: [
@@ -46,12 +46,12 @@ export default {
       include: ["node_modules/**"]
     }),
     json(),
-    eslint({
-      include: ["src/**/*.js"],
-    //   exclude: ["src/styles/**"]
-    // exclude: ["src/*"]
-    // exclude: ["node_modules/**"]
-    }),
+    // eslint({
+    //   include: ["src/**/*.js"],
+    // //   exclude: ["src/styles/**"]
+    // // exclude: ["src/*"]
+    // // exclude: ["node_modules/**"]
+    // }),
     replace({
       "process.env.NODE_ENV": JSON.stringify(env)
     }),

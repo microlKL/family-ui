@@ -29,7 +29,11 @@ function webpackCommonConfigCreator(options) {
         plugins: [
             // new HtmlWebpackPlugin(),
             new HtmlWebpackPlugin({
-                template: path.resolve(__dirname, "../public/index.html")
+                template: path.resolve(__dirname, "../public/index.html"),
+                // filename: "./../html/index.html", //编译后生成新的html文件路径
+                // thunks: ['vendor', 'index'],  // 需要引入的入口文件
+                // excludeChunks: ['login'],  // 不需要引入的入口文件
+                favicon: path.resolve(__dirname, "../favicon.ico") //favicon.ico文件路径
             }),
             new CleanWebpackPlugin({
                 cleanOnceBeforeBuildPatterns: [path.resolve(process.cwd(), "build/"), path.resolve(process.cwd(), "dist/")]
