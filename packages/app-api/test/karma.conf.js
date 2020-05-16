@@ -8,7 +8,7 @@ module.exports = function (config) {
     // yarn add -D karma-firefox-launcher
     // yarn add -D karma-chorome-launcher
     // browsers: ['PhantomJS','Chrome'], // 'PhantomJS','Chrome','Firefox'
-    browsers: ['Chrome'], // 'PhantomJS','Chrome','Firefox'
+    browsers: ['PhantomJS'], // 'PhantomJS','Chrome','Firefox'
 
     singleRun: true,
 

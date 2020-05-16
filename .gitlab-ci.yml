@@ -16,6 +16,7 @@ prodBuild:
     - pwd
   tags:
     - gbr-fmui-prod
+  # 将以下目录传递到依赖此 job 的其他job中
   artifacts:
     paths:
       - packages/app-api/storybook-static/
@@ -28,11 +29,11 @@ prodTest1:
     - pwd
     - node --version
     - yarn --version
+    - yarn install
+    - yarn test:api
     - pwd
   tags:
     - gbr-fmui-prod
-  dependencies:
-    - prodBuild
 prodTest2:
   only:
     - master
@@ -44,8 +45,6 @@ prodTest2:
     - pwd
   tags:
     - gbr-fmui-prod
-  dependencies:
-    - prodBuild
 # 在docker的gitlab-runner容器中构建（发布环境 - deploy 部署上线）
 prodDeploy:
   only:
@@ -60,5 +59,6 @@ prodDeploy:
     - pwd
   tags:
     - gbr-fmui-prod
+  # 依赖 prodBuild 这个上面用于构建的 job 从而获取到传递过来的目录
   dependencies:
     - prodBuild
