@@ -18,10 +18,6 @@ prodBuild:
     - gbr-fmui-prod
   artifacts:
     paths:
-      - node_modules/
-      - fluent-ui-packages/table-flt/node_modules/
-      - fluent-ui-packages/table-flt/lib/
-      - packages/app-api/node_modules/
       - packages/app-api/storybook-static/
 # 在docker的gitlab-runner容器中构建（发布环境 - test 测试）
 prodTest1:
