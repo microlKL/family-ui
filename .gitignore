@@ -44,6 +44,7 @@ node_modules/
 
 lerna-debug.log
 package-lock.json
+/yarn.lock
 /.vscode
 /packages/**/screenshots/
 /.idea
