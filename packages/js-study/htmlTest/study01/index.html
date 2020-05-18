@@ -1,23 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
-    <h5>hello word5</h5>
+    <h5>H5 study</h5>
     <script>
-        const a = 99, b='99',c={},d=9.9,e=false,f=null;
-        let g;
-        console.log('a => ',typeof a);
-        console.log('b => ',typeof b);
-        console.log('c => ',typeof c);
-        console.log('d => ',typeof d);
-        console.log('e => ',typeof e);
-        console.log('f => ',typeof f);
-        console.log('g => ',typeof g);
+        // 下面这种自调用函数，作用是为代码分配一个独立的作用域，避免造成代码的全局污染
+        // ( function a(){} )()
+        // 后面 ES6 升级后，又出来一种新的更好的做法，叫做代码块，就是用 {} 花括号括起来就行了
+        // 后面的代码练习我都会用 {} 代码块括起来，避免全局污染
+
+        (function a() {
+            const a = 99, b = '99', c = {}, d = 9.9, e = false, f = null;
+            let g;
+            console.log('a => ', typeof a);
+            console.log('b => ', typeof b);
+            console.log('c => ', typeof c);
+            console.log('d => ', typeof d);
+            console.log('e => ', typeof e);
+            console.log('f => ', typeof f);
+            console.log('g => ', typeof g);
+        })();
+
+    </script>
+
+    <script>
+        {
+            // 【使用 Object.freeze(XXX) 锁死变量】
+
+            // 使用严格模式
+            "use strict";
+            // 如果只用 const 声明一个 JSON 变量，那么其中的属性也是允许修改了，如果想让这个 JSON 变量中的所有属性也只读，就需要用到 Object.freeze(XXX)
+            const HOST = {
+                url: "www.micking.top",
+                port: 80
+            }
+            // Object.freeze(XXX) 作用：将一个变量锁死，就算这个变量是 JSON 对象类型，也会锁死，其中的所有属性将都为 只读 的，不允许修改
+            Object.freeze(HOST)
+
+            // // 这里将修改失败，因为这个 HOST 对象已经用 Object.freeze(XXX) 锁死
+            // HOST.port = 99;
+            // console.log("HOST => ",HOST)
+        }
+
+    </script>
+
+    <script>
+        {
+            // 【undefined 和 null 的区别 和 使用】
+            // undefined：变量值没附上的时候，都为 undefined，没声明的变量也是 undefined；
+            // null：null 需要对变量进行赋值才会出现
+
+            // // 这个 jj 变量没有声明过，所以输出是 undefined
+            // console.log(jj);
+            // // 这个 kk 虽然声明了但是没有赋值，所以输出是 undefined
+            // let kk;
+            // console.log(kk);
+
+            // 有时候，我们可以这么用 undefined 和 null，通常用 undefined 来声明一个空的普通变量，通常用 null 来声明一个空的 JSON 对象变量
+            let ajson = null; // 这样声明方便提示自己或者别的程序员，这个 ajson 变量后面将作为 JSON 对象使用
+            let bx = undefined; // 这样声明方面提示自己或告诉别的程序员，这个 bx 变量后面将作为基础数据类型的变量使用，比如 整型、字符串、浮点数等
+            console.log("ajson => ",ajson);
+            console.log("bx => ",bx);
+            // 判断上面声明的对象变量是否为空
+            if(!ajson){
+                console.log('ajson 是个空的JSON对象')
+            }else{
+                console.log('ajson 不是个空的JSON对象')
+            }
+            // 变量是否为空的判断方式
+            if(!bx){
+                console.log('bx 是个空的变量')
+            }else{
+                console.log('bx 不是个空的变量')
+            }
+
+            // 当然上面的这种方案，在实际开发中，推荐用下面的方式，只是下面的声明方式，判断 JSON 对象是否为空的方式有所不通，需要改用 JSON.stringify(ajsonB)==="{}"
+            let ajsonB = {}; // 这样声明方便提示自己或者别的程序员，这个 ajson 变量后面将作为 JSON 对象使用
+            let bxB = ''; // 这样声明方面提示自己或告诉别的程序员，这个 bx 变量后面将作为基础数据类型的变量使用，比如 整型、字符串、浮点数等
+            console.log("ajsonB => ",ajsonB);
+            console.log("bxB => ",bxB);
+            // 判断上面声明的对象变量是否为空
+            if(JSON.stringify(ajsonB)==="{}"){
+                console.log('ajsonB 是个空的JSON对象')
+            }else{
+                console.log('ajsonB 不是个空的JSON对象')
+            }
+            // 变量是否为空的判断方式
+            if(!bxB){
+                console.log('bxB 是个空的变量')
+            }else{
+                console.log('bxB 不是个空的变量')
+            }
+
+            // 综上所述，我们如果对一个不知情的变量进行统一判断是否为空，那就使用如下判断
+            let ax;
+            if(!ax || String.stringify(ax) === '{}'){
+                console.log('ax 是个空的')
+            }
+
+            // 如果我们需要判断一个变量是否为空，且如果为空，则赋上初始值，可以这样简写
+            let ayy; // 如果 这里 ayy = {},或者 ayy = [] 数组 那么将不认为是空值
+            let byy = ayy || '默认值'; // 这种判断方式，只针对 ayy = null 或 ayy = undefined 或 ayy = ''空字符串 这3中情况
+            console.log('byy = ',byy)
+        }
+
 
     </script>
 </body>
+
 </html>
