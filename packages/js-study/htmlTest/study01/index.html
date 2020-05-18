@@ -65,52 +65,117 @@
             // 有时候，我们可以这么用 undefined 和 null，通常用 undefined 来声明一个空的普通变量，通常用 null 来声明一个空的 JSON 对象变量
             let ajson = null; // 这样声明方便提示自己或者别的程序员，这个 ajson 变量后面将作为 JSON 对象使用
             let bx = undefined; // 这样声明方面提示自己或告诉别的程序员，这个 bx 变量后面将作为基础数据类型的变量使用，比如 整型、字符串、浮点数等
-            console.log("ajson => ",ajson);
-            console.log("bx => ",bx);
+            console.log("ajson => ", ajson);
+            console.log("bx => ", bx);
             // 判断上面声明的对象变量是否为空
-            if(!ajson){
+            if (!ajson) {
                 console.log('ajson 是个空的JSON对象')
-            }else{
+            } else {
                 console.log('ajson 不是个空的JSON对象')
             }
             // 变量是否为空的判断方式
-            if(!bx){
+            if (!bx) {
                 console.log('bx 是个空的变量')
-            }else{
+            } else {
                 console.log('bx 不是个空的变量')
             }
 
             // 当然上面的这种方案，在实际开发中，推荐用下面的方式，只是下面的声明方式，判断 JSON 对象是否为空的方式有所不通，需要改用 JSON.stringify(ajsonB)==="{}"
             let ajsonB = {}; // 这样声明方便提示自己或者别的程序员，这个 ajson 变量后面将作为 JSON 对象使用
             let bxB = ''; // 这样声明方面提示自己或告诉别的程序员，这个 bx 变量后面将作为基础数据类型的变量使用，比如 整型、字符串、浮点数等
-            console.log("ajsonB => ",ajsonB);
-            console.log("bxB => ",bxB);
+            console.log("ajsonB => ", ajsonB);
+            console.log("bxB => ", bxB);
             // 判断上面声明的对象变量是否为空
-            if(JSON.stringify(ajsonB)==="{}"){
+            if (JSON.stringify(ajsonB) === "{}") {
                 console.log('ajsonB 是个空的JSON对象')
-            }else{
+            } else {
                 console.log('ajsonB 不是个空的JSON对象')
             }
             // 变量是否为空的判断方式
-            if(!bxB){
+            if (!bxB) {
                 console.log('bxB 是个空的变量')
-            }else{
+            } else {
                 console.log('bxB 不是个空的变量')
             }
 
             // 综上所述，我们如果对一个不知情的变量进行统一判断是否为空，那就使用如下判断
             let ax;
-            if(!ax || String.stringify(ax) === '{}'){
+            if (!ax || String.stringify(ax) === '{}') {
                 console.log('ax 是个空的')
             }
 
             // 如果我们需要判断一个变量是否为空，且如果为空，则赋上初始值，可以这样简写
             let ayy; // 如果 这里 ayy = {},或者 ayy = [] 数组 那么将不认为是空值
             let byy = ayy || '默认值'; // 这种判断方式，只针对 ayy = null 或 ayy = undefined 或 ayy = ''空字符串 这3中情况
-            console.log('byy = ',byy)
+            console.log('byy = ', byy)
         }
 
 
+    </script>
+
+    <script>
+        {
+            'use strict';
+
+            let n = 1;
+            let m = 2;
+            let f = m + ++n; // 这个表达式，会先让 ++n 即 n 会先 加 1，后再加上 m 的值
+            // 上面的 let f = m + ++n; 等同于 let f = m + (n = n + 1); ，即可以简写为 let f = m + ++n;
+            // let f = m + (n = n + 1);
+            console.log('n =', n);
+            n = 1;
+            let g = m + n++; // 这个表达式，会先把 m 和 n 相加得到值后，再对 n 进行加 1，所以这里的 g 等同于 g = m + n
+            console.log('n =', n);
+
+            console.log('f =', f);
+            console.log('g =', f);
+            console.log('n =', n);
+
+
+
+        }
+    </script>
+    <script>
+        // 【标签模板 练习】
+
+        const INFO = [
+            {
+                author: '李寻欢',
+                title: "bilibili的学习资料"
+            },
+            {
+                author: '风云雄霸',
+                title: "没有广告的bilibili"
+            },
+            {
+                author: '小李子',
+                title: "我喜欢在bilibili的上看学习视频"
+            }
+        ]
+
+        const template = () => {
+            return `<ul>
+            ${INFO.map(item => 
+                link`<li>用户：${item.author}；内容：${item.title}</li>`
+            ).join('')}
+            </ul>`            
+        }
+
+        const link = (strings,...vars) => {
+            console.log('strings => ',strings)
+            console.log('vars => ',vars)
+
+            return strings.map((str,key) => {
+                console.log('str',str)
+                console.log('key',key)
+
+                return str + (!vars[key] ? '' : vars[key].replace('bilibili',`<a href='https://www.bilibili.com/' target='_blank'> bilibili </a>`))
+                
+                // item.replace('bilibili',`<a href='www.micking.top'>bilibili</a>`)
+            })
+        }
+
+        document.body.innerHTML = template()
     </script>
 </body>
 

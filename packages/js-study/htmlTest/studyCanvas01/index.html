@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script> -->
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        canvas {
+            display: block;
+            border: 1px solid red;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id='cvs' width="100" height="100">
+        你的浏览器不支持 canvas，请升级你的浏览器。
+    </canvas>
+    <script>
+        const drawRect = ctx => {
+            // 画矩形
+            // canvast 提供了三种方法绘制矩形：
+            // 1、fillRect(x, y, width, height)：绘制一个填充的矩形。
+            // 2、strokeRect(x, y, width, height)：绘制一个矩形的边框。
+            // 3、clearRect(x, y, widh, height)：清除指定的矩形区域，然后这块区域会变的完全透明。
+            // 绘制空心矩形
+            ctx.strokeStyle = "blue";
+            ctx.strokeRect(100, 100, 200, 100);
+            // 绘制填充矩形
+            ctx.fillStyle = 'rgba(0,0,200,0.5)';
+            ctx.fillRect(200, 150, 200, 100);
+            // 擦除指定区域
+            ctx.clearRect(110, 110, 200, 100);
+        }
+
+        const drawPath = ctx => {
+            // 图形的基本元素是路径。
+            // 路径是通过不同颜色和宽度的线段或曲线相连形成的不同形状的点的集合。
+            // 一个路径，甚至一个子路径，都是闭合的。
+            // 使用路径绘制图形需要一些额外的步骤：
+            // 创建路径起始点
+            // 调用绘制方法去绘制出路径
+            // 把路径封闭
+            // 一旦路径生成，通过描边或填充路径区域来渲染图形。
+            // 下面是需要用到的方法：
+            // beginPath()
+            // 新建一条路径，路径一旦创建成功，图形绘制命令被指向到路径上生成路径
+            // moveTo(x, y)
+            // 把画笔移动到指定的坐标(x, y)。相当于设置路径的起始点坐标。
+            // closePath()
+            // 闭合路径之后，图形绘制命令又重新指向到上下文中
+            // stroke()
+            // 通过线条来绘制图形轮廓
+            // fill()
+            // 通过填充路径的内容区域生成实心的图形
+
+            ctx.beginPath();
+            ctx.moveTo(100,100);
+            ctx.lineTo(500,100);
+            ctx.lineTo(500,500)
+            //闭合路径。会拉一条从当前点到path起始点的直线。如果当前点与起始点重合，则什么都不做
+            // ctx.closePath();
+            //填充闭合区域。如果path没有闭合，则fill()会自动闭合路径。(用了 fill() 可以不需要写 closePath(), fill() 也会自动闭合路径)
+            ctx.fill();
+            // 绘制路径(即下笔画出上面设置好的路径)
+            ctx.stroke();
+        }
+
+        (function init() {
+            let canvas = document.querySelector("#cvs");
+            if (!canvas.getContext) return; // 如果 canvas.getContext 为空，说明当前浏览器不支持 canvas，直接return即可，不用执行下面的代码
+            // canvas.getContext 是 canvas 的上下文对象，也就是 canvas 的画笔
+            let ctx = canvas.getContext("2d");
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+
+            // 绘制矩形
+            // drawRect(ctx);
+
+            // 绘制路径
+            drawPath(ctx)
+        })();
+
+
+    </script>
+</body>
+
+</html>
