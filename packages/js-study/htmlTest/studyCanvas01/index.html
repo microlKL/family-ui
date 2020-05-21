@@ -501,7 +501,10 @@
         // 来源：简书
         // 著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 
-        const drawStarAnimation = (ctx) => {
+        let ctx, moon, earth, sun;
+
+        const drawStarAnimation = (context) => {
+            ctx = context;
             moon = new Image();
             earth = new Image();
             sun = new Image();
@@ -512,93 +515,153 @@
             // document.body.appendChild(earth);
             // document.body.appendChild(sun);
 
+
+
             sun.onload = () => {
-                drawStars(ctx, moon, earth, sun);
+                drawStars()//(ctx, moon, earth, sun);
             }
         }
 
-        const drawStars = (ctx, moon, earth, sun) => {
-            ctx.save();
-            const moonCenter = drawMoon(ctx,moon,[250,150]);
-            ctx.restore();
-            ctx.save();
-            const earthCenter = drawEarth(ctx,earth,[300,200]);
-            ctx.restore();
-            ctx.save();
-            const sunCenter = drawSun(ctx,sun,[300,150]);
-            ctx.restore();
+        // ctx, moon, earth, sun
+        const drawStars = () => {
+
+            ctx.clearRect(0, 0, 2300, 2300); //清空所有的内容
             ctx.save();
 
+            const sunCenter = drawSun(ctx, sun, [300, 150]);
+            ctx.restore();
+            ctx.save();
+            drawStarPath(ctx, sunCenter, 100, 'red');
             ctx.globalCompositeOperation = 'source-over';
-            drawStarPath(ctx,earthCenter,60,'rgba(100,100,100,0.7)');
+            const earthCenter = drawEarth(ctx, earth, [55, 0], sunCenter);
             ctx.restore();
             ctx.save();
-            drawStarPath(ctx,sunCenter,100,'red');
+            // debugger       
 
+            requestAnimationFrame(drawStars);
         }
 
-        const drawMoon = (ctx, moon,position=[100,100]) => {
-            // 绘制月亮
-            ctx.beginPath();
-            // ctx.strokeStyle = 'red';
-            const centerPoint = [position[0]+63, position[1]+31];
-            ctx.arc(...centerPoint, 13, 0, Math.PI * 2, true);
-            ctx.closePath();
-            // ctx.stroke();
-            ctx.clip();
-            ctx.globalCompositeOperation = 'destination-over';
-            ctx.drawImage(moon, ...position, 130, 100);
-
-            return centerPoint;
-        }
-
-        const drawEarth = (ctx, earth,position=[100,100]) => {
-            // 绘制地球
-            ctx.beginPath();
-            // // ctx.strokeStyle = 'red';
-            // ctx.moveTo(position[0]+35+28, position[1]+35);
-            const centerPoint = [position[0]+35, position[1]+35];
-            ctx.arc(...centerPoint, 28, 0, Math.PI * 2, true);
-            ctx.closePath();
-            // ctx.stroke();
-            ctx.clip();
-            ctx.globalCompositeOperation = 'destination-over';
-            ctx.drawImage(earth, ...position, 70, 70);
-
-            return centerPoint;
-        }
-
-        const drawSun = (ctx, sun,position=[100,100]) => {
+        const drawSun = (ctx, sun, position = [100, 100]) => {
             // 绘制太阳
             ctx.beginPath();
             // // ctx.strokeStyle = 'red';
             // ctx.moveTo(position[0]+235+33, position[1]+140);
-            const centerPoint = [position[0]+235, position[1]+140];
-            ctx.arc(...centerPoint, 33, 0, Math.PI * 2, true);
+            const centerPoint = [position[0] + 235, position[1] + 140];
+            ctx.arc(...centerPoint, 28, 0, Math.PI * 2, true);
             ctx.closePath();
             // ctx.stroke();
             ctx.clip();
-            ctx.globalCompositeOperation = 'destination-over';
+            // ctx.globalCompositeOperation = 'destination-over';
             ctx.drawImage(sun, ...position, 340, 220);
 
             return centerPoint;
         }
 
-        const drawStarPath = (ctx,center=[100,100],r=50,strokeStyle='gray') => {
+        const drawEarth = (ctx, earth, position = [100, 100], sunCenter) => {
+            const centerPoint = [position[0] + 35, position[1] + 35];
+            // const moonCenter = drawMoon(ctx, moon, [0, 0], sunCenter, centerPoint);
+            // 绘制地球
+            ctx.beginPath();
+            // ctx.strokeStyle = 'red';
+            ctx.translate(...sunCenter);
+            let time = new Date();
+            ctx.rotate(2 * Math.PI / 6 * time.getSeconds() + 2 * Math.PI / 6000 * time.getMilliseconds());
+            ctx.arc(...centerPoint, 20, 0, Math.PI * 2, true);
+            ctx.closePath();
+            // ctx.stroke();
+            ctx.save();
+            ctx.clip();
+            // ctx.globalCompositeOperation = 'destination-over';
+            ctx.drawImage(earth, ...position, 70, 70);
+            ctx.restore();
+            ctx.globalCompositeOperation = 'destination-over';
+            ctx.save();
+            const moonCenter = drawMoon(ctx, moon, [-8, -10], centerPoint);
+            ctx.restore();
+            ctx.save();
+            drawStarPath(ctx, centerPoint, 60, 'rgba(100,100,100,0.7)');
+            ctx.restore();
+
+            return centerPoint;
+        }
+
+        const drawMoon = (ctx, moon, position = [100, 100], earthCenter) => {
+            ctx.save();
+            // 绘制月亮
+            ctx.beginPath();
+            // ctx.strokeStyle = 'red';
+            // console.log('earthCenter: ',earthCenter);
+            // ctx.translate(...sunCenter);
+            ctx.translate(...earthCenter);
+            const centerPoint = [position[0] + 63, position[1] + 31];
+            let time = new Date();
+            ctx.rotate(2 * Math.PI / 6 * time.getSeconds() + 2 * Math.PI / 6000 * time.getMilliseconds());
+            ctx.arc(...centerPoint, 8, 0, Math.PI * 2, true);
+
+            // ctx.stroke();
+            ctx.clip();
+            // ctx.globalCompositeOperation = 'destination-over';
+            ctx.drawImage(moon, ...position, 130, 100);
+            ctx.closePath();
+
+
+            // ctx.fillRect(...position, 10, 10);
+            ctx.restore();
+
+            return centerPoint;
+        }
+
+
+
+        const drawStarPath = (ctx, center = [100, 100], r = 50, strokeStyle = 'gray') => {
+
             // 绘制地球的轨道
             ctx.beginPath();
             // const r = 50;
             // const startPosition = [100,100];
             ctx.strokeStyle = strokeStyle;
             // ctx.moveTo(startPosition[0]+r,startPosition[1]);
-            ctx.arc(...center,r,0,Math.PI * 2,true);
+            ctx.arc(...center, r, 0, Math.PI * 2, true);
             // ctx.closePath();
             ctx.stroke();
-            
+
 
         }
 
         // #endregion
+
+        const drawPath2D = ctx => {
+            var path1 = new Path2D();
+            path1.rect(10, 10, 100, 100);
+            path1.closePath();
+            ctx.stroke(path1);
+
+            var path2 = new Path2D();
+            path2.moveTo(220, 60);
+            path2.arc(170, 60, 50, 0, 2 * Math.PI);
+            path2.closePath();
+            ctx.stroke(path2);
+
+            var path3 = new Path2D("M230 10 h 80 v 80 h -80 Z");
+            ctx.fill(path3);
+            path3.closePath();
+
+            document.querySelector('#cvs').click(function (event) {
+                div.innerHTML = "";
+
+                var x = event.pageX;
+                var y = event.pageY;
+
+                if (ctx.isPointInPath(path1, x, y))
+                    div.innerHTML = "Path1 clicked";
+
+                if (ctx.isPointInPath(path2, x, y))
+                    div.innerHTML = "Path2 clicked";
+
+                if (ctx.isPointInPath(path3, x, y))
+                    div.innerHTML = "Path3 clicked";
+            });
+        }
 
         (function init() {
             let canvas = document.querySelector("#cvs");
@@ -650,6 +713,9 @@
             // 动画练习
             // 星系旋转动画
             drawStarAnimation(ctx);
+
+            // 通过Path2D 绘制图形
+            // drawPath2D(ctx);
 
         })();
     </script>
