@@ -216,6 +216,7 @@ export default class DraftJsEditor extends Component {
 
   // 利用修改 editorSate 来实现主动让 decorator 的刷新
   refreshEditorDecorator = () => {
+    // this.forceUpdate();
     // this.state.editorRef.forceUpdate()
     // 先设置未null
     this.setState({ editorState: this.changeDecorations(this.state.editorState, null) }, () => {

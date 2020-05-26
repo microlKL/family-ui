@@ -30,7 +30,7 @@
     </script>
 
     <script>
-        function suodinglianxi(){
+        function suodinglianxi() {
             // 【使用 Object.freeze(XXX) 锁死变量】
 
             // 使用严格模式
@@ -51,7 +51,7 @@
     </script>
 
     <script>
-        function konglianxi(){
+        function konglianxi() {
             // 【undefined 和 null 的区别 和 使用】
             // undefined：变量值没附上的时候，都为 undefined，没声明的变量也是 undefined；
             // null：null 需要对变量进行赋值才会出现
@@ -114,7 +114,7 @@
     </script>
 
     <script>
-        function jiajialianxi(){
+        function jiajialianxi() {
             'use strict';
 
             let n = 1;
@@ -136,7 +136,7 @@
         }
     </script>
     <script>
-        function mobanlianxi(){
+        function mobanlianxi() {
             // 【标签模板 练习】
 
             const INFO = [
@@ -179,12 +179,12 @@
             document.body.innerHTML = template()
         }
 
-        mobanlianxi()
+        // mobanlianxi()
 
     </script>
 
     <script>
-        function mohuchulianxi(){
+        function mohuchulianxi() {
             // 【电话号码模糊处理】
 
             // 'abcdefg'.slice(a,b) 从字符串中截取指定字符，a 是开始索引(从0开始)，如果 b 为正数，那么从左开始截取，如果 b 为负数，那么从右边开始截取
@@ -213,7 +213,7 @@
 
 
     <script>
-        function suijilianxi(){
+        function suijilianxi() {
             // 【Math 随机数练习】
 
             // Math.random() 随机数生成范围：0 ~ 1 之间的浮点数，包括0，但小于1
@@ -244,7 +244,7 @@
     </script>
 
     <script>
-        function shijianlianxi(){
+        function shijianlianxi() {
 
             // ISO（标准时间）日期 转 时间戳
             // debugger
@@ -292,7 +292,7 @@
     </script>
 
     <script>
-        function shuzulianxi(){
+        function shuzulianxi() {
             const hd = [1, 2, 3, 5, 6, 9, 8];
             console.log(hd);
             console.table(hd);
@@ -357,7 +357,7 @@
     </script>
 
     <script>
-        function thislianxi(){
+        function thislianxi() {
             // 【call apply bind 练习】
             // 通过 call apply bind 可以改变 this
             // 区别： call apply 会立即执行，bind 不会立即执行，还需要进行调用后才会执行
@@ -430,9 +430,57 @@
             // (1) 完整传参的效果，按照上面的说法，这里调用处就算传参了也没用，
             // 因为只会优先使用bind时传递的参数，要想调用时候传参，
             // 那就bind的时候任何参数都不要传递
-            const demoFuncB = Demo.bind({ demo: 'bind demo' }, 10,6);
+            const demoFuncB = Demo.bind({ demo: 'bind demo' }, 10, 6);
             demoFuncB(7, 9);
 
+
+
+        }
+    </script>
+
+    <script>
+        {
+            const protecteds = Symbol();
+            class Base {
+                constructor() {
+                    this[protecteds] = {}
+                }
+            }
+            class User extends Base {
+                constructor(name) {
+                    super();
+                    this[protecteds].name = name;
+                    this[protecteds].url = 'https';
+                }
+
+                set url(val) {
+                    if (!/^https?:/i.test(val)) {
+                        throw new Error('非https网址');
+                    }
+                    this[protecteds].url = val;
+                }
+
+                get url() {
+                    console.log('ccc')
+                    return this[protecteds].url;
+                }
+            }
+
+            Object.seal(User);
+
+
+            // const u = new User('mic');
+            // console.log(JSON.stringify(Object.getOwnPropertyDescriptor(u, protecteds), null, 2))
+            // Object.defineProperty(u, protecteds, {
+            //     writable: false, // 是否可写 对象属性是否可修改,flase为不可修改，默认值为true
+            //     enumerable: false, // 对象属性是否可通过遍历(循环)，flase为不可循环，默认值为true
+            //     configurable: false // 能否使用delete、能否需改属性特性、或能否修改访问器属性、，false为不可重新定义，默认值为true
+            // })
+            // console.log(JSON.stringify(Object.getOwnPropertyDescriptor(u, protecteds), null, 2))
+            // u[protecteds].url = 'aaa';
+            // u[protecteds].boy = 'bbb';
+            // console.log('user = ', u.url);
+            // console.log('user = ', u[protecteds].boy);
 
 
         }
