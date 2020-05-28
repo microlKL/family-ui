@@ -447,10 +447,15 @@
                 }
             }
             class User extends Base {
+                #title = '变量前面加#，这是私有属性，外界不可访问'
                 constructor(name) {
                     super();
                     this[protecteds].name = name;
                     this[protecteds].url = 'https';
+                }
+
+                #privateFuncTest = ()=>{
+                    return '（函数名前面不能加#）变量前面加#，并赋上匿名函数，可以做成私有函数，外界不可访问'
                 }
 
                 set url(val) {
@@ -466,7 +471,11 @@
                 }
             }
 
-            Object.seal(User);
+            // const user =  new User();
+            // console.log('私有属性测试（无法访问，会报错）：',user.#title)
+            // console.log('私有函数测试（无法访问，会报错）：',user.#privateFuncTest)
+
+            // Object.seal(User);
 
 
             // const u = new User('mic');
@@ -485,6 +494,27 @@
 
         }
     </script>
+
+    <script>
+        {
+            'user strick';
+
+            function weakSetTest() {
+                let hd = { name: 'abc', age: 1 }
+                let edu = hd;
+
+                let set = new WeakSet();
+                set.add(hd);
+
+                hd = null;
+                edu = null;
+                console.log('set => ',set);
+            }
+
+            // weakSetTest()
+        }
+    </script>
+    
 </body>
 
 </html>

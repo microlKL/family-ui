@@ -130,8 +130,7 @@ export default class DraftJsEditor extends Component {
           return (
             <span
               style={styles.normal}
-              data-offset-key={props.offsetKey}
-            >
+              data-offset-key={props.offsetKey}>
               {props.children}
             </span>
           );
@@ -216,18 +215,7 @@ export default class DraftJsEditor extends Component {
 
   // 利用修改 editorSate 来实现主动让 decorator 的刷新
   refreshEditorDecorator = () => {
-    // this.forceUpdate();
-    // this.state.editorRef.forceUpdate()
-    // 先设置未null
-    this.setState({ editorState: this.changeDecorations(this.state.editorState, null) }, () => {
-      // 再设置回原来的 decorator
-      this.setState({ editorState: this.changeDecorations(this.state.editorState, this.compositeDecorator) })
-    })
-  }
-
-  // 改变 editor 的 decorator
-  changeDecorations = (editorState, _decorator) => {
-    return EditorState.set(editorState, { decorator: _decorator });
+    this.setState({ editorState: EditorState.createWithContent(this.state.editorState.getCurrentContent(), this.compositeDecorator) });
   }
 
   // 设置普通文本内容
@@ -264,15 +252,14 @@ export default class DraftJsEditor extends Component {
 
   onChangeSearch = val => {
     // 获取新值时，先记录下即将被改变的值，也就时旧的值，用于下次匹配高亮内容时，把已高亮的旧的文字样式还原
-    this.setState({ searchBoxOldValue: this.state.searchBoxValue })
-
-    this.setState({ searchBoxValue: val },
+    this.setState({
+      searchBoxOldValue: this.state.searchBoxValue,
+      searchBoxValue: val
+    },
       () => {
         // this.state.editorRef.focus();
         // this.state.editorState = EditorState.redo(this.state.editorState);
         this.refreshEditorDecorator();
-        console.log('getDecorator => ', this.state.editorState.getDecorator())
-        console.log('onSearchHandle val => ', this.state.searchBoxValue)
       });
   }
 
@@ -280,7 +267,7 @@ export default class DraftJsEditor extends Component {
   }
 
   onChangeTextField = (event, val) => {
-    this.setState({ replaceTextValue: val },()=>{
+    this.setState({ replaceTextValue: val }, () => {
       this.refreshEditorDecorator();
     })
   }
